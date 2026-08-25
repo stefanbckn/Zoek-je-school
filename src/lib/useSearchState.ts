@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import type { Net } from '../types'
 
 export interface SearchState {
   lat: number | null
@@ -6,6 +7,11 @@ export interface SearchState {
   label: string | null
   /** Straal in km, of null voor "alles". */
   straalKm: number | null
+  /** Leeg = alle netten. */
+  netten: Net[]
+  /** Leeg = alle gemeenten. */
+  gemeenten: string[]
+  tekst: string
 }
 
 const DEFAULT_STATE: SearchState = {
@@ -13,6 +19,13 @@ const DEFAULT_STATE: SearchState = {
   lon: null,
   label: null,
   straalKm: 10,
+  netten: [],
+  gemeenten: [],
+  tekst: '',
+}
+
+function parseList(raw: string | null): string[] {
+  return raw ? raw.split(',').filter(Boolean) : []
 }
 
 function parseState(search: string): SearchState {
@@ -25,6 +38,9 @@ function parseState(search: string): SearchState {
     lon: lon !== null ? Number(lon) : null,
     label: params.get('label'),
     straalKm: straal !== null ? (straal === 'alles' ? null : Number(straal)) : DEFAULT_STATE.straalKm,
+    netten: parseList(params.get('net')) as Net[],
+    gemeenten: parseList(params.get('gemeenten')),
+    tekst: params.get('q') ?? '',
   }
 }
 
@@ -34,6 +50,9 @@ function toSearchParams(state: SearchState): URLSearchParams {
   if (state.lon !== null) params.set('lon', String(state.lon))
   if (state.label) params.set('label', state.label)
   params.set('straal', state.straalKm === null ? 'alles' : String(state.straalKm))
+  if (state.netten.length > 0) params.set('net', state.netten.join(','))
+  if (state.gemeenten.length > 0) params.set('gemeenten', state.gemeenten.join(','))
+  if (state.tekst) params.set('q', state.tekst)
   return params
 }
 
