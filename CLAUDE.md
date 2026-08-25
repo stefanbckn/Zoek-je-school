@@ -33,6 +33,39 @@ de browser is de Geolocation API voor het zoeken op eigen locatie (zie hieronder
   geautomatiseerd (formulier vraagt persoonsgegevens).
 - Zodra de key er is: uitbreiden in `scripts/fetch-data.ts`, richtingendata toevoegen aan
   `Vestiging.richtingen` (nu altijd `null`), en de placeholder-filtersectie in `FilterPanel` activeren.
+- Auth (geverifieerd via de OpenAPI-spec op het portaal): header `x-api-key: <key>` óf query-param
+  `?apikey=<key>`.
+- **Key-beheer:** env var `ONDERWIJS_API_KEY`, gelezen via `process.loadEnvFile()` (Node 21+, geen
+  `dotenv`-dependency nodig) in `scripts/fetch-data.ts`. Lokaal in `.env` (gitignored, zie
+  `.env.example` voor het te volgen formaat). Op Netlify: zet dezelfde variabele in
+  Site settings → Environment variables — Netlify injecteert die enkel in de build-omgeving.
+  **Bewust geen `VITE_`-prefix**: de key wordt alleen door het build-time Node-script gebruikt
+  (`fetch-data.ts`, draait vóór `vite build`), nooit door client-code. Een `VITE_`-prefix zou Vite
+  de key laten inbakken in de publieke JS-bundle, zichtbaar voor iedereen via view-source — precies
+  wat we willen vermijden op een statische site zonder backend. Enkel de opgehaalde richtingendata
+  zelf (niet de key) komt terecht in `public/data/*.json`, en dat is bedoeld — die data is publiek.
+- Mogelijk is de aangevraagde key enkel gekoppeld aan het "Onderwijsaanbod SO"-API-product; de
+  "Instelling"- en "Codelijst"-API's (nodig voor het net-onderscheid, zie hieronder) zijn aparte
+  producten op hetzelfde portaal en vragen mogelijk een aparte aanvraag/koppeling.
+
+### Net-onderscheid Provinciaal/Stedelijk binnen "Officieel gesubsidieerd" — NIET geïntegreerd
+
+Gewenst: onderscheid GO! / Officieel gesubsidieerd Provinciaal / Officieel gesubsidieerd Stedelijk /
+Vrij gesubsidieerd (huidige `net` in de CSV heeft maar 3 categorieën + leeg).
+
+- De CSV zelf heeft hiervoor geen apart veld — enkel de vrije-tekst `naam` van het schoolbestuur
+  (via het `bestuur`-veld, join op `schoolnummer` in de Schoolbesturen-CSV
+  `csv.ashx?s=03`) geeft een aanwijzing (bv. "Autonoom Provinciebedrijf Provinciaal Onderwijs
+  Antwerpen" vs. "Autonoom Gemeentebedrijf Stedelijk Onderwijs Antwerpen"). Dat is een heuristiek
+  op vrije tekst, geen betrouwbare structured data — bewust niet gebruikt.
+- De **Instelling-API** (`onderwijs.api.vlaanderen.be/instellingsgegevens/instelling/v1`, zelfde
+  soort key als hierboven) heeft wél een schoon veld: `instelling_soort_bestuur`
+  (`CodeOmschrijving`, filterbaar via `filter_instelling_soort_bestuur` met codes 1–9). De exacte
+  betekenis van die 9 codes is nog niet geverifieerd — vereist een werkende key plus de
+  **Codelijst-API** om de codes te decoderen. Niet gokken welke code wat betekent; eerst opvragen.
+- Zodra dit gebouwd wordt: `Vestiging.net` uitbreiden met de 2 extra categorieën, en de
+  `filter_instelling_bestuur`-param gebruiken om per school het bestuur (en dus soort_bestuur) op
+  te halen — niet de tekst-heuristiek.
 
 ### Geolocatie eigen adres (live browser call, enige live call in de app)
 
