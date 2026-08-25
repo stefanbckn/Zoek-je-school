@@ -133,7 +133,7 @@ function App() {
               {weergave === 'lijst' ? (
                 <ResultList vestigingen={zichtbareVestigingen} onSelect={setGeselecteerd} />
               ) : (
-                <div className="flex-1 mt-4 min-h-[400px]">
+                <div className="flex-1 mt-4 min-h-[400px] isolate">
                   <MapView vestigingen={zichtbareVestigingen} onSelect={setGeselecteerd} />
                 </div>
               )}
