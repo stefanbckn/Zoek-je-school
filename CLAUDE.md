@@ -3,8 +3,9 @@
 Zoeker voor middelbare scholen (voltijds gewoon secundair onderwijs) in provincie Antwerpen.
 Volledig client-side (Vite + React + TypeScript + Tailwind v4), geen backend, geen database.
 Data wordt op build-time opgehaald en weggeschreven als statische JSON — de app doet nooit live
-calls naar overheidsbronnen voor de scholendata (CORS/betrouwbaarheid). De enige live call vanuit
-de browser is de Geolocation API voor het zoeken op eigen locatie (zie hieronder).
+calls naar overheidsbronnen voor de scholendata (CORS/betrouwbaarheid). De enige live calls vanuit
+de browser zijn de Geolocation API (eigen adres zoeken) en OpenRouteService (fietsafstand/-tijd in
+het detailpaneel), zie hieronder.
 
 ## Databronnen
 
@@ -33,14 +34,79 @@ de browser is de Geolocation API voor het zoeken op eigen locatie (zie hieronder
   geautomatiseerd (formulier vraagt persoonsgegevens).
 - Zodra de key er is: uitbreiden in `scripts/fetch-data.ts`, richtingendata toevoegen aan
   `Vestiging.richtingen` (nu altijd `null`), en de placeholder-filtersectie in `FilterPanel` activeren.
+- Auth (geverifieerd via de OpenAPI-spec op het portaal): header `x-api-key: <key>` óf query-param
+  `?apikey=<key>`.
+- **Key-beheer:** env var `ONDERWIJS_API_KEY`, gelezen via `process.loadEnvFile()` (Node 21+, geen
+  `dotenv`-dependency nodig) in `scripts/fetch-data.ts`. Lokaal in `.env` (gitignored, zie
+  `.env.example` voor het te volgen formaat). Op Netlify: zet dezelfde variabele in
+  Site settings → Environment variables — Netlify injecteert die enkel in de build-omgeving.
+  **Bewust geen `VITE_`-prefix**: de key wordt alleen door het build-time Node-script gebruikt
+  (`fetch-data.ts`, draait vóór `vite build`), nooit door client-code. Een `VITE_`-prefix zou Vite
+  de key laten inbakken in de publieke JS-bundle, zichtbaar voor iedereen via view-source — precies
+  wat we willen vermijden op een statische site zonder backend. Enkel de opgehaalde richtingendata
+  zelf (niet de key) komt terecht in `public/data/*.json`, en dat is bedoeld — die data is publiek.
+- Mogelijk is de aangevraagde key enkel gekoppeld aan het "Onderwijsaanbod SO"-API-product; de
+  "Instelling"- en "Codelijst"-API's (nodig voor het net-onderscheid, zie hieronder) zijn aparte
+  producten op hetzelfde portaal en vragen mogelijk een aparte aanvraag/koppeling.
 
-### Geolocatie eigen adres (live browser call, enige live call in de app)
+### Net-onderscheid Provinciaal/Stedelijk binnen "Officieel gesubsidieerd" — NIET geïntegreerd
+
+Gewenst: onderscheid GO! / Officieel gesubsidieerd Provinciaal / Officieel gesubsidieerd Stedelijk /
+Vrij gesubsidieerd (huidige `net` in de CSV heeft maar 3 categorieën + leeg).
+
+- De CSV zelf heeft hiervoor geen apart veld — enkel de vrije-tekst `naam` van het schoolbestuur
+  (via het `bestuur`-veld, join op `schoolnummer` in de Schoolbesturen-CSV
+  `csv.ashx?s=03`) geeft een aanwijzing (bv. "Autonoom Provinciebedrijf Provinciaal Onderwijs
+  Antwerpen" vs. "Autonoom Gemeentebedrijf Stedelijk Onderwijs Antwerpen"). Dat is een heuristiek
+  op vrije tekst, geen betrouwbare structured data — bewust niet gebruikt.
+- De **Instelling-API** (`onderwijs.api.vlaanderen.be/instellingsgegevens/instelling/v1`, zelfde
+  soort key als hierboven) heeft wél een schoon veld: `instelling_soort_bestuur`
+  (`CodeOmschrijving`, filterbaar via `filter_instelling_soort_bestuur` met codes 1–9). De exacte
+  betekenis van die 9 codes is nog niet geverifieerd — vereist een werkende key plus de
+  **Codelijst-API** om de codes te decoderen. Niet gokken welke code wat betekent; eerst opvragen.
+- Zodra dit gebouwd wordt: `Vestiging.net` uitbreiden met de 2 extra categorieën, en de
+  `filter_instelling_bestuur`-param gebruiken om per school het bestuur (en dus soort_bestuur) op
+  te halen — niet de tekst-heuristiek.
+
+### Geolocatie eigen adres (live browser call)
 
 - Autocomplete: `GET https://geo.api.vlaanderen.be/geolocation/v4/Suggestion?q=...`
 - Coördinaten: `GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=...`
 - Documentatie zegt "CORS is not supported", maar in de praktijk stuurt de API
   `access-control-allow-origin: *` mee — geverifieerd, werkt gewoon vanuit de browser.
 - Geen API-key nodig.
+- Deelgemeenten (Borsbeek, Vremde, Deurne, ...) hebben geen eigen punt in deze bron — zie de hint
+  onder de zoekbalk in `SearchBar.tsx`. Straatnaam-zoeken is wel altijd correct.
+
+### Fietsafstand/-tijd in het detailpaneel (live browser call)
+
+- `src/lib/fietsroute.ts`. Endpoint: `POST https://api.heigit.org/openrouteservice/v2/directions/cycling-regular/json`.
+- **Belangrijk — gebruik `api.heigit.org`, NIET `api.openrouteservice.org`.** Beide draaien
+  dezelfde openrouteservice-backend, maar `api.openrouteservice.org` stuurt CORS-headers enkel op
+  de OPTIONS-preflight, niet op de echte respons → de browser blokkeert dan alsnog elke call. Dit
+  is een bekend, jarenlang terugkerend probleem (zie ask.openrouteservice.org), geen toevalstreffer.
+  `api.heigit.org/openrouteservice/...` geeft `access-control-allow-origin: *` wél op de echte
+  respons — live geverifieerd met een werkende key, dus dit is de te gebruiken URL.
+- Auth: header `Authorization: <key>` (de ruwe key, geen `Bearer`-prefix).
+- Request-body: `{"coordinates": [[lon,lat],[lon,lat]]}` (let op: lon eerst, niet lat).
+- Response: `routes[0].summary.distance` (meter) en `routes[0].summary.duration` (seconden).
+- Request/response-vorm geverifieerd via de officiële `openrouteservice-js`-clientlibrary
+  (GIScience/openrouteservice-js op GitHub, `src/OrsBase.js`/`src/OrsUtil.js` + de daar getoetste
+  integratietests) — niet gegokt.
+- Gratis tier: **2000 calls/dag, 40/minuut** (geverifieerd op de prijzenpagina van het HeiGIT-
+  account). Er bestaat een gratis "Collaborative"-tier (10.000/dag) voor onderwijs/overheid/non-
+  profit — de moeite waard om voor dit project aan te vragen via het dashboard.
+- **Key-beheer:** env var `VITE_ORS_API_KEY` — WEL met `VITE_`-prefix, in tegenstelling tot de
+  onderwijs-key hierboven. Dit is bewust: het is een live call vanuit de browser, afhankelijk van
+  het adres dat de bezoeker net intikt, dus kan niet build-time voorberekend worden en de key kan
+  sowieso niet volledig verborgen blijven. Beperk de key in het HeiGIT-dashboard tot ons eigen
+  domein (referrer-restrictie) als mitigatie.
+- Account/key aanvragen via `https://account.heigit.org` (self-service signup).
+- Wordt enkel aangeroepen voor de **geselecteerde** school in het detailpaneel (niet voor elke
+  kaart in de resultatenlijst) — anders is de gratis quota in enkele zoekopdrachten op.
+- In-memory cache per `(van, naar)`-paar in `fietsroute.ts` om herhaalde calls binnen dezelfde
+  sessie te vermijden.
+- Geen key ingesteld → `berekenFietsroute` geeft stil `null` terug, geen fetch-poging, geen crash.
 
 ## Regel: nooit gokken
 

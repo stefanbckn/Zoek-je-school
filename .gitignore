@@ -15,6 +15,11 @@ dist-ssr
 # gegenereerde data (build-time fetch, zie scripts/fetch-data.ts)
 public/data/*.json
 
+# geheimen (API-keys) — nooit committen, zie CLAUDE.md
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
