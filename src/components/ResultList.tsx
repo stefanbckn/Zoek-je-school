@@ -2,7 +2,7 @@ import type { Vestiging } from '../types'
 import { ResultCard } from './ResultCard'
 
 interface ResultListProps {
-  vestigingen: Vestiging[]
+  vestigingen: (Vestiging & { afstandKm: number | null })[]
   onSelect: (vestiging: Vestiging) => void
 }
 
@@ -14,7 +14,7 @@ export function ResultList({ vestigingen, onSelect }: ResultListProps) {
   return (
     <div className="flex flex-col gap-3 p-4">
       {vestigingen.map((v) => (
-        <ResultCard key={v.id} vestiging={v} onSelect={onSelect} />
+        <ResultCard key={v.id} vestiging={v} afstandKm={v.afstandKm} onSelect={onSelect} />
       ))}
     </div>
   )

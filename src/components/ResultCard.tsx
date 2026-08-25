@@ -3,10 +3,11 @@ import { NET_STYLES } from '../lib/net'
 
 interface ResultCardProps {
   vestiging: Vestiging
+  afstandKm: number | null
   onSelect: (vestiging: Vestiging) => void
 }
 
-export function ResultCard({ vestiging, onSelect }: ResultCardProps) {
+export function ResultCard({ vestiging, afstandKm, onSelect }: ResultCardProps) {
   return (
     <button
       type="button"
@@ -22,6 +23,11 @@ export function ResultCard({ vestiging, onSelect }: ResultCardProps) {
       <p className="mt-1 text-sm text-slate-500">
         {vestiging.straat} {vestiging.huisnummer}, {vestiging.postcode} {vestiging.gemeente}
       </p>
+      {afstandKm !== null && (
+        <p className="mt-1 text-sm font-medium text-slate-700">
+          {afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km hemelsbreed
+        </p>
+      )}
     </button>
   )
 }
