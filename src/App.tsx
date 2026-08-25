@@ -142,7 +142,11 @@ function App() {
         </main>
       </div>
 
-      <DetailPanel vestiging={geselecteerd} onClose={() => setGeselecteerd(null)} />
+      <DetailPanel
+        vestiging={geselecteerd}
+        zoeklocatie={state.lat !== null && state.lon !== null ? { lat: state.lat, lon: state.lon } : null}
+        onClose={() => setGeselecteerd(null)}
+      />
 
       <Footer meta={meta} />
     </div>

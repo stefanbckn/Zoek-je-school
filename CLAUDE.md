@@ -3,8 +3,9 @@
 Zoeker voor middelbare scholen (voltijds gewoon secundair onderwijs) in provincie Antwerpen.
 Volledig client-side (Vite + React + TypeScript + Tailwind v4), geen backend, geen database.
 Data wordt op build-time opgehaald en weggeschreven als statische JSON — de app doet nooit live
-calls naar overheidsbronnen voor de scholendata (CORS/betrouwbaarheid). De enige live call vanuit
-de browser is de Geolocation API voor het zoeken op eigen locatie (zie hieronder).
+calls naar overheidsbronnen voor de scholendata (CORS/betrouwbaarheid). De enige live calls vanuit
+de browser zijn de Geolocation API (eigen adres zoeken) en OpenRouteService (fietsafstand/-tijd in
+het detailpaneel), zie hieronder.
 
 ## Databronnen
 
@@ -67,13 +68,45 @@ Vrij gesubsidieerd (huidige `net` in de CSV heeft maar 3 categorieën + leeg).
   `filter_instelling_bestuur`-param gebruiken om per school het bestuur (en dus soort_bestuur) op
   te halen — niet de tekst-heuristiek.
 
-### Geolocatie eigen adres (live browser call, enige live call in de app)
+### Geolocatie eigen adres (live browser call)
 
 - Autocomplete: `GET https://geo.api.vlaanderen.be/geolocation/v4/Suggestion?q=...`
 - Coördinaten: `GET https://geo.api.vlaanderen.be/geolocation/v4/Location?q=...`
 - Documentatie zegt "CORS is not supported", maar in de praktijk stuurt de API
   `access-control-allow-origin: *` mee — geverifieerd, werkt gewoon vanuit de browser.
 - Geen API-key nodig.
+- Deelgemeenten (Borsbeek, Vremde, Deurne, ...) hebben geen eigen punt in deze bron — zie de hint
+  onder de zoekbalk in `SearchBar.tsx`. Straatnaam-zoeken is wel altijd correct.
+
+### Fietsafstand/-tijd in het detailpaneel (live browser call)
+
+- `src/lib/fietsroute.ts`. Endpoint: `POST https://api.heigit.org/openrouteservice/v2/directions/cycling-regular/json`.
+- **Belangrijk — gebruik `api.heigit.org`, NIET `api.openrouteservice.org`.** Beide draaien
+  dezelfde openrouteservice-backend, maar `api.openrouteservice.org` stuurt CORS-headers enkel op
+  de OPTIONS-preflight, niet op de echte respons → de browser blokkeert dan alsnog elke call. Dit
+  is een bekend, jarenlang terugkerend probleem (zie ask.openrouteservice.org), geen toevalstreffer.
+  `api.heigit.org/openrouteservice/...` geeft `access-control-allow-origin: *` wél op de echte
+  respons — live geverifieerd met een werkende key, dus dit is de te gebruiken URL.
+- Auth: header `Authorization: <key>` (de ruwe key, geen `Bearer`-prefix).
+- Request-body: `{"coordinates": [[lon,lat],[lon,lat]]}` (let op: lon eerst, niet lat).
+- Response: `routes[0].summary.distance` (meter) en `routes[0].summary.duration` (seconden).
+- Request/response-vorm geverifieerd via de officiële `openrouteservice-js`-clientlibrary
+  (GIScience/openrouteservice-js op GitHub, `src/OrsBase.js`/`src/OrsUtil.js` + de daar getoetste
+  integratietests) — niet gegokt.
+- Gratis tier: **2000 calls/dag, 40/minuut** (geverifieerd op de prijzenpagina van het HeiGIT-
+  account). Er bestaat een gratis "Collaborative"-tier (10.000/dag) voor onderwijs/overheid/non-
+  profit — de moeite waard om voor dit project aan te vragen via het dashboard.
+- **Key-beheer:** env var `VITE_ORS_API_KEY` — WEL met `VITE_`-prefix, in tegenstelling tot de
+  onderwijs-key hierboven. Dit is bewust: het is een live call vanuit de browser, afhankelijk van
+  het adres dat de bezoeker net intikt, dus kan niet build-time voorberekend worden en de key kan
+  sowieso niet volledig verborgen blijven. Beperk de key in het HeiGIT-dashboard tot ons eigen
+  domein (referrer-restrictie) als mitigatie.
+- Account/key aanvragen via `https://account.heigit.org` (self-service signup).
+- Wordt enkel aangeroepen voor de **geselecteerde** school in het detailpaneel (niet voor elke
+  kaart in de resultatenlijst) — anders is de gratis quota in enkele zoekopdrachten op.
+- In-memory cache per `(van, naar)`-paar in `fietsroute.ts` om herhaalde calls binnen dezelfde
+  sessie te vermijden.
+- Geen key ingesteld → `berekenFietsroute` geeft stil `null` terug, geen fetch-poging, geen crash.
 
 ## Regel: nooit gokken
 

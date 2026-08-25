@@ -1,12 +1,32 @@
+import { useEffect, useState } from 'react'
 import type { VestigingMetAfstand } from '../types'
 import { NET_STYLES } from '../lib/net'
+import { berekenFietsroute, type Fietsroute } from '../lib/fietsroute'
 
 interface DetailPanelProps {
   vestiging: VestigingMetAfstand | null
+  zoeklocatie: { lat: number; lon: number } | null
   onClose: () => void
 }
 
-export function DetailPanel({ vestiging, onClose }: DetailPanelProps) {
+export function DetailPanel({ vestiging, zoeklocatie, onClose }: DetailPanelProps) {
+  const [fietsroute, setFietsroute] = useState<Fietsroute | null | 'laden'>(null)
+
+  useEffect(() => {
+    if (!vestiging || !zoeklocatie || vestiging.lat === null || vestiging.lon === null) {
+      setFietsroute(null)
+      return
+    }
+    let actief = true
+    setFietsroute('laden')
+    berekenFietsroute(zoeklocatie, { lat: vestiging.lat, lon: vestiging.lon }).then((route) => {
+      if (actief) setFietsroute(route)
+    })
+    return () => {
+      actief = false
+    }
+  }, [vestiging, zoeklocatie])
+
   if (!vestiging) return null
 
   return (
@@ -56,6 +76,28 @@ export function DetailPanel({ vestiging, onClose }: DetailPanelProps) {
               <dd className="text-slate-900">
                 {vestiging.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km
                 hemelsbreed
+              </dd>
+            </div>
+          )}
+
+          {!zoeklocatie && (
+            <div>
+              <dt className="text-slate-500">Met de fiets</dt>
+              <dd className="text-slate-400 italic">Vul je adres in bovenaan om dit te zien.</dd>
+            </div>
+          )}
+          {fietsroute === 'laden' && (
+            <div>
+              <dt className="text-slate-500">Met de fiets</dt>
+              <dd className="text-slate-400">Bezig met berekenen…</dd>
+            </div>
+          )}
+          {fietsroute && fietsroute !== 'laden' && (
+            <div>
+              <dt className="text-slate-500">Met de fiets</dt>
+              <dd className="text-slate-900">
+                {fietsroute.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km ·{' '}
+                {Math.round(fietsroute.duurMin)} min (fietsroute, geen verkeersinschatting)
               </dd>
             </div>
           )}
