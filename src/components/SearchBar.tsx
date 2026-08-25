@@ -60,64 +60,72 @@ export function SearchBar({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3 p-4 border-b border-slate-200">
-      <div className="relative flex-1 min-w-[220px]">
-        <input
-          type="text"
-          value={invoer}
-          onChange={(e) => handleChange(e.target.value)}
-          onFocus={() => setOpen(suggesties.length > 0)}
-          onBlur={() => setTimeout(() => setOpen(false), 150)}
-          placeholder="Typ je gemeente of adres…"
-          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
-        />
-        {open && (
-          <ul className="absolute z-10 mt-1 w-full rounded-md border border-slate-200 bg-white shadow-lg max-h-60 overflow-auto">
-            {suggesties.map((s) => (
-              <li key={s.tekst}>
-                <button
-                  type="button"
-                  onMouseDown={() => kiesSuggestie(s.tekst)}
-                  className="w-full text-left px-3 py-2 text-sm hover:bg-slate-100"
-                >
-                  {s.tekst}
-                </button>
-              </li>
-            ))}
-          </ul>
+    <div className="p-4 border-b border-slate-200">
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="relative flex-1 min-w-[220px]">
+          <input
+            type="text"
+            value={invoer}
+            onChange={(e) => handleChange(e.target.value)}
+            onFocus={() => setOpen(suggesties.length > 0)}
+            onBlur={() => setTimeout(() => setOpen(false), 150)}
+            placeholder="Typ je gemeente of adres…"
+            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
+          />
+          {open && (
+            <ul className="absolute z-10 mt-1 w-full rounded-md border border-slate-200 bg-white shadow-lg max-h-60 overflow-auto">
+              {suggesties.map((s) => (
+                <li key={s.tekst}>
+                  <button
+                    type="button"
+                    onMouseDown={() => kiesSuggestie(s.tekst)}
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-slate-100"
+                  >
+                    {s.tekst}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {label && (
+          <button
+            type="button"
+            onClick={() => {
+              setInvoer('')
+              onWissen()
+            }}
+            className="text-sm text-slate-500 underline"
+          >
+            Wissen
+          </button>
         )}
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="straal" className="text-sm text-slate-500">
+            Straal:
+          </label>
+          <select
+            id="straal"
+            value={straalKm === null ? 'alles' : straalKm}
+            onChange={(e) => onStraalChange(e.target.value === 'alles' ? null : Number(e.target.value))}
+            className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+          >
+            {STRAAL_OPTIES.map((o) => (
+              <option key={o.label} value={o.waarde === null ? 'alles' : o.waarde}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {label && (
-        <button
-          type="button"
-          onClick={() => {
-            setInvoer('')
-            onWissen()
-          }}
-          className="text-sm text-slate-500 underline"
-        >
-          Wissen
-        </button>
-      )}
-
-      <div className="flex items-center gap-2">
-        <label htmlFor="straal" className="text-sm text-slate-500">
-          Straal:
-        </label>
-        <select
-          id="straal"
-          value={straalKm === null ? 'alles' : straalKm}
-          onChange={(e) => onStraalChange(e.target.value === 'alles' ? null : Number(e.target.value))}
-          className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
-        >
-          {STRAAL_OPTIES.map((o) => (
-            <option key={o.label} value={o.waarde === null ? 'alles' : o.waarde}>
-              {o.label}
-            </option>
-          ))}
-        </select>
-      </div>
+      <p className="mt-1.5 text-xs text-slate-400">
+        Tip: typ een straatnaam voor de nauwkeurigste locatie. Deelgemeenten zoals Borsbeek, Vremde
+        of Deurne worden door deze zoekdienst niet apart herkend en vallen terug op het centrum van
+        de hoofdgemeente.
+      </p>
     </div>
   )
 }
