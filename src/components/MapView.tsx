@@ -40,8 +40,12 @@ function FitBounds({ vestigingen }: { vestigingen: VestigingMetLocatie[] }) {
 }
 
 export function MapView({ vestigingen, onSelect }: MapViewProps) {
-  const metLocatie = vestigingen.filter(
-    (v): v is VestigingMetLocatie => v.lat !== null && v.lon !== null,
+  // Memoized op de `vestigingen`-referentie: anders levert elke render (bv. het
+  // openen van het detailpaneel) een nieuwe array op en zoomt FitBounds telkens
+  // terug uit, ook als de resultatenlijst zelf niet veranderd is.
+  const metLocatie = useMemo(
+    () => vestigingen.filter((v): v is VestigingMetLocatie => v.lat !== null && v.lon !== null),
+    [vestigingen],
   )
 
   return (
