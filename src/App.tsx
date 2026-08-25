@@ -27,6 +27,13 @@ function App() {
     [vestigingen],
   )
 
+  // Stabiele referentie: anders herstart DetailPanel's fietsroute-effect bij elke
+  // ongerelateerde re-render (bv. lijst/kaart wisselen) terwijl het paneel open staat.
+  const zoeklocatie = useMemo(
+    () => (state.lat !== null && state.lon !== null ? { lat: state.lat, lon: state.lon } : null),
+    [state.lat, state.lon],
+  )
+
   const zichtbareVestigingen = useMemo(() => {
     const tekstLower = state.tekst.trim().toLowerCase()
 
@@ -144,7 +151,7 @@ function App() {
 
       <DetailPanel
         vestiging={geselecteerd}
-        zoeklocatie={state.lat !== null && state.lon !== null ? { lat: state.lat, lon: state.lon } : null}
+        zoeklocatie={zoeklocatie}
         onClose={() => setGeselecteerd(null)}
       />
 
