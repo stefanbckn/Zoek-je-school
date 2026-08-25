@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { VestigingMetAfstand } from '../types'
 import { NET_STYLES } from '../lib/net'
-import { berekenFietsroute, type Fietsroute } from '../lib/fietsroute'
+import { berekenFietsroute, type FietsrouteResultaat } from '../lib/fietsroute'
 
 interface DetailPanelProps {
   vestiging: VestigingMetAfstand | null
@@ -10,7 +10,7 @@ interface DetailPanelProps {
 }
 
 export function DetailPanel({ vestiging, zoeklocatie, onClose }: DetailPanelProps) {
-  const [fietsroute, setFietsroute] = useState<Fietsroute | null | 'laden'>(null)
+  const [fietsroute, setFietsroute] = useState<FietsrouteResultaat | 'laden' | null>(null)
 
   useEffect(() => {
     if (!vestiging || !zoeklocatie || vestiging.lat === null || vestiging.lon === null) {
@@ -19,8 +19,8 @@ export function DetailPanel({ vestiging, zoeklocatie, onClose }: DetailPanelProp
     }
     let actief = true
     setFietsroute('laden')
-    berekenFietsroute(zoeklocatie, { lat: vestiging.lat, lon: vestiging.lon }).then((route) => {
-      if (actief) setFietsroute(route)
+    berekenFietsroute(zoeklocatie, { lat: vestiging.lat, lon: vestiging.lon }).then((resultaat) => {
+      if (actief) setFietsroute(resultaat)
     })
     return () => {
       actief = false
@@ -92,13 +92,20 @@ export function DetailPanel({ vestiging, zoeklocatie, onClose }: DetailPanelProp
               <dd className="text-slate-400">Bezig met berekenen…</dd>
             </div>
           )}
-          {fietsroute && fietsroute !== 'laden' && (
+          {fietsroute && fietsroute !== 'laden' && fietsroute.status === 'ok' && (
             <div>
               <dt className="text-slate-500">Met de fiets</dt>
               <dd className="text-slate-900">
-                {fietsroute.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km ·{' '}
-                {Math.round(fietsroute.duurMin)} min (fietsroute, geen verkeersinschatting)
+                {fietsroute.route.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km
+                · {Math.round(fietsroute.route.duurMin)} min (fietsroute, geen
+                verkeersinschatting)
               </dd>
+            </div>
+          )}
+          {fietsroute && fietsroute !== 'laden' && fietsroute.status === 'onbeschikbaar' && (
+            <div>
+              <dt className="text-slate-500">Met de fiets</dt>
+              <dd className="text-slate-400 italic">Momenteel niet beschikbaar, probeer later opnieuw.</dd>
             </div>
           )}
 

@@ -11,20 +11,29 @@ export interface Fietsroute {
   duurMin: number
 }
 
+export type FietsrouteResultaat =
+  | { status: 'ok'; route: Fietsroute }
+  /** Geen key geconfigureerd — is een deploy-instelling, niet iets om de bezoeker mee te confronteren. */
+  | { status: 'geen-key' }
+  /** Call gefaald: quota/rate limit bereikt, serverfout of netwerkfout. Verzamel dit in één
+   * "even niet beschikbaar"-status — de precieze oorzaak doet er voor de bezoeker niet toe. */
+  | { status: 'onbeschikbaar' }
+
 interface OrsResponse {
   routes: { summary: { distance: number; duration: number } }[]
 }
 
-const cache = new Map<string, Fietsroute | null>()
+const cache = new Map<string, FietsrouteResultaat>()
 
 export async function berekenFietsroute(
   van: { lat: number; lon: number },
   naar: { lat: number; lon: number },
-): Promise<Fietsroute | null> {
-  if (!API_KEY) return null
+): Promise<FietsrouteResultaat> {
+  if (!API_KEY) return { status: 'geen-key' }
 
   const key = `${van.lat},${van.lon}-${naar.lat},${naar.lon}`
-  if (cache.has(key)) return cache.get(key)!
+  const cached = cache.get(key)
+  if (cached) return cached
 
   try {
     const res = await fetch(ORS_URL, {
@@ -41,23 +50,28 @@ export async function berekenFietsroute(
       }),
     })
     if (!res.ok) {
-      cache.set(key, null)
-      return null
+      // Inclusief 429 (rate limit/quota bereikt) — geen retry-storm, wel cachen zodat we
+      // niet blijven aankloppen zolang de bezoeker op dezelfde pagina blijft.
+      const resultaat: FietsrouteResultaat = { status: 'onbeschikbaar' }
+      cache.set(key, resultaat)
+      return resultaat
     }
     const data: OrsResponse = await res.json()
     const summary = data.routes[0]?.summary
     if (!summary) {
-      cache.set(key, null)
-      return null
+      const resultaat: FietsrouteResultaat = { status: 'onbeschikbaar' }
+      cache.set(key, resultaat)
+      return resultaat
     }
-    const route: Fietsroute = {
-      afstandKm: summary.distance / 1000,
-      duurMin: summary.duration / 60,
+    const resultaat: FietsrouteResultaat = {
+      status: 'ok',
+      route: { afstandKm: summary.distance / 1000, duurMin: summary.duration / 60 },
     }
-    cache.set(key, route)
-    return route
+    cache.set(key, resultaat)
+    return resultaat
   } catch {
-    cache.set(key, null)
-    return null
+    const resultaat: FietsrouteResultaat = { status: 'onbeschikbaar' }
+    cache.set(key, resultaat)
+    return resultaat
   }
 }
