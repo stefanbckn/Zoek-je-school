@@ -5,7 +5,7 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import { useMemo } from 'react'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
-import type { VestigingMetAfstand } from '../types'
+import type { CampusMetAfstand, SchoolOpCampus } from '../types'
 
 // Vite bundelt de marker-afbeeldingen niet automatisch mee onder hun verwachte pad;
 // dit is de gedocumenteerde workaround voor react-leaflet + Vite.
@@ -22,30 +22,30 @@ const defaultIcon = L.icon({
 const ANTWERPEN_CENTRUM: [number, number] = [51.2194, 4.4025]
 
 interface MapViewProps {
-  vestigingen: VestigingMetAfstand[]
-  onSelect: (vestiging: VestigingMetAfstand) => void
+  campussen: CampusMetAfstand[]
+  onSelect: (campus: CampusMetAfstand, school: SchoolOpCampus) => void
 }
 
-type VestigingMetLocatie = VestigingMetAfstand & { lat: number; lon: number }
+type CampusMetLocatie = CampusMetAfstand & { lat: number; lon: number }
 
-function FitBounds({ vestigingen }: { vestigingen: VestigingMetLocatie[] }) {
+function FitBounds({ campussen }: { campussen: CampusMetLocatie[] }) {
   const map = useMap()
   useMemo(() => {
-    if (vestigingen.length === 0) return
-    const bounds = L.latLngBounds(vestigingen.map((v) => [v.lat, v.lon]))
+    if (campussen.length === 0) return
+    const bounds = L.latLngBounds(campussen.map((c) => [c.lat, c.lon]))
     map.fitBounds(bounds, { padding: [24, 24], maxZoom: 14 })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vestigingen])
+  }, [campussen])
   return null
 }
 
-export function MapView({ vestigingen, onSelect }: MapViewProps) {
-  // Memoized op de `vestigingen`-referentie: anders levert elke render (bv. het
-  // openen van het detailpaneel) een nieuwe array op en zoomt FitBounds telkens
-  // terug uit, ook als de resultatenlijst zelf niet veranderd is.
+export function MapView({ campussen, onSelect }: MapViewProps) {
+  // Memoized op de `campussen`-referentie: anders levert elke render (bv. het openen
+  // van het detailpaneel) een nieuwe array op en zoomt FitBounds telkens terug uit,
+  // ook als de resultatenlijst zelf niet veranderd is.
   const metLocatie = useMemo(
-    () => vestigingen.filter((v): v is VestigingMetLocatie => v.lat !== null && v.lon !== null),
-    [vestigingen],
+    () => campussen.filter((c): c is CampusMetLocatie => c.lat !== null && c.lon !== null),
+    [campussen],
   )
 
   return (
@@ -59,22 +59,27 @@ export function MapView({ vestigingen, onSelect }: MapViewProps) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-bijdragers'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <FitBounds vestigingen={metLocatie} />
-      {metLocatie.map((v) => (
-        <Marker key={v.id} position={[v.lat, v.lon]} icon={defaultIcon}>
+      <FitBounds campussen={metLocatie} />
+      {metLocatie.map((c) => (
+        <Marker key={c.id} position={[c.lat, c.lon]} icon={defaultIcon}>
           <Popup>
             <div className="text-sm">
-              <p className="font-medium">{v.naam}</p>
               <p className="text-slate-500">
-                {v.straat} {v.huisnummer}, {v.postcode} {v.gemeente}
+                {c.straat} {c.huisnummer}, {c.postcode} {c.gemeente}
               </p>
-              <button
-                type="button"
-                onClick={() => onSelect(v)}
-                className="mt-2 text-slate-900 underline"
-              >
-                Details bekijken
-              </button>
+              <ul className="mt-1">
+                {c.scholen.map((school) => (
+                  <li key={school.id}>
+                    <button
+                      type="button"
+                      onClick={() => onSelect(c, school)}
+                      className="text-slate-900 underline"
+                    >
+                      {school.naam}
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           </Popup>
         </Marker>

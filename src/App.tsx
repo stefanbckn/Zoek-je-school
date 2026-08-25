@@ -8,14 +8,17 @@ import { SearchBar } from './components/SearchBar'
 import { haversineKm } from './lib/haversine'
 import { useSearchState } from './lib/useSearchState'
 import { useVestigingen } from './lib/useVestigingen'
-import type { VestigingMetAfstand } from './types'
+import type { CampusMetAfstand, SchoolOpCampus } from './types'
 
 type Weergave = 'lijst' | 'kaart'
 
 function App() {
-  const { vestigingen, meta, loading, error } = useVestigingen()
+  const { campussen, meta, loading, error } = useVestigingen()
   const { state, update } = useSearchState()
-  const [geselecteerd, setGeselecteerd] = useState<VestigingMetAfstand | null>(null)
+  const [geselecteerd, setGeselecteerd] = useState<{
+    campus: CampusMetAfstand
+    school: SchoolOpCampus
+  } | null>(null)
   const [weergave, setWeergave] = useState<Weergave>('lijst')
   const [filtersOpen, setFiltersOpen] = useState(false)
 
@@ -23,8 +26,8 @@ function App() {
     state.netten.length + state.gemeenten.length + (state.tekst.trim() ? 1 : 0)
 
   const gemeenteOpties = useMemo(
-    () => [...new Set(vestigingen.map((v) => v.gemeente))].sort((a, b) => a.localeCompare(b, 'nl')),
-    [vestigingen],
+    () => [...new Set(campussen.map((c) => c.gemeente))].sort((a, b) => a.localeCompare(b, 'nl')),
+    [campussen],
   )
 
   // Stabiele referentie: anders herstart DetailPanel's fietsroute-effect bij elke
@@ -34,39 +37,51 @@ function App() {
     [state.lat, state.lon],
   )
 
-  const zichtbareVestigingen = useMemo(() => {
+  const zichtbareCampussen = useMemo(() => {
     const tekstLower = state.tekst.trim().toLowerCase()
 
-    const gefilterd = vestigingen.filter((v) => {
-      if (state.netten.length > 0 && !state.netten.includes(v.net)) return false
-      if (state.gemeenten.length > 0 && !state.gemeenten.includes(v.gemeente)) return false
-      if (tekstLower && !v.naam.toLowerCase().includes(tekstLower)) return false
-      return true
-    })
+    const gefilterd = campussen
+      .map((c) => ({
+        ...c,
+        scholen: c.scholen.filter((s) => {
+          if (state.netten.length > 0 && !state.netten.includes(s.net)) return false
+          if (tekstLower && !s.naam.toLowerCase().includes(tekstLower)) return false
+          return true
+        }),
+      }))
+      .filter((c) => {
+        if (c.scholen.length === 0) return false
+        if (state.gemeenten.length > 0 && !state.gemeenten.includes(c.gemeente)) return false
+        return true
+      })
 
-    const metAfstand = gefilterd.map((v) => ({
-      ...v,
+    const metAfstand: CampusMetAfstand[] = gefilterd.map((c) => ({
+      ...c,
       afstandKm:
-        state.lat !== null && state.lon !== null && v.lat !== null && v.lon !== null
-          ? haversineKm(state.lat, state.lon, v.lat, v.lon)
+        state.lat !== null && state.lon !== null && c.lat !== null && c.lon !== null
+          ? haversineKm(state.lat, state.lon, c.lat, c.lon)
           : null,
     }))
 
-    const binnenStraal = metAfstand.filter((v) => {
+    const binnenStraal = metAfstand.filter((c) => {
       const zoektLocatie = state.lat !== null && state.lon !== null
       if (!zoektLocatie || state.straalKm === null) return true
-      // Geen coördinaten bekend voor deze vestiging: kan niet binnen een straal vallen.
-      if (v.afstandKm === null) return false
-      return v.afstandKm <= state.straalKm
+      // Geen coördinaten bekend voor deze campus: kan niet binnen een straal vallen.
+      if (c.afstandKm === null) return false
+      return c.afstandKm <= state.straalKm
     })
 
     if (state.lat !== null && state.lon !== null) {
-      // Resterende null hier betekent: school heeft geen coördinaten in de bron — achteraan.
+      // Resterende null hier betekent: campus heeft geen coördinaten in de bron — achteraan.
       binnenStraal.sort((a, b) => (a.afstandKm ?? Infinity) - (b.afstandKm ?? Infinity))
     }
 
     return binnenStraal
-  }, [vestigingen, state.lat, state.lon, state.straalKm, state.netten, state.gemeenten, state.tekst])
+  }, [campussen, state.lat, state.lon, state.straalKm, state.netten, state.gemeenten, state.tekst])
+
+  function selecteer(campus: CampusMetAfstand, school: SchoolOpCampus) {
+    setGeselecteerd({ campus, school })
+  }
 
   return (
     <div className="min-h-full flex flex-col">
@@ -108,7 +123,7 @@ function App() {
               <div className="flex items-center justify-between px-4 pt-4 gap-2">
                 <div className="flex items-center gap-3">
                   <p className="text-sm text-slate-500 shrink-0">
-                    {zichtbareVestigingen.length} resultaten
+                    {zichtbareCampussen.length} resultaten
                   </p>
                   <button
                     type="button"
@@ -138,10 +153,10 @@ function App() {
               </div>
 
               {weergave === 'lijst' ? (
-                <ResultList vestigingen={zichtbareVestigingen} onSelect={setGeselecteerd} />
+                <ResultList campussen={zichtbareCampussen} onSelect={selecteer} />
               ) : (
                 <div className="flex-1 mt-4 min-h-[400px] isolate">
-                  <MapView vestigingen={zichtbareVestigingen} onSelect={setGeselecteerd} />
+                  <MapView campussen={zichtbareCampussen} onSelect={selecteer} />
                 </div>
               )}
             </>
@@ -150,7 +165,8 @@ function App() {
       </div>
 
       <DetailPanel
-        vestiging={geselecteerd}
+        campus={geselecteerd?.campus ?? null}
+        school={geselecteerd?.school ?? null}
         zoeklocatie={zoeklocatie}
         onClose={() => setGeselecteerd(null)}
       />

@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import proj4 from 'proj4'
-import type { DatasetMeta, Net, Vestiging } from '../src/types.ts'
+import type { Campus, DatasetMeta, Net, SchoolOpCampus } from '../src/types.ts'
 
 // Geverifieerd via data-onderwijs.vlaanderen.be/onderwijsaanbod/lijsten (nooit gokken, zie CLAUDE.md).
 const VESTIGINGEN_CSV_URL =
@@ -86,6 +86,17 @@ function orNull(raw: string): string | null {
   return trimmed.length > 0 ? trimmed : null
 }
 
+interface RuweSchool {
+  school: SchoolOpCampus
+  straat: string
+  huisnummer: string
+  postcode: string
+  gemeente: string
+  niscode: string
+  lat: number | null
+  lon: number | null
+}
+
 async function main() {
   console.log(`Ophalen: ${VESTIGINGEN_CSV_URL}`)
   const res = await fetch(VESTIGINGEN_CSV_URL)
@@ -112,35 +123,40 @@ async function main() {
 
   let zonderCoordinaten = 0
 
-  const vestigingen: Vestiging[] = antwerpenRows.map((r) => {
+  const ruweScholen: RuweSchool[] = antwerpenRows.map((r) => {
     const lx = Number(r.lx)
     const ly = Number(r.ly)
     const heeftCoordinaten = lx !== 0 && ly !== 0 && !Number.isNaN(lx) && !Number.isNaN(ly)
     if (!heeftCoordinaten) zonderCoordinaten++
     const [lon, lat] = heeftCoordinaten ? proj4(LAMBERT72, 'WGS84', [lx, ly]) : [null, null]
     return {
-      id: `${r.schoolnummer}-${r.intern_vplnummer}`,
-      schoolnummer: r.schoolnummer,
-      internVplnummer: r.intern_vplnummer,
-      naam: r.naam,
-      isHoofdzetel: r.hoofdzetel === 'True',
-      net: mapNet(r.net),
+      school: {
+        id: `${r.schoolnummer}-${r.intern_vplnummer}`,
+        schoolnummer: r.schoolnummer,
+        internVplnummer: r.intern_vplnummer,
+        naam: r.naam,
+        isHoofdzetel: r.hoofdzetel === 'True',
+        net: mapNet(r.net),
+        telefoon: orNull(r.telefoon),
+        email: orNull(r['e-mail']),
+        website: normalizeWebsite(r.website),
+        linkFiche: `${FICHE_BASE_URL}?sn=${r.schoolnummer}`,
+        statusErkenning: r['status erkenning'] === 'E' ? 'E' : 'S',
+        scholengemeenschap:
+          r.scholengemeenschap && r.scholengemeenschap !== '0' ? r.scholengemeenschap : null,
+        richtingen: null,
+        kostprijs: null,
+        vervoer: null,
+      },
+      // Groeperen op straat+huisnummer zonder busnummer: verschillende bus-ingangen van
+      // hetzelfde gebouw zijn nog steeds dezelfde campus.
       straat: r.straat,
-      huisnummer: r.huisnummer + (r.busnummer ? ` bus ${r.busnummer}` : ''),
+      huisnummer: r.huisnummer,
       postcode: r.postcode,
       gemeente: r.gemeente,
       niscode: r.niscode,
       lat,
       lon,
-      telefoon: orNull(r.telefoon),
-      email: orNull(r['e-mail']),
-      website: normalizeWebsite(r.website),
-      linkFiche: `${FICHE_BASE_URL}?sn=${r.schoolnummer}`,
-      statusErkenning: r['status erkenning'] === 'E' ? 'E' : 'S',
-      scholengemeenschap: r.scholengemeenschap && r.scholengemeenschap !== '0' ? r.scholengemeenschap : null,
-      richtingen: null,
-      kostprijs: null,
-      vervoer: null,
     }
   })
 
@@ -151,17 +167,49 @@ async function main() {
     )
   }
 
+  // Groepeer scholen op hetzelfde fysieke adres tot één campus. Meerdere apart geregistreerde
+  // scholen (elk een eigen schoolnummer) delen vaak hetzelfde gebouw — dat als losse kaartjes
+  // tonen is pure ruis voor wie een school zoekt. Zie CLAUDE.md.
+  const campussenPerAdres = new Map<string, Campus>()
+  for (const r of ruweScholen) {
+    const adresKey = `${r.postcode}|${r.straat}|${r.huisnummer}`.toLowerCase()
+    let campus = campussenPerAdres.get(adresKey)
+    if (!campus) {
+      campus = {
+        id: adresKey,
+        straat: r.straat,
+        huisnummer: r.huisnummer,
+        postcode: r.postcode,
+        gemeente: r.gemeente,
+        niscode: r.niscode,
+        lat: r.lat,
+        lon: r.lon,
+        scholen: [],
+      }
+      campussenPerAdres.set(adresKey, campus)
+    }
+    campus.scholen.push(r.school)
+  }
+  const campussen = [...campussenPerAdres.values()]
+
+  const gedeeldeAdressen = campussen.filter((c) => c.scholen.length > 1).length
+  console.log(
+    `${campussen.length} campussen (adressen), waarvan ${gedeeldeAdressen} met meer dan 1 ` +
+      `apart geregistreerde school op hetzelfde adres.`,
+  )
+
   const meta: DatasetMeta = {
     opgehaaldOp: new Date().toISOString(),
     bron: [BRON_PAGINA, VESTIGINGEN_CSV_URL],
     aantalVestigingenTotaal: rows.length,
-    aantalVestigingenAntwerpen: vestigingen.length,
+    aantalVestigingenAntwerpen: ruweScholen.length,
+    aantalCampussenAntwerpen: campussen.length,
   }
 
   await mkdir(OUTPUT_DIR, { recursive: true })
   await writeFile(
     path.join(OUTPUT_DIR, 'vestigingen.json'),
-    JSON.stringify(vestigingen, null, 2),
+    JSON.stringify(campussen, null, 2),
     'utf-8',
   )
   await writeFile(path.join(OUTPUT_DIR, 'meta.json'), JSON.stringify(meta, null, 2), 'utf-8')
