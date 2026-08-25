@@ -17,6 +17,10 @@ function App() {
   const { state, update } = useSearchState()
   const [geselecteerd, setGeselecteerd] = useState<VestigingMetAfstand | null>(null)
   const [weergave, setWeergave] = useState<Weergave>('lijst')
+  const [filtersOpen, setFiltersOpen] = useState(false)
+
+  const actieveFilters =
+    state.netten.length + state.gemeenten.length + (state.tekst.trim() ? 1 : 0)
 
   const gemeenteOpties = useMemo(
     () => [...new Set(vestigingen.map((v) => v.gemeente))].sort((a, b) => a.localeCompare(b, 'nl')),
@@ -77,23 +81,37 @@ function App() {
       />
 
       <div className="flex-1 flex flex-col md:flex-row">
-        <FilterPanel
-          gemeenteOpties={gemeenteOpties}
-          netten={state.netten}
-          gemeenten={state.gemeenten}
-          tekst={state.tekst}
-          onNettenChange={(netten) => update({ netten })}
-          onGemeentenChange={(gemeenten) => update({ gemeenten })}
-          onTekstChange={(tekst) => update({ tekst })}
-        />
+        <div className={`${filtersOpen ? 'block' : 'hidden'} md:block`}>
+          <FilterPanel
+            gemeenteOpties={gemeenteOpties}
+            netten={state.netten}
+            gemeenten={state.gemeenten}
+            tekst={state.tekst}
+            onNettenChange={(netten) => update({ netten })}
+            onGemeentenChange={(gemeenten) => update({ gemeenten })}
+            onTekstChange={(tekst) => update({ tekst })}
+          />
+        </div>
 
         <main className="flex-1 flex flex-col min-h-[60vh]">
           {loading && <p className="p-4 text-sm text-slate-500">Bezig met laden…</p>}
           {error && <p className="p-4 text-sm text-red-600">{error}</p>}
           {!loading && !error && (
             <>
-              <div className="flex items-center justify-between px-4 pt-4">
-                <p className="text-sm text-slate-500">{zichtbareVestigingen.length} resultaten</p>
+              <div className="flex items-center justify-between px-4 pt-4 gap-2">
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-slate-500 shrink-0">
+                    {zichtbareVestigingen.length} resultaten
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setFiltersOpen((open) => !open)}
+                    className="md:hidden text-sm rounded-md border border-slate-300 px-3 py-1"
+                  >
+                    Filters{actieveFilters > 0 ? ` (${actieveFilters})` : ''}
+                    {filtersOpen ? ' ▲' : ' ▼'}
+                  </button>
+                </div>
                 <div className="flex rounded-md border border-slate-300 text-sm overflow-hidden">
                   <button
                     type="button"
