@@ -34,6 +34,11 @@ export interface Vestiging {
   vervoer: null
 }
 
+export interface VestigingMetAfstand extends Vestiging {
+  /** Hemelsbrede afstand in km tot de gezochte locatie, of null als er geen locatie gekozen is. */
+  afstandKm: number | null
+}
+
 export interface DatasetMeta {
   opgehaaldOp: string
   bron: string[]

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { DetailPanel } from './components/DetailPanel'
 import { FilterPanel } from './components/FilterPanel'
 import { Footer } from './components/Footer'
 import { ResultList } from './components/ResultList'
@@ -6,12 +7,12 @@ import { SearchBar } from './components/SearchBar'
 import { haversineKm } from './lib/haversine'
 import { useSearchState } from './lib/useSearchState'
 import { useVestigingen } from './lib/useVestigingen'
-import type { Vestiging } from './types'
+import type { VestigingMetAfstand } from './types'
 
 function App() {
   const { vestigingen, meta, loading, error } = useVestigingen()
   const { state, update } = useSearchState()
-  const [, setGeselecteerd] = useState<Vestiging | null>(null)
+  const [geselecteerd, setGeselecteerd] = useState<VestigingMetAfstand | null>(null)
 
   const gemeenteOpties = useMemo(
     () => [...new Set(vestigingen.map((v) => v.gemeente))].sort((a, b) => a.localeCompare(b, 'nl')),
@@ -91,6 +92,8 @@ function App() {
           )}
         </main>
       </div>
+
+      <DetailPanel vestiging={geselecteerd} onClose={() => setGeselecteerd(null)} />
 
       <Footer meta={meta} />
     </div>
