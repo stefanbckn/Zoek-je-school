@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "zoek-je-school-dev",
+      "runtimeExecutable": "/usr/local/opt/node/bin/node",
+      "runtimeArgs": ["/usr/local/opt/node/bin/npm", "run", "dev"],
+      "port": 5173
+    }
+  ]
+}

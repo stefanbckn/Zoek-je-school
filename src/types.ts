@@ -10,8 +10,7 @@ export interface Vestiging {
   id: string
   schoolnummer: string
   internVplnummer: string
-  instellingsnaam: string
-  vestigingsnaam: string
+  naam: string
   isHoofdzetel: boolean
   net: Net
   straat: string
