@@ -25,6 +25,31 @@ het detailpaneel), zie hieronder.
   (git log van de eerste commits) — kort samengevat: `begindatum`/`einddatum`/`crab-code`/`crab-huisnr`/
   `VWO-vestigingsplaatscode`/`fax` zijn genegeerd (niet discriminerend of niet relevant voor SO).
 
+### Campus-groepering (belangrijk datamodel-detail)
+
+De brondata bevat regelmatig **meerdere apart geregistreerde scholen (elk een eigen `schoolnummer`)
+op exact hetzelfde fysieke adres** — niet zomaar interne vestigingsplaats-varianten van één school,
+maar echt losse legale entiteiten die een campus delen (bv. "Sint-Gabriëlcollege" +
+"Sint-Gabriëlcollege - Middenschool 1/2/3" zijn 4 verschillende schoolnummers op 2 gedeelde adressen).
+Geverifieerd: 386 van de 562 scholen (69%) delen een adres met minstens 1 andere school; sommige
+adressen hebben tot 11 verschillende scholen. Dit als losse kaartjes tonen is verwarrend — expliciet
+zo beslist door de gebruiker.
+
+- `scripts/fetch-data.ts` groepeert daarom op `postcode|straat|huisnummer` (busnummer genegeerd in
+  de groepeersleutel — een andere ingang van hetzelfde gebouw is nog steeds dezelfde campus) tot een
+  `Campus`, met een `scholen: SchoolOpCampus[]`-array erin. Dit is de eenheid die de app toont, niet
+  de individuele school. `public/data/vestigingen.json` bevat dus `Campus[]`, geen platte lijst meer.
+- `Campus` draagt adres/coördinaten/afstand (gedeeld voor alle scholen erop); `SchoolOpCampus` draagt
+  naam/net/contactgegevens/erkenning (per school verschillend).
+- UI: `ResultCard` toont bij 1 school op een adres de klassieke kaart; bij >1 school een adres-kaart
+  met de scholen als losse, individueel klikbare rijen erin. `DetailPanel` toont altijd één specifieke
+  school (`campus` + `school` samen als props), met een melding welke andere scholen hetzelfde adres
+  delen.
+- Toekomstig werk (afgesproken met de gebruiker): zodra het studieaanbod gekoppeld is, worden
+  finaliteiten/richtingen **per adres/campus** samengevoegd getoond (een andere campus met andere
+  richtingen blijft wél apart) — dat past bovenop deze structuur, `SchoolOpCampus.richtingen` is de
+  plek waar dat per school binnenkomt.
+
 ### Studieaanbod (richtingen) — NIET geïntegreerd in v0.1
 
 - API: `Onderwijsaanbod SO 2.6` op `https://onderwijs.api.vlaanderen.be/instellingsgegevens/onderwijsaanbod_so/v2`

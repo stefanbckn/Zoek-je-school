@@ -1,33 +1,34 @@
 import { useEffect, useState } from 'react'
-import type { VestigingMetAfstand } from '../types'
+import type { CampusMetAfstand, SchoolOpCampus } from '../types'
 import { NET_STYLES } from '../lib/net'
 import { berekenFietsroute, type FietsrouteResultaat } from '../lib/fietsroute'
 
 interface DetailPanelProps {
-  vestiging: VestigingMetAfstand | null
+  campus: CampusMetAfstand | null
+  school: SchoolOpCampus | null
   zoeklocatie: { lat: number; lon: number } | null
   onClose: () => void
 }
 
-export function DetailPanel({ vestiging, zoeklocatie, onClose }: DetailPanelProps) {
+export function DetailPanel({ campus, school, zoeklocatie, onClose }: DetailPanelProps) {
   const [fietsroute, setFietsroute] = useState<FietsrouteResultaat | 'laden' | null>(null)
 
   useEffect(() => {
-    if (!vestiging || !zoeklocatie || vestiging.lat === null || vestiging.lon === null) {
+    if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
       setFietsroute(null)
       return
     }
     let actief = true
     setFietsroute('laden')
-    berekenFietsroute(zoeklocatie, { lat: vestiging.lat, lon: vestiging.lon }).then((resultaat) => {
+    berekenFietsroute(zoeklocatie, { lat: campus.lat, lon: campus.lon }).then((resultaat) => {
       if (actief) setFietsroute(resultaat)
     })
     return () => {
       actief = false
     }
-  }, [vestiging, zoeklocatie])
+  }, [campus, zoeklocatie])
 
-  if (!vestiging) return null
+  if (!campus || !school) return null
 
   return (
     <div
@@ -39,7 +40,7 @@ export function DetailPanel({ vestiging, zoeklocatie, onClose }: DetailPanelProp
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-lg font-semibold text-slate-900">{vestiging.naam}</h2>
+          <h2 className="text-lg font-semibold text-slate-900">{school.naam}</h2>
           <button
             type="button"
             onClick={onClose}
@@ -51,18 +52,29 @@ export function DetailPanel({ vestiging, zoeklocatie, onClose }: DetailPanelProp
         </div>
 
         <span
-          className={`mt-2 inline-block rounded px-2 py-0.5 text-xs font-medium ${NET_STYLES[vestiging.net]}`}
+          className={`mt-2 inline-block rounded px-2 py-0.5 text-xs font-medium ${NET_STYLES[school.net]}`}
         >
-          {vestiging.net}
+          {school.net}
         </span>
+
+        {campus.scholen.length > 1 && (
+          <p className="mt-2 text-xs text-slate-500">
+            Deelt dit adres met {campus.scholen.length - 1}{' '}
+            {campus.scholen.length - 1 === 1 ? 'andere school' : 'andere scholen'}:{' '}
+            {campus.scholen
+              .filter((s) => s.id !== school.id)
+              .map((s) => s.naam)
+              .join(', ')}
+          </p>
+        )}
 
         <dl className="mt-4 space-y-3 text-sm">
           <div>
             <dt className="text-slate-500">Adres</dt>
             <dd className="text-slate-900">
-              {vestiging.straat} {vestiging.huisnummer}, {vestiging.postcode} {vestiging.gemeente}
+              {campus.straat} {campus.huisnummer}, {campus.postcode} {campus.gemeente}
             </dd>
-            {vestiging.lat === null && (
+            {campus.lat === null && (
               <dd className="text-xs text-amber-600 mt-0.5">
                 Geen coördinaten bekend in de brondata — niet op de kaart en geen afstand
                 berekenbaar.
@@ -70,11 +82,11 @@ export function DetailPanel({ vestiging, zoeklocatie, onClose }: DetailPanelProp
             )}
           </div>
 
-          {vestiging.afstandKm !== null && (
+          {campus.afstandKm !== null && (
             <div>
               <dt className="text-slate-500">Afstand</dt>
               <dd className="text-slate-900">
-                {vestiging.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km
+                {campus.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km
                 hemelsbreed
               </dd>
             </div>
@@ -109,35 +121,35 @@ export function DetailPanel({ vestiging, zoeklocatie, onClose }: DetailPanelProp
             </div>
           )}
 
-          {vestiging.telefoon && (
+          {school.telefoon && (
             <div>
               <dt className="text-slate-500">Telefoon</dt>
-              <dd className="text-slate-900">{vestiging.telefoon}</dd>
+              <dd className="text-slate-900">{school.telefoon}</dd>
             </div>
           )}
 
-          {vestiging.email && (
+          {school.email && (
             <div>
               <dt className="text-slate-500">E-mail</dt>
               <dd>
-                <a href={`mailto:${vestiging.email}`} className="text-slate-900 underline">
-                  {vestiging.email}
+                <a href={`mailto:${school.email}`} className="text-slate-900 underline">
+                  {school.email}
                 </a>
               </dd>
             </div>
           )}
 
-          {vestiging.website && (
+          {school.website && (
             <div>
               <dt className="text-slate-500">Website</dt>
               <dd>
                 <a
-                  href={vestiging.website}
+                  href={school.website}
                   target="_blank"
                   rel="noreferrer"
                   className="text-slate-900 underline"
                 >
-                  {vestiging.website}
+                  {school.website}
                 </a>
               </dd>
             </div>
@@ -153,7 +165,7 @@ export function DetailPanel({ vestiging, zoeklocatie, onClose }: DetailPanelProp
         </dl>
 
         <a
-          href={vestiging.linkFiche}
+          href={school.linkFiche}
           target="_blank"
           rel="noreferrer"
           className="mt-5 inline-block rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"

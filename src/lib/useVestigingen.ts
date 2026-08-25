@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import type { DatasetMeta, Vestiging } from '../types'
+import type { Campus, DatasetMeta } from '../types'
 
 interface VestigingenState {
-  vestigingen: Vestiging[]
+  campussen: Campus[]
   meta: DatasetMeta | null
   loading: boolean
   error: string | null
@@ -10,7 +10,7 @@ interface VestigingenState {
 
 export function useVestigingen(): VestigingenState {
   const [state, setState] = useState<VestigingenState>({
-    vestigingen: [],
+    campussen: [],
     meta: null,
     loading: true,
     error: null,
@@ -21,22 +21,22 @@ export function useVestigingen(): VestigingenState {
 
     async function load() {
       try {
-        const [vestigingenRes, metaRes] = await Promise.all([
+        const [campussenRes, metaRes] = await Promise.all([
           fetch(`${import.meta.env.BASE_URL}data/vestigingen.json`),
           fetch(`${import.meta.env.BASE_URL}data/meta.json`),
         ])
-        if (!vestigingenRes.ok || !metaRes.ok) {
+        if (!campussenRes.ok || !metaRes.ok) {
           throw new Error('Kon de scholendata niet laden.')
         }
-        const vestigingen: Vestiging[] = await vestigingenRes.json()
+        const campussen: Campus[] = await campussenRes.json()
         const meta: DatasetMeta = await metaRes.json()
         if (!cancelled) {
-          setState({ vestigingen, meta, loading: false, error: null })
+          setState({ campussen, meta, loading: false, error: null })
         }
       } catch (err) {
         if (!cancelled) {
           setState({
-            vestigingen: [],
+            campussen: [],
             meta: null,
             loading: false,
             error: err instanceof Error ? err.message : 'Onbekende fout bij laden.',

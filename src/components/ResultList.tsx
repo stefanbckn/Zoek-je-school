@@ -1,20 +1,20 @@
-import type { VestigingMetAfstand } from '../types'
+import type { CampusMetAfstand, SchoolOpCampus } from '../types'
 import { ResultCard } from './ResultCard'
 
 interface ResultListProps {
-  vestigingen: VestigingMetAfstand[]
-  onSelect: (vestiging: VestigingMetAfstand) => void
+  campussen: CampusMetAfstand[]
+  onSelect: (campus: CampusMetAfstand, school: SchoolOpCampus) => void
 }
 
-export function ResultList({ vestigingen, onSelect }: ResultListProps) {
-  if (vestigingen.length === 0) {
+export function ResultList({ campussen, onSelect }: ResultListProps) {
+  if (campussen.length === 0) {
     return <p className="p-4 text-sm text-slate-500">Geen scholen gevonden voor deze zoekopdracht.</p>
   }
 
   return (
     <div className="flex flex-col gap-3 p-4">
-      {vestigingen.map((v) => (
-        <ResultCard key={v.id} vestiging={v} onSelect={onSelect} />
+      {campussen.map((c) => (
+        <ResultCard key={c.id} campus={c} onSelect={onSelect} />
       ))}
     </div>
   )
