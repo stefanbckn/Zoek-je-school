@@ -110,10 +110,14 @@ async function main() {
     )
   }
 
+  let zonderCoordinaten = 0
+
   const vestigingen: Vestiging[] = antwerpenRows.map((r) => {
     const lx = Number(r.lx)
     const ly = Number(r.ly)
-    const [lon, lat] = proj4(LAMBERT72, 'WGS84', [lx, ly])
+    const heeftCoordinaten = lx !== 0 && ly !== 0 && !Number.isNaN(lx) && !Number.isNaN(ly)
+    if (!heeftCoordinaten) zonderCoordinaten++
+    const [lon, lat] = heeftCoordinaten ? proj4(LAMBERT72, 'WGS84', [lx, ly]) : [null, null]
     return {
       id: `${r.schoolnummer}-${r.intern_vplnummer}`,
       schoolnummer: r.schoolnummer,
@@ -139,6 +143,13 @@ async function main() {
       vervoer: null,
     }
   })
+
+  if (zonderCoordinaten > 0) {
+    console.warn(
+      `Let op: ${zonderCoordinaten} vestiging(en) hebben lx/ly = 0 in de brondata (geen coördinaten). ` +
+        `Deze krijgen lat/lon = null en worden overgeslagen op de kaart en in de afstandsberekening.`,
+    )
+  }
 
   const meta: DatasetMeta = {
     opgehaaldOp: new Date().toISOString(),

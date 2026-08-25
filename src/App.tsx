@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { DetailPanel } from './components/DetailPanel'
 import { FilterPanel } from './components/FilterPanel'
 import { Footer } from './components/Footer'
+import { MapView } from './components/MapView'
 import { ResultList } from './components/ResultList'
 import { SearchBar } from './components/SearchBar'
 import { haversineKm } from './lib/haversine'
@@ -9,10 +10,13 @@ import { useSearchState } from './lib/useSearchState'
 import { useVestigingen } from './lib/useVestigingen'
 import type { VestigingMetAfstand } from './types'
 
+type Weergave = 'lijst' | 'kaart'
+
 function App() {
   const { vestigingen, meta, loading, error } = useVestigingen()
   const { state, update } = useSearchState()
   const [geselecteerd, setGeselecteerd] = useState<VestigingMetAfstand | null>(null)
+  const [weergave, setWeergave] = useState<Weergave>('lijst')
 
   const gemeenteOpties = useMemo(
     () => [...new Set(vestigingen.map((v) => v.gemeente))].sort((a, b) => a.localeCompare(b, 'nl')),
@@ -32,18 +36,22 @@ function App() {
     const metAfstand = gefilterd.map((v) => ({
       ...v,
       afstandKm:
-        state.lat !== null && state.lon !== null
+        state.lat !== null && state.lon !== null && v.lat !== null && v.lon !== null
           ? haversineKm(state.lat, state.lon, v.lat, v.lon)
           : null,
     }))
 
     const binnenStraal = metAfstand.filter((v) => {
-      if (state.straalKm === null || v.afstandKm === null) return true
+      const zoektLocatie = state.lat !== null && state.lon !== null
+      if (!zoektLocatie || state.straalKm === null) return true
+      // Geen coördinaten bekend voor deze vestiging: kan niet binnen een straal vallen.
+      if (v.afstandKm === null) return false
       return v.afstandKm <= state.straalKm
     })
 
     if (state.lat !== null && state.lon !== null) {
-      binnenStraal.sort((a, b) => (a.afstandKm ?? 0) - (b.afstandKm ?? 0))
+      // Resterende null hier betekent: school heeft geen coördinaten in de bron — achteraan.
+      binnenStraal.sort((a, b) => (a.afstandKm ?? Infinity) - (b.afstandKm ?? Infinity))
     }
 
     return binnenStraal
@@ -79,15 +87,38 @@ function App() {
           onTekstChange={(tekst) => update({ tekst })}
         />
 
-        <main className="flex-1">
+        <main className="flex-1 flex flex-col min-h-[60vh]">
           {loading && <p className="p-4 text-sm text-slate-500">Bezig met laden…</p>}
           {error && <p className="p-4 text-sm text-red-600">{error}</p>}
           {!loading && !error && (
             <>
-              <p className="px-4 pt-4 text-sm text-slate-500">
-                {zichtbareVestigingen.length} resultaten
-              </p>
-              <ResultList vestigingen={zichtbareVestigingen} onSelect={setGeselecteerd} />
+              <div className="flex items-center justify-between px-4 pt-4">
+                <p className="text-sm text-slate-500">{zichtbareVestigingen.length} resultaten</p>
+                <div className="flex rounded-md border border-slate-300 text-sm overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => setWeergave('lijst')}
+                    className={`px-3 py-1 ${weergave === 'lijst' ? 'bg-slate-900 text-white' : 'bg-white text-slate-700'}`}
+                  >
+                    Lijst
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setWeergave('kaart')}
+                    className={`px-3 py-1 ${weergave === 'kaart' ? 'bg-slate-900 text-white' : 'bg-white text-slate-700'}`}
+                  >
+                    Kaart
+                  </button>
+                </div>
+              </div>
+
+              {weergave === 'lijst' ? (
+                <ResultList vestigingen={zichtbareVestigingen} onSelect={setGeselecteerd} />
+              ) : (
+                <div className="flex-1 mt-4 min-h-[400px]">
+                  <MapView vestigingen={zichtbareVestigingen} onSelect={setGeselecteerd} />
+                </div>
+              )}
             </>
           )}
         </main>

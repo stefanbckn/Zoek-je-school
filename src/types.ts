@@ -18,8 +18,9 @@ export interface Vestiging {
   postcode: string
   gemeente: string
   niscode: string
-  lat: number
-  lon: number
+  /** Null als de bron geen (geldige) lx/ly-coördinaten heeft voor deze vestiging. */
+  lat: number | null
+  lon: number | null
   telefoon: string | null
   email: string | null
   website: string | null

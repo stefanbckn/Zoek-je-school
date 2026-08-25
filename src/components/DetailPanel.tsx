@@ -42,6 +42,12 @@ export function DetailPanel({ vestiging, onClose }: DetailPanelProps) {
             <dd className="text-slate-900">
               {vestiging.straat} {vestiging.huisnummer}, {vestiging.postcode} {vestiging.gemeente}
             </dd>
+            {vestiging.lat === null && (
+              <dd className="text-xs text-amber-600 mt-0.5">
+                Geen coördinaten bekend in de brondata — niet op de kaart en geen afstand
+                berekenbaar.
+              </dd>
+            )}
           </div>
 
           {vestiging.afstandKm !== null && (
