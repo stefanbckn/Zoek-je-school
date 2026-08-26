@@ -219,9 +219,22 @@ linken mag. Niet als databron gebruiken.
 
 - Kleine stappen, één git commit per afgeronde stap.
 - Voor elke stap: `npm run fetch-data && npm run build` moet slagen zonder handmatige tussenstap.
-- Sanity check bij elke wijziging aan filtering/afstand: zoek "Borsbeek" → Sint-Gabriëlcollege
-  Boechout, Regina Pacisinstituut Hove en OLVE Edegem moeten alle drie in de eerste resultaten staan.
+- **Sanity check** bij elke wijziging aan filtering/afstand: zoek **"Boechout"** → Sint-Gabriëlcollege
+  en Regina Pacisinstituut (Hove) moeten bij de eerste resultaten staan.
+  De oorspronkelijke opzet vroeg deze check met "Borsbeek", maar **Borsbeek bestaat niet meer als
+  gemeente** (fusie met Antwerpen, 1/1/2025): geen enkele school heeft nog `gemeente=Borsbeek`, en
+  de geocoder valt terug op Antwerpen-centrum. Gebruik Boechout als gelijkwaardige vervanging.
 - Geen enkele hardgecodeerde schoolnaam of richting in de code — alles komt uit de gegenereerde data.
+
+### Samenwerking / git
+
+- **Nooit pushen zonder expliciet akkoord op dat moment.** Committen mag vrij; de gebruiker pusht
+  zelf of geeft er per keer toestemming voor. Eén akkoord geldt niet voor volgende pushes.
+- De gebruiker werkt met feature branches + pull requests op GitHub
+  (`git@github.com:stefanbckn/Zoek-je-school.git`, SSH — de HTTPS-remote heeft geen credentials).
+  Netlify deployt enkel vanaf `main`, dus werk op een branch gaat niet live tot de PR gemerged is.
+- `gh` CLI staat geïnstalleerd maar is **niet ingelogd** (vereist interactieve browser-login).
+  PR's aanmaken doet de gebruiker zelf, of via een voorgevulde compare-link.
 
 ## Node-versie
 
