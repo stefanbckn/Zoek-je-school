@@ -13,14 +13,9 @@
   # Vite 8 vereist Node ^20.19.0 || >=22.12.0 (geverifieerd via node_modules/vite/package.json).
   NODE_VERSION = "22"
 
-  # Netlify's "smart detection" scant de build-output automatisch op secrets en laat de build
-  # FALEN bij een treffer. VITE_ORS_API_KEY komt per definitie in de JS-bundle terecht (het is
-  # een live browser-call, zie CLAUDE.md) en die key ziet er bovendien uit als een JWT — een
-  # klassieke false positive die de deploy zou blokkeren.
-  # Enkel déze key uitzonderen; scanning verder gewoon actief laten.
-  # LET OP: ONDERWIJS_API_KEY hier NOOIT aan toevoegen. Die is build-time-only en hoort
-  # nooit in de output te staan — als scanning daarop aanslaat is dat een echt lek, geen ruis.
-  SECRETS_SCAN_OMIT_KEYS = "VITE_ORS_API_KEY"
+  # SECRETS_SCAN_OMIT_KEYS is bewust WEG: de ORS-key zit sinds de proxy niet meer in de
+  # bundle, dus secret scanning mag onverkort z'n werk doen. Slaat het toch aan op
+  # ORS_API_KEY, dan is dat een echt lek en moet het opgelost worden, niet onderdrukt.
 
 # Geen SPA-redirect nodig: de app gebruikt enkel querystring-state (?lat=..&straal=..),
 # geen path-based routing. Alles wordt vanaf / geserveerd.
@@ -37,8 +32,9 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), camera=(), microphone=(), interest-cohort=()"
     # CSP toegespitst op wat de app écht gebruikt:
-    #   connect-src : geo.api.vlaanderen.be (adres zoeken) + api.heigit.org (fietsroute)
+    #   connect-src : geo.api.vlaanderen.be (adres zoeken). api.heigit.org staat er NIET meer
+    #                 bij: de fietsroute loopt via onze eigen /api/fietsroute (same-origin).
     #   img-src     : OSM-tiles (*.tile.openstreetmap.org) + data:/blob: voor Leaflet-markers
     #   style-src   : 'unsafe-inline' is nodig — Leaflet zet inline styles op kaartlagen
     # Geen 'unsafe-inline'/'unsafe-eval' voor script-src: de Vite-bundle heeft dat niet nodig.
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.tile.openstreetmap.org; connect-src 'self' https://geo.api.vlaanderen.be https://api.heigit.org; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.tile.openstreetmap.org; connect-src 'self' https://geo.api.vlaanderen.be; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
