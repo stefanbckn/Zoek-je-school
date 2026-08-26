@@ -121,11 +121,19 @@ Vrij gesubsidieerd (huidige `net` in de CSV heeft maar 3 categorieën + leeg).
 - Gratis tier: **2000 calls/dag, 40/minuut** (geverifieerd op de prijzenpagina van het HeiGIT-
   account). Er bestaat een gratis "Collaborative"-tier (10.000/dag) voor onderwijs/overheid/non-
   profit — de moeite waard om voor dit project aan te vragen via het dashboard.
-- **Key-beheer:** env var `VITE_ORS_API_KEY` — WEL met `VITE_`-prefix, in tegenstelling tot de
-  onderwijs-key hierboven. Dit is bewust: het is een live call vanuit de browser, afhankelijk van
-  het adres dat de bezoeker net intikt, dus kan niet build-time voorberekend worden en de key kan
-  sowieso niet volledig verborgen blijven. Beperk de key in het HeiGIT-dashboard tot ons eigen
-  domein (referrer-restrictie) als mitigatie.
+- ⚠️ **De key mag NIET client-side gebruikt worden.** De officiële ORS-documentatie
+  (`giscience.github.io/openrouteservice/frequently-asked-questions.html`) is expliciet:
+  *"every HeiGIT API key belongs to one person"* en *"an API key must not be used client-side in an
+  application: Inspecting the requests sent by the application would 'leak' the API key"*.
+  Hun aanbevolen oplossing is server-side proxyen: de client stuurt een request zónder key naar je
+  eigen server, die de call met key doorzet.
+- **Domeinrestrictie bestaat niet** bij HeiGIT — nagekeken in het dashboard en in de docs. Dat is
+  dus géén beschikbare mitigatie (eerder in dit project ten onrechte als oplossing voorgesteld).
+- **Huidige stand (v0.1): de opzet voldoet hier NIET aan.** `VITE_ORS_API_KEY` heeft een
+  `VITE_`-prefix en belandt dus in de publieke bundle; geverifieerd dat de key daaruit te halen is
+  en vanaf een willekeurig ander domein werkt. **Op te lossen door de call naar een Netlify Function
+  te verplaatsen** (key in de server-side env, browser praat met ons eigen endpoint). Dat lost
+  meteen ook de CORS-kwestie op, want dan is het same-origin.
 - Account/key aanvragen via `https://account.heigit.org` (self-service signup).
 - Wordt enkel aangeroepen voor de **geselecteerde** school in het detailpaneel (niet voor elke
   kaart in de resultatenlijst) — anders is de gratis quota in enkele zoekopdrachten op.
