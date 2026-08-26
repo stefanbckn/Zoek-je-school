@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { NET_OPTIONS } from './net'
 import type { Net } from '../types'
 
 export interface SearchState {
@@ -28,17 +29,44 @@ function parseList(raw: string | null): string[] {
   return raw ? raw.split(',').filter(Boolean) : []
 }
 
+/**
+ * De URL is deelbaar en dus door de gebruiker bewerkbaar. Alles wat eruit komt is onbetrouwbaar:
+ * een afgekapte link, een typfout of een geplakte URL mag nooit een lege of kapotte pagina geven.
+ * Ongeldige waarden vallen daarom terug op "niet ingevuld", niet op NaN.
+ */
+function parseCoordinaat(raw: string | null, max: number): number | null {
+  if (raw === null) return null
+  const n = Number(raw)
+  if (!Number.isFinite(n) || Math.abs(n) > max) return null
+  return n
+}
+
+function parseStraal(raw: string | null): number | null {
+  if (raw === null) return DEFAULT_STATE.straalKm
+  if (raw === 'alles') return null
+  const n = Number(raw)
+  // Niet-numeriek of onzinnig (0, negatief) → terug naar de standaardstraal, niet naar NaN:
+  // met NaN zou élke school uit de straalfilter vallen en kreeg je 0 resultaten.
+  if (!Number.isFinite(n) || n <= 0) return DEFAULT_STATE.straalKm
+  return n
+}
+
 function parseState(search: string): SearchState {
   const params = new URLSearchParams(search)
-  const lat = params.get('lat')
-  const lon = params.get('lon')
-  const straal = params.get('straal')
+  const lat = parseCoordinaat(params.get('lat'), 90)
+  const lon = parseCoordinaat(params.get('lon'), 180)
+  // Een half koppel coördinaten is onbruikbaar: alleen beide of geen van beide.
+  const heeftLocatie = lat !== null && lon !== null
   return {
-    lat: lat !== null ? Number(lat) : null,
-    lon: lon !== null ? Number(lon) : null,
-    label: params.get('label'),
-    straalKm: straal !== null ? (straal === 'alles' ? null : Number(straal)) : DEFAULT_STATE.straalKm,
-    netten: parseList(params.get('net')) as Net[],
+    lat: heeftLocatie ? lat : null,
+    lon: heeftLocatie ? lon : null,
+    label: heeftLocatie ? params.get('label') : null,
+    straalKm: parseStraal(params.get('straal')),
+    // Onbekende netten wegfilteren i.p.v. blind casten: anders levert ?net=onzin een
+    // filter op die nooit matcht, en dus opnieuw 0 resultaten zonder uitleg.
+    netten: parseList(params.get('net')).filter((n): n is Net =>
+      (NET_OPTIONS as string[]).includes(n),
+    ),
     gemeenten: parseList(params.get('gemeenten')),
     tekst: params.get('q') ?? '',
   }
