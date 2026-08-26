@@ -2,10 +2,10 @@
 # zodat de buildinstellingen mee versioned zijn.
 
 [build]
-  # fetch-data blijft meedraaien om verse data te proberen, maar data-onderwijs.vlaanderen.be
-  # blokkeert datacenter-IP's: op Netlify faalt die call met ECONNRESET tijdens de TLS-handshake.
-  # Het script valt dan terug op de gecommitte public/data/*.json en de build gaat gewoon door.
-  # Verversen doe je dus lokaal + committen. Zie CLAUDE.md.
+  # fetch-data blijft meedraaien om verse data te proberen. Faalt die call (de eerste build gaf
+  # ECONNRESET tijdens de TLS-handshake naar data-onderwijs.vlaanderen.be, oorzaak onbevestigd),
+  # dan valt het script terug op de gecommitte public/data/*.json en gaat de build gewoon door.
+  # Slaagt de fetch wél, dan krijg je vanzelf verse data. Zie CLAUDE.md.
   command = "npm run fetch-data && npm run build"
   publish = "dist"
 

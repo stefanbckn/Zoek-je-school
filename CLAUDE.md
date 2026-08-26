@@ -143,11 +143,18 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
 
 - `scripts/fetch-data.ts` — Node-script (draai met `npm run fetch-data`), schrijft
   `public/data/vestigingen.json` + `public/data/meta.json` (ophaaldatum, bronvermelding, aantallen).
-- **`public/data/*.json` staat bewust WEL in git** (~400 kB). Reden: `data-onderwijs.vlaanderen.be`
-  blokkeert verbindingen vanaf datacenter-IP's. Op Netlify's build-servers faalt de fetch daardoor
-  meteen tijdens de TLS-handshake (`ECONNRESET`, "Client network socket disconnected before secure
-  TLS connection was established"), terwijl exact dezelfde call vanaf een Belgisch residentieel IP
-  prima werkt. Dat is een firewall/WAF aan hun kant — niet op te lossen in onze code.
+- **`public/data/*.json` staat bewust WEL in git** (~400 kB), als fallback voor een falende fetch.
+
+  Wat we **zeker weten**: de eerste Netlify-build faalde met `ECONNRESET` tijdens de TLS-handshake
+  naar `data-onderwijs.vlaanderen.be` ("Client network socket disconnected before secure TLS
+  connection was established"), binnen 1 seconde, dus nog vóór enige HTTP-header. Dezelfde call
+  werkt wél vanaf een Belgisch residentieel IP (TLS 1.3, geldig GlobalSign-cert) én vanaf
+  Anthropic's cloud-infrastructuur.
+
+  Wat we **niet** weten: de precieze oorzaak. Het is dus **géén** algemene blokkade op
+  datacenter-IP's — dat is getest en weerlegd. Overblijvende kandidaten: een IP-range- of
+  geo-blokkade die specifiek Netlify's build-infra treft, of gewoon een tijdelijke storing (de
+  originele code deed één poging zonder retry). **Niet als vaststaand feit behandelen.**
 - `fetch-data.ts` doet daarom 3 pogingen met backoff en valt daarna terug op de gecommitte dataset:
   build gaat door, met een luide waarschuwing. Ligt er géén dataset, dan faalt het script wél hard.
 - **Gevolg voor de werkwijze:** data verversen doe je **lokaal** (`npm run fetch-data`) en dan
