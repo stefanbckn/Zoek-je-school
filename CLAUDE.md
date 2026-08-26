@@ -154,6 +154,67 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
 - Afstand is altijd hemelsbrede afstand (haversine); benoem dat expliciet in de UI, nooit als
   "reisafstand" framen.
 
+## Roadmap
+
+Let op: deze nummering **vervangt** de oorspronkelijke backlog-nummering uit de opzet. De oude
+v0.2 (Reizen) is deels al opgeleverd — fietsafstand/-tijd zit in v0.1 — en de resterende oude
+backlog-items zijn doorgeschoven naar v0.5–v0.7.
+
+| Versie | Thema | Inhoud | Status / blocker |
+| --- | --- | --- | --- |
+| **v0.1** | Basis | Vestigingen → campussen, afstand (hemelsbreed), filters (net/gemeente/naam), kaart, detailpaneel, URL-state, mobiel | **Opgeleverd** |
+| **v0.1.x** | Fiets | Fietsafstand/-tijd per school in detailpaneel (OpenRouteService via api.heigit.org) | **Opgeleverd** |
+| **v0.2** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per school · infodagen | **Wacht op API-key** (aangevraagd, kan dagen duren, niet gegarandeerd) |
+| **v0.3** | GOK-indicatoren | OKI + 4 leerlingenkenmerken per campus, als context in detailpaneel | Bron gevonden en geverifieerd — **key niet nodig** |
+| **v0.4** | Aanmelden | Aanmeldsysteem tonen/linken (bv. meldjeaan.be) | **Nog te onderzoeken** — bron onbekend |
+| **v0.5** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
+| **v0.6** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Bronnen nog te onderzoeken |
+| **v0.7** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
+| **Geparkeerd** | Openbaar vervoer | Reistijd met de bus | De Lijn heeft geen publieke routeplanner-API; een eigen mini-planner wordt een ruwe schatting, een echte planner (OpenTripPlanner) vereist een backend — botst met "geen backend" |
+
+### v0.2 — wat al geverifieerd is
+
+- **Studieaanbod + finaliteit**: `Onderwijsaanbod SO 2.6`, endpoints `/ingerichtehoofdstructuur` en
+  `/ingerichteadministratievegroep`. Finaliteit zit **per richting**, niet per school — een campus met
+  meerdere finaliteiten toont die dus vanzelf allemaal, zonder speciale logica.
+- **Schooldata**: `Instelling`-API, met `instelling_soort_bestuur` (zie net-onderscheid hierboven).
+- Beide zitten mogelijk in **aparte API-producten** — check bij ontvangst of de key ook op
+  Instelling + Codelijst geldt, niet enkel op Onderwijsaanbod SO.
+- **Infodagen: nog geen bron gevonden.** De API-catalogus van het portaal bevat géén
+  infomomenten/infodagen-product (volledige catalogus nagekeken). onderwijskiezer.be heeft ze wel,
+  maar is juridisch uitgesloten (zie hieronder). Eerst uitzoeken vóór inplannen.
+- Richtingen worden per campus samengevoegd getoond (afgesproken); ze komen binnen op
+  `SchoolOpCampus.richtingen`.
+
+### v0.3 — bron geverifieerd, geen API-key nodig
+
+- Bron: **Dataloep Leerlingenkenmerken Secundair**, op de Tableau Server van de overheid:
+  `https://onderwijs-tableau.vlaanderen.be/t/EXTERN/views/DataloepLeerlingenkenmerkenSecundair/SOCijfersperschooljaar`
+  Publiek, geen login.
+- Zet in het dashboard de uitsplitsing **"instelling | vestigingsplaats adres"**. Rijen zien er dan
+  zo uit: `28514 - Provinciaal Instituut PIVA | Antwerpen, Desguinlei 244` met Gemiddelde OKI +
+  de 4 kenmerken in %.
+- **Join werkt**: op `(schoolnummer, "straat huisnummer")` tegen ons campusmodel. Getest op 4 rijen,
+  4/4 match.
+- **Export**: raw "Data"-download is door de publisher bewust uitgeschakeld; **"Kruistabel → CSV"**
+  is wél toegestaan (werkblad `SO | CIJF | Leerlingenkenmerken %`). Dat is de sanctioned route.
+- **Niet automatiseerbaar via URL**: de `.csv`-suffix (gedocumenteerde Tableau-feature) werkt op
+  werkbladen maar geeft leeg terug op dashboards, en parameterstate overleeft geen anonieme sessie.
+  Tableau's interne `vizql`-protocol scrapen: **niet doen**, fragiel en niet-ondersteund.
+- **Aanpak**: het is een Vlaamse Openbare Statistiek met jaarlijkse publicatiekalender → één keer
+  per jaar handmatig exporteren (filter Provincie = Antwerpen), als statisch CSV in de repo
+  committen, en `fetch-data.ts` laten joinen.
+- **Framing**: OKI is een kansarmoede-indicator, geen kwaliteitsoordeel. Katholiek Onderwijs
+  waarschuwt expliciet voor schoolkeuze te sterk op deze cijfers baseren en voor toenemende
+  segregatie. Toon het als context over de leerlingenpopulatie, met uitleg — nooit als kaal cijfer
+  of ranglijst.
+
+### Juridisch uitgesloten als bron
+
+`onderwijskiezer.be` (CLB) heeft studieaanbod mét finaliteit én infomomenten, maar de algemene
+voorwaarden verbieden kopiëren, reproduceren en herdistribueren van hun materiaal. Enkel naar
+linken mag. Niet als databron gebruiken.
+
 ## Workflow
 
 - Kleine stappen, één git commit per afgeronde stap.
