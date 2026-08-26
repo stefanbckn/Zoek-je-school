@@ -34,7 +34,11 @@
     # CSP toegespitst op wat de app écht gebruikt:
     #   connect-src : geo.api.vlaanderen.be (adres zoeken). api.heigit.org staat er NIET meer
     #                 bij: de fietsroute loopt via onze eigen /api/fietsroute (same-origin).
-    #   img-src     : OSM-tiles (*.tile.openstreetmap.org) + data:/blob: voor Leaflet-markers
+    #                 queue.simpleanalyticscdn.com ontvangt de analytics-events (Beacon API).
+    #   script-src  : scripts.simpleanalyticscdn.com voor het analytics-script.
+    #   img-src     : OSM-tiles (*.tile.openstreetmap.org) + data:/blob: voor Leaflet-markers,
+    #                 plus queue.simpleanalyticscdn.com voor de pixel-fallback.
     #   style-src   : 'unsafe-inline' is nodig — Leaflet zet inline styles op kaartlagen
-    # Geen 'unsafe-inline'/'unsafe-eval' voor script-src: de Vite-bundle heeft dat niet nodig.
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.tile.openstreetmap.org; connect-src 'self' https://geo.api.vlaanderen.be; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
+    # Geen 'unsafe-inline'/'unsafe-eval' voor script-src: noch de Vite-bundle, noch Simple
+    # Analytics heeft dat nodig (dat is bij SA enkel vereist voor "automated events").
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://scripts.simpleanalyticscdn.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://queue.simpleanalyticscdn.com; connect-src 'self' https://geo.api.vlaanderen.be https://queue.simpleanalyticscdn.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
