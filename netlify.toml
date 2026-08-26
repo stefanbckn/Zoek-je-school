@@ -11,5 +11,14 @@
   # Vite 8 vereist Node ^20.19.0 || >=22.12.0 (geverifieerd via node_modules/vite/package.json).
   NODE_VERSION = "22"
 
+  # Netlify's "smart detection" scant de build-output automatisch op secrets en laat de build
+  # FALEN bij een treffer. VITE_ORS_API_KEY komt per definitie in de JS-bundle terecht (het is
+  # een live browser-call, zie CLAUDE.md) en die key ziet er bovendien uit als een JWT — een
+  # klassieke false positive die de deploy zou blokkeren.
+  # Enkel déze key uitzonderen; scanning verder gewoon actief laten.
+  # LET OP: ONDERWIJS_API_KEY hier NOOIT aan toevoegen. Die is build-time-only en hoort
+  # nooit in de output te staan — als scanning daarop aanslaat is dat een echt lek, geen ruis.
+  SECRETS_SCAN_OMIT_KEYS = "VITE_ORS_API_KEY"
+
 # Geen SPA-redirect nodig: de app gebruikt enkel querystring-state (?lat=..&straal=..),
 # geen path-based routing. Alles wordt vanaf / geserveerd.
