@@ -42,6 +42,13 @@ export async function berekenFietsroute(
       // 503 = server heeft geen key ingesteld; 404 = functie draait niet (bv. plain `npm run dev`
       // zonder de dev-middleware). In beide gevallen is dit een configuratiezaak, geen storing:
       // stil niets tonen in plaats van de bezoeker met een foutmelding opzadelen.
+      // Wél een console-waarschuwing: anders verdwijnt de fietsregel spoorloos en is er geen
+      // enkel spoor om op te debuggen — precies wat bij de eerste deploy misging.
+      console.warn(
+        `[fietsroute] ${PROXY_URL} gaf HTTP ${res.status}. ` +
+          `Controleer of de env var ORS_API_KEY in Netlify is ingesteld met scope "Functions", ` +
+          `voor de juiste deploy context, en of er daarna opnieuw gedeployed is.`,
+      )
       resultaat = { status: 'geen-key' }
     } else {
       resultaat = { status: 'onbeschikbaar' }
