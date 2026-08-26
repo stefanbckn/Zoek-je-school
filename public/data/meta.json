@@ -1,0 +1,10 @@
+{
+  "opgehaaldOp": "2026-08-26T07:06:44.239Z",
+  "bron": [
+    "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/lijsten",
+    "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/csv.ashx?s=01&n=2&hs=311"
+  ],
+  "aantalVestigingenTotaal": 2162,
+  "aantalVestigingenAntwerpen": 562,
+  "aantalCampussenAntwerpen": 305
+}

@@ -143,8 +143,16 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
 
 - `scripts/fetch-data.ts` — Node-script (draai met `npm run fetch-data`), schrijft
   `public/data/vestigingen.json` + `public/data/meta.json` (ophaaldatum, bronvermelding, aantallen).
-  `public/data/*.json` is gegenereerd en **niet** in git (zie .gitignore) — CI/deploy moet
-  `npm run fetch-data && npm run build` draaien, nooit enkel `npm run build`.
+- **`public/data/*.json` staat bewust WEL in git** (~400 kB). Reden: `data-onderwijs.vlaanderen.be`
+  blokkeert verbindingen vanaf datacenter-IP's. Op Netlify's build-servers faalt de fetch daardoor
+  meteen tijdens de TLS-handshake (`ECONNRESET`, "Client network socket disconnected before secure
+  TLS connection was established"), terwijl exact dezelfde call vanaf een Belgisch residentieel IP
+  prima werkt. Dat is een firewall/WAF aan hun kant — niet op te lossen in onze code.
+- `fetch-data.ts` doet daarom 3 pogingen met backoff en valt daarna terug op de gecommitte dataset:
+  build gaat door, met een luide waarschuwing. Ligt er géén dataset, dan faalt het script wél hard.
+- **Gevolg voor de werkwijze:** data verversen doe je **lokaal** (`npm run fetch-data`) en dan
+  `public/data/*.json` mee committen. De footer toont de ophaaldatum uit `meta.json`, dus verouderde
+  data is altijd zichtbaar voor de bezoeker — controleer die datum na een refresh.
 - `src/types.ts` — het `Vestiging`-datamodel, inclusief lege placeholders (`richtingen`, `kostprijs`,
   `vervoer`) voor latere versies zodat de structuur niet moet herbouwd worden.
 - `src/lib/` — pure functies: haversine-afstand, net-labels, URL-state hook.

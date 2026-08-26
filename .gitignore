@@ -12,8 +12,9 @@ dist
 dist-ssr
 *.local
 
-# gegenereerde data (build-time fetch, zie scripts/fetch-data.ts)
-public/data/*.json
+# public/data/*.json is gegenereerd, maar staat bewust WEL in git:
+# data-onderwijs.vlaanderen.be blokkeert datacenter-IP's, dus de fetch faalt op Netlify.
+# De gecommitte dataset dient als fallback zodat de deploy blijft werken. Zie CLAUDE.md.
 
 # geheimen (API-keys) — nooit committen, zie CLAUDE.md
 .env

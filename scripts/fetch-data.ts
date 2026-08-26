@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import proj4 from 'proj4'
 import type { Campus, DatasetMeta, Net, SchoolOpCampus } from '../src/types.ts'
@@ -97,13 +97,63 @@ interface RuweSchool {
   lon: number | null
 }
 
+/**
+ * Haalt de CSV op met een paar retries. data-onderwijs.vlaanderen.be blokkeert verbindingen
+ * vanaf datacenter-IP's (o.a. Netlify's build-servers): de TLS-handshake wordt dan meteen
+ * verbroken met ECONNRESET. Zie CLAUDE.md — daarom bestaat de fallback hieronder.
+ */
+async function downloadCsv(): Promise<string> {
+  const pogingen = 3
+  let laatsteFout: unknown
+  for (let i = 1; i <= pogingen; i++) {
+    try {
+      const res = await fetch(VESTIGINGEN_CSV_URL)
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} ${res.statusText}`)
+      }
+      return await res.text()
+    } catch (err) {
+      laatsteFout = err
+      console.warn(`Poging ${i}/${pogingen} mislukt: ${err instanceof Error ? err.message : err}`)
+      if (i < pogingen) await new Promise((r) => setTimeout(r, i * 2000))
+    }
+  }
+  throw laatsteFout
+}
+
+/** Bestaat er al een eerder gegenereerde (en gecommitte) dataset om op terug te vallen? */
+async function heeftBestaandeDataset(): Promise<boolean> {
+  try {
+    const inhoud = await readFile(path.join(OUTPUT_DIR, 'vestigingen.json'), 'utf-8')
+    return JSON.parse(inhoud).length > 0
+  } catch {
+    return false
+  }
+}
+
 async function main() {
   console.log(`Ophalen: ${VESTIGINGEN_CSV_URL}`)
-  const res = await fetch(VESTIGINGEN_CSV_URL)
-  if (!res.ok) {
-    throw new Error(`Download mislukt (${res.status} ${res.statusText}) voor ${VESTIGINGEN_CSV_URL}`)
+  let csvText: string
+  try {
+    csvText = await downloadCsv()
+  } catch (err) {
+    // Geen verse data. Als er een gecommitte dataset ligt, bouwen we daarmee verder: een
+    // geblokkeerde overheidsserver mag geen deploy tegenhouden. De footer toont de
+    // ophaaldatum uit meta.json, dus verouderde data blijft zichtbaar voor de bezoeker.
+    if (await heeftBestaandeDataset()) {
+      console.warn(
+        `\nLet op: ophalen mislukt (${err instanceof Error ? err.message : err}).\n` +
+          `Er ligt wel een eerder gegenereerde dataset in ${OUTPUT_DIR} — die blijft ongewijzigd\n` +
+          `en de build gaat door. De datumstempel in de footer toont dus de vórige ophaaldatum.\n`,
+      )
+      return
+    }
+    throw new Error(
+      `Ophalen mislukt én er is geen eerder gegenereerde dataset om op terug te vallen.\n` +
+        `Oorzaak: ${err instanceof Error ? err.message : err}\n` +
+        `Draai 'npm run fetch-data' lokaal en commit public/data/*.json.`,
+    )
   }
-  const csvText = await res.text()
   const rows = parseCsv(csvText)
   console.log(`Totaal aantal vestigingsplaatsen (heel Vlaanderen/Brussel): ${rows.length}`)
 
