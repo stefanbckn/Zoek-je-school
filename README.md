@@ -76,3 +76,21 @@ staat in **[BUGS.md](./BUGS.md)** — houd die twee gelijk als je er een toevoeg
 
 Zoek op **Boechout**: Sint-Gabriëlcollege en Regina Pacisinstituut (Hove) horen bij de eerste
 resultaten te staan.
+
+## Licentie
+
+De **code** staat onder de **GNU Affero General Public License v3.0 of later** — de volledige
+tekst staat in [LICENSE](./LICENSE). © 2026 Stefan Bocken.
+
+Waarom AGPL en niet MIT: dit is een website, geen bibliotheek. Bij een gewone GPL kan iemand de
+code draaien op zijn eigen domein zonder ooit iets terug te geven, want hij *distribueert* niets.
+De AGPL sluit dat gat: wie de app voor anderen host, moet de broncode aanbieden. Artikel 13
+vraagt dat een webapp een zichtbare weg naar z'n bron biedt — vandaar de repo-link in de footer.
+Haal die dus niet weg.
+
+**De data valt hier niet onder.** `public/data/*.json` is opgehaald bij het API-portaal van
+Onderwijs en Vorming en blijft van hen; wij vermelden de bron in de footer. Het portaal
+publiceert geen expliciete hergebruikslicentie bij deze producten (nagekeken op 27/08/2026) —
+wie de dataset voor iets anders dan deze site wil gebruiken, vraagt dat het best na bij het
+portaal. Kaartlaag en routes dragen hun eigen voorwaarden: OpenStreetMap voor de tegels,
+CC-BY-SA 4.0 voor de routeresultaten van openrouteservice/HeiGIT.
