@@ -349,7 +349,7 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 | **v0.1.x** | Fiets | Fietsafstand/-tijd per school in detailpaneel (OpenRouteService via api.heigit.org) | **Opgeleverd** |
 | **v0.2** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
 | **v0.2.1** | UI-verbeteringen | Actieve filters zichtbaar onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode | **Ingepland**, zie hieronder |
-| **v0.3** | GOK-indicatoren + aanmelden | OKI + 4 leerlingenkenmerken per campus · aanmeldsysteem per school tonen/linken | OKI-bron geverifieerd. Aanmelden: **geen centrale bron**, zie hieronder |
+| **v0.3** | GOK-indicatoren + aanmelden | OKI + 4 leerlingenkenmerken per campus · aanmeldsysteem per school tonen/linken · **lijst pagineren** | OKI-bron geverifieerd. Aanmelden: **geen centrale bron**, zie hieronder. Pagineren: puur frontend, zie hieronder |
 | **v0.5** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | **v0.6** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
 | **v0.7** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
@@ -451,6 +451,30 @@ scrollgebied: aside sticky met eigen overflow én die `max-h-48` weghalen. Enkel
 geen extra download, geen layout-verschuiving bij het laden, en niets dat de CSP of de privacy
 raakt. Wil je later meer karakter, doe dat dan met één webfont voor koppen alleen, niet voor
 lopende tekst.
+
+### v0.3 — lijstweergave pagineren
+
+Zonder filters staan er 303 adressen in de lijst, allemaal tegelijk in de DOM. Doorscrollen naar
+beneden duurt onnodig lang, en dat is precies het scenario van iemand die nog geen idee heeft
+waarop te filteren. Puur frontend, geen bron nodig.
+
+Uitgangspunten voor wie dit bouwt:
+
+- **De kaartweergave paginéért niet mee.** Daar is het volledige beeld net het punt; markers
+  verbergen omdat ze op "pagina 2" staan maakt de kaart onbruikbaar. Alleen `ResultList` knipt.
+- **Doe het met een "Toon meer"-knop, niet met genummerde pagina's.** De lijst staat op afstand
+  gesorteerd, dus wat bovenaan staat is wat telt; iemand bladert niet doelgericht naar pagina 7.
+  Een knop houdt bovendien de scrollpositie intact, en dat is op mobiel het verschil.
+- **Zet het aantal getoonde items NIET in de URL.** De querystring beschrijft nu wát er gezocht
+  wordt; hoe ver iemand had gescrold hoort daar niet bij en maakt een gedeelde link alleen maar
+  vreemder. Gewone `useState` volstaat.
+- **Reset de teller bij elke filterwijziging**, anders zit je na het aanvinken van één gemeente
+  nog steeds naar 60 items te kijken terwijl er 4 resultaten zijn.
+- Het resultaataantal bovenaan blijft het **totaal** tonen, niet het aantal zichtbare kaartjes.
+  Dat cijfer is de feedback op je filters.
+- Let op de samenhang met het openstaande punt uit v0.2.1 (sticky filterkolom met één
+  scrollgebied). Een kortere lijst maakt dat minder nijpend, maar lost het niet op: de
+  gemeentelijst heeft nog steeds z'n eigen scrollbalk binnen een meescrollende kolom.
 
 ### v0.3 — aanmelden: geen centrale bron (onderzocht 27/08/2026)
 
