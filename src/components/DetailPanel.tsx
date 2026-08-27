@@ -143,6 +143,20 @@ export function DetailPanel({
                 · {Math.round(fietsroute.route.duurMin)} min (fietsroute, geen
                 verkeersinschatting)
               </dd>
+              {/* De footer draagt dezelfde attributie, maar dit paneel ligt er als modaal
+                  venster overheen. Vermeld het dus ook hier, naast het resultaat zelf. */}
+              <dd className="text-zacht text-xs">
+                Route ©{' '}
+                <a
+                  href="https://openrouteservice.org/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  openrouteservice
+                </a>{' '}
+                by HeiGIT, data van OpenStreetMap
+              </dd>
             </div>
           )}
           {fietsroute && fietsroute !== 'laden' && fietsroute.status === 'onbeschikbaar' && (

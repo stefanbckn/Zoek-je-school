@@ -191,6 +191,13 @@ zo beslist door de gebruiker.
   en vanaf een willekeurig ander domein werkt. **Op te lossen door de call naar een Netlify Function
   te verplaatsen** (key in de server-side env, browser praat met ons eigen endpoint). Dat lost
   meteen ook de CORS-kwestie op, want dan is het same-origin.
+- **Attributie is verplicht en staat in de UI** — `Footer.tsx` (altijd, ook als `meta.json`
+  ontbreekt) en nogmaals in `DetailPanel.tsx` naast het routeresultaat, omdat dat paneel als
+  modaal venster over de footer ligt. De HeiGIT-voorwaarden eisen de vermelding
+  "© openrouteservice by HeiGIT | Data from OpenStreetMap" letterlijk, en hun routeresultaten
+  staan onder **CC-BY-SA 4.0**. Weghalen mag dus niet, ook niet "even voor de opmaak".
+  Geverifieerd in de ToS op `account.heigit.org/info/tos` (27/08/2026); diezelfde ToS bevat
+  géén non-commerciële beperking, dus een donatieknop op de site raakt dit niet.
 - Account/key aanvragen via `https://account.heigit.org` (self-service signup).
 - Wordt enkel aangeroepen voor de **geselecteerde** school in het detailpaneel (niet voor elke
   kaart in de resultatenlijst) — anders is de gratis quota in enkele zoekopdrachten op.
