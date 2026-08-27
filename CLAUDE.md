@@ -371,7 +371,7 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 | **v0.2** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
 | **v0.2.1** | UI-verbeteringen | Actieve filters zichtbaar onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode | **Ingepland**, zie hieronder |
 | **v0.3** | Openbaar vervoer + pagineren | AGPL-3.0-licentie · reistijd met bus/trein via Transitous · contactgegevens in de footer · lijst pagineren | **Opgeleverd**, behalve twee stappen die alleen de eigenaar kan zetten: repo publiek maken en Transitous verwittigen. Tot dan staat de OV-call in de code maar is de voorwaarde niet vervuld |
-| **v0.4** | GOK-indicatoren + aanmelden | OKI + 4 leerlingenkenmerken per campus · aanmeldsysteem per school tonen/linken | OKI-bron geverifieerd, wel handwerk. Aanmelden: **geen centrale bron**, zie hieronder |
+| **v0.4** | GOK-indicatoren + aanmelden | 4 leerlingenkenmerken per school · aanmeldsysteem per school tonen/linken | GOK: **downloadbare xlsx gevonden**, join geverifieerd op 269/272 scholen — automatiseerbaar, maar per school en niet per vestiging. Aanmelden: **geen centrale bron**, zie hieronder |
 | **v0.5** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | **v0.6** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
 | **v0.7** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
@@ -525,7 +525,62 @@ staan op sites met eigen voorwaarden, en ze wijzigen per schooljaar.
 jaartal erbij, en link naar de bron in plaats van de procedure over te nemen — anders staat er
 volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
-### v0.4 — GOK-indicatoren: bron geverifieerd, geen API-key nodig
+### v0.4 — GOK-indicatoren: er is wél een downloadbaar bestand (28/08/2026)
+
+**Dit vervangt de Tableau-route hieronder als eerste keuze.** AgODi publiceert de
+leerlingenkenmerken per school als gewone xlsx op het documentenportaal. Geen Tableau, geen
+handmatige kruistabel, geen key — `fetch-data.ts` kan het rechtstreeks ophalen.
+
+Gevonden via `onderwijsstatistieken.depuydt.eu` (Dieter Depuydt), die dezelfde cijfers toont en
+in zijn FAQ schrijft dat alles uit publieke AgODi-publicaties komt. Zijn percentages zijn
+**exact gereproduceerd** uit het bestand hieronder (Sint-Jan Berchmanscollege Brussel: 14,7 /
+65,6 / 24,2 / 62,3) — dus dit is zijn bron, en onze kolominterpretatie klopt.
+
+```
+https://data-onderwijs.vlaanderen.be/documenten/bestanden/
+  Publicaties_Leerlingenkenmerken_Overzicht_2024-2025_so.xlsx
+```
+
+- **Meest recente schooljaar is 2024-2025** (getest: 2025-2026 geeft 404). Eén werkblad,
+  1002 datarijen, alle Vlaamse SO-instellingen.
+- ⚠️ **De bestandsnaam is niet voorspelbaar.** 2021-2022 en 2022-2023 heten `..._so_1.xlsx`,
+  2023-2024 en 2024-2025 heten `..._so.xlsx` — en bij de pdf's is het net omgekeerd. Elk jaar
+  het patroon hardcoden en verhogen gaat dus stuk. Haal de link op van de AgODi-pagina
+  `cijfermateriaal-leerlingenkenmerken`, of controleer beide varianten met een HEAD-request.
+  (Die AgODi-pagina was op 27-28/08/2026 zelf niet bereikbaar: `www.agodi.be` geeft een DNS-fout
+  en de redirect naar `paddlecms.net` loopt in een time-out. Het documentenportaal werkt wél.)
+- **Kolommen:** Provincie · Postnr · Gemeente · Instelling (= schoolnummer) · Naam instelling ·
+  Straat · Huisnr · Teldatum · Aantal lln · en dan vier tellingen: indicator "opleiding moeder",
+  "schooltoelage", "thuistaal", "buurt".
+- **Het zijn absolute aantallen, geen percentages** — en er staan halven in (733,5), doordat
+  leerlingen in co-ouderschap half meetellen. Percentage = teller / aantal lln.
+- **Teldatum is 1 februari van het jaar ervóór** (bestand 2024-2025 telt op 01/02/2024). Het
+  bestand heet niet voor niets "voorschot werkingstoelagen": dit is de financieringsteling.
+- **OKI staat er niet als kolom in.** De definitie (som van de risicokenmerken per leerling,
+  gedeeld door het aantal leerlingen) komt neer op `(4 tellingen opgeteld) / aantal lln`.
+  ⚠️ Dat is een **afleiding, geen gepubliceerd cijfer** — vóór we het als "OKI" labelen, één
+  school naast de gepubliceerde "Gemiddelde OKI" in Dataloep leggen. Zolang dat niet gebeurd is:
+  toon de vier percentages, niet een zelfberekende OKI.
+
+**Join tegen onze dataset, geverifieerd op het bestand 2024-2025:**
+
+- Op `schoolnummer`: **269 van onze 272 scholen matchen.** De drie die ontbreken zijn Arkades
+  (Herentals, onafhankelijk — krijgt geen werkingstoelagen, dus terecht afwezig) en Mariagaarde
+  secundair I en II (Malle, recent gesplitst; nog niet in de telling van feb 2024).
+- ⚠️ **Het adres in dit bestand is dat van de instelling, niet van de vestigingsplaats.** Bij
+  86 van de 269 gematchte scholen wijkt het af van het campusadres dat wij tonen (bv. Panorama
+  staat er met Bredastraat 35, wij tonen Quellinstraat 31). **Join dus op schoolnummer, nooit op
+  adres**, en hang het cijfer aan `SchoolOpCampus`, niet aan `Campus`.
+- **Gevolg voor de UI: dit is per school, niet per campus.** Een school met drie campussen heeft
+  één cijfer voor alle drie. Dat is een wezenlijk verschil met het studieaanbod, dat we juist wél
+  per adres samenvoegen — hier mag dat niet, want optellen over scholen die een adres delen zou
+  een gemiddelde over andere leerlingenpopulaties maken. Zet het er in de UI expliciet bij.
+
+**Per vestigingsplaats bestaat het wél, maar enkel handmatig** — dat is de Dataloep-route
+hieronder. Afweging: automatisch en per school (dit bestand), of handwerk en per vestiging
+(Tableau). Voor v0.4 is dit bestand de betere ruil.
+
+### v0.4 — Dataloep-route (per vestigingsplaats, handmatig)
 
 - Bron: **Dataloep Leerlingenkenmerken Secundair**, op de Tableau Server van de overheid:
   `https://onderwijs-tableau.vlaanderen.be/t/EXTERN/views/DataloepLeerlingenkenmerkenSecundair/SOCijfersperschooljaar`
