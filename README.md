@@ -48,6 +48,15 @@ Het script weigert weg te schrijven als de dataset meer dan 15% krimpt — een v
 gewijzigde API of een halve storing. Is de krimp terecht, draai dan
 `npm run fetch-data -- --force`.
 
+## Openbaar vervoer
+
+De reistijd met bus of trein in het detailpaneel komt van
+[Transitous](https://transitous.org/), rechtstreeks vanuit de browser. Geen key nodig, maar wel
+voorwaarden: het project moet open source en niet-commercieel zijn, de contactgegevens en de
+bronvermelding in de footer moeten blijven staan, en zware endpoints (zoals routing) gebruik je
+pas na een seintje via hun Matrix-kanaal `#transitous:matrix.spline.de`. Zie
+[CLAUDE.md](./CLAUDE.md) voor de volledige lijst en wat er geverifieerd is.
+
 ## Controles
 
 ```bash

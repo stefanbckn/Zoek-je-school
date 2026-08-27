@@ -40,6 +40,44 @@ export function Footer({ meta }: { meta: DatasetMeta | null }) {
           OpenStreetMap
         </a>
       </p>
+      {/* Verplichte attributie voor het reisadvies: Transitous vraagt een zichtbare link naar
+          hun bronnenpagina. Zie CLAUDE.md. */}
+      <p className="mt-1">
+        Reisadvies openbaar vervoer via{' '}
+        <a href="https://transitous.org/" target="_blank" rel="noreferrer" className="underline">
+          Transitous
+        </a>{' '}
+        ·{' '}
+        <a
+          href="https://transitous.org/sources/"
+          target="_blank"
+          rel="noreferrer"
+          className="underline"
+        >
+          Bronnen van de dienstregelingen
+        </a>
+      </p>
+      {/* Contactgegevens staan hier niet voor de sier. Transitous vraagt bij browsergebruik
+          contactinfo op de site zelf, omdat een browser geen eigen User-Agent kan meesturen en
+          de Referer dus de enige manier is waarop zij ons herkennen. De broncodelink is de
+          "way to get the source" die artikel 13 van de AGPL van een webapp vraagt. Beide dus
+          niet weghalen. Zie CLAUDE.md. */}
+      <p className="mt-1">
+        Vragen of een fout gezien?{' '}
+        <a href="mailto:info@bckn.be" className="underline">
+          info@bckn.be
+        </a>{' '}
+        ·{' '}
+        <a
+          href="https://github.com/stefanbckn/Zoek-je-school"
+          target="_blank"
+          rel="noreferrer"
+          className="underline"
+        >
+          Broncode
+        </a>{' '}
+        onder AGPL-3.0 · © 2026 Stefan Bocken
+      </p>
     </footer>
   )
 }

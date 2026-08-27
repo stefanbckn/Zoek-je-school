@@ -9,6 +9,7 @@ import {
 } from '../lib/aanbod'
 import { NET_CHIP, NET_STYLES } from '../lib/net'
 import { berekenFietsroute, type FietsrouteResultaat } from '../lib/fietsroute'
+import { berekenOvReis, type OvReisResultaat } from '../lib/ov'
 
 interface DetailPanelProps {
   campus: CampusMetAfstand | null
@@ -27,6 +28,7 @@ export function DetailPanel({
   onClose,
 }: DetailPanelProps) {
   const [fietsroute, setFietsroute] = useState<FietsrouteResultaat | 'laden' | null>(null)
+  const [ovReis, setOvReis] = useState<OvReisResultaat | 'laden' | null>(null)
 
   useEffect(() => {
     if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
@@ -37,6 +39,23 @@ export function DetailPanel({
     setFietsroute('laden')
     berekenFietsroute(zoeklocatie, { lat: campus.lat, lon: campus.lon }).then((resultaat) => {
       if (actief) setFietsroute(resultaat)
+    })
+    return () => {
+      actief = false
+    }
+  }, [campus, zoeklocatie])
+
+  // Net als de fietsroute enkel voor de geselecteerde school, niet voor elke kaart in de lijst.
+  // Transitous vraagt expliciet om licht om te springen met routing-calls.
+  useEffect(() => {
+    if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
+      setOvReis(null)
+      return
+    }
+    let actief = true
+    setOvReis('laden')
+    berekenOvReis(zoeklocatie, { lat: campus.lat, lon: campus.lon }).then((resultaat) => {
+      if (actief) setOvReis(resultaat)
     })
     return () => {
       actief = false
@@ -125,7 +144,7 @@ export function DetailPanel({
 
           {!zoeklocatie && (
             <div>
-              <dt className="text-zacht">Met de fiets</dt>
+              <dt className="text-zacht">Met de fiets of het openbaar vervoer</dt>
               <dd className="text-zacht italic">Vul je adres in bovenaan om dit te zien.</dd>
             </div>
           )}
@@ -162,6 +181,82 @@ export function DetailPanel({
           {fietsroute && fietsroute !== 'laden' && fietsroute.status === 'onbeschikbaar' && (
             <div>
               <dt className="text-zacht">Met de fiets</dt>
+              <dd className="text-zacht italic">Momenteel niet beschikbaar, probeer later opnieuw.</dd>
+            </div>
+          )}
+
+          {ovReis === 'laden' && (
+            <div>
+              <dt className="text-zacht">Met het openbaar vervoer</dt>
+              <dd className="text-zacht">Bezig met zoeken…</dd>
+            </div>
+          )}
+          {ovReis && ovReis !== 'laden' && ovReis.status === 'ok' && (
+            <div>
+              <dt className="text-zacht">Met het openbaar vervoer</dt>
+              <dd className="text-inkt">
+                {ovReis.reis.duurMin} min ·{' '}
+                {ovReis.reis.overstappen === 0
+                  ? 'rechtstreeks'
+                  : `${ovReis.reis.overstappen}× overstappen`}
+                {ovReis.reis.lijnen.length > 0 && (
+                  <>
+                    {' '}
+                    · {ovReis.reis.lijnen.length === 1 ? 'lijn' : 'lijnen'}{' '}
+                    {ovReis.reis.lijnen.join(', ')}
+                  </>
+                )}
+              </dd>
+              {/* Een reistijd zonder het moment erbij is misleidend: de dienstregeling van een
+                  woensdagochtend is een andere dan die van een zondagavond, en in een
+                  vakantieweek klopt ze sowieso niet voor een schooldag. Toon dus waarvoor
+                  gerekend is. */}
+              <dd className="text-zacht text-xs">
+                Aankomst{' '}
+                {ovReis.reis.aankomst.toLocaleString('nl-BE', {
+                  weekday: 'long',
+                  day: 'numeric',
+                  month: 'long',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+                , met {ovReis.reis.wandelMin} min stappen. Vakantiedagen zitten er niet in.
+              </dd>
+              {/* Verplichte attributie: de footer draagt ze ook, maar dit paneel ligt daar als
+                  modaal venster overheen. Zelfde reden als bij de fietsroute. */}
+              <dd className="text-zacht text-xs">
+                Reisadvies via{' '}
+                <a
+                  href="https://transitous.org/sources/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  Transitous
+                </a>
+                , op basis van de dienstregeling van De Lijn en NMBS
+              </dd>
+            </div>
+          )}
+          {ovReis && ovReis !== 'laden' && ovReis.status === 'te-voet' && (
+            <div>
+              <dt className="text-zacht">Met het openbaar vervoer</dt>
+              <dd className="text-inkt">
+                Niet nodig: {ovReis.wandelMin} min te voet, sneller dan met bus of trein.
+              </dd>
+            </div>
+          )}
+          {ovReis && ovReis !== 'laden' && ovReis.status === 'geen-verbinding' && (
+            <div>
+              <dt className="text-zacht">Met het openbaar vervoer</dt>
+              <dd className="text-zacht italic">
+                Geen verbinding gevonden voor de ochtendspits.
+              </dd>
+            </div>
+          )}
+          {ovReis && ovReis !== 'laden' && ovReis.status === 'onbeschikbaar' && (
+            <div>
+              <dt className="text-zacht">Met het openbaar vervoer</dt>
               <dd className="text-zacht italic">Momenteel niet beschikbaar, probeer later opnieuw.</dd>
             </div>
           )}

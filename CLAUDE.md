@@ -275,33 +275,54 @@ Respons: `itineraries[].duration` (seconden), `.transfers`, en `.legs[]` met `mo
 **De voorwaarden** (`transitous.org/api`) — toegang mag als het project open source is, niet
 commercieel, licht voor hun infrastructuur, en zich aan het gebruiksbeleid houdt:
 
-1. **Open source, gepubliceerd onder een open-source licentie.** Prototypen mag zonder.
-   ⚠️ **Dit is de enige echte openstaande blocker, en hij zit dubbel.** Ten eerste is de repo
-   niet publiek: `github.com/stefanbckn/Zoek-je-school` geeft HTTP 404 zonder login (geverifieerd
-   27/08/2026). Ten tweede staat er geen `LICENSE`-bestand in, en zonder licentie is code strikt
-   genomen "alle rechten voorbehouden" — dus ook een publieke repo is dan niet open source.
-   Beide moeten geregeld zijn vóór we de API in productie gebruiken.
-2. **Contact bij twijfel over de belasting** (dure requests, veel gebruikers), via hun
-   Matrix-kanaal `#transitous:matrix.spline.de`. Dus geen harde verplichting vooraf — maar
-   routing is nu net het type request dat ze als zwaar benoemen, en ze horen sowieso graag
-   waarvoor de API gebruikt wordt. Bijkomend voordeel: dan kunnen ze ons waarschuwen bij
-   breaking changes.
+1. **Open source, gepubliceerd onder een open-source licentie**, en niet-commercieel.
+   Prototypen mag zonder. ✅ Licentie geregeld in v0.3: `LICENSE` bevat de letterlijke
+   AGPL-3.0-tekst van gnu.org. ⚠️ **Nog open: de repo publiek zetten.**
+   `github.com/stefanbckn/Zoek-je-school` gaf op 27/08/2026 nog HTTP 404 zonder login. Zonder
+   dat is er geen publieke broncode en is de voorwaarde niet vervuld. Doet de eigenaar zelf.
+   Let ook op de niet-commerciële eis: een donatieknop is verdedigbaar, advertenties of een
+   betaalmuur zouden deze API-toegang kosten.
+2. **Contact opnemen vóór gebruik van zware endpoints**, via hun Matrix-kanaal
+   `#transitous:matrix.spline.de`. ⚠️ **Correctie op een eerdere versie van dit bestand**, die
+   hier "geen harde verplichting vooraf" van maakte. De voorwaarden zeggen letterlijk *"contact
+   us before using any potentially resource-intensive API endpoints (such as routing,
+   isochrones)"* — en routing is precies wat wij doen. Herlezen op 27/08/2026. Nog te doen door
+   de eigenaar; kan niet vanuit deze repo.
 3. **Contactgegevens meesturen.** Een `User-Agent` met naam, versie en contactadres.
    ⚠️ **Dat kan hier niet** — een browser laat `User-Agent` niet overschrijven, en `fetch`
    weigert die header stil. Transitous voorziet dat expliciet: draait de app in de browser, dan
    volstaat de `Referer`-header, **op voorwaarde dat er contactgegevens op de site staan.**
-   Die staan er nu niet. Onze `Referrer-Policy: strict-origin-when-cross-origin` stuurt bij een
-   cross-origin call enkel de origin mee — genoeg om de site te identificeren, dus dat hoeft
-   niet losser gezet te worden.
+   ✅ Sinds v0.3 staat `info@bckn.be` in de footer — die regel is dus een voorwaarde, geen
+   opsmuk. Onze `Referrer-Policy: strict-origin-when-cross-origin` stuurt bij een cross-origin
+   call enkel de origin mee — genoeg om de site te identificeren, dus dat hoeft niet losser
+   gezet te worden.
 4. **Attributie**: zichtbare link naar `https://transitous.org/sources/`, plus de
    OpenStreetMap-attributie (`openstreetmap.org/copyright`) — die laatste staat er al voor de
    kaartlaag, maar geldt dan ook voor de routes.
 5. **Showcase** (optioneel): de app mag toegevoegd worden aan de Transitous-website.
 
-Best effort, geen SLA. Praktisch gevolg voor de implementatie: `connect-src` in `netlify.toml`
-moet `https://api.transitous.org` erbij krijgen. Roep het rechtstreeks vanuit de browser aan —
-niet via een Netlify Function zoals bij de fietsroute, want daar was de reden een geheime key, en
-die is hier niet; proxyen zou net de `Referer` wegnemen waarmee zij ons herkennen.
+Best effort, geen SLA. `connect-src` in `netlify.toml` heeft `https://api.transitous.org`
+erbij gekregen. Roep het rechtstreeks vanuit de browser aan — niet via een Netlify Function zoals
+bij de fietsroute, want daar was de reden een geheime key, en die is hier niet; proxyen zou net
+de `Referer` wegnemen waarmee zij ons herkennen.
+
+**Implementatie: `src/lib/ov.ts`, opgeleverd in v0.3.** Wat daar geverifieerd is:
+
+- `arriveBy=true` bij de `time`-parameter maakt er een gewenste **aankomsttijd** van. We mikken
+  op 8u30 op de eerstvolgende weekdag: een zoekopdracht op zondagavond mag geen zondagse
+  dienstregeling tonen. Vakantiedienstregelingen vangt dat niet op — daarom staat de datum
+  waarvoor gerekend is in de UI, naast het resultaat.
+- **Bij korte afstanden is `itineraries` leeg en staat er enkel een wandelroute in `direct`.**
+  Geverifieerd op een rit van 400 m. Dat is geen fout: de app toont dan "te voet sneller", niet
+  "geen verbinding". Wie dat onderscheid niet maakt, meldt bij elke school in de buurt ten
+  onrechte dat er geen bus rijdt.
+- **`mode` is niet betrouwbaar genoeg om er een vervoermiddel bij te schrijven.** De S-treinen
+  van NMBS komen binnen als `METRO`, en Antwerpen heeft geen metro. Daarom toont de UI enkel het
+  lijnnummer ("lijnen A3, 51") en geen "bus"/"trein" ervoor. Niet "verbeteren" zonder de feed
+  opnieuw na te kijken.
+- Net als de fietsroute enkel voor de **geselecteerde** school in het detailpaneel, met een
+  in-memory cache per `(van, naar, aankomstmoment)`. Voor elke kaart in de lijst routeren is
+  precies de belasting waar Transitous voor waarschuwt.
 
 Valt Transitous alsnog af, dan blijft zelf MOTIS of OpenTripPlanner draaien over — en dán botst
 het alsnog op "geen backend".
@@ -349,11 +370,12 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 | **v0.1.x** | Fiets | Fietsafstand/-tijd per school in detailpaneel (OpenRouteService via api.heigit.org) | **Opgeleverd** |
 | **v0.2** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
 | **v0.2.1** | UI-verbeteringen | Actieve filters zichtbaar onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode | **Ingepland**, zie hieronder |
-| **v0.3** | GOK-indicatoren + aanmelden | OKI + 4 leerlingenkenmerken per campus · aanmeldsysteem per school tonen/linken · **lijst pagineren** | OKI-bron geverifieerd. Aanmelden: **geen centrale bron**, zie hieronder. Pagineren: puur frontend, zie hieronder |
+| **v0.3** | Openbaar vervoer + pagineren | AGPL-3.0-licentie · reistijd met bus/trein via Transitous · contactgegevens in de footer · lijst pagineren | **Opgeleverd**, behalve twee stappen die alleen de eigenaar kan zetten: repo publiek maken en Transitous verwittigen. Tot dan staat de OV-call in de code maar is de voorwaarde niet vervuld |
+| **v0.4** | GOK-indicatoren + aanmelden | 4 leerlingenkenmerken per school · aanmeldsysteem per school tonen/linken | GOK: **downloadbare xlsx gevonden**, join geverifieerd op 269/272 scholen — automatiseerbaar, maar per school en niet per vestiging. Aanmelden: **geen centrale bron**, zie hieronder |
 | **v0.5** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | **v0.6** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
 | **v0.7** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
-| **Geparkeerd** | Openbaar vervoer | Reistijd met de bus | De Lijn heeft inderdaad geen routeplanner-API (die is verdwenen uit v1). **Maar er is een weg: Transitous** — gratis MOTIS-instantie die De Lijn al dekt, geen key, geen backend nodig. Blocker is niet technisch maar de licentievoorwaarde: repo moet publiek én open source zijn — zie de sectie Openbaar vervoer hierboven |
+| ~~Geparkeerd~~ | Openbaar vervoer | Reistijd met de bus | **Uit de parkeerstand gehaald en opgeleverd in v0.3** via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken |
 
 ### v0.2 — stand van zaken
 
@@ -452,7 +474,10 @@ geen extra download, geen layout-verschuiving bij het laden, en niets dat de CSP
 raakt. Wil je later meer karakter, doe dat dan met één webfont voor koppen alleen, niet voor
 lopende tekst.
 
-### v0.3 — lijstweergave pagineren
+### v0.3 — lijstweergave pagineren (opgeleverd)
+
+**Opgeleverd** in `ResultList.tsx`: 25 adressen per lading, "Toon meer"-knop, teller reset bij
+elke filterwijziging. De uitgangspunten hieronder zijn dus beschrijvend geworden, geen plan meer.
 
 Zonder filters staan er 303 adressen in de lijst, allemaal tegelijk in de DOM. Doorscrollen naar
 beneden duurt onnodig lang, en dat is precies het scenario van iemand die nog geen idee heeft
@@ -476,7 +501,7 @@ Uitgangspunten voor wie dit bouwt:
   scrollgebied). Een kortere lijst maakt dat minder nijpend, maar lost het niet op: de
   gemeentelijst heeft nog steeds z'n eigen scrollbalk binnen een meescrollende kolom.
 
-### v0.3 — aanmelden: geen centrale bron (onderzocht 27/08/2026)
+### v0.4 — aanmelden: geen centrale bron (onderzocht 27/08/2026)
 
 Er is **geen register, dataset of API** die scholen aan een aanmeldsysteem koppelt. Nagekeken:
 de API-catalogus van het onderwijsportaal bevat geen aanmelden-product (zie hierboven), en er
@@ -500,7 +525,62 @@ staan op sites met eigen voorwaarden, en ze wijzigen per schooljaar.
 jaartal erbij, en link naar de bron in plaats van de procedure over te nemen — anders staat er
 volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
-### v0.3 — bron geverifieerd, geen API-key nodig
+### v0.4 — GOK-indicatoren: er is wél een downloadbaar bestand (28/08/2026)
+
+**Dit vervangt de Tableau-route hieronder als eerste keuze.** AgODi publiceert de
+leerlingenkenmerken per school als gewone xlsx op het documentenportaal. Geen Tableau, geen
+handmatige kruistabel, geen key — `fetch-data.ts` kan het rechtstreeks ophalen.
+
+Gevonden via `onderwijsstatistieken.depuydt.eu` (Dieter Depuydt), die dezelfde cijfers toont en
+in zijn FAQ schrijft dat alles uit publieke AgODi-publicaties komt. Zijn percentages zijn
+**exact gereproduceerd** uit het bestand hieronder (Sint-Jan Berchmanscollege Brussel: 14,7 /
+65,6 / 24,2 / 62,3) — dus dit is zijn bron, en onze kolominterpretatie klopt.
+
+```
+https://data-onderwijs.vlaanderen.be/documenten/bestanden/
+  Publicaties_Leerlingenkenmerken_Overzicht_2024-2025_so.xlsx
+```
+
+- **Meest recente schooljaar is 2024-2025** (getest: 2025-2026 geeft 404). Eén werkblad,
+  1002 datarijen, alle Vlaamse SO-instellingen.
+- ⚠️ **De bestandsnaam is niet voorspelbaar.** 2021-2022 en 2022-2023 heten `..._so_1.xlsx`,
+  2023-2024 en 2024-2025 heten `..._so.xlsx` — en bij de pdf's is het net omgekeerd. Elk jaar
+  het patroon hardcoden en verhogen gaat dus stuk. Haal de link op van de AgODi-pagina
+  `cijfermateriaal-leerlingenkenmerken`, of controleer beide varianten met een HEAD-request.
+  (Die AgODi-pagina was op 27-28/08/2026 zelf niet bereikbaar: `www.agodi.be` geeft een DNS-fout
+  en de redirect naar `paddlecms.net` loopt in een time-out. Het documentenportaal werkt wél.)
+- **Kolommen:** Provincie · Postnr · Gemeente · Instelling (= schoolnummer) · Naam instelling ·
+  Straat · Huisnr · Teldatum · Aantal lln · en dan vier tellingen: indicator "opleiding moeder",
+  "schooltoelage", "thuistaal", "buurt".
+- **Het zijn absolute aantallen, geen percentages** — en er staan halven in (733,5), doordat
+  leerlingen in co-ouderschap half meetellen. Percentage = teller / aantal lln.
+- **Teldatum is 1 februari van het jaar ervóór** (bestand 2024-2025 telt op 01/02/2024). Het
+  bestand heet niet voor niets "voorschot werkingstoelagen": dit is de financieringsteling.
+- **OKI staat er niet als kolom in.** De definitie (som van de risicokenmerken per leerling,
+  gedeeld door het aantal leerlingen) komt neer op `(4 tellingen opgeteld) / aantal lln`.
+  ⚠️ Dat is een **afleiding, geen gepubliceerd cijfer** — vóór we het als "OKI" labelen, één
+  school naast de gepubliceerde "Gemiddelde OKI" in Dataloep leggen. Zolang dat niet gebeurd is:
+  toon de vier percentages, niet een zelfberekende OKI.
+
+**Join tegen onze dataset, geverifieerd op het bestand 2024-2025:**
+
+- Op `schoolnummer`: **269 van onze 272 scholen matchen.** De drie die ontbreken zijn Arkades
+  (Herentals, onafhankelijk — krijgt geen werkingstoelagen, dus terecht afwezig) en Mariagaarde
+  secundair I en II (Malle, recent gesplitst; nog niet in de telling van feb 2024).
+- ⚠️ **Het adres in dit bestand is dat van de instelling, niet van de vestigingsplaats.** Bij
+  86 van de 269 gematchte scholen wijkt het af van het campusadres dat wij tonen (bv. Panorama
+  staat er met Bredastraat 35, wij tonen Quellinstraat 31). **Join dus op schoolnummer, nooit op
+  adres**, en hang het cijfer aan `SchoolOpCampus`, niet aan `Campus`.
+- **Gevolg voor de UI: dit is per school, niet per campus.** Een school met drie campussen heeft
+  één cijfer voor alle drie. Dat is een wezenlijk verschil met het studieaanbod, dat we juist wél
+  per adres samenvoegen — hier mag dat niet, want optellen over scholen die een adres delen zou
+  een gemiddelde over andere leerlingenpopulaties maken. Zet het er in de UI expliciet bij.
+
+**Per vestigingsplaats bestaat het wél, maar enkel handmatig** — dat is de Dataloep-route
+hieronder. Afweging: automatisch en per school (dit bestand), of handwerk en per vestiging
+(Tableau). Voor v0.4 is dit bestand de betere ruil.
+
+### v0.4 — Dataloep-route (per vestigingsplaats, handmatig)
 
 - Bron: **Dataloep Leerlingenkenmerken Secundair**, op de Tableau Server van de overheid:
   `https://onderwijs-tableau.vlaanderen.be/t/EXTERN/views/DataloepLeerlingenkenmerkenSecundair/SOCijfersperschooljaar`
@@ -523,11 +603,43 @@ volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
   segregatie. Toon het als context over de leerlingenpopulatie, met uitleg — nooit als kaal cijfer
   of ranglijst.
 
+#### Doodlopende sporen (opnieuw nagekeken 27/08/2026)
+
+Bij het voorbereiden van v0.3 is nog eens gezocht naar een bron die wél automatiseerbaar is.
+Die is er niet. Wat gecontroleerd is, zodat niemand het een derde keer doet:
+
+- **De site is verhuisd.** `onderwijs.vlaanderen.be/nl/onderwijsstatistieken/...` geeft nu 301
+  naar `vlaanderen.be`, en die datapagina somt Dataloep, het statistisch jaarboek en het
+  API-portaal op — géén downloadbaar leerlingenkenmerken-bestand. Oude links naar
+  statistiekpagina's landen op een algemene pagina, dus een dode link betekent hier niet dat de
+  data weg is.
+- **`agodi.be` bestaat niet meer als host** (DNS-fout op `www.agodi.be`; `agodi.be` redirect naar
+  een `paddlecms.net`-adres dat time-outt). Zoekresultaten verwijzen er nog naar.
+- **provincies.incijfers.be** (Swing/ABF, het platform achter "Provincies in cijfers") heeft wél
+  een OData-service op `/viewerservices/odata/` — maar die geeft anoniem
+  `401 {"error":{"message":"Guest user group not found, No access!"}}`. Geen open API dus. De
+  databank zelf zit bovendien op gemeenteniveau, niet per vestigingsplaats.
+- Het **Tableau-dashboard staat er nog** en laadt (geverifieerd vandaag). De handmatige
+  kruistabel-export blijft de route.
+
 ### Juridisch uitgesloten als bron
 
 `onderwijskiezer.be` (CLB) heeft studieaanbod mét finaliteit én infomomenten, maar de algemene
 voorwaarden verbieden kopiëren, reproduceren en herdistribueren van hun materiaal. Enkel naar
 linken mag. Niet als databron gebruiken.
+
+## Licentie
+
+De code staat sinds v0.3 onder **AGPL-3.0**, met de letterlijke tekst van gnu.org in `LICENSE`.
+Twee dingen die daaruit volgen en die je niet per ongeluk mag ongedaan maken:
+
+- **De broncodelink in de footer is een licentievereiste**, geen extraatje. Artikel 13 van de
+  AGPL vraagt dat een webapp z'n gebruikers een weg naar de bron biedt.
+- **De contactregel in de footer is een Transitous-vereiste.** Zie de sectie Openbaar vervoer.
+
+De data in `public/data/` valt niet onder de AGPL: die blijft van Onderwijs en Vorming. Het
+API-portaal publiceert geen expliciete hergebruikslicentie bij deze producten (nagekeken
+27/08/2026) — niet gokken dat het open data is, en bij twijfel navragen bij het portaal.
 
 ## Workflow
 
