@@ -1,8 +1,9 @@
 import { FINALITEIT_OPTIONS, FINALITEIT_STYLES, type FinaliteitKeuze } from '../lib/aanbod'
-import { NET_OPTIONS } from '../lib/net'
+import { NET_STYLES, NET_UITLEG } from '../lib/net'
 import type { Net } from '../types'
 
 interface FilterPanelProps {
+  netOpties: Net[]
   gemeenteOpties: string[]
   netten: Net[]
   gemeenten: string[]
@@ -24,6 +25,7 @@ const FINALITEIT_UITLEG: Record<FinaliteitKeuze, string> = {
 }
 
 export function FilterPanel({
+  netOpties,
   gemeenteOpties,
   netten,
   gemeenten,
@@ -74,16 +76,23 @@ export function FilterPanel({
 
       <div>
         <h2 className="text-sm font-medium text-slate-700 mb-2">Net</h2>
-        <div className="flex flex-col gap-1.5">
-          {NET_OPTIONS.map((net) => (
-            <label key={net} className="flex items-center gap-2 text-sm text-slate-600">
+        <div className="flex flex-col gap-2">
+          {netOpties.map((net) => (
+            <label key={net} className="flex items-start gap-2 text-sm text-slate-600">
               <input
                 type="checkbox"
                 checked={netten.includes(net)}
                 onChange={() => toggleNet(net)}
-                className="rounded border-slate-300"
+                className="mt-1 rounded border-slate-300"
               />
-              {net}
+              <span>
+                <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${NET_STYLES[net]}`}>
+                  {net}
+                </span>
+                {NET_UITLEG[net] && (
+                  <span className="block text-xs text-slate-500">{NET_UITLEG[net]}</span>
+                )}
+              </span>
             </label>
           ))}
         </div>

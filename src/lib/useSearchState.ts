@@ -37,6 +37,32 @@ function parseList(raw: string | null): string[] {
 }
 
 /**
+ * Tot v0.2 had de netfilter één categorie 'Officieel gesubsidieerd'; die is opgesplitst in
+ * 'Provinciaal' en 'Gemeentelijk'. Links die voordien gedeeld zijn dragen de oude waarde nog.
+ * Zonder deze vertaling geeft zo'n link 0 resultaten zonder zichtbaar vinkje — de gebruiker
+ * ziet een lege pagina en begrijpt niet waarom. Vertalen naar beide opvolgers houdt de
+ * betekenis van die links exact intact.
+ */
+const NET_MIGRATIE: Record<string, Net[]> = {
+  'Officieel gesubsidieerd': ['Provinciaal', 'Gemeentelijk'],
+}
+
+function parseNetten(raw: string | null): Net[] {
+  const netten = new Set<Net>()
+  for (const waarde of parseList(raw)) {
+    const opvolgers = NET_MIGRATIE[waarde]
+    if (opvolgers) {
+      for (const n of opvolgers) netten.add(n)
+    } else if ((NET_OPTIONS as string[]).includes(waarde)) {
+      // Onbekende netten wegfilteren i.p.v. blind casten: anders levert ?net=onzin een
+      // filter op die nooit matcht, en dus 0 resultaten zonder uitleg.
+      netten.add(waarde as Net)
+    }
+  }
+  return [...netten]
+}
+
+/**
  * De URL is deelbaar en dus door de gebruiker bewerkbaar. Alles wat eruit komt is onbetrouwbaar:
  * een afgekapte link, een typfout of een geplakte URL mag nooit een lege of kapotte pagina geven.
  * Ongeldige waarden vallen daarom terug op "niet ingevuld", niet op NaN.
@@ -69,11 +95,7 @@ function parseState(search: string): SearchState {
     lon: heeftLocatie ? lon : null,
     label: heeftLocatie ? params.get('label') : null,
     straalKm: parseStraal(params.get('straal')),
-    // Onbekende netten wegfilteren i.p.v. blind casten: anders levert ?net=onzin een
-    // filter op die nooit matcht, en dus opnieuw 0 resultaten zonder uitleg.
-    netten: parseList(params.get('net')).filter((n): n is Net =>
-      (NET_OPTIONS as string[]).includes(n),
-    ),
+    netten: parseNetten(params.get('net')),
     gemeenten: parseList(params.get('gemeenten')),
     tekst: params.get('q') ?? '',
     // Zelfde reden als bij netten: een onbekende waarde uit een bewerkte URL mag geen
