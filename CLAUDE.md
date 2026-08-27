@@ -68,8 +68,8 @@ De brondata bevat regelmatig **meerdere apart geregistreerde scholen (elk een ei
 op exact hetzelfde fysieke adres** — niet zomaar interne vestigingsplaats-varianten van één school,
 maar echt losse legale entiteiten die een campus delen (bv. "Sint-Gabriëlcollege" +
 "Sint-Gabriëlcollege - Middenschool 1/2/3" zijn 4 verschillende schoolnummers op 2 gedeelde adressen).
-Geverifieerd: 386 van de 562 scholen (69%) delen een adres met minstens 1 andere school; sommige
-adressen hebben tot 11 verschillende scholen. Dit als losse kaartjes tonen is verwarrend — expliciet
+Geverifieerd op de API-dataset: 386 van de 559 vestigingen (69%) delen een adres met minstens 1
+andere school — 130 van de 303 adressen; sommige adressen hebben tot 11 verschillende scholen. Dit als losse kaartjes tonen is verwarrend — expliciet
 zo beslist door de gebruiker.
 
 - `scripts/fetch-data.ts` groepeert daarom op `postcode|straat|huisnummer` (busnummer genegeerd in
@@ -82,10 +82,11 @@ zo beslist door de gebruiker.
   met de scholen als losse, individueel klikbare rijen erin. `DetailPanel` toont altijd één specifieke
   school (`campus` + `school` samen als props), met een melding welke andere scholen hetzelfde adres
   delen.
-- Toekomstig werk (afgesproken met de gebruiker): zodra het studieaanbod gekoppeld is, worden
-  finaliteiten/richtingen **per adres/campus** samengevoegd getoond (een andere campus met andere
-  richtingen blijft wél apart) — dat past bovenop deze structuur, `SchoolOpCampus.richtingen` is de
-  plek waar dat per school binnenkomt.
+- **Sinds v0.2 opgeleverd:** finaliteiten/richtingen worden **per adres/campus** samengevoegd
+  getoond én gefilterd (een andere campus met ander aanbod blijft wél apart). `campusAanbod()` in
+  `src/lib/aanbod.ts` doet die samenvoeging; `SchoolOpCampus.richtingen` is waar het per school
+  binnenkomt. `DetailPanel` toont nog steeds één specifieke school, maar het aanbodblok erin geldt
+  voor het hele adres — dat staat er ook expliciet bij als er meerdere scholen zijn.
 
 ### Studieaanbod (richtingen) — geïntegreerd sinds v0.2
 
@@ -239,16 +240,26 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 **Datalaag opgeleverd**: `fetch-data.ts` draait volledig op de API's, met studieaanbod,
 finaliteit en soort_bestuur in de dataset. Zie de databronnen-sectie hierboven voor de details.
 
-**Nog te doen in de UI** (de data ligt klaar, er wordt nog niets van getoond):
-- Richtingen tonen in `DetailPanel`, per campus samengevoegd over de scholen op dat adres
-  (afgesproken met de gebruiker). Groepeer op graad + finaliteit, niet als platte lijst van
-  8265 regels.
-- Filteren op finaliteit en op richting — de placeholder-sectie in `FilterPanel` activeren.
+**UI opgeleverd**: studieaanbod in `DetailPanel` (per graad gegroepeerd, met finaliteit-chips),
+finaliteit-badges en richtingaantal in `ResultCard`, en filters op finaliteit + vrije tekst op
+studierichting in `FilterPanel`. URL-state uitgebreid met `finaliteit=` en `richting=`.
+
+Twee keuzes daarin, bewust:
+- **Aanbod wordt op adresniveau samengevoegd**, niet per school — ook in de filters. Scholen die
+  een campus delen vullen elkaars aanbod aan; wie op "Latijn" zoekt wil dat adres zien, ook als
+  de richting bij de buurschool op hetzelfde adres hoort. Zie `campusAanbod()` in `src/lib/aanbod.ts`.
+- **Richtingen worden ontdubbeld tot één regel per graad.** De bron noemt elk leerjaar apart
+  ("1e leerjaar in de 2e graad Latijn ASO" én "2e leerjaar in de 2e graad Latijn ASO"); dat
+  voorvoegsel wordt weggehaald en de dubbels vallen samen. Bij Sint-Gabriëlcollege: 55 ruwe
+  richtingen over 4 scholen → 24 regels. Matcht het voorvoegselpatroon niet (eerste graad, 7e
+  leerjaar, HBO5, OKAN), dan blijft de naam onaangeroerd.
+
+**Nog te doen in de UI:**
 - `soortBestuur` in de netfilter verwerken: GO! / Provinciaal / Stedelijk / Vrij.
   Let op: `Net` in `src/types.ts` is nog het oude 4-waarden-type dat `NET_STYLES`,
   `NET_OPTIONS` en de URL-state gebruiken. `soortBestuur` staat er los naast, precies om die
   UI niet te breken. Wie de filter uitbreidt, moet die drie plekken samen aanpassen.
-- Vermeld het schooljaar (`meta.schooljaarAanbod`) bij het aanbod in de UI.
+- Eventueel filteren op studiegebied (zit in de data, nog niet in de UI).
 
 **Infodagen: geen bron.** De volledige API-catalogus bevat geen infomomenten-product.
 onderwijskiezer.be heeft ze wel maar is juridisch uitgesloten (zie hieronder). Dit item schuift
@@ -332,6 +343,21 @@ linken mag. Niet als databron gebruiken.
   Netlify deployt enkel vanaf `main`, dus werk op een branch gaat niet live tot de PR gemerged is.
 - `gh` CLI staat geïnstalleerd maar is **niet ingelogd** (vereist interactieve browser-login).
   PR's aanmaken doet de gebruiker zelf, of via een voorgevulde compare-link.
+
+## Lokaal draaien en preview
+
+- **De dev-server start je zelf**: `npm run dev` (poort via `process.env.PORT`, standaard 5173).
+  Dat werkt gewoon.
+- **`.claude/launch.json` is bewust attach-only** (enkel een `url`, geen `runtimeExecutable`).
+  Laat je de preview-tool de server zélf spawnen, dan botst dat op deze machine op een
+  sandbox-`EPERM` — eerst bij `process.cwd()` (`uv_cwd`), en met een absoluut pad bij het lezen
+  van `node_modules/vite/bin/vite.js`. Vastgesteld op 25/08/2026 (commit `8702c91`) en op
+  27/08/2026 opnieuw, nadat de config terug op spawnen was gezet.
+- **Zet er dus geen `runtimeExecutable`/`runtimeArgs` in.** Dit is al twee keer opnieuw
+  uitgevonden. Werkwijze: `npm run dev` in een aparte shell, daarna koppelt de preview aan
+  `http://localhost:5173` vast.
+- Dit zegt niets over de app zelf — die draait lokaal prima, en de UI van v0.2 is er in de
+  browser mee geverifieerd.
 
 ## Node-versie
 

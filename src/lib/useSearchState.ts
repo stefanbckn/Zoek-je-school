@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { FINALITEIT_OPTIONS, type FinaliteitKeuze } from './aanbod'
 import { NET_OPTIONS } from './net'
 import type { Net } from '../types'
 
@@ -13,6 +14,10 @@ export interface SearchState {
   /** Leeg = alle gemeenten. */
   gemeenten: string[]
   tekst: string
+  /** Leeg = alle finaliteiten. */
+  finaliteiten: FinaliteitKeuze[]
+  /** Vrije tekst om op studierichting/studiegebied te zoeken. Leeg = geen filter. */
+  richting: string
 }
 
 const DEFAULT_STATE: SearchState = {
@@ -23,6 +28,8 @@ const DEFAULT_STATE: SearchState = {
   netten: [],
   gemeenten: [],
   tekst: '',
+  finaliteiten: [],
+  richting: '',
 }
 
 function parseList(raw: string | null): string[] {
@@ -69,6 +76,12 @@ function parseState(search: string): SearchState {
     ),
     gemeenten: parseList(params.get('gemeenten')),
     tekst: params.get('q') ?? '',
+    // Zelfde reden als bij netten: een onbekende waarde uit een bewerkte URL mag geen
+    // filter opleveren die nooit matcht en dus 0 resultaten zonder uitleg geeft.
+    finaliteiten: parseList(params.get('finaliteit')).filter((f): f is FinaliteitKeuze =>
+      (FINALITEIT_OPTIONS as readonly string[]).includes(f),
+    ),
+    richting: params.get('richting') ?? '',
   }
 }
 
@@ -81,6 +94,8 @@ function toSearchParams(state: SearchState): URLSearchParams {
   if (state.netten.length > 0) params.set('net', state.netten.join(','))
   if (state.gemeenten.length > 0) params.set('gemeenten', state.gemeenten.join(','))
   if (state.tekst) params.set('q', state.tekst)
+  if (state.finaliteiten.length > 0) params.set('finaliteit', state.finaliteiten.join(','))
+  if (state.richting) params.set('richting', state.richting)
   return params
 }
 

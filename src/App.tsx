@@ -5,6 +5,7 @@ import { Footer } from './components/Footer'
 import { MapView } from './components/MapView'
 import { ResultList } from './components/ResultList'
 import { SearchBar } from './components/SearchBar'
+import { richtingMatcht } from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
 import { useSearchState } from './lib/useSearchState'
 import { useVestigingen } from './lib/useVestigingen'
@@ -23,7 +24,11 @@ function App() {
   const [filtersOpen, setFiltersOpen] = useState(false)
 
   const actieveFilters =
-    state.netten.length + state.gemeenten.length + (state.tekst.trim() ? 1 : 0)
+    state.netten.length +
+    state.gemeenten.length +
+    state.finaliteiten.length +
+    (state.tekst.trim() ? 1 : 0) +
+    (state.richting.trim() ? 1 : 0)
 
   const gemeenteOpties = useMemo(
     () => [...new Set(campussen.map((c) => c.gemeente))].sort((a, b) => a.localeCompare(b, 'nl')),
@@ -39,6 +44,8 @@ function App() {
 
   const zichtbareCampussen = useMemo(() => {
     const tekstLower = state.tekst.trim().toLowerCase()
+    const richtingTerm = state.richting.trim()
+    const filtertOpAanbod = richtingTerm.length > 0 || state.finaliteiten.length > 0
 
     const gefilterd = campussen
       .map((c) => ({
@@ -52,7 +59,19 @@ function App() {
       .filter((c) => {
         if (c.scholen.length === 0) return false
         if (state.gemeenten.length > 0 && !state.gemeenten.includes(c.gemeente)) return false
-        return true
+        if (!filtertOpAanbod) return true
+        // Aanbodfilters gelden op adresniveau, niet per school: scholen die een campus delen
+        // vullen elkaars aanbod aan, en wie op "Latijn" zoekt wil dat adres zien — ook als
+        // de richting bij de buurschool op hetzelfde adres hoort. Zie CLAUDE.md.
+        return c.scholen.some((s) =>
+          s.richtingen.some((r) => {
+            if (state.finaliteiten.length > 0) {
+              if (r.finaliteit === null) return false
+              if (!state.finaliteiten.includes(r.finaliteit)) return false
+            }
+            return richtingMatcht(r, richtingTerm)
+          }),
+        )
       })
 
     const metAfstand: CampusMetAfstand[] = gefilterd.map((c) => ({
@@ -77,7 +96,17 @@ function App() {
     }
 
     return binnenStraal
-  }, [campussen, state.lat, state.lon, state.straalKm, state.netten, state.gemeenten, state.tekst])
+  }, [
+    campussen,
+    state.lat,
+    state.lon,
+    state.straalKm,
+    state.netten,
+    state.gemeenten,
+    state.tekst,
+    state.finaliteiten,
+    state.richting,
+  ])
 
   function selecteer(campus: CampusMetAfstand, school: SchoolOpCampus) {
     setGeselecteerd({ campus, school })
@@ -109,9 +138,13 @@ function App() {
             netten={state.netten}
             gemeenten={state.gemeenten}
             tekst={state.tekst}
+            finaliteiten={state.finaliteiten}
+            richting={state.richting}
             onNettenChange={(netten) => update({ netten })}
             onGemeentenChange={(gemeenten) => update({ gemeenten })}
             onTekstChange={(tekst) => update({ tekst })}
+            onFinaliteitenChange={(finaliteiten) => update({ finaliteiten })}
+            onRichtingChange={(richting) => update({ richting })}
           />
         </div>
 
@@ -168,6 +201,7 @@ function App() {
         campus={geselecteerd?.campus ?? null}
         school={geselecteerd?.school ?? null}
         zoeklocatie={zoeklocatie}
+        schooljaarAanbod={meta?.schooljaarAanbod ?? null}
         onClose={() => setGeselecteerd(null)}
       />
 
