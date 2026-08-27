@@ -198,6 +198,81 @@ zo beslist door de gebruiker.
   sessie te vermijden.
 - Geen key ingesteld → `berekenFietsroute` geeft stil `null` terug, geen fetch-poging, geen crash.
 
+### Openbaar vervoer — De Lijn (onderzocht 27/08/2026, nog niet in gebruik)
+
+Portaal: `https://data.delijn.be` (Azure API Management). Account aanmaken → op een product
+intekenen → key. **Geen goedkeuring nodig** (`approvalRequired: false`, uitgelezen via hun eigen
+`/developer/products`-endpoint). Licentie: **Gratis Open Data Licentie Vlaanderen v1.0** —
+hergebruik mag, ook commercieel, mits bronvermelding. Limieten: 864.000 calls/dag en
+6.000/minuut per product.
+
+Alle endpoints hieronder zijn geverifieerd door ze effectief aan te roepen zonder key:
+**401 = bestaat en vraagt een key, 404 = bestaat niet.**
+
+| Product | Basis-URL | Inhoud |
+| --- | --- | --- |
+| Open Data V1 Core | `https://api.delijn.be/DLKernOpenData/api/v1/...` | 47 operaties: haltes, lijnen, dienstregelingen, real-time doorkomsten, omleidingen, storingen |
+| Open Data V1 Search | `https://api.delijn.be/DLZoekOpenData/v1/zoek/{haltes,lijnrichtingen}/{term}` | 2 operaties |
+| GTFS Static | `https://api.delijn.be/gtfs/static/v3/gtfs_transit.zip` | volledige dienstregeling, dagelijks ververst |
+| GTFS Realtime | `https://api.delijn.be/gtfs/v3/realtime` | protobuf, elke minuut |
+| NeTEx / BLTAC | `https://api.delijn.be/netex/v1/file` · `https://api.delijn.be/bltac/v1/file` | dezelfde dienstregeling, andere formaten |
+
+⚠️ **Let op de versie in het pad — die staat per API ergens anders.** GTFS Static is
+`/gtfs/static/v3/...` maar GTFS Realtime is `/gtfs/v3/realtime`. Beide andere volgordes geven 404.
+
+- **Er is GEEN routeplanner-API (meer).** Er bestond een `/routeplan/{van}/{naar}` in v1 — oude
+  blogposts, de Apiary-docs en zelfs zoekresultaten verwijzen er nog naar. Die operatie staat
+  **niet** meer in de API: de volledige operatielijst telt 47 items zonder routeplan, en elke
+  padvariant geeft 404 terwijl `/haltes` op dezelfde basis netjes 401 geeft. Niet opnieuw gaan
+  zoeken, en niet gokken dat het "vast wel ergens" zit.
+- **Wél nuttig voor v0.6:** `GET /haltes/indebuurt/{lat,lng}` geeft haltes in de buurt van
+  coördinaten, van álle vervoersmaatschappijen. Dat dekt "afstand tot halte" zonder dat we zelf
+  GTFS moeten verwerken.
+- De GTFS-feeds lopen ook via de Belgische NAP-proxy
+  (`api-management-opendata-production.azure-api.net/api/gtfs/feed/delijn/...`, header
+  `bmc-partner-key`). Die route is CC-BY-4.0. Voor ons geen voordeel — gebruik gewoon
+  `api.delijn.be` met een eigen key.
+
+#### Hoe Google Maps en Apple Maps aan deze data komen
+
+Allebei hetzelfde patroon, en het is niet wat je zou verwachten: **de vervoersmaatschappij levert
+GTFS, de kaartaanbieder routeert zelf.** Niemand roept de routeplanner van De Lijn aan.
+
+- **Google**: het vervoersbedrijf dient de GTFS-zip in via het Transit Partner-dashboard
+  (`support.google.com/transitpartners/answer/1111481`), Google valideert en neemt op; GTFS-RT
+  komt daar los bij. De routeberekening draait volledig bij Google.
+- **Apple**: geen publiek portaal, contracten per vervoersmaatschappij. De Lijn staat letterlijk
+  in Apples attributielijst (`gspe21-ssl.ls.apple.com/html/attribution-325.html`) als
+  "De Lijn — reused under license".
+
+Conclusie voor ons: een reistijd berekenen betekent GTFS + een routeringsmotor. Zelf een motor
+draaien botst met "geen backend" — vandaar de derde weg hieronder.
+
+#### Transitous — gratis OV-routering die De Lijn al dekt
+
+`https://api.transitous.org` is een community-instantie van **MOTIS** die de GTFS- én
+GTFS-RT-feeds van De Lijn al inleest (staat in `feeds/be.json` van `public-transport/transitous`
+op GitHub, samen met NMBS en MIVB). Geen key, geen registratie.
+
+Live geverifieerd op 27/08/2026, Antwerpen-Centraal → Wilrijk:
+
+```
+GET https://api.transitous.org/api/v1/plan
+      ?fromPlace=51.2172,4.4212&toPlace=51.1802,4.4025&time=2026-08-28T07:30:00Z
+```
+
+Geeft 4 reisopties terug met wandeldelen, overstappen en lijnnummers — o.a. bus 17 in 34 minuten.
+Respons: `itineraries[].duration` (seconden), `.transfers`, en `.legs[]` met `mode`,
+`routeShortName`, `agencyName`, `from.name`/`to.name`.
+
+⚠️ **De voorwaarden zijn echt en beperkend** (`transitous.org/api`): open source, niet-commercieel,
+User-Agent met naam + contactgegevens bij elke call, zichtbare attributie naar
+`https://transitous.org/sources/`, en **vooraf contact opnemen vóór je routing gebruikt** — dat is
+expliciet het endpoint dat ze als resource-intensief benoemen. Best effort, geen SLA. Dit project
+past binnen die voorwaarden, maar dat contact is een stap die de gebruiker zelf moet zetten;
+begin er niet aan zonder dat het gebeurd is. Valt Transitous af, dan blijft zelf MOTIS of
+OpenTripPlanner draaien over — en dán botst het alsnog op "geen backend".
+
 ## Regel: nooit gokken
 
 Verzin nooit een API-endpoint, veldnaam of URL. Alles in dit bestand is geverifieerd door de
@@ -243,9 +318,9 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 | **v0.2.1** | UI-verbeteringen | Actieve filters zichtbaar onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode | **Ingepland**, zie hieronder |
 | **v0.3** | GOK-indicatoren + aanmelden | OKI + 4 leerlingenkenmerken per campus · aanmeldsysteem per school tonen/linken | OKI-bron geverifieerd. Aanmelden: **geen centrale bron**, zie hieronder |
 | **v0.5** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
-| **v0.6** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Bronnen nog te onderzoeken |
+| **v0.6** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
 | **v0.7** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
-| **Geparkeerd** | Openbaar vervoer | Reistijd met de bus | De Lijn heeft geen publieke routeplanner-API; een eigen mini-planner wordt een ruwe schatting, een echte planner (OpenTripPlanner) vereist een backend — botst met "geen backend" |
+| **Geparkeerd** | Openbaar vervoer | Reistijd met de bus | De Lijn heeft inderdaad geen routeplanner-API (die is verdwenen uit v1). **Maar er is een weg: Transitous** — gratis MOTIS-instantie die De Lijn al dekt, geen key, geen backend nodig. Voorwaarden zijn beperkend en er moet eerst contact opgenomen worden — zie de sectie Openbaar vervoer hierboven |
 
 ### v0.2 — stand van zaken
 
