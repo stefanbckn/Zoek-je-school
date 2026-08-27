@@ -1,13 +1,32 @@
 import { useEffect, useRef, useState } from 'react'
 import { suggestLocaties, zoekLocatie, type LocatieSuggestie } from '../lib/geolocatie'
 
-const STRAAL_OPTIES: { label: string; waarde: number | null }[] = [
+interface StraalOptie {
+  label: string
+  waarde: number | null
+}
+
+const STRAAL_OPTIES: StraalOptie[] = [
   { label: '5 km', waarde: 5 },
   { label: '10 km', waarde: 10 },
   { label: '15 km', waarde: 15 },
   { label: '25 km', waarde: 25 },
   { label: 'Alles', waarde: null },
 ]
+
+/**
+ * De straal komt uit de URL en hoeft geen keuze uit de lijst te zijn: `?straal=3` is geldig
+ * en wordt ook echt toegepast. Zonder bijpassende <option> valt de <select> terug op de eerste
+ * optie, waardoor er "5 km" stond terwijl er op 3 km gefilterd werd — de UI loog dan over wat
+ * er gebeurde. Een afwijkende waarde krijgt daarom een eigen optie, op de juiste plek in de rij.
+ */
+function straalOpties(straalKm: number | null): StraalOptie[] {
+  if (straalKm === null || STRAAL_OPTIES.some((o) => o.waarde === straalKm)) return STRAAL_OPTIES
+  const extra: StraalOptie = { label: `${straalKm} km`, waarde: straalKm }
+  const genummerd = STRAAL_OPTIES.filter((o) => o.waarde !== null)
+  const alles = STRAAL_OPTIES.filter((o) => o.waarde === null)
+  return [...genummerd, extra].sort((a, b) => (a.waarde ?? 0) - (b.waarde ?? 0)).concat(alles)
+}
 
 interface SearchBarProps {
   label: string | null
@@ -112,7 +131,7 @@ export function SearchBar({
             onChange={(e) => onStraalChange(e.target.value === 'alles' ? null : Number(e.target.value))}
             className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
           >
-            {STRAAL_OPTIES.map((o) => (
+            {straalOpties(straalKm).map((o) => (
               <option key={o.label} value={o.waarde === null ? 'alles' : o.waarde}>
                 {o.label}
               </option>

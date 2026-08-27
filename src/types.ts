@@ -1,5 +1,17 @@
+/**
+ * Het net zoals de app het toont. Fijner opgedeeld dan het `instelling_net`-veld van de API:
+ * dat kent alleen GO! / Officieel gesubsidieerd / Vrij gesubsidieerd, waardoor provinciale en
+ * gemeentelijke scholen op één hoop belanden. Het onderscheid komt uit `soort_bestuur` van het
+ * schoolbestuur — zie CLAUDE.md.
+ *
+ * 'Officieel gesubsidieerd' blijft bestaan als terugval voor officiële scholen met een bestuur
+ * dat noch provincie noch gemeente is (OCMW, intercommunale, Vlaamse Gemeenschap). Die komen in
+ * provincie Antwerpen momenteel niet voor, maar de mapping mag daar niet stilzwijgend op gokken.
+ */
 export type Net =
   | 'GO!'
+  | 'Provinciaal'
+  | 'Gemeentelijk'
   | 'Officieel gesubsidieerd'
   | 'Vrij gesubsidieerd'
   | 'Onafhankelijk'

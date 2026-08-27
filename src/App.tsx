@@ -7,6 +7,7 @@ import { ResultList } from './components/ResultList'
 import { SearchBar } from './components/SearchBar'
 import { richtingMatcht } from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
+import { NET_OPTIONS } from './lib/net'
 import { useSearchState } from './lib/useSearchState'
 import { useVestigingen } from './lib/useVestigingen'
 import type { CampusMetAfstand, SchoolOpCampus } from './types'
@@ -29,6 +30,16 @@ function App() {
     state.finaliteiten.length +
     (state.tekst.trim() ? 1 : 0) +
     (state.richting.trim() ? 1 : 0)
+
+  // Alleen netten aanbieden die in de dataset voorkomen. 'Officieel gesubsidieerd' (OCMW,
+  // intercommunale) bestaat als categorie maar heeft in provincie Antwerpen geen enkele school;
+  // dat als vinkje tonen levert enkel een filter op die gegarandeerd niets teruggeeft.
+  const netOpties = useMemo(() => {
+    const aanwezig = new Set(campussen.flatMap((c) => c.scholen.map((s) => s.net)))
+    // Een net dat wél aangevinkt staat maar in de data ontbreekt, tonen we toch — anders zie je
+    // 0 resultaten zonder enig zichtbaar vinkje om weer uit te zetten.
+    return NET_OPTIONS.filter((n) => aanwezig.has(n) || state.netten.includes(n))
+  }, [campussen, state.netten])
 
   const gemeenteOpties = useMemo(
     () => [...new Set(campussen.map((c) => c.gemeente))].sort((a, b) => a.localeCompare(b, 'nl')),
@@ -134,6 +145,7 @@ function App() {
       <div className="flex-1 flex flex-col md:flex-row">
         <div className={`${filtersOpen ? 'block' : 'hidden'} md:block`}>
           <FilterPanel
+            netOpties={netOpties}
             gemeenteOpties={gemeenteOpties}
             netten={state.netten}
             gemeenten={state.gemeenten}

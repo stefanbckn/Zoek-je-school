@@ -112,20 +112,32 @@ zo beslist door de gebruiker.
 - Richtingen zitten per **vestiging** in het model (`SchoolOpCampus.richtingen`), niet per school:
   een school met meerdere campussen kan per campus een ander aanbod hebben.
 
-### Net-onderscheid Provinciaal/Stedelijk — geïntegreerd sinds v0.2
+### Net-onderscheid — opgeleverd in v0.2
 
-- `instelling_net` heeft maar 3 bruikbare categorieën (Gemeenschapsonderwijs / Vrij
-  gesubsidieerd / Officieel gesubsidieerd) en kan Provinciaal niet van Stedelijk scheiden.
-- **`instelling_soort_bestuur` staat NIET op de school** maar op het **bestuur**, dat zelf een
-  instelling is (`instelling_type` = 300). Ophalen: `instelling_bestuur.instellingsnummer` van
-  de school, dan die instelling opvragen. In het script halen we alle besturen in één
-  gepagineerde call op (`filter_instelling_type=300`, 928 records) en joinen lokaal — niet
+- `instelling_net` heeft maar 3 bruikbare categorieën en kan Provinciaal niet van Gemeentelijk
+  scheiden. **`instelling_soort_bestuur` staat NIET op de school** maar op het **bestuur**, dat
+  zelf een instelling is (`instelling_type` = 300). Het script haalt alle besturen in één
+  gepagineerde call op (`filter_instelling_type=300`, 928 records) en joint lokaal — niet
   928 losse detailcalls.
-- Codelijst `soort_bestuur` geverifieerd opgehaald: `1` GO!, `2` Vrij, `3` Provincie,
-  `4` Gemeente, `5` OCMW, `6` Intercommunale, `7` Vlaamse Gemeenschap,
-  `8` Vlaamse autonome hogeschool, `9` Andere.
-- Verdeling in onze dataset (per vestiging): Vrij 376, GO! 102, Gemeente 63, Provincie 18.
-  "Stedelijk" = `Gemeente` (bv. AGB Stedelijk Onderwijs Antwerpen).
+- Codelijst `soort_bestuur` geverifieerd: `1` GO!, `2` Vrij, `3` Provincie, `4` Gemeente,
+  `5` OCMW, `6` Intercommunale, `7` Vlaamse Gemeenschap, `8` Vlaamse autonome hogeschool,
+  `9` Andere.
+- `Net` in `src/types.ts` heeft nu 6 waarden: GO! / Provinciaal / Gemeentelijk /
+  Officieel gesubsidieerd / Vrij gesubsidieerd / Onafhankelijk. Verdeling per vestiging:
+  Vrij 375, GO! 102, Gemeentelijk 63, Provinciaal 18, Onafhankelijk 1.
+- **"Gemeentelijk", niet "Stedelijk"** — de eerdere roadmap noemde het stedelijk, maar van de 63
+  gemeentelijke vestigingen liggen er 13 in Brasschaat, Duffel, Kalmthout, Nijlen en Zandhoven.
+  Dat zijn geen steden.
+- **'Officieel gesubsidieerd' blijft als terugval bestaan** voor officiële scholen met een bestuur
+  dat noch provincie noch gemeente is (OCMW, intercommunale). Die komen in provincie Antwerpen
+  momenteel niet voor. Niet gokken dat zo'n school gemeentelijk is.
+- De filter toont enkel netten die in de dataset voorkomen (plus een net dat aangevinkt staat maar
+  ontbreekt — anders zie je 0 resultaten zonder vinkje om uit te zetten). Zie `netOpties` in
+  `App.tsx`.
+- ⚠️ **URL-migratie.** Links van vóór deze splitsing dragen `?net=Officieel gesubsidieerd`.
+  `NET_MIGRATIE` in `useSearchState.ts` vertaalt die naar Provinciaal + Gemeentelijk, zodat zo'n
+  gedeelde link exact dezelfde 67 campussen blijft tonen. Zonder die vertaling gaf elke oude link
+  een lege pagina. **Splits je ooit nog een filterwaarde, doe daar dan hetzelfde.**
 - De oude tekst-heuristiek op de bestuursnaam is definitief van tafel — niet meer gebruiken.
 
 ### API-key
@@ -228,6 +240,7 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 | **v0.1** | Basis | Vestigingen → campussen, afstand (hemelsbreed), filters (net/gemeente/naam), kaart, detailpaneel, URL-state, mobiel | **Opgeleverd** |
 | **v0.1.x** | Fiets | Fietsafstand/-tijd per school in detailpaneel (OpenRouteService via api.heigit.org) | **Opgeleverd** |
 | **v0.2** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
+| **v0.2.1** | UI-verbeteringen | Meerdere thema's, andere kleurencombinaties, dark mode | **Nog te plannen** — scope af te spreken bij aanvang |
 | **v0.3** | GOK-indicatoren | OKI + 4 leerlingenkenmerken per campus, als context in detailpaneel | Bron gevonden en geverifieerd — **key niet nodig** |
 | **v0.4** | Aanmelden | Aanmeldsysteem tonen/linken (bv. meldjeaan.be) | **Nog te onderzoeken** — bron onbekend |
 | **v0.5** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |

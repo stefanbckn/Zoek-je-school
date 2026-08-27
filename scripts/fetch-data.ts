@@ -98,11 +98,22 @@ async function haalAlles<T>(label: string, basisUrl: string, params: Record<stri
 
 // --- Mapping ---------------------------------------------------------------------------
 
-function mapNet(omschrijving: string | undefined): Net {
+/**
+ * Het net van de school, fijner dan `instelling_net` alleen toelaat. Binnen "Officieel
+ * gesubsidieerd" splitsen we op `soort_bestuur` van het schoolbestuur: code 3 = Provincie,
+ * code 4 = Gemeente. Andere officiële besturen (OCMW, intercommunale, Vlaamse Gemeenschap)
+ * houden het algemene label — niet gokken dat die gemeentelijk zijn.
+ *
+ * Bewust "Gemeentelijk" en niet "Stedelijk": van de 63 gemeentelijke vestigingen in de provincie
+ * liggen er 13 in Brasschaat, Duffel, Kalmthout, Nijlen en Zandhoven. Dat zijn geen steden.
+ */
+function mapNet(omschrijving: string | undefined, soortBestuur: SoortBestuur | null): Net {
   switch (omschrijving) {
     case 'Gemeenschapsonderwijs':
       return 'GO!'
     case 'Officieel gesubsidieerd onderwijs':
+      if (soortBestuur === 'Provincie') return 'Provinciaal'
+      if (soortBestuur === 'Gemeente') return 'Gemeentelijk'
       return 'Officieel gesubsidieerd'
     case 'Vrij gesubsidieerd onderwijs':
       return 'Vrij gesubsidieerd'
@@ -261,6 +272,7 @@ async function bouwDataset() {
     const heeftCoordinaten = loc.gps_breedtegraad != null && loc.gps_lengtegraad != null
     if (!heeftCoordinaten) zonderCoordinaten++
 
+    const soortBestuur = SOORT_BESTUUR[bestuur?.instelling_soort_bestuur?.code] ?? null
     const vpl = String(loc.instellingslocatie_vestigingsnummer)
     const richtingen = aanbodPerVestiging.get(`${loc.instelling_nummer}-${vpl}`) ?? []
     if (richtingen.length === 0) zonderAanbod++
@@ -271,8 +283,8 @@ async function bouwDataset() {
       internVplnummer: vpl,
       naam: inst.instelling_naam_volledig ?? inst.instelling_naam,
       isHoofdzetel: inst.instelling_hoofdzetel_vestigingsnr === loc.instellingslocatie_vestigingsnummer,
-      net: mapNet(inst.instelling_net?.omschrijving),
-      soortBestuur: SOORT_BESTUUR[bestuur?.instelling_soort_bestuur?.code] ?? null,
+      net: mapNet(inst.instelling_net?.omschrijving, soortBestuur),
+      soortBestuur,
       levensbeschouwing: orNull(inst.instelling_levensbeschouwing?.omschrijving),
       // Locatie-eigen telefoonnummer heeft voorrang; anders dat van de instelling.
       telefoon: orNull(loc.instellingslocatie_telefoonnummers?.[0]) ?? orNull(inst.instelling_telefoon),
