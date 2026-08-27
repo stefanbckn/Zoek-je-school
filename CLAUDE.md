@@ -265,13 +265,39 @@ Geeft 4 reisopties terug met wandeldelen, overstappen en lijnnummers — o.a. bu
 Respons: `itineraries[].duration` (seconden), `.transfers`, en `.legs[]` met `mode`,
 `routeShortName`, `agencyName`, `from.name`/`to.name`.
 
-⚠️ **De voorwaarden zijn echt en beperkend** (`transitous.org/api`): open source, niet-commercieel,
-User-Agent met naam + contactgegevens bij elke call, zichtbare attributie naar
-`https://transitous.org/sources/`, en **vooraf contact opnemen vóór je routing gebruikt** — dat is
-expliciet het endpoint dat ze als resource-intensief benoemen. Best effort, geen SLA. Dit project
-past binnen die voorwaarden, maar dat contact is een stap die de gebruiker zelf moet zetten;
-begin er niet aan zonder dat het gebeurd is. Valt Transitous af, dan blijft zelf MOTIS of
-OpenTripPlanner draaien over — en dán botst het alsnog op "geen backend".
+**De voorwaarden** (`transitous.org/api`) — toegang mag als het project open source is, niet
+commercieel, licht voor hun infrastructuur, en zich aan het gebruiksbeleid houdt:
+
+1. **Open source, gepubliceerd onder een open-source licentie.** Prototypen mag zonder.
+   ⚠️ **Dit is de enige echte openstaande blocker, en hij zit dubbel.** Ten eerste is de repo
+   niet publiek: `github.com/stefanbckn/Zoek-je-school` geeft HTTP 404 zonder login (geverifieerd
+   27/08/2026). Ten tweede staat er geen `LICENSE`-bestand in, en zonder licentie is code strikt
+   genomen "alle rechten voorbehouden" — dus ook een publieke repo is dan niet open source.
+   Beide moeten geregeld zijn vóór we de API in productie gebruiken.
+2. **Contact bij twijfel over de belasting** (dure requests, veel gebruikers), via hun
+   Matrix-kanaal `#transitous:matrix.spline.de`. Dus geen harde verplichting vooraf — maar
+   routing is nu net het type request dat ze als zwaar benoemen, en ze horen sowieso graag
+   waarvoor de API gebruikt wordt. Bijkomend voordeel: dan kunnen ze ons waarschuwen bij
+   breaking changes.
+3. **Contactgegevens meesturen.** Een `User-Agent` met naam, versie en contactadres.
+   ⚠️ **Dat kan hier niet** — een browser laat `User-Agent` niet overschrijven, en `fetch`
+   weigert die header stil. Transitous voorziet dat expliciet: draait de app in de browser, dan
+   volstaat de `Referer`-header, **op voorwaarde dat er contactgegevens op de site staan.**
+   Die staan er nu niet. Onze `Referrer-Policy: strict-origin-when-cross-origin` stuurt bij een
+   cross-origin call enkel de origin mee — genoeg om de site te identificeren, dus dat hoeft
+   niet losser gezet te worden.
+4. **Attributie**: zichtbare link naar `https://transitous.org/sources/`, plus de
+   OpenStreetMap-attributie (`openstreetmap.org/copyright`) — die laatste staat er al voor de
+   kaartlaag, maar geldt dan ook voor de routes.
+5. **Showcase** (optioneel): de app mag toegevoegd worden aan de Transitous-website.
+
+Best effort, geen SLA. Praktisch gevolg voor de implementatie: `connect-src` in `netlify.toml`
+moet `https://api.transitous.org` erbij krijgen. Roep het rechtstreeks vanuit de browser aan —
+niet via een Netlify Function zoals bij de fietsroute, want daar was de reden een geheime key, en
+die is hier niet; proxyen zou net de `Referer` wegnemen waarmee zij ons herkennen.
+
+Valt Transitous alsnog af, dan blijft zelf MOTIS of OpenTripPlanner draaien over — en dán botst
+het alsnog op "geen backend".
 
 ## Regel: nooit gokken
 
@@ -320,7 +346,7 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 | **v0.5** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | **v0.6** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
 | **v0.7** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
-| **Geparkeerd** | Openbaar vervoer | Reistijd met de bus | De Lijn heeft inderdaad geen routeplanner-API (die is verdwenen uit v1). **Maar er is een weg: Transitous** — gratis MOTIS-instantie die De Lijn al dekt, geen key, geen backend nodig. Voorwaarden zijn beperkend en er moet eerst contact opgenomen worden — zie de sectie Openbaar vervoer hierboven |
+| **Geparkeerd** | Openbaar vervoer | Reistijd met de bus | De Lijn heeft inderdaad geen routeplanner-API (die is verdwenen uit v1). **Maar er is een weg: Transitous** — gratis MOTIS-instantie die De Lijn al dekt, geen key, geen backend nodig. Blocker is niet technisch maar de licentievoorwaarde: repo moet publiek én open source zijn — zie de sectie Openbaar vervoer hierboven |
 
 ### v0.2 — stand van zaken
 
