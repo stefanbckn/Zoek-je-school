@@ -277,34 +277,52 @@ Twee keuzes daarin, bewust:
 onderwijskiezer.be heeft ze wel maar is juridisch uitgesloten (zie hieronder). Dit item schuift
 door tot er een bron gevonden is — niet inplannen op hoop.
 
-### v0.2.1 — UI-verbeteringen (afgesproken met de gebruiker)
+### v0.2.1 — UI-verbeteringen
 
-1. **Actieve filters tonen onder de adres-/gemeentebalk, met resetknop.** Nu is een gekozen
-   filter alleen zichtbaar in de linkerkolom, en op mobiel zit die achter de knop "Filters (2)"
-   — je ziet dan niet wáárop je filtert. Toon de gekozen waarden als chips (net, gemeente,
-   finaliteit, richting, schoolnaam), elk apart wegklikbaar, plus één "Alles wissen".
-   Let op: dit moet samenwerken met de URL-state; een chip verwijderen is gewoon een `update()`.
-2. **Kleurenpalet herzien, met kleurenblindheid in het achterhoofd.**
-   Wat al gecontroleerd is en goed zit: kaartmarkers hebben allemaal hetzelfde icoon, en élke
-   badge draagt een tekstlabel. Kleur is dus nergens de énige drager van informatie (WCAG 1.4.1).
-   Wat wél opgelost moet worden: `Provinciaal` (amber) en `Officieel gesubsidieerd` (yellow) zijn
-   vrijwel niet te onderscheiden, en emerald/amber respectievelijk indigo/violet lopen samen bij
-   deuteranopie en protanopie. Kies een palet dat onder deuteranopie, protanopie én tritanopie
-   uit elkaar te houden is, en controleer het contrast van elk paar (Tailwind `-100`/`-800`
-   haalt AA, maar dat is geen vrijgeleide om er zomaar tinten bij te verzinnen).
-3. **Filterkolom sticky met eigen scrollbalk (desktop).** Nu is het het slechtste van twee
-   werelden: de `<aside>` is niet sticky en scrollt weg bij 303 resultaten, terwijl de
-   gemeentelijst binnenin wél een eigen scrollbalk heeft (`max-h-48 overflow-auto`, 50 gemeenten).
-   Je krijgt dus een scrollbalkje in een kolom die zelf verdwijnt, en je muiswiel blijft in dat
-   lijstje hangen.
-   **Doe het als één scrollgebied:** aside sticky over de volle hoogte met eigen overflow, en
-   tegelijk die `max-h-48` weghalen. Geneste scrollbalken zijn het lelijke deel, niet het idee.
-   Enkel op desktop — op mobiel zit de filter al achter de knop "Filters (n)" en zou een kolom
-   van schermhoogte het scherm opeten.
-   Overlapt deels met punt 1: chips lossen het *zien* op, sticky het *wijzigen*. Moet er één
-   afvallen, dan wegen de chips zwaarder — die helpen ook op mobiel.
-4. **Thema's / dark mode.** Scope nog af te spreken: één dark mode, of een echte themakiezer met
-   meerdere kleurencombinaties. Dat scheelt sterk in opzet — vraag het vóór je begint.
+**Opgeleverd:**
+
+1. **Actieve filters onder de zoekbalk** (`ActieveFilters.tsx`), elk apart wegklikbaar, met
+   "Alles wissen" zodra er meer dan één actief is. Locatie en straal staan er bewust níét bij:
+   die zijn al zichtbaar in de zoekbalk zelf.
+2. **Kleurenpalet omgezet naar CSS-variabelen** in `src/index.css`, richting "fris & open".
+   Alle harde Tailwind-kleuren (`slate-500` en co) zijn vervangen door tokens: `bg-kaart`,
+   `text-inkt`, `text-zacht`, `border-rand`, `bg-accent`. Werkt via `@theme inline`, dat de
+   utility letterlijk `var(--c-kaart)` laat uitschrijven — **zonder `inline` vriest Tailwind de
+   waarde in op buildtijd en schakelt het thema niet mee.**
+3. **Licht/donker/systeem-schakelaar** rechtsboven (`ThemaToggle.tsx` + `lib/thema.ts`).
+   Drie standen, niet twee: geen attribuut = volg het systeem. Keuze in `localStorage`, in een
+   try/catch omdat privémodus dat kan blokkeren.
+
+**Kleurenblindheid — de aanpak:** net en finaliteit staan samen op één kaartje, samen zeven
+categorieën. Ze worden onderscheiden door **vorm**, niet door kleur: net is een gevulde chip,
+finaliteit een omlijnde chip met een vormteken (▲ doorstroom, ◆ dubbel, ■ arbeidsmarkt). Zo
+dragen maar drie kleuren betekenis in plaats van zeven. De tinten komen uit het Okabe-Ito-palet
+(blauw / oker / pruim / groenblauw, nooit rood tegenover groen). Kaartmarkers zijn allemaal
+identiek en elke chip heeft een tekstlabel, dus kleur is nergens de enige drager (WCAG 1.4.1).
+De vormtekens staan `aria-hidden`: de tekst ernaast zegt het al.
+
+**Anti-flits:** `public/thema.js` zet het attribuut synchroon vóór React mount. Bewust een
+apart bestand en géén inline `<script>` — de CSP in `netlify.toml` staat alleen `script-src
+'self'` toe, en dat houden we zo.
+
+**Twee dingen die onderweg gerepareerd zijn:**
+- `DetailPanel` sloot niet met Escape. Een modaal venster hoort dat te doen; zonder die
+  afhandeling raak je het met het toetsenbord alleen kwijt door naar de sluitknop te tabben.
+- De driestandenknop viel op 375px buiten het scherm ("Donker" was onzichtbaar). De header
+  breekt nu af (`flex-wrap`) zodat de knop op een eigen regel zakt.
+
+**Bewust uitgesteld:** de sticky filterkolom met eigen scrollgebied. Blijft op de wenslijst
+staan — zie het punt hieronder, dat is nog steeds geldig.
+
+**Nog te doen:** filterkolom sticky met één scrollgebied (desktop). Nu is het het slechtste van
+twee werelden: de `<aside>` scrollt weg bij 303 resultaten, terwijl de gemeentelijst erin wél
+een eigen scrollbalk heeft (`max-h-48 overflow-auto`, 50 gemeenten). Doe het als één
+scrollgebied: aside sticky met eigen overflow én die `max-h-48` weghalen. Enkel desktop.
+
+**Fonts:** de app gebruikt bewust de systeemletter (Tailwind's `font-sans`). Geen webfont =
+geen extra download, geen layout-verschuiving bij het laden, en niets dat de CSP of de privacy
+raakt. Wil je later meer karakter, doe dat dan met één webfont voor koppen alleen, niet voor
+lopende tekst.
 
 ### v0.3 — aanmelden: geen centrale bron (onderzocht 27/08/2026)
 

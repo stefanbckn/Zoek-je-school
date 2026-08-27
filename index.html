@@ -1,10 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zoek je school</title>
+    <!-- Synchroon, vóór de app laadt: voorkomt dat het verkeerde thema kort opflitst.
+         Apart bestand omdat de CSP geen inline scripts toestaat, zie netlify.toml. -->
+    <script src="/thema.js"></script>
   </head>
   <body>
     <div id="root"></div>

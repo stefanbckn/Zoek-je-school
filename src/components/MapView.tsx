@@ -64,7 +64,7 @@ export function MapView({ campussen, onSelect }: MapViewProps) {
         <Marker key={c.id} position={[c.lat, c.lon]} icon={defaultIcon}>
           <Popup>
             <div className="text-sm">
-              <p className="text-slate-500">
+              <p className="text-zacht">
                 {c.straat} {c.huisnummer}, {c.postcode} {c.gemeente}
               </p>
               <ul className="mt-1">
@@ -73,7 +73,7 @@ export function MapView({ campussen, onSelect }: MapViewProps) {
                     <button
                       type="button"
                       onClick={() => onSelect(c, school)}
-                      className="text-slate-900 underline"
+                      className="text-inkt underline"
                     >
                       {school.naam}
                     </button>

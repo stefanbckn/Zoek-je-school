@@ -8,7 +8,7 @@ interface ResultListProps {
 
 export function ResultList({ campussen, onSelect }: ResultListProps) {
   if (campussen.length === 0) {
-    return <p className="p-4 text-sm text-slate-500">Geen scholen gevonden voor deze zoekopdracht.</p>
+    return <p className="p-4 text-sm text-zacht">Geen scholen gevonden voor deze zoekopdracht.</p>
   }
 
   return (
