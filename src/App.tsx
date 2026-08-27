@@ -213,7 +213,11 @@ function App() {
               {weergave === 'lijst' ? (
                 <ResultList campussen={zichtbareCampussen} onSelect={selecteer} />
               ) : (
-                <div className="flex-1 mt-4 min-h-[400px] isolate">
+                <div className="flex-1 mt-4 min-h-[400px] isolate relative">
+                  {/* `relative` hoort bij de `absolute inset-0` van de kaart zelf: op mobiel
+                      staat deze div in een kolom-flexbox zonder vaste hoogte, en dan
+                      resolveert een `h-full` op de kaart naar 0 — de kaart verdween
+                      daardoor volledig op kleine schermen. */}
                   <MapView campussen={zichtbareCampussen} onSelect={selecteer} />
                 </div>
               )}

@@ -52,7 +52,7 @@ export function MapView({ campussen, onSelect }: MapViewProps) {
     <MapContainer
       center={ANTWERPEN_CENTRUM}
       zoom={10}
-      className="h-full w-full"
+      className="absolute inset-0"
       scrollWheelZoom
     >
       <TileLayer
