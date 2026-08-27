@@ -60,6 +60,14 @@ node scripts/kleurcheck.mjs   # contrast + kleurenblindheid van het palet
 Draai het als je kleuren in `src/index.css` wijzigt — "dit lijkt me wel te onderscheiden" is
 geen verificatie gebleken.
 
+## Bekende bugs
+
+Eén regel per open bug. De diagnose, wat al uitgezocht is en wat nog geverifieerd moet worden
+staat in **[BUGS.md](./BUGS.md)** — houd die twee gelijk als je er een toevoegt of oplost.
+
+- **[Mobiel: scherm blijft ingezoomd na typen in een invoerveld](./BUGS.md#mobiel-scherm-blijft-ingezoomd-na-typen-in-een-invoerveld)**
+  — iOS zoomt in op invoervelden met tekst onder 16px en zoomt daarna niet terug uit.
+
 ## Sanity check
 
 Zoek op **Boechout**: Sint-Gabriëlcollege en Regina Pacisinstituut (Hove) horen bij de eerste

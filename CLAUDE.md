@@ -440,7 +440,9 @@ linken mag. Niet als databron gebruiken.
   er open staat, dus hij moet kloppen voor wie ook maar naar `main` kijkt. Zou elke fix-branch
   z'n eigen `BUGS.md` aanmaken, dan krijg je bij twee gelijktijdige bugs twee losse lijstjes en
   een merge-conflict. `gh` is niet ingelogd, dus GitHub Issues zijn geen optie; dit bestand is
-  de lijst.
+  de lijst. De README toont daarnaast een korte opsomming met één regel per bug; **houd die
+  twee gelijk** — voeg je een bug toe of los je er een op, pas dan allebei aan. Bewust maar één
+  regel in de README: hoe minder er dubbel staat, hoe minder er uit elkaar loopt.
 - **Een bug melden gaat dus rechtstreeks naar `main`** (of via een piepkleine PR), los van de
   oplossing. Noteer: wat er gebeurt, op welk toestel/browser, wat de oorzaak lijkt, en wat er
   nog geverifieerd moet worden.
