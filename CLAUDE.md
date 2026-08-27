@@ -322,6 +322,11 @@ linken mag. Niet als databron gebruiken.
 
 - **Nooit pushen zonder expliciet akkoord op dat moment.** Committen mag vrij; de gebruiker pusht
   zelf of geeft er per keer toestemming voor. Eén akkoord geldt niet voor volgende pushes.
+- **Begin elke nieuwe versie op een eigen branch, meteen bij de eerste commit.** Niet op `main`
+  werken en achteraf verplaatsen. Naamgeving: `v0.3-gok-indicatoren`, `v0.4-aanmelden`, ...
+  (versienummer uit de roadmap + kort thema). Doe dit vóór de eerste wijziging — vraag het niet
+  telkens opnieuw, het is de standaard. Alleen losse fixes buiten een versie mogen rechtstreeks
+  op `main`.
 - De gebruiker werkt met feature branches + pull requests op GitHub
   (`git@github.com:stefanbckn/Zoek-je-school.git`, SSH — de HTTPS-remote heeft geen credentials).
   Netlify deployt enkel vanaf `main`, dus werk op een branch gaat niet live tot de PR gemerged is.
