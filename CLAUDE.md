@@ -240,9 +240,8 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 | **v0.1** | Basis | Vestigingen → campussen, afstand (hemelsbreed), filters (net/gemeente/naam), kaart, detailpaneel, URL-state, mobiel | **Opgeleverd** |
 | **v0.1.x** | Fiets | Fietsafstand/-tijd per school in detailpaneel (OpenRouteService via api.heigit.org) | **Opgeleverd** |
 | **v0.2** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
-| **v0.2.1** | UI-verbeteringen | Meerdere thema's, andere kleurencombinaties, dark mode | **Nog te plannen** — scope af te spreken bij aanvang |
-| **v0.3** | GOK-indicatoren | OKI + 4 leerlingenkenmerken per campus, als context in detailpaneel | Bron gevonden en geverifieerd — **key niet nodig** |
-| **v0.4** | Aanmelden | Aanmeldsysteem tonen/linken (bv. meldjeaan.be) | **Nog te onderzoeken** — bron onbekend |
+| **v0.2.1** | UI-verbeteringen | Actieve filters zichtbaar onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode | **Ingepland**, zie hieronder |
+| **v0.3** | GOK-indicatoren + aanmelden | OKI + 4 leerlingenkenmerken per campus · aanmeldsysteem per school tonen/linken | OKI-bron geverifieerd. Aanmelden: **geen centrale bron**, zie hieronder |
 | **v0.5** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | **v0.6** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Bronnen nog te onderzoeken |
 | **v0.7** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
@@ -277,6 +276,48 @@ Twee keuzes daarin, bewust:
 **Infodagen: geen bron.** De volledige API-catalogus bevat geen infomomenten-product.
 onderwijskiezer.be heeft ze wel maar is juridisch uitgesloten (zie hieronder). Dit item schuift
 door tot er een bron gevonden is — niet inplannen op hoop.
+
+### v0.2.1 — UI-verbeteringen (afgesproken met de gebruiker)
+
+1. **Actieve filters tonen onder de adres-/gemeentebalk, met resetknop.** Nu is een gekozen
+   filter alleen zichtbaar in de linkerkolom, en op mobiel zit die achter de knop "Filters (2)"
+   — je ziet dan niet wáárop je filtert. Toon de gekozen waarden als chips (net, gemeente,
+   finaliteit, richting, schoolnaam), elk apart wegklikbaar, plus één "Alles wissen".
+   Let op: dit moet samenwerken met de URL-state; een chip verwijderen is gewoon een `update()`.
+2. **Kleurenpalet herzien, met kleurenblindheid in het achterhoofd.**
+   Wat al gecontroleerd is en goed zit: kaartmarkers hebben allemaal hetzelfde icoon, en élke
+   badge draagt een tekstlabel. Kleur is dus nergens de énige drager van informatie (WCAG 1.4.1).
+   Wat wél opgelost moet worden: `Provinciaal` (amber) en `Officieel gesubsidieerd` (yellow) zijn
+   vrijwel niet te onderscheiden, en emerald/amber respectievelijk indigo/violet lopen samen bij
+   deuteranopie en protanopie. Kies een palet dat onder deuteranopie, protanopie én tritanopie
+   uit elkaar te houden is, en controleer het contrast van elk paar (Tailwind `-100`/`-800`
+   haalt AA, maar dat is geen vrijgeleide om er zomaar tinten bij te verzinnen).
+3. **Thema's / dark mode.** Scope nog af te spreken: één dark mode, of een echte themakiezer met
+   meerdere kleurencombinaties. Dat scheelt sterk in opzet — vraag het vóór je begint.
+
+### v0.3 — aanmelden: geen centrale bron (onderzocht 27/08/2026)
+
+Er is **geen register, dataset of API** die scholen aan een aanmeldsysteem koppelt. Nagekeken:
+de API-catalogus van het onderwijsportaal bevat geen aanmelden-product (zie hierboven), en er
+bestaat geen centrale lijst van aanmeldingsinitiatieven.
+
+Het landschap is versnipperd over minstens vier sporen:
+- `aanmelden.vlaanderen` — het gratis platform van de Vlaamse overheid, met een aparte instantie
+  per regio (bv. `zuiderkempenso.aanmelden.vlaanderen`). Secundair kreeg toegang in februari 2026.
+- `meldjeaansecundair.antwerpen.be` — stad Antwerpen draait een eigen systeem.
+- `aanmelden.school` — private aanbieder, gebruikt in een aantal regio's, met een eigen pagina
+  "deelnemende scholen".
+- Centraal Aanmeldingsregister van V-ICT-OR.
+
+**Gevolg voor de aanpak:** dit wordt handmatige curatie per gemeente/regio, net als de
+OKI-cijfers — een klein, gecommit bestand dat gemeente of schoolnummer koppelt aan de naam en
+URL van het aanmeldsysteem, dat `fetch-data.ts` erbij joint. Niet scrapen: de deelnemerslijsten
+staan op sites met eigen voorwaarden, en ze wijzigen per schooljaar.
+
+**Let op bij het tonen:** aanmeldperiodes zijn kort en jaargebonden (voor 2026-2027 liep het van
+31 maart tot 24 april 2026). Toon dus nooit een harde datum uit een gecommit bestand zonder
+jaartal erbij, en link naar de bron in plaats van de procedure over te nemen — anders staat er
+volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
 ### v0.3 — bron geverifieerd, geen API-key nodig
 
