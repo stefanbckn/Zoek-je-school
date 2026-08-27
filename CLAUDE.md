@@ -344,6 +344,21 @@ linken mag. Niet als databron gebruiken.
 - `gh` CLI staat geïnstalleerd maar is **niet ingelogd** (vereist interactieve browser-login).
   PR's aanmaken doet de gebruiker zelf, of via een voorgevulde compare-link.
 
+## Lokaal draaien en preview
+
+- **De dev-server start je zelf**: `npm run dev` (poort via `process.env.PORT`, standaard 5173).
+  Dat werkt gewoon.
+- **`.claude/launch.json` is bewust attach-only** (enkel een `url`, geen `runtimeExecutable`).
+  Laat je de preview-tool de server zélf spawnen, dan botst dat op deze machine op een
+  sandbox-`EPERM` — eerst bij `process.cwd()` (`uv_cwd`), en met een absoluut pad bij het lezen
+  van `node_modules/vite/bin/vite.js`. Vastgesteld op 25/08/2026 (commit `8702c91`) en op
+  27/08/2026 opnieuw, nadat de config terug op spawnen was gezet.
+- **Zet er dus geen `runtimeExecutable`/`runtimeArgs` in.** Dit is al twee keer opnieuw
+  uitgevonden. Werkwijze: `npm run dev` in een aparte shell, daarna koppelt de preview aan
+  `http://localhost:5173` vast.
+- Dit zegt niets over de app zelf — die draait lokaal prima, en de UI van v0.2 is er in de
+  browser mee geverifieerd.
+
 ## Node-versie
 
 Systeem-`node` op deze machine is een oude v12 (`/usr/local/bin/node`). Gebruik de Homebrew-node
