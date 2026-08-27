@@ -11,7 +11,7 @@ export function Footer({ meta }: { meta: DatasetMeta | null }) {
     <footer className="border-t border-slate-200 px-4 py-3 text-xs text-slate-500">
       Data opgehaald op {datum} · Bron:{' '}
       <a href={meta.bron[0]} target="_blank" rel="noreferrer" className="underline">
-        data-onderwijs.vlaanderen.be
+        Onderwijs en Vorming
       </a>{' '}
       · {meta.aantalVestigingenAntwerpen} scholen ({meta.aantalCampussenAntwerpen} adressen) in
       provincie Antwerpen

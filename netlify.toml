@@ -2,11 +2,13 @@
 # zodat de buildinstellingen mee versioned zijn.
 
 [build]
-  # fetch-data blijft meedraaien om verse data te proberen. Faalt die call (de eerste build gaf
-  # ECONNRESET tijdens de TLS-handshake naar data-onderwijs.vlaanderen.be, oorzaak onbevestigd),
-  # dan valt het script terug op de gecommitte public/data/*.json en gaat de build gewoon door.
-  # Slaagt de fetch wél, dan krijg je vanzelf verse data. Zie CLAUDE.md.
-  command = "npm run fetch-data && npm run build"
+  # fetch-data draait hier bewust NIET meer. Sinds v0.2 komt de data uit de API's van
+  # Onderwijs en Vorming, met een API-key. Het schoolaanbod verandert praktisch één keer per
+  # schooljaar, dus bij elke deploy 5 gepagineerde API-calls doen is verspilling en maakt de
+  # build afhankelijk van een externe dienst. De gecommitte public/data/*.json is de bron.
+  # Verversen: lokaal `npm run fetch-data` en de JSON mee committen. Zie CLAUDE.md.
+  # Gevolg: ONDERWIJS_API_KEY hoeft NIET in de Netlify-omgeving te staan.
+  command = "npm run build"
   publish = "dist"
 
 [build.environment]

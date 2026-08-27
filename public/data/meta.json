@@ -1,10 +1,15 @@
 {
-  "opgehaaldOp": "2026-08-26T07:06:44.239Z",
+  "opgehaaldOp": "2026-08-27T12:15:48.812Z",
   "bron": [
-    "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/lijsten",
-    "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/csv.ashx?s=01&n=2&hs=311"
+    "https://onderwijs-api-portaal.vlaanderen.be/documentatie/instellingsgegevens",
+    "https://onderwijs.api.vlaanderen.be/instellingsgegevens/instellingslocatie/v1/instellingslocatie",
+    "https://onderwijs.api.vlaanderen.be/instellingsgegevens/instelling/v2/instelling",
+    "https://onderwijs.api.vlaanderen.be/instellingsgegevens/onderwijsaanbod_so/v2/ingerichteadministratievegroep",
+    "https://onderwijs.api.vlaanderen.be/instellingsgegevens/onderwijsaanbod_so/v2/administratievegroep"
   ],
-  "aantalVestigingenTotaal": 2162,
-  "aantalVestigingenAntwerpen": 562,
-  "aantalCampussenAntwerpen": 305
+  "schooljaarAanbod": 2026,
+  "aantalVestigingenTotaal": 2145,
+  "aantalVestigingenAntwerpen": 559,
+  "aantalCampussenAntwerpen": 303,
+  "aantalRichtingen": 8265
 }

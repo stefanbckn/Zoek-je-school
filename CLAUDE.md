@@ -2,28 +2,65 @@
 
 Zoeker voor middelbare scholen (voltijds gewoon secundair onderwijs) in provincie Antwerpen.
 Volledig client-side (Vite + React + TypeScript + Tailwind v4), geen backend, geen database.
-Data wordt op build-time opgehaald en weggeschreven als statische JSON — de app doet nooit live
-calls naar overheidsbronnen voor de scholendata (CORS/betrouwbaarheid). De enige live calls vanuit
-de browser zijn de Geolocation API (eigen adres zoeken) en OpenRouteService (fietsafstand/-tijd in
-het detailpaneel), zie hieronder.
+Data wordt op build-time opgehaald via de API's van Onderwijs en Vorming en weggeschreven als
+statische JSON — de app doet nooit live calls naar overheidsbronnen voor de scholendata
+(CORS/betrouwbaarheid/API-key). De enige live calls vanuit de browser zijn de Geolocation API
+(eigen adres zoeken) en onze eigen Netlify Function voor de fietsroute, zie hieronder.
 
 ## Databronnen
 
-### Scholen en vestigingsplaatsen (build-time, via scripts/fetch-data.ts)
+### Scholen, vestigingsplaatsen en studieaanbod (build-time, via scripts/fetch-data.ts)
 
-- Scholen (hoofdzetels): `https://data-onderwijs.vlaanderen.be/onderwijsaanbod/csv.ashx?s=01&n=2&hz=true&hs=311`
-- Vestigingsplaatsen: `https://data-onderwijs.vlaanderen.be/onderwijsaanbod/csv.ashx?s=01&n=2&hs=311`
-- Bron: Vlaams Ministerie van Onderwijs en Vorming, data-onderwijs.vlaanderen.be/onderwijsaanbod/lijsten
-- Formaat: UTF-8 met BOM, `;`-gescheiden, quotes, **CR-only regeleindes** (geen `\n` — split expliciet op `\r`)
-- We gebruiken alleen `vestigingen.csv` (de scholen-CSV dient enkel ter controle/kruisreferentie).
-  Filter: `provincie === 'Antwerpen'` en `soort instelling === 'Onderwijsinstelling'`.
-- `lx`/`ly` zijn Lambert72 (EPSG:31370) → omgezet naar WGS84 via `proj4`.
-- **Niet aanwezig in deze bron, dus niet in de app:** studierichtingen/aanbod per graad (zie hieronder),
-  en of een school met "aanmelden" werkt (dat veld bestaat niet in deze CSV — daarvoor linken we door
-  naar de officiële fiche).
-- Volledige kolombeschrijving en welke velden bruikbaar zijn: zie de verificatie in de projectgeschiedenis
-  (git log van de eerste commits) — kort samengevat: `begindatum`/`einddatum`/`crab-code`/`crab-huisnr`/
-  `VWO-vestigingsplaatscode`/`fax` zijn genegeerd (niet discriminerend of niet relevant voor SO).
+Alles komt uit de API's van het **API-portaal Onderwijs en Vorming**
+(`https://onderwijs-api-portaal.vlaanderen.be/documentatie/instellingsgegevens`). Eén API-key
+geeft toegang tot alle producten hieronder — geverifieerd, geen aparte aanvraag per product nodig.
+
+| Product | Endpoint | Wat we ermee doen |
+| --- | --- | --- |
+| Instellingslocatie v1 | `.../instellingsgegevens/instellingslocatie/v1/instellingslocatie` | Adres + **WGS84-coördinaten** per vestigingsplaats. Basis van de dataset. |
+| Instellingen v2 | `.../instellingsgegevens/instelling/v2/instelling` | Naam, net, levensbeschouwing, contact, erkenning, scholengemeenschap, bestuur per school. |
+| Onderwijsaanbod SO v2 | `.../onderwijsaanbod_so/v2/ingerichteadministratievegroep` | Kóppeling school+vestiging ↔ richting. Bevat géén inhoudelijke velden. |
+| Onderwijsaanbod SO v2 | `.../onderwijsaanbod_so/v2/administratievegroep` | Catalogus van richtingen: **finaliteit**, graad, onderwijsvorm, studiegebied, duaal. |
+| Codelijst v1 | `.../codelijst/v1/codelijst/{lijst}` | Decodeert codes (o.a. `soort_bestuur`, `net`). Eenmalig geraadpleegd, niet in het script. |
+
+**Scope-filter:** vestigingsplaatsen met `filter_instellingslocatie_hoofdstructuur=311`
+(gewoon voltijds secundair onderwijs), daarna client-side gefilterd op
+`instellingslocatie_provincie === 'Provincie Antwerpen'` — de API heeft géén provinciefilter
+(`filter_instellingslocatie_provincie` geeft HTTP 400). Levert 559 vestigingen / 303 campussen.
+
+**Coördinaten:** `gps_breedtegraad` / `gps_lengtegraad` staan rechtstreeks in de API, in WGS84.
+De Lambert72-conversie en de `proj4`-dependency zijn daarmee verdwenen. 4 vestigingen hebben
+geen coördinaten en krijgen `lat/lon = null`.
+
+#### API-conventies (geverifieerd, hier ingelopen valkuilen)
+
+- **Auth:** header `x-api-key: <key>`. Kan ook als `?apikey=`, maar niet doen — dan staat de key
+  in serverlogs.
+- **Paginatie is `page=`, niet `number=`.** `number=` wordt *stil genegeerd* en geeft dan
+  eindeloos pagina 1 terug, zonder foutmelding. Ik ben daar in ingelopen: 16 "pagina's" bleken
+  16× dezelfde data. `size=5000` werkt.
+- Onbekende **`filter_*`-params geven wél netjes HTTP 400** met `Attribuut niet toegestaan`.
+  Andere onbekende params worden stil genegeerd. Gebruik dus altijd het `filter_`-prefix, dan
+  merk je een typefout meteen.
+- Respons-envelop: `{ meta: { total_elements, total_pages, number, last, ... }, content: [...] }`.
+  De `links`-array is altijd leeg — niet op vertrouwen voor paginatie.
+
+#### Wat er NIET in zit
+
+- **Infodagen/infomomenten.** De volledige catalogus is nagekeken: geen enkel product bevat ze.
+  onderwijskiezer.be heeft ze wel maar is juridisch uitgesloten (zie onder).
+- **Aanmelden.** Geen veld voor. Daarvoor blijven we doorlinken naar de officiële fiche
+  (`data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=<schoolnummer>`).
+
+#### Bewust niet gebruikt
+
+- **Inschrijvingsaantal SO** (`.../inschrijvingsaantal_so/v1/inschrijvingsaantal`) werkt op
+  dezelfde key en geeft leerlingenaantallen per richting per school (incl. man/vrouw). Bewust
+  níét opgenomen — beslist door de gebruiker. Reden om het niet stilletjes toe te voegen: de
+  cijfers lopen achter op het aanbod (aanbod schooljaar 2026, aantallen schooljaar 2024), en
+  leerlingenaantallen nodigen uit tot een populariteitsranglijst die deze site niet wil zijn.
+- **Directeursnaam** (`instelling_directeur`) — persoonsgegeven, en voor een zoeksite overbodig
+  naast telefoon en website. Beslist door de gebruiker.
 
 ### Campus-groepering (belangrijk datamodel-detail)
 
@@ -50,48 +87,55 @@ zo beslist door de gebruiker.
   richtingen blijft wél apart) — dat past bovenop deze structuur, `SchoolOpCampus.richtingen` is de
   plek waar dat per school binnenkomt.
 
-### Studieaanbod (richtingen) — NIET geïntegreerd in v0.1
+### Studieaanbod (richtingen) — geïntegreerd sinds v0.2
 
-- API: `Onderwijsaanbod SO 2.6` op `https://onderwijs.api.vlaanderen.be/instellingsgegevens/onderwijsaanbod_so/v2`
-  (endpoints `/ingerichtehoofdstructuur`, `/ingerichteadministratievegroep`)
-- Vereist een API-key (`401 Unauthorized` zonder key). Key wordt zelf aangevraagd via
-  `https://onderwijs-api-portaal.vlaanderen.be/contact/aanvraag-apikey` — dit is bewust niet
-  geautomatiseerd (formulier vraagt persoonsgegevens).
-- Zodra de key er is: uitbreiden in `scripts/fetch-data.ts`, richtingendata toevoegen aan
-  `Vestiging.richtingen` (nu altijd `null`), en de placeholder-filtersectie in `FilterPanel` activeren.
-- Auth (geverifieerd via de OpenAPI-spec op het portaal): header `x-api-key: <key>` óf query-param
-  `?apikey=<key>`.
-- **Key-beheer:** env var `ONDERWIJS_API_KEY`, gelezen via `process.loadEnvFile()` (Node 21+, geen
-  `dotenv`-dependency nodig) in `scripts/fetch-data.ts`. Lokaal in `.env` (gitignored, zie
-  `.env.example` voor het te volgen formaat). Op Netlify: zet dezelfde variabele in
-  Site settings → Environment variables — Netlify injecteert die enkel in de build-omgeving.
-  **Bewust geen `VITE_`-prefix**: de key wordt alleen door het build-time Node-script gebruikt
-  (`fetch-data.ts`, draait vóór `vite build`), nooit door client-code. Een `VITE_`-prefix zou Vite
-  de key laten inbakken in de publieke JS-bundle, zichtbaar voor iedereen via view-source — precies
-  wat we willen vermijden op een statische site zonder backend. Enkel de opgehaalde richtingendata
-  zelf (niet de key) komt terecht in `public/data/*.json`, en dat is bedoeld — die data is publiek.
-- Mogelijk is de aangevraagde key enkel gekoppeld aan het "Onderwijsaanbod SO"-API-product; de
-  "Instelling"- en "Codelijst"-API's (nodig voor het net-onderscheid, zie hieronder) zijn aparte
-  producten op hetzelfde portaal en vragen mogelijk een aparte aanvraag/koppeling.
+- Het aanbod komt uit **twee** endpoints die je moet joinen op `administratievegroep_code`:
+  - `/ingerichteadministratievegroep` — welke school+vestiging richt welke richting in. Velden:
+    `instelling_nummer`, `instellingslocatie_vestigingsnummer`, `administratievegroep_code`,
+    `administratievegroep_omschrijving`, `schooljaar`, `inschrijvingen`, `financierbaar`,
+    begin-/einddatum. **Meer niet.**
+  - `/administratievegroep` — de catalogus, met de inhoudelijke velden:
+    `administratievegroep_finaliteit`, `_graad`, `_leerjaar`, `_onderwijsvorm`, `_studiegebied`,
+    `_studierichting`, `_duaal`, `_modulair`, `_niche`, `_stem_categorie`, `_gemoderniseerd`.
+- ⚠️ **Eerdere versie van dit bestand beweerde dat finaliteit in `/ingerichteadministratievegroep`
+  zit. Dat klopt niet** — dat endpoint heeft 11 velden en geen enkel inhoudelijk veld. Wie enkel
+  daar kijkt, concludeert ten onrechte dat finaliteit niet bestaat in de API.
+- **Finaliteit is officieel beschikbaar, niet afgeleid.** Codes: `DO` Doorstroomfinaliteit,
+  `DU` Dubbele finaliteit, `A` Arbeidsmarktfinaliteit, `E` NVT (eerste graad),
+  `7E` n.v.t. (7e leerjaar). Dekking geverifieerd: 758/758 richtingcodes in ons aanbod staan in
+  de catalogus; 2909 van 3021 catalogusrecords hebben een finaliteit. De 12 richtingen in onze
+  data zonder finaliteit zijn HBO5 (9), eerste graad (2) en OKAN (1) — terecht leeg.
+- **Niet zelf finaliteit afleiden uit ASO/TSO/BSO/KSO.** De omschrijving draagt nog de oude
+  onderwijsvorm-labels, maar de mapping onderwijsvorm → finaliteit is niet 1-op-1. Gebruik het
+  veld. `onderwijsvorm` bewaren we apart omdat ouders die termen nog kennen.
+- Richtingen zitten per **vestiging** in het model (`SchoolOpCampus.richtingen`), niet per school:
+  een school met meerdere campussen kan per campus een ander aanbod hebben.
 
-### Net-onderscheid Provinciaal/Stedelijk binnen "Officieel gesubsidieerd" — NIET geïntegreerd
+### Net-onderscheid Provinciaal/Stedelijk — geïntegreerd sinds v0.2
 
-Gewenst: onderscheid GO! / Officieel gesubsidieerd Provinciaal / Officieel gesubsidieerd Stedelijk /
-Vrij gesubsidieerd (huidige `net` in de CSV heeft maar 3 categorieën + leeg).
+- `instelling_net` heeft maar 3 bruikbare categorieën (Gemeenschapsonderwijs / Vrij
+  gesubsidieerd / Officieel gesubsidieerd) en kan Provinciaal niet van Stedelijk scheiden.
+- **`instelling_soort_bestuur` staat NIET op de school** maar op het **bestuur**, dat zelf een
+  instelling is (`instelling_type` = 300). Ophalen: `instelling_bestuur.instellingsnummer` van
+  de school, dan die instelling opvragen. In het script halen we alle besturen in één
+  gepagineerde call op (`filter_instelling_type=300`, 928 records) en joinen lokaal — niet
+  928 losse detailcalls.
+- Codelijst `soort_bestuur` geverifieerd opgehaald: `1` GO!, `2` Vrij, `3` Provincie,
+  `4` Gemeente, `5` OCMW, `6` Intercommunale, `7` Vlaamse Gemeenschap,
+  `8` Vlaamse autonome hogeschool, `9` Andere.
+- Verdeling in onze dataset (per vestiging): Vrij 376, GO! 102, Gemeente 63, Provincie 18.
+  "Stedelijk" = `Gemeente` (bv. AGB Stedelijk Onderwijs Antwerpen).
+- De oude tekst-heuristiek op de bestuursnaam is definitief van tafel — niet meer gebruiken.
 
-- De CSV zelf heeft hiervoor geen apart veld — enkel de vrije-tekst `naam` van het schoolbestuur
-  (via het `bestuur`-veld, join op `schoolnummer` in de Schoolbesturen-CSV
-  `csv.ashx?s=03`) geeft een aanwijzing (bv. "Autonoom Provinciebedrijf Provinciaal Onderwijs
-  Antwerpen" vs. "Autonoom Gemeentebedrijf Stedelijk Onderwijs Antwerpen"). Dat is een heuristiek
-  op vrije tekst, geen betrouwbare structured data — bewust niet gebruikt.
-- De **Instelling-API** (`onderwijs.api.vlaanderen.be/instellingsgegevens/instelling/v1`, zelfde
-  soort key als hierboven) heeft wél een schoon veld: `instelling_soort_bestuur`
-  (`CodeOmschrijving`, filterbaar via `filter_instelling_soort_bestuur` met codes 1–9). De exacte
-  betekenis van die 9 codes is nog niet geverifieerd — vereist een werkende key plus de
-  **Codelijst-API** om de codes te decoderen. Niet gokken welke code wat betekent; eerst opvragen.
-- Zodra dit gebouwd wordt: `Vestiging.net` uitbreiden met de 2 extra categorieën, en de
-  `filter_instelling_bestuur`-param gebruiken om per school het bestuur (en dus soort_bestuur) op
-  te halen — niet de tekst-heuristiek.
+### API-key
+
+- Env var `ONDERWIJS_API_KEY`, gelezen via `process.loadEnvFile()` (Node 21+, geen `dotenv`).
+  Het script laadt **`.env` én `.env.local`**, in die volgorde, en overleeft een ontbrekend
+  bestand (in CI komt de key uit de omgeving). Lokaal staat de key in `.env.local`.
+- **Bewust geen `VITE_`-prefix**: de key wordt alleen door het build-time Node-script gebruikt,
+  nooit door client-code. Een `VITE_`-prefix zou Vite de key in de publieke JS-bundle bakken.
+  Enkel de opgehaalde data (niet de key) komt in `public/data/*.json`, en die data is publiek.
+- Key aanvragen: `https://onderwijs-api-portaal.vlaanderen.be/contact/aanvraag-apikey`.
 
 ### Geolocatie eigen adres (live browser call)
 
@@ -149,33 +193,28 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
 
 ## Architectuur
 
-- `scripts/fetch-data.ts` — Node-script (draai met `npm run fetch-data`), schrijft
-  `public/data/vestigingen.json` + `public/data/meta.json` (ophaaldatum, bronvermelding, aantallen).
-- **`public/data/*.json` staat bewust WEL in git** (~400 kB), als fallback voor een falende fetch.
-
-  Wat we **zeker weten**: de eerste Netlify-build faalde met `ECONNRESET` tijdens de TLS-handshake
-  naar `data-onderwijs.vlaanderen.be` ("Client network socket disconnected before secure TLS
-  connection was established"), binnen 1 seconde, dus nog vóór enige HTTP-header. Dezelfde call
-  werkt wél vanaf een Belgisch residentieel IP (TLS 1.3, geldig GlobalSign-cert) én vanaf
-  Anthropic's cloud-infrastructuur.
-
-  Wat we **niet** weten: de precieze oorzaak. Het is dus **géén** algemene blokkade op
-  datacenter-IP's — dat is getest en weerlegd. Overblijvende kandidaten: een IP-range- of
-  geo-blokkade die specifiek Netlify's build-infra treft, of gewoon een tijdelijke storing (de
-  originele code deed één poging zonder retry). **Niet als vaststaand feit behandelen.**
-- `fetch-data.ts` doet daarom 3 pogingen met backoff en valt daarna terug op de gecommitte dataset:
-  build gaat door, met een luide waarschuwing. Ligt er géén dataset, dan faalt het script wél hard.
-- **Gevolg voor de werkwijze:** data verversen doe je **lokaal** (`npm run fetch-data`) en dan
-  `public/data/*.json` mee committen. De footer toont de ophaaldatum uit `meta.json`, dus verouderde
-  data is altijd zichtbaar voor de bezoeker — controleer die datum na een refresh.
-- `src/types.ts` — het `Vestiging`-datamodel, inclusief lege placeholders (`richtingen`, `kostprijs`,
-  `vervoer`) voor latere versies zodat de structuur niet moet herbouwd worden.
+- `scripts/fetch-data.ts` — Node-script (draai met `npm run fetch-data`), haalt 5 gepagineerde
+  API-calls op, joint ze, en schrijft `public/data/vestigingen.json` + `public/data/meta.json`
+  (ophaaldatum, bronvermelding, schooljaar van het aanbod, aantallen).
+- **`public/data/*.json` staat bewust WEL in git** (~4 MB), en is sinds v0.2 de *primaire* bron
+  voor de build: `npm run build` leest die JSON, de API wordt niet tijdens elke deploy bevraagd.
+  Verversen is een aparte, periodieke stap (zie Workflow).
+- Faalt het ophalen tóch (API plat, key verlopen), dan valt het script terug op de gecommitte
+  dataset met een luide waarschuwing; ligt er géén dataset, dan faalt het hard.
+- **Historische noot:** tot v0.1 kwam de data uit de CSV's van `data-onderwijs.vlaanderen.be`.
+  Die faalden op Netlify met `ECONNRESET` tijdens de TLS-handshake (oorzaak nooit bevestigd —
+  geen algemene datacenter-blokkade, dat is getest en weerlegd). Dat probleem is met de overstap
+  naar de API weg, maar de fallback-logica is blijven staan omdat ze nu de API dekt.
+- `src/types.ts` — het datamodel: `Campus` (adres, coördinaten) met `SchoolOpCampus[]` erin,
+  elk met `Richting[]`. Lege placeholders (`kostprijs`, `vervoer`) blijven staan voor v0.5/v0.6.
 - `src/lib/` — pure functies: haversine-afstand, net-labels, URL-state hook.
 - `src/components/` — UI-componenten, geen state-logica die ook elders nodig is.
 - Filterstatus leeft in de URL-querystring (geen router nodig, single-page app — vermijd
-  react-router, dat lost hier niets op en breekt GitHub Pages deep-linking onnodig).
+  react-router, dat lost hier niets op en breekt deep-linking onnodig).
 - Afstand is altijd hemelsbrede afstand (haversine); benoem dat expliciet in de UI, nooit als
   "reisafstand" framen.
+- `proj4` is **verwijderd** als dependency: de API levert WGS84 rechtstreeks, er is geen
+  Lambert72-conversie meer nodig.
 
 ## Roadmap
 
@@ -187,7 +226,7 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 | --- | --- | --- | --- |
 | **v0.1** | Basis | Vestigingen → campussen, afstand (hemelsbreed), filters (net/gemeente/naam), kaart, detailpaneel, URL-state, mobiel | **Opgeleverd** |
 | **v0.1.x** | Fiets | Fietsafstand/-tijd per school in detailpaneel (OpenRouteService via api.heigit.org) | **Opgeleverd** |
-| **v0.2** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per school · infodagen | **Wacht op API-key** (aangevraagd, kan dagen duren, niet gegarandeerd) |
+| **v0.2** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
 | **v0.3** | GOK-indicatoren | OKI + 4 leerlingenkenmerken per campus, als context in detailpaneel | Bron gevonden en geverifieerd — **key niet nodig** |
 | **v0.4** | Aanmelden | Aanmeldsysteem tonen/linken (bv. meldjeaan.be) | **Nog te onderzoeken** — bron onbekend |
 | **v0.5** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
@@ -195,19 +234,25 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 | **v0.7** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
 | **Geparkeerd** | Openbaar vervoer | Reistijd met de bus | De Lijn heeft geen publieke routeplanner-API; een eigen mini-planner wordt een ruwe schatting, een echte planner (OpenTripPlanner) vereist een backend — botst met "geen backend" |
 
-### v0.2 — wat al geverifieerd is
+### v0.2 — stand van zaken
 
-- **Studieaanbod + finaliteit**: `Onderwijsaanbod SO 2.6`, endpoints `/ingerichtehoofdstructuur` en
-  `/ingerichteadministratievegroep`. Finaliteit zit **per richting**, niet per school — een campus met
-  meerdere finaliteiten toont die dus vanzelf allemaal, zonder speciale logica.
-- **Schooldata**: `Instelling`-API, met `instelling_soort_bestuur` (zie net-onderscheid hierboven).
-- Beide zitten mogelijk in **aparte API-producten** — check bij ontvangst of de key ook op
-  Instelling + Codelijst geldt, niet enkel op Onderwijsaanbod SO.
-- **Infodagen: nog geen bron gevonden.** De API-catalogus van het portaal bevat géén
-  infomomenten/infodagen-product (volledige catalogus nagekeken). onderwijskiezer.be heeft ze wel,
-  maar is juridisch uitgesloten (zie hieronder). Eerst uitzoeken vóór inplannen.
-- Richtingen worden per campus samengevoegd getoond (afgesproken); ze komen binnen op
-  `SchoolOpCampus.richtingen`.
+**Datalaag opgeleverd**: `fetch-data.ts` draait volledig op de API's, met studieaanbod,
+finaliteit en soort_bestuur in de dataset. Zie de databronnen-sectie hierboven voor de details.
+
+**Nog te doen in de UI** (de data ligt klaar, er wordt nog niets van getoond):
+- Richtingen tonen in `DetailPanel`, per campus samengevoegd over de scholen op dat adres
+  (afgesproken met de gebruiker). Groepeer op graad + finaliteit, niet als platte lijst van
+  8265 regels.
+- Filteren op finaliteit en op richting — de placeholder-sectie in `FilterPanel` activeren.
+- `soortBestuur` in de netfilter verwerken: GO! / Provinciaal / Stedelijk / Vrij.
+  Let op: `Net` in `src/types.ts` is nog het oude 4-waarden-type dat `NET_STYLES`,
+  `NET_OPTIONS` en de URL-state gebruiken. `soortBestuur` staat er los naast, precies om die
+  UI niet te breken. Wie de filter uitbreidt, moet die drie plekken samen aanpassen.
+- Vermeld het schooljaar (`meta.schooljaarAanbod`) bij het aanbod in de UI.
+
+**Infodagen: geen bron.** De volledige API-catalogus bevat geen infomomenten-product.
+onderwijskiezer.be heeft ze wel maar is juridisch uitgesloten (zie hieronder). Dit item schuift
+door tot er een bron gevonden is — niet inplannen op hoop.
 
 ### v0.3 — bron geverifieerd, geen API-key nodig
 
@@ -241,7 +286,14 @@ linken mag. Niet als databron gebruiken.
 ## Workflow
 
 - Kleine stappen, één git commit per afgeronde stap.
-- Voor elke stap: `npm run fetch-data && npm run build` moet slagen zonder handmatige tussenstap.
+- Voor elke stap: `npm run build` moet slagen. `npm run fetch-data` vereist een API-key en
+  hoort **niet** bij elke build — zie hieronder.
+- **Data verversen is een aparte, periodieke stap.** `npm run fetch-data` draait niet meer mee in
+  de Netlify-build: het schoolaanbod verandert praktisch één keer per schooljaar, dus elke deploy
+  de API bevragen is verspilling en maakt builds afhankelijk van een externe dienst. Ververs
+  lokaal (of via een geplande GitHub Action) en commit `public/data/*.json` mee. De footer toont
+  de ophaaldatum uit `meta.json`, dus verouderde data is zichtbaar voor de bezoeker — controleer
+  die datum na een refresh.
 - **Sanity check** bij elke wijziging aan filtering/afstand: zoek **"Boechout"** → Sint-Gabriëlcollege
   en Regina Pacisinstituut (Hove) moeten bij de eerste resultaten staan.
   De oorspronkelijke opzet vroeg deze check met "Borsbeek", maar **Borsbeek bestaat niet meer als
