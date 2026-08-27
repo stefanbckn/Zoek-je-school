@@ -68,8 +68,8 @@ De brondata bevat regelmatig **meerdere apart geregistreerde scholen (elk een ei
 op exact hetzelfde fysieke adres** — niet zomaar interne vestigingsplaats-varianten van één school,
 maar echt losse legale entiteiten die een campus delen (bv. "Sint-Gabriëlcollege" +
 "Sint-Gabriëlcollege - Middenschool 1/2/3" zijn 4 verschillende schoolnummers op 2 gedeelde adressen).
-Geverifieerd: 386 van de 562 scholen (69%) delen een adres met minstens 1 andere school; sommige
-adressen hebben tot 11 verschillende scholen. Dit als losse kaartjes tonen is verwarrend — expliciet
+Geverifieerd op de API-dataset: 386 van de 559 vestigingen (69%) delen een adres met minstens 1
+andere school — 130 van de 303 adressen; sommige adressen hebben tot 11 verschillende scholen. Dit als losse kaartjes tonen is verwarrend — expliciet
 zo beslist door de gebruiker.
 
 - `scripts/fetch-data.ts` groepeert daarom op `postcode|straat|huisnummer` (busnummer genegeerd in
@@ -82,10 +82,11 @@ zo beslist door de gebruiker.
   met de scholen als losse, individueel klikbare rijen erin. `DetailPanel` toont altijd één specifieke
   school (`campus` + `school` samen als props), met een melding welke andere scholen hetzelfde adres
   delen.
-- Toekomstig werk (afgesproken met de gebruiker): zodra het studieaanbod gekoppeld is, worden
-  finaliteiten/richtingen **per adres/campus** samengevoegd getoond (een andere campus met andere
-  richtingen blijft wél apart) — dat past bovenop deze structuur, `SchoolOpCampus.richtingen` is de
-  plek waar dat per school binnenkomt.
+- **Sinds v0.2 opgeleverd:** finaliteiten/richtingen worden **per adres/campus** samengevoegd
+  getoond én gefilterd (een andere campus met ander aanbod blijft wél apart). `campusAanbod()` in
+  `src/lib/aanbod.ts` doet die samenvoeging; `SchoolOpCampus.richtingen` is waar het per school
+  binnenkomt. `DetailPanel` toont nog steeds één specifieke school, maar het aanbodblok erin geldt
+  voor het hele adres — dat staat er ook expliciet bij als er meerdere scholen zijn.
 
 ### Studieaanbod (richtingen) — geïntegreerd sinds v0.2
 
