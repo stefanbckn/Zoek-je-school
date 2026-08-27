@@ -26,8 +26,8 @@ interface FilterPanelProps {
 /** Korte uitleg bij elke finaliteit — de termen zijn nieuw voor veel ouders. */
 const FINALITEIT_UITLEG: Record<FinaliteitKeuze, string> = {
   Doorstroom: 'bereidt voor op hoger onderwijs',
-  Dubbel: 'hoger onderwijs of meteen aan het werk',
-  Arbeidsmarkt: 'bereidt voor op meteen aan het werk',
+  Dubbel: 'bereidt voor op hoger onderwijs of op werk',
+  Arbeidsmarkt: 'bereidt voor op werk meteen na het secundair',
 }
 
 export function FilterPanel({
@@ -166,7 +166,7 @@ export function FilterPanel({
           className="w-full rounded-md border border-rand px-3 py-2 text-sm focus:border-accent focus:outline-none"
         />
         <p className="mt-1 text-xs text-zacht">
-          Toont adressen waar minstens één richting hierop matcht.
+          Toont scholen waar minstens één richting hierop matcht.
         </p>
       </div>
 
