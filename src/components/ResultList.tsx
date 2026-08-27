@@ -3,7 +3,7 @@ import type { CampusMetAfstand, SchoolOpCampus } from '../types'
 import { ResultCard } from './ResultCard'
 
 /**
- * Aantal adressen dat we in één keer tonen. Zonder filters staan er ruim 300 in de lijst; die
+ * Aantal kaartjes dat we in één keer tonen. Zonder filters staan er ruim 300 in de lijst; die
  * allemaal tegelijk in de DOM zetten maakt doorscrollen traag, precies voor wie nog niet weet
  * waarop te filteren.
  *
@@ -45,6 +45,9 @@ export function ResultList({ campussen, onSelect }: ResultListProps) {
         <ResultCard key={c.id} campus={c} onSelect={onSelect} />
       ))}
 
+      {/* "Scholen" en niet "adressen", ook al is één kaartje één adres dat meerdere scholen kan
+          dragen. De bezoeker zoekt scholen; het datamodel is zijn probleem niet. Zelfde
+          woordkeuze als de filterkolom. */}
       {rest > 0 && (
         <div className="flex flex-col items-center gap-1 pt-1">
           <button
@@ -52,10 +55,10 @@ export function ResultList({ campussen, onSelect }: ResultListProps) {
             onClick={() => setStaat((s) => ({ ...s, zichtbaar: s.zichtbaar + PAGINA }))}
             className="rounded-md border border-rand px-4 py-2 text-sm font-medium text-inkt hover:bg-hover"
           >
-            Toon {Math.min(PAGINA, rest)} adressen meer
+            Toon {Math.min(PAGINA, rest)} scholen meer
           </button>
           <p className="text-xs text-zacht" aria-live="polite">
-            {getoond.length} van {campussen.length} adressen getoond
+            {getoond.length} van {campussen.length} scholen getoond
           </p>
         </div>
       )}
