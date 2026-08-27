@@ -42,3 +42,42 @@ alleen onder een bepaalde schermbreedte zodat het ontwerp op desktop niet verand
 **Niet doen:** `maximum-scale=1` of `user-scalable=no` aan de viewport-meta toevoegen. Dat
 onderdrukt het symptoom maar ontneemt iedereen de mogelijkheid om in te zoomen, wat een
 toegankelijkheidsprobleem is voor slechtziende bezoekers (WCAG 1.4.4).
+
+---
+
+## Filter studierichting: hulptekst spreekt over adressen in plaats van scholen
+
+**Gemeld:** 27/08/2026 · **Status:** open, niet opgelost
+
+**Wat er gebeurt.** Onder het veld "Zoek op studierichting" in `FilterPanel.tsx` staat:
+"Toont adressen waar minstens één richting hierop matcht." Voor een bezoeker is "adressen"
+vreemd taalgebruik — die zoekt scholen, geen adressen. Moet worden: "Toont scholen …".
+
+**Waarom het er zo staat.** Bewuste woordkeuze uit v0.2: het aanbod wordt op adresniveau
+samengevoegd, dus een adres kan matchen op een richting die bij een búúrschool op datzelfde
+adres hoort (zie `campusAanbod()` in `src/lib/aanbod.ts`). "Adressen" was daar technisch
+correct, maar het is jargon dat het model verraadt in plaats van de gebruiker helpt.
+
+**Let op bij het oplossen.** Alleen de zin herschrijven, niet het filtergedrag: de matching
+blijft op adresniveau. Kijk meteen of de rest van de UI hetzelfde woord gebruikt — als er
+elders "adres" of "campus" staat waar de bezoeker "school" verwacht, hoort dat in dezelfde
+opruiming thuis.
+
+---
+
+## Filter finaliteit: uitleg bij Arbeidsmarkt loopt krom
+
+**Gemeld:** 27/08/2026 · **Status:** open, niet opgelost
+
+**Wat er gebeurt.** In `FINALITEIT_UITLEG` in `FilterPanel.tsx` staat bij Arbeidsmarkt
+"bereidt voor op meteen aan het werk". Dat is geen vlotte zin: "bereidt voor op" vraagt een
+zelfstandig naamwoord ("bereidt voor op hoger onderwijs", zoals bij Doorstroom), niet een
+bijwoordelijke bepaling met een werkwoord.
+
+**Richting voor de oplossing.** Iets in de trant van "leidt op om meteen te gaan werken" of
+"bereidt voor op werk meteen na het secundair".
+
+**Let op.** De drie uitlegzinnen staan onder elkaar in hetzelfde lijstje en worden samen
+gelezen; herschrijf ze dus als een set, zodat ze parallel lopen. De uitleg bij Dubbel
+("hoger onderwijs of meteen aan het werk") mist bovendien een werkwoord dat de andere twee
+wel hebben.
