@@ -436,14 +436,18 @@ linken mag. Niet als databron gebruiken.
 
 - **Nooit pushen zonder expliciet akkoord op dat moment.** Committen mag vrij; de gebruiker pusht
   zelf of geeft er per keer toestemming voor. Eén akkoord geldt niet voor volgende pushes.
-- **Bugs gaan op een `fix/`-branch.** Naamgeving: `fix/<kort-onderwerp>`, bijvoorbeeld
-  `fix/ios-zoom-invoervelden`. Takken af van een **verse** `main` (`git fetch` eerst — dat is
-  hier al een keer misgegaan), en de logregel in [BUGS.md](./BUGS.md) plus de oplossing reizen
-  samen in één PR.
-- **Meld een bug eerst in `BUGS.md`**, ook als hij meteen opgelost wordt: wat er gebeurt, wat de
-  oorzaak lijkt, en wat er nog geverifieerd moet worden. `gh` is niet ingelogd, dus GitHub Issues
-  zijn geen optie; dit bestand is de lijst. Opgeloste bugs gaan eruit, de git-geschiedenis
-  bewaart ze.
+- **[BUGS.md](./BUGS.md) hoort op `main` te staan**, niet op een branch. Het is de lijst van wat
+  er open staat, dus hij moet kloppen voor wie ook maar naar `main` kijkt. Zou elke fix-branch
+  z'n eigen `BUGS.md` aanmaken, dan krijg je bij twee gelijktijdige bugs twee losse lijstjes en
+  een merge-conflict. `gh` is niet ingelogd, dus GitHub Issues zijn geen optie; dit bestand is
+  de lijst.
+- **Een bug melden gaat dus rechtstreeks naar `main`** (of via een piepkleine PR), los van de
+  oplossing. Noteer: wat er gebeurt, op welk toestel/browser, wat de oorzaak lijkt, en wat er
+  nog geverifieerd moet worden.
+- **Een bug oplossen gaat op een `fix/`-branch**: naamgeving `fix/<kort-onderwerp>`, bijvoorbeeld
+  `fix/ios-zoom-invoervelden`, afgetakt van een **verse** `main` (`git fetch` eerst — dat is hier
+  al een keer misgegaan). Die PR bevat de oplossing én haalt de regel uit `BUGS.md` weg. De
+  git-geschiedenis bewaart de bug, de lijst toont alleen wat nog open staat.
 - **Begin elke nieuwe versie op een eigen branch, meteen bij de eerste commit.** Niet op `main`
   werken en achteraf verplaatsen. Naamgeving: `v0.3-gok-indicatoren`, `v0.4-aanmelden`, ...
   (versienummer uit de roadmap + kort thema). Doe dit vóór de eerste wijziging — vraag het niet
