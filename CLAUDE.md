@@ -380,6 +380,7 @@ Deze tabel gaat over wat er nog komt; de changelog over wat er al is.
 | **0.6.0** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
 | **0.7.0** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
 | **Geen nummer** | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder versienummer.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder. Een nummer zou een planning suggereren die er niet is |
+| **Geen nummer** | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Idee, niet ingepland.** Nooit als score tonen, zie hieronder. Eerst uit te zoeken of de verslagen per schoolnummer op te halen zijn |
 | ~~Geparkeerd~~ | Openbaar vervoer | Reistijd met de bus | **Uit de parkeerstand gehaald en uitgebracht in 0.3.0** via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken |
 
 ### 0.2.0 — stand van zaken
@@ -505,6 +506,35 @@ Uitgangspunten voor wie dit bouwt:
 - Let op de samenhang met het openstaande punt uit v0.2.1 (sticky filterkolom met één
   scrollgebied). Een kortere lijst maakt dat minder nijpend, maar lost het niet op: de
   gemeentelijst heeft nog steeds z'n eigen scrollbalk binnen een meescrollende kolom.
+
+### Doorlichting: wel linken, nooit scoren (idee, 27/08/2026)
+
+Idee van de gebruiker: tonen wat de onderwijsinspectie over een school zegt. Geparkeerd zonder
+versienummer — er is geen haast, en er is eerst uitzoekwerk nodig.
+
+**De vorm ligt wél al vast, en dat is het belangrijkste deel.** Geen cijfer, geen samenvatting,
+geen ranglijst: enkel een link naar het verslag met de datum erbij ("doorgelicht in maart 2024 —
+lees het verslag"). Drie redenen, alle drie door de gebruiker aangebracht of onderschreven:
+
+- **Niet elke school heeft een verslag.** In een lijst met scores belanden die scholen onderaan
+  zonder dat er iets over hen gezegd is. Dat is de slechtst mogelijke uitkomst: afwezigheid van
+  informatie leest als een slecht rapport.
+- **Eén punt doet een school onrecht.** Zelfde bezwaar als bij OKI, dat hier ook al bewust als
+  context met uitleg staat en niet als kwaliteitsoordeel.
+- **De verslagen dateren van verschillende jaren.** Een doorlichting van vorig jaar naast een van
+  zes jaar geleden vergelijkt geen twee scholen maar twee momenten. Zet de datum er dus altijd
+  bij, ook als er ooit meer dan een link getoond zou worden.
+
+**Nog uit te zoeken, vóór dit ingepland kan worden:**
+
+- Zijn de verslagen per `schoolnummer` op te halen, of enkel via een zoekformulier? Zonder
+  koppeling op schoolnummer valt dit terug op handwerk, net als aanmelden.
+- Staat er een datum en een stabiele URL per verslag?
+- Wat zeggen de gebruiksvoorwaarden over linken en over het overnemen van tekst? Linken zal wel
+  mogen; overnemen is sowieso niet de bedoeling, zie de vorm hierboven.
+
+Niets hiervan is nagekeken — dit is een genoteerd idee, geen geverifieerde bron. Wie eraan begint,
+begint bij die drie vragen.
 
 ### Aanmelden: geen centrale bron (onderzocht 27/08/2026)
 
