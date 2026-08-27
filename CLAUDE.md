@@ -361,23 +361,28 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
 ## Roadmap
 
 Let op: deze nummering **vervangt** de oorspronkelijke backlog-nummering uit de opzet. De oude
-v0.2 (Reizen) is deels al opgeleverd — fietsafstand/-tijd zit in v0.1 — en de resterende oude
-backlog-items zijn doorgeschoven naar v0.5–v0.7.
+v0.2 (Reizen) is deels al opgeleverd — fietsafstand/-tijd zit in 0.1.1 — en de resterende oude
+backlog-items zijn doorgeschoven naar 0.5.0–0.7.0.
+
+Alles staat op drie posities (MAJOR.MINOR.PATCH), gelijk aan `package.json` en de git tags. Wat
+er per uitgebrachte versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet hier.
+Deze tabel gaat over wat er nog komt; de changelog over wat er al is.
 
 | Versie | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| **v0.1** | Basis | Vestigingen → campussen, afstand (hemelsbreed), filters (net/gemeente/naam), kaart, detailpaneel, URL-state, mobiel | **Opgeleverd** |
-| **v0.1.x** | Fiets | Fietsafstand/-tijd per school in detailpaneel (OpenRouteService via api.heigit.org) | **Opgeleverd** |
-| **v0.2** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
-| **v0.2.1** | UI-verbeteringen | Actieve filters zichtbaar onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode | **Ingepland**, zie hieronder |
-| **v0.3** | Openbaar vervoer + pagineren | AGPL-3.0-licentie · reistijd met bus/trein via Transitous · contactgegevens in de footer · lijst pagineren | **Opgeleverd**, behalve twee stappen die alleen de eigenaar kan zetten: repo publiek maken en Transitous verwittigen. Tot dan staat de OV-call in de code maar is de voorwaarde niet vervuld |
-| **v0.4** | GOK-indicatoren + aanmelden | 4 leerlingenkenmerken per school · aanmeldsysteem per school tonen/linken | GOK: **downloadbare xlsx gevonden**, join geverifieerd op 269/272 scholen — automatiseerbaar, maar per school en niet per vestiging. Aanmelden: **geen centrale bron**, zie hieronder |
-| **v0.5** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
-| **v0.6** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
-| **v0.7** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
-| ~~Geparkeerd~~ | Openbaar vervoer | Reistijd met de bus | **Uit de parkeerstand gehaald en opgeleverd in v0.3** via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken |
+| **0.1.0** | Basis | Vestigingen → campussen, afstand (hemelsbreed), filters (net/gemeente/naam), kaart, detailpaneel, URL-state, mobiel | **Opgeleverd** |
+| **0.1.1** | Fiets | Fietsafstand/-tijd per school in detailpaneel (OpenRouteService via api.heigit.org) | **Opgeleverd** |
+| **0.2.0** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
+| **0.2.1** | UI-verbeteringen | Actieve filters zichtbaar onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode | **Opgeleverd**, zie hieronder |
+| **0.3.0** | Openbaar vervoer + pagineren | AGPL-3.0-licentie · reistijd met bus/trein via Transitous · contactgegevens in de footer · lijst pagineren | **Uitgebracht** op 27/08/2026, tag `v0.3.0`. Repo is publiek en Transitous is verwittigd en akkoord |
+| **0.4.0** | GOK-indicatoren | 4 leerlingenkenmerken per school, met kaderende uitleg | **Klaar om te bouwen.** Downloadbare xlsx bij AgODi, join geverifieerd op 269/272 scholen. Per school, niet per vestiging — zie hieronder |
+| **0.5.0** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
+| **0.6.0** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
+| **0.7.0** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
+| **Geen nummer** | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder versienummer.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder. Een nummer zou een planning suggereren die er niet is |
+| ~~Geparkeerd~~ | Openbaar vervoer | Reistijd met de bus | **Uit de parkeerstand gehaald en uitgebracht in 0.3.0** via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken |
 
-### v0.2 — stand van zaken
+### 0.2.0 — stand van zaken
 
 **Datalaag opgeleverd**: `fetch-data.ts` draait volledig op de API's, met studieaanbod,
 finaliteit en soort_bestuur in de dataset. Zie de databronnen-sectie hierboven voor de details.
@@ -407,7 +412,7 @@ Twee keuzes daarin, bewust:
 onderwijskiezer.be heeft ze wel maar is juridisch uitgesloten (zie hieronder). Dit item schuift
 door tot er een bron gevonden is — niet inplannen op hoop.
 
-### v0.2.1 — UI-verbeteringen
+### 0.2.1 — UI-verbeteringen
 
 **Opgeleverd:**
 
@@ -474,9 +479,9 @@ geen extra download, geen layout-verschuiving bij het laden, en niets dat de CSP
 raakt. Wil je later meer karakter, doe dat dan met één webfont voor koppen alleen, niet voor
 lopende tekst.
 
-### v0.3 — lijstweergave pagineren (opgeleverd)
+### 0.3.0 — lijstweergave pagineren (uitgebracht)
 
-**Opgeleverd** in `ResultList.tsx`: 25 adressen per lading, "Toon meer"-knop, teller reset bij
+**Uitgebracht in 0.3.0** in `ResultList.tsx`: 25 adressen per lading, "Toon meer"-knop, teller reset bij
 elke filterwijziging. De uitgangspunten hieronder zijn dus beschrijvend geworden, geen plan meer.
 
 Zonder filters staan er 303 adressen in de lijst, allemaal tegelijk in de DOM. Doorscrollen naar
@@ -501,7 +506,7 @@ Uitgangspunten voor wie dit bouwt:
   scrollgebied). Een kortere lijst maakt dat minder nijpend, maar lost het niet op: de
   gemeentelijst heeft nog steeds z'n eigen scrollbalk binnen een meescrollende kolom.
 
-### v0.4 — aanmelden: geen centrale bron (onderzocht 27/08/2026)
+### Aanmelden: geen centrale bron (onderzocht 27/08/2026)
 
 Er is **geen register, dataset of API** die scholen aan een aanmeldsysteem koppelt. Nagekeken:
 de API-catalogus van het onderwijsportaal bevat geen aanmelden-product (zie hierboven), en er
@@ -525,7 +530,7 @@ staan op sites met eigen voorwaarden, en ze wijzigen per schooljaar.
 jaartal erbij, en link naar de bron in plaats van de procedure over te nemen — anders staat er
 volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
-### v0.4 — GOK-indicatoren: er is wél een downloadbaar bestand (28/08/2026)
+### 0.4.0 — GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026)
 
 **Dit vervangt de Tableau-route hieronder als eerste keuze.** AgODi publiceert de
 leerlingenkenmerken per school als gewone xlsx op het documentenportaal. Geen Tableau, geen
@@ -580,7 +585,7 @@ https://data-onderwijs.vlaanderen.be/documenten/bestanden/
 hieronder. Afweging: automatisch en per school (dit bestand), of handwerk en per vestiging
 (Tableau). Voor v0.4 is dit bestand de betere ruil.
 
-### v0.4 — Dataloep-route (per vestigingsplaats, handmatig)
+### 0.4.0 — Dataloep-route (per vestigingsplaats, handmatig)
 
 - Bron: **Dataloep Leerlingenkenmerken Secundair**, op de Tableau Server van de overheid:
   `https://onderwijs-tableau.vlaanderen.be/t/EXTERN/views/DataloepLeerlingenkenmerkenSecundair/SOCijfersperschooljaar`
@@ -680,9 +685,9 @@ API-portaal publiceert geen expliciete hergebruikslicentie bij deze producten (n
 
 Het project gebruikt **MAJOR.MINOR.PATCH**. Drie plaatsen moeten samen kloppen:
 
-- **`package.json`** draagt de huidige versie. Die staat nu nog op `0.0.0`: het nummeren begint
-  pas zodra v0.3 in `main` zit, anders zou `main` een versie dragen die vooruitloopt op werk dat
-  er nog niet in staat. Bij die merge gaat hij naar `0.3.0`.
+- **`package.json`** draagt de huidige versie. Staat sinds de merge van 0.3.0 op `0.3.0`. Zet
+  het nummer in de versie-branch zelf, niet achteraf op `main` — dan komt de bump mee in de PR
+  die de functionaliteit brengt.
 - **Een git tag per release**, `v<versie>` (bv. `v0.3.0`), gezet op `main` *nadat* de PR gemerged
   is. Nooit taggen op een branch die nog niet gemerged is — die commit ligt na de merge niet meer
   in de geschiedenis van `main`, dus de tag wijst dan naar een losse commit.
@@ -690,10 +695,23 @@ Het project gebruikt **MAJOR.MINOR.PATCH**. Drie plaatsen moeten samen kloppen:
   bugfixronden buiten een versie blijven `fix/<kort-onderwerp>`; die krijgen hun nummer pas
   wanneer ze in een release meegaan.
 
+**Release notes horen in [CHANGELOG.md](./CHANGELOG.md)**, niet in de roadmaptabel en niet enkel
+op GitHub. Werkwijze:
+
+1. Tijdens het werk vult de versie-branch de kop **Niet uitgebracht** aan, in dezelfde PR als de
+   wijziging zelf. Zo is de tekst reviewbaar vóór de merge, in plaats van achteraf uit commits
+   gereconstrueerd te worden.
+2. Bij de merge wordt die kop het versienummer met datum, en `package.json` gaat mee omhoog.
+3. Ná de merge: de tag zetten, en dezelfde tekst als GitHub Release bij die tag plakken. Het
+   bestand is de bron, de Release is de kopie.
+
+Schrijf de notes vanuit wat een bezoeker merkt ("je ziet nu de reistijd met bus of trein"), niet
+als opsomming van commits — die staat al in git. Wat er niet werkt of niet meegenomen is, hoort er
+ook in: een changelog die enkel goed nieuws bevat, wordt niet gelezen.
+
 Wat welk cijfer verhoogt: MINOR bij een nieuwe roadmapversie (nieuwe functionaliteit), PATCH bij
 bugfixes en tekstcorrecties zonder gedragswijziging. MAJOR blijft 0 zolang de site niet publiek
-aangekondigd is. De roadmaptabel hierboven schrijft nog `v0.2.1`-stijl — dat is dezelfde
-nummering, alleen zonder de derde positie uitgeschreven.
+aangekondigd is.
 
 ### Samenwerking / git
 
@@ -714,8 +732,8 @@ nummering, alleen zonder de derde positie uitgeschreven.
   al een keer misgegaan). Die PR bevat de oplossing én haalt de regel uit `BUGS.md` weg. De
   git-geschiedenis bewaart de bug, de lijst toont alleen wat nog open staat.
 - **Begin elke nieuwe versie op een eigen branch, meteen bij de eerste commit.** Niet op `main`
-  werken en achteraf verplaatsen. Naamgeving: `v0.3-gok-indicatoren`, `v0.4-aanmelden`, ...
-  (versienummer uit de roadmap + kort thema). Doe dit vóór de eerste wijziging — vraag het niet
+  werken en achteraf verplaatsen. Naamgeving: `v0.4.0-gok-indicatoren` — het volledige
+  versienummer uit de roadmap plus een kort thema. Doe dit vóór de eerste wijziging — vraag het niet
   telkens opnieuw, het is de standaard. Alleen losse fixes buiten een versie mogen rechtstreeks
   op `main`.
 - De gebruiker werkt met feature branches + pull requests op GitHub

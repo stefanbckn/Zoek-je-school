@@ -69,6 +69,12 @@ node scripts/kleurcheck.mjs   # contrast + kleurenblindheid van het palet
 Draai het als je kleuren in `src/index.css` wijzigt — "dit lijkt me wel te onderscheiden" is
 geen verificatie gebleken.
 
+## Releases
+
+Wat er per versie veranderde, staat in **[CHANGELOG.md](./CHANGELOG.md)** — geschreven vanuit wat
+een bezoeker merkt. Elke uitgebrachte versie draagt op `main` de tag `v<versie>`; de huidige is
+`v0.3.0`. De afspraken over nummering en releases staan in [CLAUDE.md](./CLAUDE.md).
+
 ## Bekende bugs
 
 Eén regel per open bug. De diagnose, wat al uitgezocht is en wat nog geverifieerd moet worden
