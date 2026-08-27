@@ -144,13 +144,47 @@ function orNull(raw: string | undefined): string | null {
 
 // --- Fallback --------------------------------------------------------------------------
 
-/** Bestaat er al een eerder gegenereerde (en gecommitte) dataset om op terug te vallen? */
-async function heeftBestaandeDataset(): Promise<boolean> {
+/** De eerder gegenereerde (en gecommitte) dataset, of null als die er niet is. */
+async function bestaandeDataset(): Promise<Campus[] | null> {
   try {
     const inhoud = await readFile(path.join(OUTPUT_DIR, 'vestigingen.json'), 'utf-8')
-    return JSON.parse(inhoud).length > 0
+    const campussen = JSON.parse(inhoud) as Campus[]
+    return campussen.length > 0 ? campussen : null
   } catch {
-    return false
+    return null
+  }
+}
+
+/**
+ * Vangnet tegen stilzwijgend databederf. Dit script draait ook ongesuperviseerd (GitHub
+ * Action), en een API die plots de helft minder teruggeeft — gewijzigde filterparam,
+ * halve storing, gewijzigde scope — mag niet zomaar over de goede dataset heen gecommit
+ * worden. Krimpt de dataset meer dan MAX_KRIMP, dan stoppen we en moet een mens kijken.
+ * Groei is nooit verdacht; enkel krimp.
+ */
+const MAX_KRIMP = 0.15
+
+async function controleerOmvang(nieuweCampussen: Campus[]): Promise<void> {
+  const oud = await bestaandeDataset()
+  if (!oud) return
+
+  const oudeVestigingen = oud.reduce((n, c) => n + c.scholen.length, 0)
+  const nieuweVestigingen = nieuweCampussen.reduce((n, c) => n + c.scholen.length, 0)
+  const krimp = (oudeVestigingen - nieuweVestigingen) / oudeVestigingen
+
+  if (krimp > MAX_KRIMP) {
+    throw new Error(
+      `Datasetcontrole mislukt: ${nieuweVestigingen} vestigingen tegenover ${oudeVestigingen} ` +
+        `in de vorige dataset — een krimp van ${(krimp * 100).toFixed(1)}% (drempel ` +
+        `${(MAX_KRIMP * 100).toFixed(0)}%).\n` +
+        `Dat kan echt zijn (scholen sluiten), maar het is vaker een gewijzigde API of een ` +
+        `halve storing. Controleer eerst handmatig; draai daarna met --force om de nieuwe ` +
+        `dataset toch weg te schrijven.`,
+    )
+  }
+  const verschil = nieuweVestigingen - oudeVestigingen
+  if (verschil !== 0) {
+    console.log(`Verschil met de vorige dataset: ${verschil > 0 ? '+' : ''}${verschil} vestigingen.`)
   }
 }
 
@@ -317,6 +351,10 @@ async function bouwDataset() {
 }
 
 async function main() {
+  // --force slaat de omvangcontrole over. Bewust een expliciete handeling: de controle
+  // bestaat net om een ongesuperviseerde run te stoppen.
+  const force = process.argv.includes('--force')
+
   let resultaat: Awaited<ReturnType<typeof bouwDataset>>
   try {
     resultaat = await bouwDataset()
@@ -324,7 +362,7 @@ async function main() {
     // Geen verse data. Ligt er een gecommitte dataset, dan bouwen we daarmee verder: een
     // hikkende API mag geen deploy tegenhouden. De footer toont de ophaaldatum uit meta.json,
     // dus verouderde data blijft zichtbaar voor de bezoeker.
-    if (await heeftBestaandeDataset()) {
+    if (await bestaandeDataset()) {
       console.warn(
         `\nLet op: ophalen mislukt (${err instanceof Error ? err.message : err}).\n` +
           `Er ligt wel een eerder gegenereerde dataset in ${OUTPUT_DIR} — die blijft ongewijzigd\n` +
@@ -336,6 +374,12 @@ async function main() {
       `Ophalen mislukt én er is geen eerder gegenereerde dataset om op terug te vallen.\n` +
         `Oorzaak: ${err instanceof Error ? err.message : err}`,
     )
+  }
+
+  if (force) {
+    console.warn('--force: omvangcontrole overgeslagen.')
+  } else {
+    await controleerOmvang(resultaat.campussen)
   }
 
   await mkdir(OUTPUT_DIR, { recursive: true })

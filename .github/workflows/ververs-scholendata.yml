@@ -1,0 +1,129 @@
+# Ververst de scholendata uit de API's van Onderwijs en Vorming.
+#
+# Waarom een aparte workflow en niet gewoon in de Netlify-build: het schoolaanbod verandert
+# praktisch één keer per schooljaar. Bij elke deploy 5 gepagineerde API-calls doen is
+# verspilling, en het maakt elke deploy afhankelijk van een externe dienst. Zie CLAUDE.md.
+#
+# Deze workflow commit NIET rechtstreeks naar main, maar opent een pull request. Netlify
+# deployt enkel vanaf main, dus niets gaat live zonder dat er iemand naar gekeken heeft.
+name: Ververs scholendata
+
+on:
+  schedule:
+    # Per kwartaal, 1 januari/april/juli/oktober om 03:00 UTC. Ruim voldoende: de
+    # brondata volgt het schooljaar. GitHub kan geplande runs uitstellen bij drukte —
+    # dat is hier onschadelijk.
+    - cron: '0 3 1 1,4,7,10 *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Omvangcontrole overslaan (alleen na handmatige controle van een terechte krimp)'
+        type: boolean
+        default: false
+
+# Standaard heeft GITHUB_TOKEN in deze repo mogelijk alleen leesrechten; deze twee zijn
+# nodig om een branch te pushen en er een PR op te openen.
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: ververs-scholendata
+  cancel-in-progress: false
+
+jobs:
+  ververs:
+    runs-on: ubuntu-latest
+    # Expliciet, niet de default. De default shell is `bash -e` ZONDER pipefail; in de stap
+    # hieronder loopt `npm run fetch-data` door een pipe naar `tee`, en zonder pipefail zou
+    # de exitcode van tee tellen — een gefaalde fetch (of een afgegane omvangcontrole) zou
+    # dan stilzwijgend als geslaagd doorgaan. `shell: bash` geeft `-eo pipefail`.
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Het script gebruikt process.loadEnvFile() (Node 21+) en import.meta.dirname.
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Data ophalen
+        env:
+          ONDERWIJS_API_KEY: ${{ secrets.ONDERWIJS_API_KEY }}
+        run: |
+          if [ -z "$ONDERWIJS_API_KEY" ]; then
+            echo "::error::Secret ONDERWIJS_API_KEY ontbreekt. Zet hem in Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+          # De omvangcontrole in het script stopt de run als de dataset onverwacht krimpt.
+          # Dat is met opzet: liever een gefaalde run dan een stille commit van halve data.
+          npm run fetch-data ${{ inputs.force && '-- --force' || '' }} 2>&1 | tee /tmp/fetch-log.txt
+
+      - name: Build controleren
+        # Verse data mag de site niet breken. Faalt dit, dan komt er geen PR.
+        run: npm run build
+
+      - name: Wijzigingen bepalen
+        id: diff
+        run: |
+          # Bewust alleen vestigingen.json, niet heel public/data: meta.json bevat een
+          # tijdstempel die bij élke run verandert. Zou die meetellen, dan opende deze
+          # workflow elk kwartaal een PR, ook als er geen letter data gewijzigd is.
+          # Geverifieerd: twee runs na elkaar geven een byte-identieke vestigingen.json.
+          if git diff --quiet -- public/data/vestigingen.json; then
+            echo "gewijzigd=false" >> "$GITHUB_OUTPUT"
+            echo "Scholendata ongewijzigd — geen PR. De tijdstempel in meta.json wordt teruggedraaid."
+            git checkout -- public/data/meta.json
+          else
+            echo "gewijzigd=true" >> "$GITHUB_OUTPUT"
+            git diff --stat -- public/data
+          fi
+
+      - name: Pull request openen
+        if: steps.diff.outputs.gewijzigd == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          DATUM=$(date -u +%Y-%m-%d)
+          BRANCH="data/ververs-$DATUM"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add public/data
+          git commit -m "Ververs scholendata ($DATUM)"
+          git push --force-with-lease origin "$BRANCH"
+
+          # De diff zelf is tienduizenden regels en dus onleesbaar. De cijfers uit het
+          # script zijn wél te controleren — die vormen de kern van de PR-beschrijving.
+          {
+            echo "Automatische kwartaalverversing van \`public/data/*.json\` uit de API's van"
+            echo "Onderwijs en Vorming."
+            echo
+            echo "**Controleer de aantallen hieronder voor je merget.** De diff zelf is te groot"
+            echo "om regel per regel te lezen; de cijfers zijn de zinvolle review."
+            echo
+            echo '```'
+            tail -n 20 /tmp/fetch-log.txt
+            echo '```'
+            echo
+            echo "\`npm run build\` is geslaagd op deze data."
+          } > /tmp/pr-body.md
+
+          # Bestaat er al een open PR voor deze branch, dan is de push hierboven genoeg.
+          if gh pr view "$BRANCH" --json number >/dev/null 2>&1; then
+            gh pr edit "$BRANCH" --body-file /tmp/pr-body.md
+            echo "Bestaande PR bijgewerkt."
+          else
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "Ververs scholendata ($DATUM)" \
+              --body-file /tmp/pr-body.md
+          fi

@@ -290,15 +290,32 @@ linken mag. Niet als databron gebruiken.
   hoort **niet** bij elke build — zie hieronder.
 - **Data verversen is een aparte, periodieke stap.** `npm run fetch-data` draait niet meer mee in
   de Netlify-build: het schoolaanbod verandert praktisch één keer per schooljaar, dus elke deploy
-  de API bevragen is verspilling en maakt builds afhankelijk van een externe dienst. Ververs
-  lokaal (of via een geplande GitHub Action) en commit `public/data/*.json` mee. De footer toont
-  de ophaaldatum uit `meta.json`, dus verouderde data is zichtbaar voor de bezoeker — controleer
-  die datum na een refresh.
-- **Sanity check** bij elke wijziging aan filtering/afstand: zoek **"Boechout"** → Sint-Gabriëlcollege
-  en Regina Pacisinstituut (Hove) moeten bij de eerste resultaten staan.
-  De oorspronkelijke opzet vroeg deze check met "Borsbeek", maar **Borsbeek bestaat niet meer als
-  gemeente** (fusie met Antwerpen, 1/1/2025): geen enkele school heeft nog `gemeente=Borsbeek`, en
-  de geocoder valt terug op Antwerpen-centrum. Gebruik Boechout als gelijkwaardige vervanging.
+  de API bevragen is verspilling en maakt builds afhankelijk van een externe dienst.
+
+  Twee manieren, allebei dezelfde code:
+
+  | Manier | Commando | Wanneer |
+  | --- | --- | --- |
+  | Lokaal | `npm run fetch-data` (key uit `.env.local`), dan `public/data/*.json` mee committen | Tussendoor, of om te testen |
+  | Automatisch | GitHub Action `.github/workflows/ververs-scholendata.yml` | Per kwartaal, of handmatig via "Run workflow" |
+
+  De Action commit **niet** rechtstreeks naar `main` maar opent een PR op branch
+  `data/ververs-<datum>`. Netlify deployt enkel vanaf `main`, dus er gaat niets live zonder dat
+  er iemand naar gekeken heeft. De PR-beschrijving bevat de tellingen uit het script — dat is de
+  zinvolle review, want de diff zelf is tienduizenden regels.
+
+  Vereist de repo-secret `ONDERWIJS_API_KEY` (Settings → Secrets and variables → Actions).
+
+- **Omvangcontrole.** `fetch-data.ts` weigert weg te schrijven als het aantal vestigingen meer dan
+  15% kleiner is dan in de gecommitte dataset, en eindigt met exitcode 1. Dat vangnet bestaat
+  omdat het script ook ongesuperviseerd draait: een gewijzigde filterparam of een halve storing
+  mag niet stilzwijgend over goede data heen gecommit worden. Groei is nooit verdacht, enkel
+  krimp. Is de krimp terecht (scholen sluiten), draai dan `npm run fetch-data -- --force`.
+  Geverifieerd dat de controle afgaat én dat `--force` hem overslaat.
+- **Let op bij shell-stappen in de Action:** de default shell in GitHub Actions is `bash -e`
+  *zonder* `pipefail`. In een stap met een pipe (`... | tee`) telt dan de exitcode van het
+  láátste commando, waardoor een gefaalde fetch als geslaagd doorgaat. De workflow zet daarom
+  expliciet `defaults.run.shell: bash` (= `bash -eo pipefail`). Geverifieerd in de GitHub-docs.
 - Geen enkele hardgecodeerde schoolnaam of richting in de code — alles komt uit de gegenereerde data.
 
 ### Samenwerking / git
