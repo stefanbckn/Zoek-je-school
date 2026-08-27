@@ -713,6 +713,17 @@ Wat welk cijfer verhoogt: MINOR bij een nieuwe roadmapversie (nieuwe functionali
 bugfixes en tekstcorrecties zonder gedragswijziging. MAJOR blijft 0 zolang de site niet publiek
 aangekondigd is.
 
+**Wat wanneer live gaat.** De volledige gang: branch → PR → merge in `main` → Netlify deployt
+automatisch → tag zetten → GitHub Release aanmaken. Twee dingen die daarbij verwarren:
+
+- **Een tag of een release deployt niets.** Netlify luistert enkel naar pushes op `main`, en de
+  enige workflow in `.github/workflows/` is de kwartaalverversing van de scholendata. De site
+  staat dus al live vóór de tag bestaat; taggen en releasen zijn boekhouding. Rustig een dag
+  later doen mag.
+- **Een push met enkel `.md`-wijzigingen bouwt niet.** De `ignore`-regel in `netlify.toml`
+  annuleert de build als er buiten de documentatie niets veranderde. Terecht — er valt dan niets
+  te deployen. Komt een échte wijziging ooit niet live, kijk daar dan eerst.
+
 ### Samenwerking / git
 
 - **Nooit pushen zonder expliciet akkoord op dat moment.** Committen mag vrij; de gebruiker pusht
