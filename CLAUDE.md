@@ -436,6 +436,14 @@ linken mag. Niet als databron gebruiken.
 
 - **Nooit pushen zonder expliciet akkoord op dat moment.** Committen mag vrij; de gebruiker pusht
   zelf of geeft er per keer toestemming voor. Eén akkoord geldt niet voor volgende pushes.
+- **Bugs gaan op een `fix/`-branch.** Naamgeving: `fix/<kort-onderwerp>`, bijvoorbeeld
+  `fix/ios-zoom-invoervelden`. Takken af van een **verse** `main` (`git fetch` eerst — dat is
+  hier al een keer misgegaan), en de logregel in [BUGS.md](./BUGS.md) plus de oplossing reizen
+  samen in één PR.
+- **Meld een bug eerst in `BUGS.md`**, ook als hij meteen opgelost wordt: wat er gebeurt, wat de
+  oorzaak lijkt, en wat er nog geverifieerd moet worden. `gh` is niet ingelogd, dus GitHub Issues
+  zijn geen optie; dit bestand is de lijst. Opgeloste bugs gaan eruit, de git-geschiedenis
+  bewaart ze.
 - **Begin elke nieuwe versie op een eigen branch, meteen bij de eerste commit.** Niet op `main`
   werken en achteraf verplaatsen. Naamgeving: `v0.3-gok-indicatoren`, `v0.4-aanmelden`, ...
   (versienummer uit de roadmap + kort thema). Doe dit vóór de eerste wijziging — vraag het niet
