@@ -292,7 +292,18 @@ door tot er een bron gevonden is — niet inplannen op hoop.
    deuteranopie en protanopie. Kies een palet dat onder deuteranopie, protanopie én tritanopie
    uit elkaar te houden is, en controleer het contrast van elk paar (Tailwind `-100`/`-800`
    haalt AA, maar dat is geen vrijgeleide om er zomaar tinten bij te verzinnen).
-3. **Thema's / dark mode.** Scope nog af te spreken: één dark mode, of een echte themakiezer met
+3. **Filterkolom sticky met eigen scrollbalk (desktop).** Nu is het het slechtste van twee
+   werelden: de `<aside>` is niet sticky en scrollt weg bij 303 resultaten, terwijl de
+   gemeentelijst binnenin wél een eigen scrollbalk heeft (`max-h-48 overflow-auto`, 50 gemeenten).
+   Je krijgt dus een scrollbalkje in een kolom die zelf verdwijnt, en je muiswiel blijft in dat
+   lijstje hangen.
+   **Doe het als één scrollgebied:** aside sticky over de volle hoogte met eigen overflow, en
+   tegelijk die `max-h-48` weghalen. Geneste scrollbalken zijn het lelijke deel, niet het idee.
+   Enkel op desktop — op mobiel zit de filter al achter de knop "Filters (n)" en zou een kolom
+   van schermhoogte het scherm opeten.
+   Overlapt deels met punt 1: chips lossen het *zien* op, sticky het *wijzigen*. Moet er één
+   afvallen, dan wegen de chips zwaarder — die helpen ook op mobiel.
+4. **Thema's / dark mode.** Scope nog af te spreken: één dark mode, of een echte themakiezer met
    meerdere kleurencombinaties. Dat scheelt sterk in opzet — vraag het vóór je begint.
 
 ### v0.3 — aanmelden: geen centrale bron (onderzocht 27/08/2026)
