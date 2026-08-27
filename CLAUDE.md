@@ -239,16 +239,26 @@ backlog-items zijn doorgeschoven naar v0.5–v0.7.
 **Datalaag opgeleverd**: `fetch-data.ts` draait volledig op de API's, met studieaanbod,
 finaliteit en soort_bestuur in de dataset. Zie de databronnen-sectie hierboven voor de details.
 
-**Nog te doen in de UI** (de data ligt klaar, er wordt nog niets van getoond):
-- Richtingen tonen in `DetailPanel`, per campus samengevoegd over de scholen op dat adres
-  (afgesproken met de gebruiker). Groepeer op graad + finaliteit, niet als platte lijst van
-  8265 regels.
-- Filteren op finaliteit en op richting — de placeholder-sectie in `FilterPanel` activeren.
+**UI opgeleverd**: studieaanbod in `DetailPanel` (per graad gegroepeerd, met finaliteit-chips),
+finaliteit-badges en richtingaantal in `ResultCard`, en filters op finaliteit + vrije tekst op
+studierichting in `FilterPanel`. URL-state uitgebreid met `finaliteit=` en `richting=`.
+
+Twee keuzes daarin, bewust:
+- **Aanbod wordt op adresniveau samengevoegd**, niet per school — ook in de filters. Scholen die
+  een campus delen vullen elkaars aanbod aan; wie op "Latijn" zoekt wil dat adres zien, ook als
+  de richting bij de buurschool op hetzelfde adres hoort. Zie `campusAanbod()` in `src/lib/aanbod.ts`.
+- **Richtingen worden ontdubbeld tot één regel per graad.** De bron noemt elk leerjaar apart
+  ("1e leerjaar in de 2e graad Latijn ASO" én "2e leerjaar in de 2e graad Latijn ASO"); dat
+  voorvoegsel wordt weggehaald en de dubbels vallen samen. Bij Sint-Gabriëlcollege: 55 ruwe
+  richtingen over 4 scholen → 24 regels. Matcht het voorvoegselpatroon niet (eerste graad, 7e
+  leerjaar, HBO5, OKAN), dan blijft de naam onaangeroerd.
+
+**Nog te doen in de UI:**
 - `soortBestuur` in de netfilter verwerken: GO! / Provinciaal / Stedelijk / Vrij.
   Let op: `Net` in `src/types.ts` is nog het oude 4-waarden-type dat `NET_STYLES`,
   `NET_OPTIONS` en de URL-state gebruiken. `soortBestuur` staat er los naast, precies om die
   UI niet te breken. Wie de filter uitbreidt, moet die drie plekken samen aanpassen.
-- Vermeld het schooljaar (`meta.schooljaarAanbod`) bij het aanbod in de UI.
+- Eventueel filteren op studiegebied (zit in de data, nog niet in de UI).
 
 **Infodagen: geen bron.** De volledige API-catalogus bevat geen infomomenten-product.
 onderwijskiezer.be heeft ze wel maar is juridisch uitgesloten (zie hieronder). Dit item schuift

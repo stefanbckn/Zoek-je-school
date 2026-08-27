@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
+import { campusAanbod, groepeerPerGraad, FINALITEIT_STYLES } from '../lib/aanbod'
 import { NET_STYLES } from '../lib/net'
 import { berekenFietsroute, type FietsrouteResultaat } from '../lib/fietsroute'
 
@@ -7,10 +8,18 @@ interface DetailPanelProps {
   campus: CampusMetAfstand | null
   school: SchoolOpCampus | null
   zoeklocatie: { lat: number; lon: number } | null
+  /** Schooljaar waarop het aanbod slaat, uit meta.json. Null = onbekend, dan tonen we het niet. */
+  schooljaarAanbod: number | null
   onClose: () => void
 }
 
-export function DetailPanel({ campus, school, zoeklocatie, onClose }: DetailPanelProps) {
+export function DetailPanel({
+  campus,
+  school,
+  zoeklocatie,
+  schooljaarAanbod,
+  onClose,
+}: DetailPanelProps) {
   const [fietsroute, setFietsroute] = useState<FietsrouteResultaat | 'laden' | null>(null)
 
   useEffect(() => {
@@ -29,6 +38,11 @@ export function DetailPanel({ campus, school, zoeklocatie, onClose }: DetailPane
   }, [campus, zoeklocatie])
 
   if (!campus || !school) return null
+
+  // Aanbod van het hele adres, niet enkel van de geselecteerde school: scholen die een campus
+  // delen vullen elkaars aanbod aan. Zo afgesproken, zie CLAUDE.md.
+  const aanbod = campusAanbod(campus)
+  const perGraad = groepeerPerGraad(aanbod)
 
   return (
     <div
@@ -155,14 +169,68 @@ export function DetailPanel({ campus, school, zoeklocatie, onClose }: DetailPane
             </div>
           )}
 
-          <div>
-            <dt className="text-slate-500">Studieaanbod</dt>
-            <dd className="text-slate-500 italic">
-              Nog niet beschikbaar in deze versie. Volledig actueel aanbod op de officiële fiche
-              hieronder.
-            </dd>
-          </div>
         </dl>
+
+        <section className="mt-6 border-t border-slate-200 pt-4">
+          <h3 className="text-sm font-medium text-slate-900">
+            Studieaanbod
+            {schooljaarAanbod !== null && (
+              <span className="ml-1 font-normal text-slate-500">
+                schooljaar {schooljaarAanbod}-{schooljaarAanbod + 1}
+              </span>
+            )}
+          </h3>
+
+          {campus.scholen.length > 1 && aanbod.length > 0 && (
+            <p className="mt-1 text-xs text-slate-500">
+              Alle richtingen op dit adres samen, over de {campus.scholen.length} scholen heen.
+            </p>
+          )}
+
+          {aanbod.length === 0 ? (
+            <p className="mt-2 text-sm text-slate-500 italic">
+              Geen studieaanbod geregistreerd op dit adres. Kijk op de officiële fiche hieronder.
+            </p>
+          ) : (
+            <div className="mt-3 flex flex-col gap-4">
+              {perGraad.map((groep) => (
+                <div key={groep.graad}>
+                  <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    {groep.graad}
+                  </h4>
+                  <ul className="mt-1.5 flex flex-col gap-1">
+                    {groep.richtingen.map((richting) => (
+                      <li
+                        key={`${richting.code}-${richting.naam}`}
+                        className="flex items-start justify-between gap-2 text-sm"
+                      >
+                        <span className="text-slate-900">
+                          {richting.naam}
+                          {richting.duaal && (
+                            <span className="ml-1 text-xs text-slate-500">(duaal leren)</span>
+                          )}
+                        </span>
+                        {richting.finaliteit !== null && (
+                          <span
+                            className={`shrink-0 rounded px-1.5 py-0.5 text-xs font-medium ${FINALITEIT_STYLES[richting.finaliteit]}`}
+                          >
+                            {richting.finaliteit}
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <p className="mt-3 text-xs text-slate-500">
+            Richtingen zijn per graad samengevat: de brondata vermeldt elk leerjaar apart, hier
+            staat elke richting één keer. Controleer de officiële fiche voor het definitieve
+            aanbod.
+          </p>
+        </section>
 
         <a
           href={school.linkFiche}

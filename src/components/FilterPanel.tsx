@@ -1,3 +1,4 @@
+import { FINALITEIT_OPTIONS, FINALITEIT_STYLES, type FinaliteitKeuze } from '../lib/aanbod'
 import { NET_OPTIONS } from '../lib/net'
 import type { Net } from '../types'
 
@@ -6,9 +7,20 @@ interface FilterPanelProps {
   netten: Net[]
   gemeenten: string[]
   tekst: string
+  finaliteiten: FinaliteitKeuze[]
+  richting: string
   onNettenChange: (netten: Net[]) => void
   onGemeentenChange: (gemeenten: string[]) => void
   onTekstChange: (tekst: string) => void
+  onFinaliteitenChange: (finaliteiten: FinaliteitKeuze[]) => void
+  onRichtingChange: (richting: string) => void
+}
+
+/** Korte uitleg bij elke finaliteit — de termen zijn nieuw voor veel ouders. */
+const FINALITEIT_UITLEG: Record<FinaliteitKeuze, string> = {
+  Doorstroom: 'bereidt voor op hoger onderwijs',
+  Dubbel: 'hoger onderwijs of meteen aan het werk',
+  Arbeidsmarkt: 'bereidt voor op meteen aan het werk',
 }
 
 export function FilterPanel({
@@ -16,12 +28,24 @@ export function FilterPanel({
   netten,
   gemeenten,
   tekst,
+  finaliteiten,
+  richting,
   onNettenChange,
   onGemeentenChange,
   onTekstChange,
+  onFinaliteitenChange,
+  onRichtingChange,
 }: FilterPanelProps) {
   function toggleNet(net: Net) {
     onNettenChange(netten.includes(net) ? netten.filter((n) => n !== net) : [...netten, net])
+  }
+
+  function toggleFinaliteit(finaliteit: FinaliteitKeuze) {
+    onFinaliteitenChange(
+      finaliteiten.includes(finaliteit)
+        ? finaliteiten.filter((f) => f !== finaliteit)
+        : [...finaliteiten, finaliteit],
+    )
   }
 
   function toggleGemeente(gemeente: string) {
@@ -82,13 +106,52 @@ export function FilterPanel({
         </div>
       </div>
 
-      <div className="opacity-50">
-        <h2 className="text-sm font-medium text-slate-700 mb-2">Studieaanbod — binnenkort</h2>
-        <p className="text-xs text-slate-500">
-          Filters op richting, finaliteit en studiedomein volgen zodra het studieaanbod
-          gekoppeld is (vereist een API-key die nog aangevraagd moet worden).
+      <div>
+        <h2 className="text-sm font-medium text-slate-700 mb-2">Finaliteit</h2>
+        <div className="flex flex-col gap-2">
+          {FINALITEIT_OPTIONS.map((finaliteit) => (
+            <label key={finaliteit} className="flex items-start gap-2 text-sm text-slate-600">
+              <input
+                type="checkbox"
+                checked={finaliteiten.includes(finaliteit)}
+                onChange={() => toggleFinaliteit(finaliteit)}
+                className="mt-1 rounded border-slate-300"
+              />
+              <span>
+                <span
+                  className={`rounded px-1.5 py-0.5 text-xs font-medium ${FINALITEIT_STYLES[finaliteit]}`}
+                >
+                  {finaliteit}
+                </span>
+                <span className="block text-xs text-slate-500">
+                  {FINALITEIT_UITLEG[finaliteit]}
+                </span>
+              </span>
+            </label>
+          ))}
+        </div>
+        <p className="mt-2 text-xs text-slate-500">
+          Geldt vanaf de tweede graad. De eerste graad is voor iedereen hetzelfde.
         </p>
       </div>
+
+      <div>
+        <label htmlFor="richting" className="block text-sm font-medium text-slate-700 mb-1">
+          Zoek op studierichting
+        </label>
+        <input
+          id="richting"
+          type="text"
+          value={richting}
+          onChange={(e) => onRichtingChange(e.target.value)}
+          placeholder="bv. Latijn, verzorging, STEM"
+          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
+        />
+        <p className="mt-1 text-xs text-slate-500">
+          Toont adressen waar minstens één richting hierop matcht.
+        </p>
+      </div>
+
     </aside>
   )
 }

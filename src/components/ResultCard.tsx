@@ -1,4 +1,5 @@
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
+import { campusAanbod, finaliteitenVan, FINALITEIT_STYLES } from '../lib/aanbod'
 import { NET_STYLES } from '../lib/net'
 
 interface ResultCardProps {
@@ -8,6 +9,27 @@ interface ResultCardProps {
 
 export function ResultCard({ campus, onSelect }: ResultCardProps) {
   const enkeleSchool = campus.scholen.length === 1 ? campus.scholen[0] : null
+
+  // Finaliteiten van het hele adres samen: scholen die een campus delen vullen elkaars
+  // aanbod aan, en dat is wat iemand die dit lijstje scant wil weten.
+  const aanbod = campusAanbod(campus)
+  const finaliteiten = finaliteitenVan(aanbod)
+
+  const aanbodRegel = aanbod.length > 0 && (
+    <div className="mt-2 flex flex-wrap items-center gap-1">
+      {finaliteiten.map((f) => (
+        <span
+          key={f}
+          className={`rounded px-1.5 py-0.5 text-xs font-medium ${FINALITEIT_STYLES[f]}`}
+        >
+          {f}
+        </span>
+      ))}
+      <span className="text-xs text-slate-500">
+        {aanbod.length} {aanbod.length === 1 ? 'richting' : 'richtingen'}
+      </span>
+    </div>
+  )
 
   const adresRegel = (
     <p className="mt-1 text-sm text-slate-500">
@@ -38,6 +60,7 @@ export function ResultCard({ campus, onSelect }: ResultCardProps) {
         </div>
         {adresRegel}
         {afstandRegel}
+        {aanbodRegel}
       </button>
     )
   }
@@ -49,6 +72,7 @@ export function ResultCard({ campus, onSelect }: ResultCardProps) {
       </p>
       {adresRegel}
       {afstandRegel}
+      {aanbodRegel}
       <ul className="mt-2 flex flex-col gap-1.5">
         {campus.scholen.map((school) => (
           <li key={school.id}>
