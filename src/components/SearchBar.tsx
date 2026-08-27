@@ -89,7 +89,7 @@ export function SearchBar({
             onFocus={() => setOpen(suggesties.length > 0)}
             onBlur={() => setTimeout(() => setOpen(false), 150)}
             placeholder="Typ je gemeente of adres…"
-            className="w-full rounded-md border border-rand px-3 py-2 text-sm focus:border-accent focus:outline-none"
+            className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent focus:outline-none"
           />
           {open && (
             <ul className="absolute z-10 mt-1 w-full rounded-md border border-rand bg-kaart shadow-lg max-h-60 overflow-auto">
@@ -129,7 +129,7 @@ export function SearchBar({
             id="straal"
             value={straalKm === null ? 'alles' : straalKm}
             onChange={(e) => onStraalChange(e.target.value === 'alles' ? null : Number(e.target.value))}
-            className="rounded-md border border-rand px-2 py-1.5 text-sm"
+            className="rounded-md border border-rand px-2 py-1.5 text-base md:text-sm"
           >
             {straalOpties(straalKm).map((o) => (
               <option key={o.label} value={o.waarde === null ? 'alles' : o.waarde}>

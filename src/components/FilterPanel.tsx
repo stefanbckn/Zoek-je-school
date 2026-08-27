@@ -76,7 +76,7 @@ export function FilterPanel({
           value={tekst}
           onChange={(e) => onTekstChange(e.target.value)}
           placeholder="bv. Atheneum"
-          className="w-full rounded-md border border-rand px-3 py-2 text-sm focus:border-accent focus:outline-none"
+          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent focus:outline-none"
         />
       </div>
 
@@ -163,7 +163,7 @@ export function FilterPanel({
           value={richting}
           onChange={(e) => onRichtingChange(e.target.value)}
           placeholder="bv. Latijn, verzorging, STEM"
-          className="w-full rounded-md border border-rand px-3 py-2 text-sm focus:border-accent focus:outline-none"
+          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent focus:outline-none"
         />
         <p className="mt-1 text-xs text-zacht">
           Toont scholen waar minstens één richting hierop matcht.
