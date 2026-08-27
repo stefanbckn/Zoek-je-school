@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react'
+import { ActieveFilters } from './components/ActieveFilters'
 import { DetailPanel } from './components/DetailPanel'
 import { FilterPanel } from './components/FilterPanel'
 import { Footer } from './components/Footer'
 import { MapView } from './components/MapView'
 import { ResultList } from './components/ResultList'
 import { SearchBar } from './components/SearchBar'
+import { ThemaToggle } from './components/ThemaToggle'
 import { richtingMatcht } from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
 import { NET_OPTIONS } from './lib/net'
@@ -125,11 +127,14 @@ function App() {
 
   return (
     <div className="min-h-full flex flex-col">
-      <header className="border-b border-slate-200 px-4 py-4">
-        <h1 className="text-xl font-semibold text-slate-900">Zoek je school</h1>
-        <p className="text-sm text-slate-500">
-          Middelbare scholen in provincie Antwerpen
-        </p>
+      {/* flex-wrap is nodig: op 375px past de driestandenknop niet naast de titel en viel
+          "Donker" buiten het scherm. Bij weinig ruimte zakt de knop naar een eigen regel. */}
+      <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-rand px-4 py-4">
+        <div>
+          <h1 className="text-xl font-semibold text-inkt">Zoek je school</h1>
+          <p className="text-sm text-zacht">Middelbare scholen in provincie Antwerpen</p>
+        </div>
+        <ThemaToggle />
       </header>
 
       <SearchBar
@@ -140,6 +145,14 @@ function App() {
         }
         onStraalChange={(straalKm) => update({ straalKm })}
         onWissen={() => update({ lat: null, lon: null, label: null })}
+      />
+
+      <ActieveFilters
+        state={state}
+        onUpdate={update}
+        onWisAlles={() =>
+          update({ netten: [], gemeenten: [], finaliteiten: [], tekst: '', richting: '' })
+        }
       />
 
       <div className="flex-1 flex flex-col md:flex-row">
@@ -161,36 +174,36 @@ function App() {
         </div>
 
         <main className="flex-1 flex flex-col min-h-[60vh]">
-          {loading && <p className="p-4 text-sm text-slate-500">Bezig met laden…</p>}
-          {error && <p className="p-4 text-sm text-red-600">{error}</p>}
+          {loading && <p className="p-4 text-sm text-zacht">Bezig met laden…</p>}
+          {error && <p className="p-4 text-sm text-fout">{error}</p>}
           {!loading && !error && (
             <>
               <div className="flex items-center justify-between px-4 pt-4 gap-2">
                 <div className="flex items-center gap-3">
-                  <p className="text-sm text-slate-500 shrink-0">
+                  <p className="text-sm text-zacht shrink-0">
                     {zichtbareCampussen.length} resultaten
                   </p>
                   <button
                     type="button"
                     onClick={() => setFiltersOpen((open) => !open)}
-                    className="md:hidden text-sm rounded-md border border-slate-300 px-3 py-1"
+                    className="md:hidden text-sm rounded-md border border-rand px-3 py-1"
                   >
                     Filters{actieveFilters > 0 ? ` (${actieveFilters})` : ''}
                     {filtersOpen ? ' ▲' : ' ▼'}
                   </button>
                 </div>
-                <div className="flex rounded-md border border-slate-300 text-sm overflow-hidden">
+                <div className="flex rounded-md border border-rand text-sm overflow-hidden">
                   <button
                     type="button"
                     onClick={() => setWeergave('lijst')}
-                    className={`px-3 py-1 ${weergave === 'lijst' ? 'bg-slate-900 text-white' : 'bg-white text-slate-700'}`}
+                    className={`px-3 py-1 ${weergave === 'lijst' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
                   >
                     Lijst
                   </button>
                   <button
                     type="button"
                     onClick={() => setWeergave('kaart')}
-                    className={`px-3 py-1 ${weergave === 'kaart' ? 'bg-slate-900 text-white' : 'bg-white text-slate-700'}`}
+                    className={`px-3 py-1 ${weergave === 'kaart' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
                   >
                     Kaart
                   </button>

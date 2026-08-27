@@ -1,5 +1,175 @@
 @import "tailwindcss";
 
+/**
+ * Kleuren lopen via CSS-variabelen in plaats van vaste Tailwind-kleuren (slate-500 en co).
+ * `@theme inline` zorgt dat een utility als `bg-kaart` letterlijk `var(--c-kaart)` uitschrijft,
+ * zodat één set klassen automatisch meeschakelt met licht/donker. Zonder `inline` zou Tailwind
+ * de waarde op buildtijd invriezen en werkt het omschakelen niet.
+ *
+ * Drie toestanden, niet twee: geen attribuut = volg het systeem, `data-theme="light"` en
+ * `data-theme="dark"` = expliciete keuze van de bezoeker. De mediaquery is daarom afgeschermd
+ * met `:not([data-theme="light"])`, anders wint een donker systeem van een bewuste lichte keuze.
+ */
+@theme inline {
+  --color-grond: var(--c-grond);
+  --color-kaart: var(--c-kaart);
+  --color-rand: var(--c-rand);
+  --color-inkt: var(--c-inkt);
+  --color-zacht: var(--c-zacht);
+  --color-accent: var(--c-accent);
+  --color-accent-inkt: var(--c-accent-inkt);
+  --color-hover: var(--c-hover);
+
+  --color-net-go-bg: var(--c-net-go-bg);
+  --color-net-go-inkt: var(--c-net-go-inkt);
+  --color-net-prov-bg: var(--c-net-prov-bg);
+  --color-net-prov-inkt: var(--c-net-prov-inkt);
+  --color-net-gem-bg: var(--c-net-gem-bg);
+  --color-net-gem-inkt: var(--c-net-gem-inkt);
+  --color-net-vrij-bg: var(--c-net-vrij-bg);
+  --color-net-vrij-inkt: var(--c-net-vrij-inkt);
+  --color-net-off-bg: var(--c-net-off-bg);
+  --color-net-off-inkt: var(--c-net-off-inkt);
+  --color-net-onaf-bg: var(--c-net-onaf-bg);
+  --color-net-onaf-inkt: var(--c-net-onaf-inkt);
+
+  --color-fin-door-bg: var(--c-fin-door-bg);
+  --color-fin-door: var(--c-fin-door);
+  --color-fin-dubbel-bg: var(--c-fin-dubbel-bg);
+  --color-fin-dubbel: var(--c-fin-dubbel);
+  --color-fin-arbeid-bg: var(--c-fin-arbeid-bg);
+  --color-fin-arbeid: var(--c-fin-arbeid);
+
+  --color-waarschuwing: var(--c-waarschuwing);
+  --color-fout: var(--c-fout);
+}
+
+/**
+ * Licht — "fris & open": wit als grond met een spoortje cyaan, ruime rondingen.
+ *
+ * Net en finaliteit hebben elk een eigen kleurbudget, en dat is een bewuste afweging.
+ * Samen zijn het zeven categorieën, en zoveel kleuren zijn niet allemaal onderscheidbaar te
+ * krijgen bij kleurenblindheid — doorgemeten: het beste palet voor vier netten haalde maar 20
+ * kleurafstand, ruim onder wat je nodig hebt.
+ *
+ * Daarom draagt de vórm het onderscheid tussen de twee families (net = gevulde chip,
+ * finaliteit = gevulde chip mét rand en vormteken), en gaat het kleurbudget naar finaliteit:
+ * dat is waar mensen op scannen en op filteren. De drie finaliteitskleuren zijn geoptimaliseerd
+ * op onderlinge afstand (minimaal 49 licht, 31 donker, over alle vier de zichtsituaties).
+ *
+ * De netkleuren blijven waar ze zijn. Bij protanopie liggen GO! en Gemeentelijk dicht bij
+ * elkaar (afstand 12), maar elke net-chip draagt zijn naam voluit, dus kleur is daar
+ * ondersteunend en niet betekenisdragend.
+ */
+:root {
+  --c-grond: #f6fafb;
+  --c-kaart: #ffffff;
+  --c-rand: #cfdde1;
+  --c-inkt: #0a1a1f;
+  --c-zacht: #52646c;
+  --c-accent: #0b5c6e;
+  --c-accent-inkt: #ffffff;
+  --c-hover: #eef5f7;
+
+  --c-net-go-bg: #d5e7f8;
+  --c-net-go-inkt: #0b4a7d;
+  --c-net-prov-bg: #fde5c8;
+  --c-net-prov-inkt: #7d4700;
+  --c-net-gem-bg: #f3dcef;
+  --c-net-gem-inkt: #7a2665;
+  --c-net-vrij-bg: #cdeae0;
+  --c-net-vrij-inkt: #0a5340;
+  --c-net-off-bg: #e4dff5;
+  --c-net-off-inkt: #453077;
+  --c-net-onaf-bg: #e2e8ea;
+  --c-net-onaf-inkt: #3b484d;
+
+  /* Finaliteit krijgt een gevulde tint, niet alleen een randje: met enkel een lijntje en
+     kleine letters is er te weinig kleuroppervlak om de tinten uit elkaar te houden.
+     Doorgemeten met een simulatie voor protanopie/deuteranopie/tritanopie — blauw, groenblauw
+     en oranje houden minimaal 49 kleurafstand, tegenover 12 voor het vorige blauw/pruim/bruin
+     (die twee vielen bij protanopie praktisch samen). Contrast overal >= 4.8:1. */
+  --c-fin-door-bg: #dbeafe;
+  --c-fin-door: #1155a3;
+  --c-fin-dubbel-bg: #cfeae4;
+  --c-fin-dubbel: #00665d;
+  --c-fin-arbeid-bg: #fbe8cc;
+  --c-fin-arbeid: #9a5300;
+
+  --c-waarschuwing: #8a5200;
+  --c-fout: #a12020;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --c-grond: #071216;
+    --c-kaart: #0e1e24;
+    --c-rand: #213d46;
+    --c-inkt: #e4f0f3;
+    --c-zacht: #93a9b1;
+    --c-accent: #6fc7d8;
+    --c-accent-inkt: #05171c;
+    --c-hover: #142a32;
+
+    --c-net-go-bg: #0d3050;
+    --c-net-go-inkt: #a3caec;
+    --c-net-prov-bg: #4b3311;
+    --c-net-prov-inkt: #f2c37c;
+    --c-net-gem-bg: #481d38;
+    --c-net-gem-inkt: #efaad3;
+    --c-net-vrij-bg: #0c3629;
+    --c-net-vrij-inkt: #83d6b6;
+    --c-net-off-bg: #2a2247;
+    --c-net-off-inkt: #c3b3e8;
+    --c-net-onaf-bg: #1e2b30;
+    --c-net-onaf-inkt: #b3c3ca;
+
+    --c-fin-door-bg: #102b46;
+    --c-fin-door: #8ec5f5;
+    --c-fin-dubbel-bg: #06322c;
+    --c-fin-dubbel: #5fd3bd;
+    --c-fin-arbeid-bg: #3d2a08;
+    --c-fin-arbeid: #f0b04a;
+
+    --c-waarschuwing: #f0c179;
+    --c-fout: #f3a3a3;
+  }
+}
+
+:root[data-theme="dark"] {
+  --c-grond: #071216;
+  --c-kaart: #0e1e24;
+  --c-rand: #213d46;
+  --c-inkt: #e4f0f3;
+  --c-zacht: #93a9b1;
+  --c-accent: #6fc7d8;
+  --c-accent-inkt: #05171c;
+  --c-hover: #142a32;
+
+  --c-net-go-bg: #0d3050;
+  --c-net-go-inkt: #a3caec;
+  --c-net-prov-bg: #4b3311;
+  --c-net-prov-inkt: #f2c37c;
+  --c-net-gem-bg: #481d38;
+  --c-net-gem-inkt: #efaad3;
+  --c-net-vrij-bg: #0c3629;
+  --c-net-vrij-inkt: #83d6b6;
+  --c-net-off-bg: #2a2247;
+  --c-net-off-inkt: #c3b3e8;
+  --c-net-onaf-bg: #1e2b30;
+  --c-net-onaf-inkt: #b3c3ca;
+
+  --c-fin-door-bg: #102b46;
+  --c-fin-door: #8ec5f5;
+  --c-fin-dubbel-bg: #06322c;
+  --c-fin-dubbel: #5fd3bd;
+  --c-fin-arbeid-bg: #3d2a08;
+  --c-fin-arbeid: #f0b04a;
+
+  --c-waarschuwing: #f0c179;
+  --c-fout: #f3a3a3;
+}
+
 html,
 body,
 #root {
@@ -8,4 +178,34 @@ body,
 
 body {
   margin: 0;
+  /* Expliciet: zonder achtergrond op body schemert de grond van de browser door bij
+     het omschakelen, wat een flits geeft. */
+  background-color: var(--c-grond);
+  color: var(--c-inkt);
+}
+
+/* De kaart van Leaflet heeft in donkere modus een felwitte tegellaag. Iets dempen zodat
+   hij niet uit het scherm knalt; volledig inverteren maakt het water roze. */
+:root[data-theme="dark"] .leaflet-tile-pane,
+:root:not([data-theme="light"]) .leaflet-tile-pane {
+  filter: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .leaflet-tile-pane {
+    filter: brightness(0.78) saturate(0.85);
+  }
+}
+
+:root[data-theme="dark"] .leaflet-tile-pane {
+  filter: brightness(0.78) saturate(0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

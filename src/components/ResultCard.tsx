@@ -1,6 +1,12 @@
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
-import { campusAanbod, finaliteitenVan, FINALITEIT_STYLES } from '../lib/aanbod'
-import { NET_STYLES } from '../lib/net'
+import {
+  campusAanbod,
+  finaliteitenVan,
+  FINALITEIT_CHIP,
+  FINALITEIT_STYLES,
+  FINALITEIT_TEKEN,
+} from '../lib/aanbod'
+import { NET_CHIP, NET_STYLES } from '../lib/net'
 
 interface ResultCardProps {
   campus: CampusMetAfstand
@@ -20,25 +26,28 @@ export function ResultCard({ campus, onSelect }: ResultCardProps) {
       {finaliteiten.map((f) => (
         <span
           key={f}
-          className={`rounded px-1.5 py-0.5 text-xs font-medium ${FINALITEIT_STYLES[f]}`}
+          className={`${FINALITEIT_CHIP} ${FINALITEIT_STYLES[f]}`}
         >
+          <span aria-hidden="true" className="text-[0.62em] leading-none">
+            {FINALITEIT_TEKEN[f]}
+          </span>
           {f}
         </span>
       ))}
-      <span className="text-xs text-slate-500">
+      <span className="text-xs text-zacht">
         {aanbod.length} {aanbod.length === 1 ? 'richting' : 'richtingen'}
       </span>
     </div>
   )
 
   const adresRegel = (
-    <p className="mt-1 text-sm text-slate-500">
+    <p className="mt-1 text-sm text-zacht">
       {campus.straat} {campus.huisnummer}, {campus.postcode} {campus.gemeente}
     </p>
   )
 
   const afstandRegel = campus.afstandKm !== null && (
-    <p className="mt-1 text-sm font-medium text-slate-700">
+    <p className="mt-1 text-sm font-medium text-inkt">
       {campus.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km hemelsbreed
     </p>
   )
@@ -48,12 +57,12 @@ export function ResultCard({ campus, onSelect }: ResultCardProps) {
       <button
         type="button"
         onClick={() => onSelect(campus, enkeleSchool)}
-        className="w-full text-left rounded-lg border border-slate-200 bg-white p-4 hover:border-slate-400 hover:shadow-sm transition"
+        className="w-full text-left rounded-lg border border-rand bg-kaart p-4 hover:border-zacht hover:shadow-sm transition"
       >
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-medium text-slate-900">{enkeleSchool.naam}</h3>
+          <h3 className="font-medium text-inkt">{enkeleSchool.naam}</h3>
           <span
-            className={`shrink-0 rounded px-2 py-0.5 text-xs font-medium ${NET_STYLES[enkeleSchool.net]}`}
+            className={`${NET_CHIP} ${NET_STYLES[enkeleSchool.net]}`}
           >
             {enkeleSchool.net}
           </span>
@@ -66,8 +75,8 @@ export function ResultCard({ campus, onSelect }: ResultCardProps) {
   }
 
   return (
-    <div className="w-full rounded-lg border border-slate-200 bg-white p-4">
-      <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+    <div className="w-full rounded-lg border border-rand bg-kaart p-4">
+      <p className="text-xs font-medium text-zacht uppercase tracking-wide">
         {campus.scholen.length} scholen op dit adres
       </p>
       {adresRegel}
@@ -79,11 +88,11 @@ export function ResultCard({ campus, onSelect }: ResultCardProps) {
             <button
               type="button"
               onClick={() => onSelect(campus, school)}
-              className="w-full flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left hover:bg-slate-50"
+              className="w-full flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left hover:bg-hover"
             >
-              <span className="text-sm text-slate-900">{school.naam}</span>
+              <span className="text-sm text-inkt">{school.naam}</span>
               <span
-                className={`shrink-0 rounded px-2 py-0.5 text-xs font-medium ${NET_STYLES[school.net]}`}
+                className={`${NET_CHIP} ${NET_STYLES[school.net]}`}
               >
                 {school.net}
               </span>

@@ -79,7 +79,7 @@ export function SearchBar({
   }
 
   return (
-    <div className="p-4 border-b border-slate-200">
+    <div className="p-4 border-b border-rand">
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[220px]">
           <input
@@ -89,16 +89,16 @@ export function SearchBar({
             onFocus={() => setOpen(suggesties.length > 0)}
             onBlur={() => setTimeout(() => setOpen(false), 150)}
             placeholder="Typ je gemeente of adres…"
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
+            className="w-full rounded-md border border-rand px-3 py-2 text-sm focus:border-accent focus:outline-none"
           />
           {open && (
-            <ul className="absolute z-10 mt-1 w-full rounded-md border border-slate-200 bg-white shadow-lg max-h-60 overflow-auto">
+            <ul className="absolute z-10 mt-1 w-full rounded-md border border-rand bg-kaart shadow-lg max-h-60 overflow-auto">
               {suggesties.map((s) => (
                 <li key={s.tekst}>
                   <button
                     type="button"
                     onMouseDown={() => kiesSuggestie(s.tekst)}
-                    className="w-full text-left px-3 py-2 text-sm hover:bg-slate-100"
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-hover"
                   >
                     {s.tekst}
                   </button>
@@ -115,21 +115,21 @@ export function SearchBar({
               setInvoer('')
               onWissen()
             }}
-            className="text-sm text-slate-500 underline"
+            className="text-sm text-zacht underline"
           >
             Wissen
           </button>
         )}
 
         <div className="flex items-center gap-2">
-          <label htmlFor="straal" className="text-sm text-slate-500">
+          <label htmlFor="straal" className="text-sm text-zacht">
             Straal:
           </label>
           <select
             id="straal"
             value={straalKm === null ? 'alles' : straalKm}
             onChange={(e) => onStraalChange(e.target.value === 'alles' ? null : Number(e.target.value))}
-            className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+            className="rounded-md border border-rand px-2 py-1.5 text-sm"
           >
             {straalOpties(straalKm).map((o) => (
               <option key={o.label} value={o.waarde === null ? 'alles' : o.waarde}>
@@ -140,7 +140,7 @@ export function SearchBar({
         </div>
       </div>
 
-      <p className="mt-1.5 text-xs text-slate-400">
+      <p className="mt-1.5 text-xs text-zacht">
         Tip: typ een straatnaam voor de nauwkeurigste locatie. Deelgemeenten zoals Borsbeek, Vremde
         of Deurne worden door deze zoekdienst niet apart herkend en vallen terug op het centrum van
         de hoofdgemeente.

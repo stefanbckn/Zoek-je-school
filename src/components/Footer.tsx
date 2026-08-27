@@ -8,7 +8,7 @@ export function Footer({ meta }: { meta: DatasetMeta | null }) {
     year: 'numeric',
   })
   return (
-    <footer className="border-t border-slate-200 px-4 py-3 text-xs text-slate-500">
+    <footer className="border-t border-rand px-4 py-3 text-xs text-zacht">
       Data opgehaald op {datum} · Bron:{' '}
       <a href={meta.bron[0]} target="_blank" rel="noreferrer" className="underline">
         Onderwijs en Vorming

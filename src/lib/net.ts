@@ -15,14 +15,22 @@ export const NET_OPTIONS: Net[] = [
   'Onafhankelijk',
 ]
 
+/**
+ * Net = een gevúlde chip. Finaliteit (zie aanbod.ts) = een omlijnde chip met vormteken.
+ * Die twee visuele families dragen het onderscheid, niet de kleur — anders zouden er zeven
+ * betekenisdragende kleuren op één kaartje staan, wat voor kleurenblinde bezoekers onleesbaar is.
+ */
 export const NET_STYLES: Record<Net, string> = {
-  'GO!': 'bg-emerald-100 text-emerald-800',
-  Provinciaal: 'bg-amber-100 text-amber-800',
-  Gemeentelijk: 'bg-violet-100 text-violet-800',
-  'Officieel gesubsidieerd': 'bg-yellow-100 text-yellow-800',
-  'Vrij gesubsidieerd': 'bg-sky-100 text-sky-800',
-  Onafhankelijk: 'bg-slate-200 text-slate-700',
+  'GO!': 'bg-net-go-bg text-net-go-inkt',
+  Provinciaal: 'bg-net-prov-bg text-net-prov-inkt',
+  Gemeentelijk: 'bg-net-gem-bg text-net-gem-inkt',
+  'Officieel gesubsidieerd': 'bg-net-off-bg text-net-off-inkt',
+  'Vrij gesubsidieerd': 'bg-net-vrij-bg text-net-vrij-inkt',
+  Onafhankelijk: 'bg-net-onaf-bg text-net-onaf-inkt',
 }
+
+/** Gedeelde vormgeving van een net-chip. Rondingen bewust tussen strak en pilvormig in. */
+export const NET_CHIP = 'shrink-0 rounded-lg px-2 py-0.5 text-xs font-medium'
 
 /** Korte uitleg bij de netten die verwarring geven. Niet elk net heeft er een nodig. */
 export const NET_UITLEG: Partial<Record<Net, string>> = {

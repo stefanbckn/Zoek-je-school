@@ -7,10 +7,25 @@ export const FINALITEIT_OPTIONS = ['Doorstroom', 'Dubbel', 'Arbeidsmarkt'] as co
 export type FinaliteitKeuze = (typeof FINALITEIT_OPTIONS)[number]
 
 export const FINALITEIT_STYLES: Record<FinaliteitKeuze, string> = {
-  Doorstroom: 'bg-indigo-100 text-indigo-800',
-  Dubbel: 'bg-teal-100 text-teal-800',
-  Arbeidsmarkt: 'bg-orange-100 text-orange-800',
+  Doorstroom: 'bg-fin-door-bg text-fin-door',
+  Dubbel: 'bg-fin-dubbel-bg text-fin-dubbel',
+  Arbeidsmarkt: 'bg-fin-arbeid-bg text-fin-arbeid',
 }
+
+/**
+ * Vormteken per finaliteit. Draagt de betekenis ook zonder kleur — belangrijk voor wie
+ * kleurenblind is, en het is bovendien een geheugensteun: ▲ verder studeren, ◆ allebei,
+ * ■ aan het werk. De tekens staan `aria-hidden`, want de tekst ernaast zegt het al.
+ */
+export const FINALITEIT_TEKEN: Record<FinaliteitKeuze, string> = {
+  Doorstroom: '▲',
+  Dubbel: '◆',
+  Arbeidsmarkt: '■',
+}
+
+/** Gedeelde vormgeving van een finaliteit-chip: omlijnd, in de kleur van de finaliteit. */
+export const FINALITEIT_CHIP =
+  'inline-flex items-center gap-1 rounded-lg border-[1.5px] border-current px-1.5 py-0.5 text-xs font-medium'
 
 /** Volgorde waarin graden getoond worden. Wat hier niet in staat, komt achteraan. */
 const GRAAD_VOLGORDE = [

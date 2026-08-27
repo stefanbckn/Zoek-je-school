@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react'
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
-import { campusAanbod, groepeerPerGraad, FINALITEIT_STYLES } from '../lib/aanbod'
-import { NET_STYLES } from '../lib/net'
+import {
+  campusAanbod,
+  groepeerPerGraad,
+  FINALITEIT_CHIP,
+  FINALITEIT_STYLES,
+  FINALITEIT_TEKEN,
+} from '../lib/aanbod'
+import { NET_CHIP, NET_STYLES } from '../lib/net'
 import { berekenFietsroute, type FietsrouteResultaat } from '../lib/fietsroute'
 
 interface DetailPanelProps {
@@ -37,6 +43,17 @@ export function DetailPanel({
     }
   }, [campus, zoeklocatie])
 
+  // Een modaal venster hoort met Escape te sluiten; dat ontbrak. Zonder dit kun je het paneel
+  // met het toetsenbord alleen kwijtraken door naar de sluitknop te tabben.
+  useEffect(() => {
+    if (!campus || !school) return
+    function opToets(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', opToets)
+    return () => document.removeEventListener('keydown', opToets)
+  }, [campus, school, onClose])
+
   if (!campus || !school) return null
 
   // Aanbod van het hele adres, niet enkel van de geselecteerde school: scholen die een campus
@@ -50,15 +67,15 @@ export function DetailPanel({
       onClick={onClose}
     >
       <div
-        className="mt-8 w-full max-w-lg rounded-lg bg-white p-6 shadow-xl"
+        className="mt-8 w-full max-w-lg rounded-lg bg-kaart p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-lg font-semibold text-slate-900">{school.naam}</h2>
+          <h2 className="text-lg font-semibold text-inkt">{school.naam}</h2>
           <button
             type="button"
             onClick={onClose}
-            className="shrink-0 text-slate-400 hover:text-slate-700"
+            className="shrink-0 text-zacht hover:text-inkt"
             aria-label="Sluiten"
           >
             ✕
@@ -66,13 +83,13 @@ export function DetailPanel({
         </div>
 
         <span
-          className={`mt-2 inline-block rounded px-2 py-0.5 text-xs font-medium ${NET_STYLES[school.net]}`}
+          className={`mt-2 inline-block ${NET_CHIP} ${NET_STYLES[school.net]}`}
         >
           {school.net}
         </span>
 
         {campus.scholen.length > 1 && (
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-2 text-xs text-zacht">
             Deelt dit adres met {campus.scholen.length - 1}{' '}
             {campus.scholen.length - 1 === 1 ? 'andere school' : 'andere scholen'}:{' '}
             {campus.scholen
@@ -84,12 +101,12 @@ export function DetailPanel({
 
         <dl className="mt-4 space-y-3 text-sm">
           <div>
-            <dt className="text-slate-500">Adres</dt>
-            <dd className="text-slate-900">
+            <dt className="text-zacht">Adres</dt>
+            <dd className="text-inkt">
               {campus.straat} {campus.huisnummer}, {campus.postcode} {campus.gemeente}
             </dd>
             {campus.lat === null && (
-              <dd className="text-xs text-amber-600 mt-0.5">
+              <dd className="text-xs text-waarschuwing mt-0.5">
                 Geen coördinaten bekend in de brondata — niet op de kaart en geen afstand
                 berekenbaar.
               </dd>
@@ -98,8 +115,8 @@ export function DetailPanel({
 
           {campus.afstandKm !== null && (
             <div>
-              <dt className="text-slate-500">Afstand</dt>
-              <dd className="text-slate-900">
+              <dt className="text-zacht">Afstand</dt>
+              <dd className="text-inkt">
                 {campus.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km
                 hemelsbreed
               </dd>
@@ -108,20 +125,20 @@ export function DetailPanel({
 
           {!zoeklocatie && (
             <div>
-              <dt className="text-slate-500">Met de fiets</dt>
-              <dd className="text-slate-400 italic">Vul je adres in bovenaan om dit te zien.</dd>
+              <dt className="text-zacht">Met de fiets</dt>
+              <dd className="text-zacht italic">Vul je adres in bovenaan om dit te zien.</dd>
             </div>
           )}
           {fietsroute === 'laden' && (
             <div>
-              <dt className="text-slate-500">Met de fiets</dt>
-              <dd className="text-slate-400">Bezig met berekenen…</dd>
+              <dt className="text-zacht">Met de fiets</dt>
+              <dd className="text-zacht">Bezig met berekenen…</dd>
             </div>
           )}
           {fietsroute && fietsroute !== 'laden' && fietsroute.status === 'ok' && (
             <div>
-              <dt className="text-slate-500">Met de fiets</dt>
-              <dd className="text-slate-900">
+              <dt className="text-zacht">Met de fiets</dt>
+              <dd className="text-inkt">
                 {fietsroute.route.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km
                 · {Math.round(fietsroute.route.duurMin)} min (fietsroute, geen
                 verkeersinschatting)
@@ -130,23 +147,23 @@ export function DetailPanel({
           )}
           {fietsroute && fietsroute !== 'laden' && fietsroute.status === 'onbeschikbaar' && (
             <div>
-              <dt className="text-slate-500">Met de fiets</dt>
-              <dd className="text-slate-400 italic">Momenteel niet beschikbaar, probeer later opnieuw.</dd>
+              <dt className="text-zacht">Met de fiets</dt>
+              <dd className="text-zacht italic">Momenteel niet beschikbaar, probeer later opnieuw.</dd>
             </div>
           )}
 
           {school.telefoon && (
             <div>
-              <dt className="text-slate-500">Telefoon</dt>
-              <dd className="text-slate-900">{school.telefoon}</dd>
+              <dt className="text-zacht">Telefoon</dt>
+              <dd className="text-inkt">{school.telefoon}</dd>
             </div>
           )}
 
           {school.email && (
             <div>
-              <dt className="text-slate-500">E-mail</dt>
+              <dt className="text-zacht">E-mail</dt>
               <dd>
-                <a href={`mailto:${school.email}`} className="text-slate-900 underline">
+                <a href={`mailto:${school.email}`} className="text-inkt underline">
                   {school.email}
                 </a>
               </dd>
@@ -155,13 +172,13 @@ export function DetailPanel({
 
           {school.website && (
             <div>
-              <dt className="text-slate-500">Website</dt>
+              <dt className="text-zacht">Website</dt>
               <dd>
                 <a
                   href={school.website}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-slate-900 underline"
+                  className="text-inkt underline"
                 >
                   {school.website}
                 </a>
@@ -171,31 +188,31 @@ export function DetailPanel({
 
         </dl>
 
-        <section className="mt-6 border-t border-slate-200 pt-4">
-          <h3 className="text-sm font-medium text-slate-900">
+        <section className="mt-6 border-t border-rand pt-4">
+          <h3 className="text-sm font-medium text-inkt">
             Studieaanbod
             {schooljaarAanbod !== null && (
-              <span className="ml-1 font-normal text-slate-500">
+              <span className="ml-1 font-normal text-zacht">
                 schooljaar {schooljaarAanbod}-{schooljaarAanbod + 1}
               </span>
             )}
           </h3>
 
           {campus.scholen.length > 1 && aanbod.length > 0 && (
-            <p className="mt-1 text-xs text-slate-500">
+            <p className="mt-1 text-xs text-zacht">
               Alle richtingen op dit adres samen, over de {campus.scholen.length} scholen heen.
             </p>
           )}
 
           {aanbod.length === 0 ? (
-            <p className="mt-2 text-sm text-slate-500 italic">
+            <p className="mt-2 text-sm text-zacht italic">
               Geen studieaanbod geregistreerd op dit adres. Kijk op de officiële fiche hieronder.
             </p>
           ) : (
             <div className="mt-3 flex flex-col gap-4">
               {perGraad.map((groep) => (
                 <div key={groep.graad}>
-                  <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <h4 className="text-xs font-semibold uppercase tracking-wide text-zacht">
                     {groep.graad}
                   </h4>
                   <ul className="mt-1.5 flex flex-col gap-1">
@@ -204,16 +221,19 @@ export function DetailPanel({
                         key={`${richting.code}-${richting.naam}`}
                         className="flex items-start justify-between gap-2 text-sm"
                       >
-                        <span className="text-slate-900">
+                        <span className="text-inkt">
                           {richting.naam}
                           {richting.duaal && (
-                            <span className="ml-1 text-xs text-slate-500">(duaal leren)</span>
+                            <span className="ml-1 text-xs text-zacht">(duaal leren)</span>
                           )}
                         </span>
                         {richting.finaliteit !== null && (
                           <span
-                            className={`shrink-0 rounded px-1.5 py-0.5 text-xs font-medium ${FINALITEIT_STYLES[richting.finaliteit]}`}
+                            className={`shrink-0 ${FINALITEIT_CHIP} ${FINALITEIT_STYLES[richting.finaliteit]}`}
                           >
+                            <span aria-hidden="true" className="text-[0.62em] leading-none">
+                              {FINALITEIT_TEKEN[richting.finaliteit]}
+                            </span>
                             {richting.finaliteit}
                           </span>
                         )}
@@ -225,7 +245,7 @@ export function DetailPanel({
             </div>
           )}
 
-          <p className="mt-3 text-xs text-slate-500">
+          <p className="mt-3 text-xs text-zacht">
             Richtingen zijn per graad samengevat: de brondata vermeldt elk leerjaar apart, hier
             staat elke richting één keer. Controleer de officiële fiche voor het definitieve
             aanbod.
@@ -236,7 +256,7 @@ export function DetailPanel({
           href={school.linkFiche}
           target="_blank"
           rel="noreferrer"
-          className="mt-5 inline-block rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+          className="mt-5 inline-block rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-inkt hover:bg-accent"
         >
           Bekijk officiële fiche op data-onderwijs.vlaanderen.be
         </a>
