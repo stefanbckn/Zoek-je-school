@@ -13,8 +13,8 @@ export function Footer({ meta }: { meta: DatasetMeta | null }) {
       <a href={meta.bron[0]} target="_blank" rel="noreferrer" className="underline">
         Onderwijs en Vorming
       </a>{' '}
-      · {meta.aantalVestigingenAntwerpen} scholen ({meta.aantalCampussenAntwerpen} adressen) in
-      provincie Antwerpen
+      · {meta.aantalVestigingenAntwerpen} vestigingen op {meta.aantalCampussenAntwerpen} adressen
+      in provincie Antwerpen
     </footer>
   )
 }
