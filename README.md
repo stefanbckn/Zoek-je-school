@@ -65,12 +65,7 @@ geen verificatie gebleken.
 Eén regel per open bug. De diagnose, wat al uitgezocht is en wat nog geverifieerd moet worden
 staat in **[BUGS.md](./BUGS.md)** — houd die twee gelijk als je er een toevoegt of oplost.
 
-- **[Mobiel: scherm blijft ingezoomd na typen in een invoerveld](./BUGS.md#mobiel-scherm-blijft-ingezoomd-na-typen-in-een-invoerveld)**
-  — iOS zoomt in op invoervelden met tekst onder 16px en zoomt daarna niet terug uit.
-- **[Filter studierichting: hulptekst spreekt over adressen in plaats van scholen](./BUGS.md#filter-studierichting-hulptekst-spreekt-over-adressen-in-plaats-van-scholen)**
-  — "Toont adressen waar minstens één richting hierop matcht" moet "Toont scholen …" worden.
-- **[Filter finaliteit: uitleg bij Arbeidsmarkt loopt krom](./BUGS.md#filter-finaliteit-uitleg-bij-arbeidsmarkt-loopt-krom)**
-  — "bereidt voor op meteen aan het werk" is geen lopende zin; herschrijf de drie uitlegzinnen als set.
+Op dit moment staan er geen bugs open.
 
 ## Sanity check
 

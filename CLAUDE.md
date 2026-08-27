@@ -564,6 +564,25 @@ linken mag. Niet als databron gebruiken.
   expliciet `defaults.run.shell: bash` (= `bash -eo pipefail`). Geverifieerd in de GitHub-docs.
 - Geen enkele hardgecodeerde schoolnaam of richting in de code — alles komt uit de gegenereerde data.
 
+### Versienummering (SemVer)
+
+Het project gebruikt **MAJOR.MINOR.PATCH**. Drie plaatsen moeten samen kloppen:
+
+- **`package.json`** draagt de huidige versie. Die staat nu nog op `0.0.0`: het nummeren begint
+  pas zodra v0.3 in `main` zit, anders zou `main` een versie dragen die vooruitloopt op werk dat
+  er nog niet in staat. Bij die merge gaat hij naar `0.3.0`.
+- **Een git tag per release**, `v<versie>` (bv. `v0.3.0`), gezet op `main` *nadat* de PR gemerged
+  is. Nooit taggen op een branch die nog niet gemerged is — die commit ligt na de merge niet meer
+  in de geschiedenis van `main`, dus de tag wijst dan naar een losse commit.
+- **De branchnaam** draagt het versienummer: `v0.4.0-aanmelden` voor een roadmapversie. Losse
+  bugfixronden buiten een versie blijven `fix/<kort-onderwerp>`; die krijgen hun nummer pas
+  wanneer ze in een release meegaan.
+
+Wat welk cijfer verhoogt: MINOR bij een nieuwe roadmapversie (nieuwe functionaliteit), PATCH bij
+bugfixes en tekstcorrecties zonder gedragswijziging. MAJOR blijft 0 zolang de site niet publiek
+aangekondigd is. De roadmaptabel hierboven schrijft nog `v0.2.1`-stijl — dat is dezelfde
+nummering, alleen zonder de derde positie uitgeschreven.
+
 ### Samenwerking / git
 
 - **Nooit pushen zonder expliciet akkoord op dat moment.** Committen mag vrij; de gebruiker pusht
