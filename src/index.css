@@ -33,8 +33,11 @@
   --color-net-onaf-bg: var(--c-net-onaf-bg);
   --color-net-onaf-inkt: var(--c-net-onaf-inkt);
 
+  --color-fin-door-bg: var(--c-fin-door-bg);
   --color-fin-door: var(--c-fin-door);
+  --color-fin-dubbel-bg: var(--c-fin-dubbel-bg);
   --color-fin-dubbel: var(--c-fin-dubbel);
+  --color-fin-arbeid-bg: var(--c-fin-arbeid-bg);
   --color-fin-arbeid: var(--c-fin-arbeid);
 
   --color-waarschuwing: var(--c-waarschuwing);
@@ -44,14 +47,19 @@
 /**
  * Licht — "fris & open": wit als grond met een spoortje cyaan, ruime rondingen.
  *
- * De accentkleuren voor net en finaliteit komen uit het Okabe-Ito-palet, dat ontworpen is om
- * onderscheidbaar te blijven bij deuteranopie, protanopie en tritanopie. Vandaar blauw / oker /
- * pruim / groenblauw en nergens rood tegenover groen.
+ * Net en finaliteit hebben elk een eigen kleurbudget, en dat is een bewuste afweging.
+ * Samen zijn het zeven categorieën, en zoveel kleuren zijn niet allemaal onderscheidbaar te
+ * krijgen bij kleurenblindheid — doorgemeten: het beste palet voor vier netten haalde maar 20
+ * kleurafstand, ruim onder wat je nodig hebt.
  *
- * Net en finaliteit delen bewust dezelfde tinten: ze staan naast elkaar op één kaartje, maar
- * verschillen in vórm (net = gevuld, finaliteit = omlijnd met een vormteken). De vorm draagt het
- * onderscheid, de kleur ondersteunt alleen — zo blijft het aantal betekenisdragende kleuren drie
- * in plaats van zeven.
+ * Daarom draagt de vórm het onderscheid tussen de twee families (net = gevulde chip,
+ * finaliteit = gevulde chip mét rand en vormteken), en gaat het kleurbudget naar finaliteit:
+ * dat is waar mensen op scannen en op filteren. De drie finaliteitskleuren zijn geoptimaliseerd
+ * op onderlinge afstand (minimaal 49 licht, 31 donker, over alle vier de zichtsituaties).
+ *
+ * De netkleuren blijven waar ze zijn. Bij protanopie liggen GO! en Gemeentelijk dicht bij
+ * elkaar (afstand 12), maar elke net-chip draagt zijn naam voluit, dus kleur is daar
+ * ondersteunend en niet betekenisdragend.
  */
 :root {
   --c-grond: #f6fafb;
@@ -76,9 +84,17 @@
   --c-net-onaf-bg: #e2e8ea;
   --c-net-onaf-inkt: #3b484d;
 
-  --c-fin-door: #0b4a7d;
-  --c-fin-dubbel: #7a2665;
-  --c-fin-arbeid: #7d4700;
+  /* Finaliteit krijgt een gevulde tint, niet alleen een randje: met enkel een lijntje en
+     kleine letters is er te weinig kleuroppervlak om de tinten uit elkaar te houden.
+     Doorgemeten met een simulatie voor protanopie/deuteranopie/tritanopie — blauw, groenblauw
+     en oranje houden minimaal 49 kleurafstand, tegenover 12 voor het vorige blauw/pruim/bruin
+     (die twee vielen bij protanopie praktisch samen). Contrast overal >= 4.8:1. */
+  --c-fin-door-bg: #dbeafe;
+  --c-fin-door: #1155a3;
+  --c-fin-dubbel-bg: #cfeae4;
+  --c-fin-dubbel: #00665d;
+  --c-fin-arbeid-bg: #fbe8cc;
+  --c-fin-arbeid: #9a5300;
 
   --c-waarschuwing: #8a5200;
   --c-fout: #a12020;
@@ -108,9 +124,12 @@
     --c-net-onaf-bg: #1e2b30;
     --c-net-onaf-inkt: #b3c3ca;
 
-    --c-fin-door: #a3caec;
-    --c-fin-dubbel: #efaad3;
-    --c-fin-arbeid: #f2c37c;
+    --c-fin-door-bg: #102b46;
+    --c-fin-door: #8ec5f5;
+    --c-fin-dubbel-bg: #06322c;
+    --c-fin-dubbel: #5fd3bd;
+    --c-fin-arbeid-bg: #3d2a08;
+    --c-fin-arbeid: #f0b04a;
 
     --c-waarschuwing: #f0c179;
     --c-fout: #f3a3a3;
@@ -140,9 +159,12 @@
   --c-net-onaf-bg: #1e2b30;
   --c-net-onaf-inkt: #b3c3ca;
 
-  --c-fin-door: #a3caec;
-  --c-fin-dubbel: #efaad3;
-  --c-fin-arbeid: #f2c37c;
+  --c-fin-door-bg: #102b46;
+  --c-fin-door: #8ec5f5;
+  --c-fin-dubbel-bg: #06322c;
+  --c-fin-dubbel: #5fd3bd;
+  --c-fin-arbeid-bg: #3d2a08;
+  --c-fin-arbeid: #f0b04a;
 
   --c-waarschuwing: #f0c179;
   --c-fout: #f3a3a3;

@@ -7,9 +7,9 @@ export const FINALITEIT_OPTIONS = ['Doorstroom', 'Dubbel', 'Arbeidsmarkt'] as co
 export type FinaliteitKeuze = (typeof FINALITEIT_OPTIONS)[number]
 
 export const FINALITEIT_STYLES: Record<FinaliteitKeuze, string> = {
-  Doorstroom: 'text-fin-door',
-  Dubbel: 'text-fin-dubbel',
-  Arbeidsmarkt: 'text-fin-arbeid',
+  Doorstroom: 'bg-fin-door-bg text-fin-door',
+  Dubbel: 'bg-fin-dubbel-bg text-fin-dubbel',
+  Arbeidsmarkt: 'bg-fin-arbeid-bg text-fin-arbeid',
 }
 
 /**

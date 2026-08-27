@@ -293,13 +293,33 @@ door tot er een bron gevonden is — niet inplannen op hoop.
    Drie standen, niet twee: geen attribuut = volg het systeem. Keuze in `localStorage`, in een
    try/catch omdat privémodus dat kan blokkeren.
 
-**Kleurenblindheid — de aanpak:** net en finaliteit staan samen op één kaartje, samen zeven
-categorieën. Ze worden onderscheiden door **vorm**, niet door kleur: net is een gevulde chip,
-finaliteit een omlijnde chip met een vormteken (▲ doorstroom, ◆ dubbel, ■ arbeidsmarkt). Zo
-dragen maar drie kleuren betekenis in plaats van zeven. De tinten komen uit het Okabe-Ito-palet
-(blauw / oker / pruim / groenblauw, nooit rood tegenover groen). Kaartmarkers zijn allemaal
-identiek en elke chip heeft een tekstlabel, dus kleur is nergens de enige drager (WCAG 1.4.1).
-De vormtekens staan `aria-hidden`: de tekst ernaast zegt het al.
+**Kleurenblindheid — meten, niet schatten.** Er is een controlescript: `node scripts/kleurcheck.mjs`.
+Dat berekent contrast (WCAG AA) én simuleert protanopie, deuteranopie en tritanopie, en meet dan
+hoe ver de kleuren binnen één categorie uit elkaar liggen. **Wijzig je kleuren, draai dit script.**
+
+Waarom het bestaat: het eerste finaliteitspalet (blauw #0b4a7d / pruim #7a2665 / bruin #7d4700)
+zag er prima uit en haalde overal AA, maar de eerste twee vielen bij protanopie praktisch samen —
+afstand 12. Dat werd pas zichtbaar door te meten. De gebruiker meldde bovendien dat de drie ook
+met normaal zicht moeilijk te scheiden waren, omdat een omlijnde chip te weinig kleuroppervlak
+heeft. Beide klachten hadden dezelfde oorzaak.
+
+Het huidige systeem:
+
+- **Vorm draagt het onderscheid tussen de twee families.** Net = gevulde chip. Finaliteit =
+  gevulde chip mét rand en vormteken (▲ doorstroom, ◆ dubbel, ■ arbeidsmarkt). De tekens staan
+  `aria-hidden`, want de tekst ernaast zegt het al.
+- **Het kleurbudget gaat naar finaliteit**, want daar wordt op gescand en gefilterd. Blauw /
+  groenblauw / oranje, minimaal 49 kleurafstand in licht en 31 in donker, over alle vier de
+  zichtsituaties.
+- **De netkleuren blijven ondersteunend.** Bij protanopie liggen GO! en Gemeentelijk dicht bij
+  elkaar (afstand 12 licht, 8 donker) en dat is aanvaard: elke net-chip draagt zijn naam voluit.
+  Zeven categorieën allemaal CVD-veilig kleuren kán niet — het beste palet dat ik voor vier
+  netten vond haalde maar 20. Vandaar de keuze om er niet meer kleur in te steken.
+- Let op bij het bijstellen van netkleuren: het oranje van Provinciaal ligt op afstand 4 van het
+  finaliteitsoranje van Arbeidsmarkt. Ze zijn uit elkaar te houden door rand en vormteken, maar
+  maak het verschil niet nóg kleiner.
+- Kaartmarkers zijn allemaal identiek en elke chip heeft een tekstlabel, dus kleur is nergens de
+  enige drager van informatie (WCAG 1.4.1).
 
 **Anti-flits:** `public/thema.js` zet het attribuut synchroon vóór React mount. Bewust een
 apart bestand en géén inline `<script>` — de CSP in `netlify.toml` staat alleen `script-src
