@@ -840,10 +840,12 @@ automatisch → tag zetten → GitHub Release aanmaken. Twee dingen die daarbij 
   `fix/ios-zoom-invoervelden`, afgetakt van een **verse** `main` (`git fetch` eerst — dat is hier
   al een keer misgegaan). Die PR bevat de oplossing én haalt de regel uit `BUGS.md` weg. De
   git-geschiedenis bewaart de bug, de lijst toont alleen wat nog open staat.
+- **Vraag eerst of het een MAJOR, MINOR of PATCH wordt, vóór je een branch aanmaakt.** Ook bij
+  een kleine vraag die niet in de roadmap staat: het versienummer bepaalt de branchnaam, en
+  achteraf hernoemen is rommelig. Niet zelf inschatten — de gebruiker beslist dat.
 - **Begin elke nieuwe versie op een eigen branch, meteen bij de eerste commit.** Niet op `main`
   werken en achteraf verplaatsen. Naamgeving: `v0.4.0-gok-indicatoren` — het volledige
-  versienummer uit de roadmap plus een kort thema. Doe dit vóór de eerste wijziging — vraag het niet
-  telkens opnieuw, het is de standaard. Alleen losse fixes buiten een versie mogen rechtstreeks
+  versienummer plus een kort thema. Alleen losse fixes buiten een versie mogen rechtstreeks
   op `main`.
 - De gebruiker werkt met feature branches + pull requests op GitHub
   (`git@github.com:stefanbckn/Zoek-je-school.git`, SSH — de HTTPS-remote heeft geen credentials).

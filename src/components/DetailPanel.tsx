@@ -222,7 +222,7 @@ export function DetailPanel({
         )}
 
         <h3 className="mt-6 border-t border-rand pt-4 text-sm font-medium text-inkt">
-          Hoe raak je er?
+          Hoe geraak je er?
         </h3>
 
         <dl className="mt-3 space-y-3 text-sm">
