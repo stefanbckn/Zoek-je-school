@@ -230,6 +230,7 @@ function App() {
         campus={geselecteerd?.campus ?? null}
         school={geselecteerd?.school ?? null}
         zoeklocatie={zoeklocatie}
+        zoeklocatieLabel={state.label}
         schooljaarAanbod={meta?.schooljaarAanbod ?? null}
         onClose={() => setGeselecteerd(null)}
       />

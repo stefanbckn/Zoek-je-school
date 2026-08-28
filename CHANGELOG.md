@@ -10,7 +10,17 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ## Niet uitgebracht
 
-_Nog niets sinds 0.3.0._
+**Nieuw**
+
+- **"Bekijk de rit stap voor stap"** onder het reisadvies in het detailpaneel. Die link opent de
+  reisplanner van Transitous met jouw adres, de school en dezelfde aankomsttijd (8u30) al
+  ingevuld, zodat je de haltes, de vertrekuren en de alternatieven ziet die niet in het paneel
+  passen. De link verschijnt zodra je je eigen adres hebt ingevuld.
+
+**Gewijzigd**
+
+- De algemene link naar Transitous in het detailpaneel is vervangen door die dieplink; hij stond
+  onderaan de pagina toch al.
 
 ---
 

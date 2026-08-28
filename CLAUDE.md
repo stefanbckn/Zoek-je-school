@@ -287,6 +287,15 @@ https://api.transitous.org?fromPlace=<lat,lon>&toPlace=<lat,lon>
 Getest met Antwerpen-Centraal → Wilrijk: toont de reisopties, neemt de namen over in de
 invoervelden en zet de knop correct op "Arrival".
 
+**Geïmplementeerd** in `transitousPlannerUrl()` in `src/lib/ov.ts`, getoond in `DetailPanel`
+als "Bekijk de rit stap voor stap" naast het API-resultaat. Twee dingen daarbij: het paneel geeft
+dezelfde `aankomst` mee aan de link als aan de API-call (anders opent de planner op een ander
+moment dan wat er op het scherm staat), en de tijd gaat er in **lokale tijd** als
+`YYYY-MM-DDTHH:mm` in — `toISOString()` zou er in de zomer 06:30 van maken. Live nagekeken:
+de planner neemt namen, tijd en "Arrival" correct over. De verplichte attributielink naar
+`transitous.org/sources/` staat in de footer; die is uit het paneel verdwenen omdat de dieplink
+daar nu staat.
+
 **Waarom dit belangrijk is: een hyperlink is géén API-gebruik.** Het gebruiksbeleid van
 Transitous (open source, niet commercieel, User-Agent, attributie) gaat over hun API. Wie
 doorlinkt, doet zelf geen enkele call. **Deze dieplink kan dus nú al**, zonder dat de repo

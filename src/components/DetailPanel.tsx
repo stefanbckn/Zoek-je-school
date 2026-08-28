@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
 import {
   campusAanbod,
@@ -9,12 +9,19 @@ import {
 } from '../lib/aanbod'
 import { NET_CHIP, NET_STYLES } from '../lib/net'
 import { berekenFietsroute, type FietsrouteResultaat } from '../lib/fietsroute'
-import { berekenOvReis, type OvReisResultaat } from '../lib/ov'
+import {
+  berekenOvReis,
+  transitousPlannerUrl,
+  volgendeSchooldagOchtend,
+  type OvReisResultaat,
+} from '../lib/ov'
 
 interface DetailPanelProps {
   campus: CampusMetAfstand | null
   school: SchoolOpCampus | null
   zoeklocatie: { lat: number; lon: number } | null
+  /** Label van het gezochte adres, om in de dieplink naar de OV-planner te tonen. */
+  zoeklocatieLabel: string | null
   /** Schooljaar waarop het aanbod slaat, uit meta.json. Null = onbekend, dan tonen we het niet. */
   schooljaarAanbod: number | null
   onClose: () => void
@@ -24,11 +31,17 @@ export function DetailPanel({
   campus,
   school,
   zoeklocatie,
+  zoeklocatieLabel,
   schooljaarAanbod,
   onClose,
 }: DetailPanelProps) {
   const [fietsroute, setFietsroute] = useState<FietsrouteResultaat | 'laden' | null>(null)
   const [ovReis, setOvReis] = useState<OvReisResultaat | 'laden' | null>(null)
+
+  // Eén keer vastleggen, zodat de API-call en de dieplink naar de planner over exact hetzelfde
+  // moment gaan. Zou de link z'n eigen moment berekenen, dan kan die net over de grens van 8u30
+  // vallen en een andere dag tonen dan het resultaat ernaast.
+  const aankomstmoment = useMemo(() => volgendeSchooldagOchtend(), [])
 
   useEffect(() => {
     if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
@@ -54,13 +67,13 @@ export function DetailPanel({
     }
     let actief = true
     setOvReis('laden')
-    berekenOvReis(zoeklocatie, { lat: campus.lat, lon: campus.lon }).then((resultaat) => {
+    berekenOvReis(zoeklocatie, { lat: campus.lat, lon: campus.lon }, aankomstmoment).then((resultaat) => {
       if (actief) setOvReis(resultaat)
     })
     return () => {
       actief = false
     }
-  }, [campus, zoeklocatie])
+  }, [campus, zoeklocatie, aankomstmoment])
 
   // Een modaal venster hoort met Escape te sluiten; dat ontbrak. Zonder dit kun je het paneel
   // met het toetsenbord alleen kwijtraken door naar de sluitknop te tabben.
@@ -79,6 +92,21 @@ export function DetailPanel({
   // delen vullen elkaars aanbod aan. Zo afgesproken, zie CLAUDE.md.
   const aanbod = campusAanbod(campus)
   const perGraad = groepeerPerGraad(aanbod)
+
+  // Dieplink naar de webplanner van Transitous, met van/naar en de aankomsttijd al ingevuld.
+  // Alleen zinvol als we allebei de punten kennen — zonder eigen adres is er niets te plannen.
+  const plannerUrl =
+    zoeklocatie && campus.lat !== null && campus.lon !== null
+      ? transitousPlannerUrl(
+          zoeklocatie,
+          { lat: campus.lat, lon: campus.lon },
+          {
+            van: zoeklocatieLabel ?? 'Mijn adres',
+            naar: `${school.naam}, ${campus.straat} ${campus.huisnummer}, ${campus.gemeente}`,
+          },
+          aankomstmoment,
+        )
+      : null
 
   return (
     <div
@@ -224,17 +252,19 @@ export function DetailPanel({
               </dd>
               {/* Verplichte attributie: de footer draagt ze ook, maar dit paneel ligt daar als
                   modaal venster overheen. Zelfde reden als bij de fietsroute. */}
+              {/* Rechtstreeks naar de webplanner met déze route al ingevuld — daar staan de
+                  haltes, de vertrekuren en de alternatieven die hier niet passen. De algemene
+                  link naar Transitous staat al in de footer, dus die hoeft hier niet nog eens.
+                  Een hyperlink is geen API-gebruik; zie CLAUDE.md. */}
+              {plannerUrl && (
+                <dd className="text-xs">
+                  <a href={plannerUrl} target="_blank" rel="noreferrer" className="underline text-inkt">
+                    Bekijk de rit stap voor stap ↗
+                  </a>
+                </dd>
+              )}
               <dd className="text-zacht text-xs">
-                Reisadvies via{' '}
-                <a
-                  href="https://transitous.org/sources/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline"
-                >
-                  Transitous
-                </a>
-                , op basis van de dienstregeling van De Lijn en NMBS
+                Reisadvies via Transitous, op basis van de dienstregeling van De Lijn en NMBS
               </dd>
             </div>
           )}
