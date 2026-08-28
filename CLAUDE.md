@@ -262,7 +262,7 @@ Alle endpoints hieronder zijn geverifieerd door ze effectief aan te roepen zonde
   **niet** meer in de API: de volledige operatielijst telt 47 items zonder routeplan, en elke
   padvariant geeft 404 terwijl `/haltes` op dezelfde basis netjes 401 geeft. Niet opnieuw gaan
   zoeken, en niet gokken dat het "vast wel ergens" zit.
-- **Wél nuttig voor v0.6:** `GET /haltes/indebuurt/{lat,lng}` geeft haltes in de buurt van
+- **Wél nuttig voor v0.7:** `GET /haltes/indebuurt/{lat,lng}` geeft haltes in de buurt van
   coördinaten, van álle vervoersmaatschappijen. Dat dekt "afstand tot halte" zonder dat we zelf
   GTFS moeten verwerken.
 - De GTFS-feeds lopen ook via de Belgische NAP-proxy
@@ -416,7 +416,7 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
   geen algemene datacenter-blokkade, dat is getest en weerlegd). Dat probleem is met de overstap
   naar de API weg, maar de fallback-logica is blijven staan omdat ze nu de API dekt.
 - `src/types.ts` — het datamodel: `Campus` (adres, coördinaten) met `SchoolOpCampus[]` erin,
-  elk met `Richting[]`. Lege placeholders (`kostprijs`, `vervoer`) blijven staan voor v0.5/v0.6.
+  elk met `Richting[]`. Lege placeholders (`kostprijs`, `vervoer`) blijven staan voor v0.6/v0.7.
 - `src/lib/` — pure functies: haversine-afstand, net-labels, URL-state hook.
 - `src/components/` — UI-componenten, geen state-logica die ook elders nodig is.
 - Filterstatus leeft in de URL-querystring (geen router nodig, single-page app — vermijd
@@ -430,7 +430,7 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
 
 Let op: deze nummering **vervangt** de oorspronkelijke backlog-nummering uit de opzet. De oude
 v0.2 (Reizen) is deels al opgeleverd — fietsafstand/-tijd zit in 0.1.1 — en de resterende oude
-backlog-items zijn doorgeschoven naar 0.5.0–0.7.0.
+backlog-items zijn doorgeschoven naar 0.6.0–0.8.0.
 
 Alles staat op drie posities (MAJOR.MINOR.PATCH), gelijk aan `package.json` en de git tags. Wat
 er per uitgebrachte versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet hier.
@@ -443,10 +443,11 @@ Deze tabel gaat over wat er nog komt; de changelog over wat er al is.
 | **0.2.0** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
 | **0.2.1** | UI-verbeteringen | Actieve filters zichtbaar onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode | **Opgeleverd**, zie hieronder |
 | **0.3.0** | Openbaar vervoer + pagineren | AGPL-3.0-licentie · reistijd met bus/trein via Transitous · contactgegevens in de footer · lijst pagineren | **Uitgebracht** op 27/08/2026, tag `v0.3.0`. Repo is publiek en Transitous is verwittigd en akkoord |
-| **0.4.0** | GOK-indicatoren | 4 leerlingenkenmerken per school, met kaderende uitleg | **Klaar om te bouwen.** Downloadbare xlsx bij AgODi, join geverifieerd op 269/272 scholen. Per school, niet per vestiging — zie hieronder |
-| **0.5.0** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
-| **0.6.0** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
-| **0.7.0** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
+| **0.4.0** | Dieplinks + opgeruimd detailpaneel | Link naar de rit in de Transitous-planner en naar de fietsroute op de ORS-kaart · adres en contactgegevens bovenaan het detailpaneel, reisinfo apart onder "Hoe geraak je er?" | **Klaar**, in review op branch `v0.4.0-dieplinks-en-detailpaneel` |
+| **0.5.0** | GOK-indicatoren | 4 leerlingenkenmerken per school, met kaderende uitleg | **Klaar om te bouwen.** Downloadbare xlsx bij AgODi, join geverifieerd op 269/272 scholen. Per school, niet per vestiging — zie hieronder |
+| **0.6.0** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
+| **0.7.0** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
+| **0.8.0** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
 | **Geen nummer** | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder versienummer.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder. Een nummer zou een planning suggereren die er niet is |
 | **Geen nummer** | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Idee, niet ingepland.** Nooit als score tonen, zie hieronder. Eerst uit te zoeken of de verslagen per schoolnummer op te halen zijn |
 | ~~Geparkeerd~~ | Openbaar vervoer | Reistijd met de bus | **Uit de parkeerstand gehaald en uitgebracht in 0.3.0** via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken |
@@ -628,7 +629,7 @@ staan op sites met eigen voorwaarden, en ze wijzigen per schooljaar.
 jaartal erbij, en link naar de bron in plaats van de procedure over te nemen — anders staat er
 volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
-### 0.4.0 — GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026)
+### 0.5.0 — GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026)
 
 **Dit vervangt de Tableau-route hieronder als eerste keuze.** AgODi publiceert de
 leerlingenkenmerken per school als gewone xlsx op het documentenportaal. Geen Tableau, geen
@@ -681,9 +682,9 @@ https://data-onderwijs.vlaanderen.be/documenten/bestanden/
 
 **Per vestigingsplaats bestaat het wél, maar enkel handmatig** — dat is de Dataloep-route
 hieronder. Afweging: automatisch en per school (dit bestand), of handwerk en per vestiging
-(Tableau). Voor v0.4 is dit bestand de betere ruil.
+(Tableau). Voor v0.5 is dit bestand de betere ruil.
 
-### 0.4.0 — Dataloep-route (per vestigingsplaats, handmatig)
+### 0.5.0 — Dataloep-route (per vestigingsplaats, handmatig)
 
 - Bron: **Dataloep Leerlingenkenmerken Secundair**, op de Tableau Server van de overheid:
   `https://onderwijs-tableau.vlaanderen.be/t/EXTERN/views/DataloepLeerlingenkenmerkenSecundair/SOCijfersperschooljaar`

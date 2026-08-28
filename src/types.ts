@@ -79,9 +79,9 @@ export interface SchoolOpCampus {
   scholengemeenschap: string | null
   /** Studieaanbod op déze vestiging. Lege array = geen aanbod geregistreerd. */
   richtingen: Richting[]
-  /** Placeholder voor v0.5 (kostprijs/materiaalkost). */
+  /** Placeholder voor v0.6 (kostprijs/materiaalkost). */
   kostprijs: null
-  /** Placeholder voor v0.6 (fietsenstalling, halte-afstand, ...). */
+  /** Placeholder voor v0.7 (fietsenstalling, halte-afstand, ...). */
   vervoer: null
 }
 
