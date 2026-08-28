@@ -198,6 +198,36 @@ zo beslist door de gebruiker.
   staan onder **CC-BY-SA 4.0**. Weghalen mag dus niet, ook niet "even voor de opmaak".
   Geverifieerd in de ToS op `account.heigit.org/info/tos` (27/08/2026); diezelfde ToS bevat
   géén non-commerciële beperking, dus een donatieknop op de site raakt dit niet.
+#### Dieplink naar de kaart van openrouteservice (geen API-gebruik)
+
+Naast de API-call is er dezelfde goedkope weg als bij Transitous: **linken naar
+`maps.openrouteservice.org` met de route al ingevuld.** Geen key, geen quota — wie de link volgt,
+doet zelf de call. Geïmplementeerd als `orsKaartUrl()` in `src/lib/fietsroute.ts`.
+
+```
+https://maps.openrouteservice.org/#/directions/<vanNaam>/<naarNaam>/data/
+  {"coordinates":"<lon,lat>;<lon,lat>","options":{"profile":"cycling-regular","preference":"recommended"}}
+```
+
+Live nagespeeld op 28/08/2026 (Antwerpen-Centraal → Wilrijk, en Antwerpen-Centraal → Onyx): de
+kaart berekent de rit, zet het profiel op de fiets en toont naam, afstand en tijd in de zijbalk.
+Punten om niet in te lopen:
+
+- **Het is een hash-route met een JSON-blok erin**, geen gewone querystring. Query-parameters op
+  het pad (`?a=…&b=1`, zoals oudere forumposts tonen) worden **stil genegeerd** — geverifieerd:
+  de app laadt dan gewoon de wereldkaart. Encodeer ook de namen: die staan in het pad, en een
+  schoolnaam met een schuine streep zou de route anders in stukken hakken.
+- **`coordinates` is `lon,lat`** — omgekeerd van de rest van deze app — en de punten scheiden
+  met een puntkomma.
+- **`"zoom"` in het optieblok doet niets merkbaars**, en een `/@lon,lat,zoom`-achtervoegsel
+  evenmin. Beide geprobeerd. De kaart opent op straatniveau en zoomt pas na tien tot dertig
+  seconden uit naar de volledige route (één keer wél gezien, één keer niet binnen 40 s). De
+  bezoeker kan zelf op de "volledige route"-knop rechtsboven klikken. Dat is de bekende
+  ruwe kant van deze link; de berekende route zelf klopt wel.
+- De verplichte HeiGIT-vermelding blijft in de UI staan; alleen de link op het woord
+  "openrouteservice" is uit het detailpaneel gehaald (die staat in de footer). De vermelding
+  zelf is contractueel, de link erin niet.
+
 - Account/key aanvragen via `https://account.heigit.org` (self-service signup).
 - Wordt enkel aangeroepen voor de **geselecteerde** school in het detailpaneel (niet voor elke
   kaart in de resultatenlijst) — anders is de gratis quota in enkele zoekopdrachten op.

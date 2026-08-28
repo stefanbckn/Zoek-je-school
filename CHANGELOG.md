@@ -16,6 +16,10 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
   reisplanner van Transitous met jouw adres, de school en dezelfde aankomsttijd (8u30) al
   ingevuld, zodat je de haltes, de vertrekuren en de alternatieven ziet die niet in het paneel
   passen. De link verschijnt zodra je je eigen adres hebt ingevuld.
+- **"Bekijk de fietsroute op de kaart"** doet hetzelfde voor de fiets: die opent de kaart van
+  openrouteservice met jouw route erop, inclusief de weg die genomen wordt en het hoogteprofiel.
+  Let op: die kaart opent soms sterk ingezoomd en heeft even nodig om naar de hele route uit te
+  zoomen; met de knop rechtsboven op de kaart forceer je dat meteen.
 
 **Gewijzigd**
 
