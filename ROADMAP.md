@@ -3,27 +3,44 @@
 Wat er nog komt. Wat er al is, staat in [CHANGELOG.md](./CHANGELOG.md); de projectconventies
 en de geverifieerde databronnen staan in [CLAUDE.md](./CLAUDE.md).
 
-Let op: deze nummering **vervangt** de oorspronkelijke backlog-nummering uit de opzet. De oude
-v0.2 (Reizen) is deels al opgeleverd — fietsafstand/-tijd zit in 0.1.1 — en de resterende oude
-backlog-items zijn doorgeschoven naar 0.6.0–0.7.0.
+**Versienummers staan hier niet bij wat er nog moet komen — bewust.** Een nummer krijgt een
+thema pas op het moment dat het af is en naar `main` gaat. Zo kan elk stuk los uitgebracht
+worden zonder dat alles eronder verschuift, en klopt SemVer vanzelf: nieuwe functionaliteit is
+een MINOR, ook als het maar één filter is. Deze tabel houdt dus de **volgorde** bij, niet de
+nummering. Zie [Versienummering in CLAUDE.md](./CLAUDE.md#versienummering-semver).
 
-Alles staat op drie posities (MAJOR.MINOR.PATCH), gelijk aan `package.json` en de git tags. Wat
-er per uitgebrachte versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet hier.
-Deze tabel gaat over wat er nog komt; de changelog over wat er al is.
+(Deze nummering verving eerder al de oorspronkelijke backlog-nummering uit de opzet; de oude
+v0.2 "Reizen" is deels opgeleverd als 0.1.1. Dat vooraf nummeren is nu helemaal losgelaten.)
 
-| Versie | Thema | Inhoud | Status / blocker |
+## Uitgebracht
+
+Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet hier.
+
+| Versie | Thema | Inhoud |
+| --- | --- | --- |
+| **0.1.0** | Basis | Vestigingen → campussen, afstand (hemelsbreed), filters (net/gemeente/naam), kaart, detailpaneel, URL-state, mobiel |
+| **0.1.1** | Fiets | Fietsafstand/-tijd per school in detailpaneel (OpenRouteService via api.heigit.org) |
+| **0.2.0** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur. Infodagen geschrapt: geen bron |
+| **0.2.1** | UI-verbeteringen | Actieve filters onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode |
+| **0.3.0** | Openbaar vervoer + pagineren | AGPL-3.0-licentie · reistijd met bus/trein via Transitous · contactgegevens in de footer · lijst pagineren |
+| **0.4.0** | Dieplinks + opgeruimd detailpaneel | Link naar de rit in de Transitous-planner en naar de fietsroute op de ORS-kaart · adres en contactgegevens bovenaan het detailpaneel, reisinfo apart onder "Hoe geraak je er?" |
+
+## Nog te doen
+
+In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge toegekend.
+
+| # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| **0.1.0** | Basis | Vestigingen → campussen, afstand (hemelsbreed), filters (net/gemeente/naam), kaart, detailpaneel, URL-state, mobiel | **Opgeleverd** |
-| **0.1.1** | Fiets | Fietsafstand/-tijd per school in detailpaneel (OpenRouteService via api.heigit.org) | **Opgeleverd** |
-| **0.2.0** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
-| **0.2.1** | UI-verbeteringen | Actieve filters zichtbaar onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode | **Opgeleverd**, zie hieronder |
-| **0.3.0** | Openbaar vervoer + pagineren | AGPL-3.0-licentie · reistijd met bus/trein via Transitous · contactgegevens in de footer · lijst pagineren | **Uitgebracht** op 27/08/2026, tag `v0.3.0`. Repo is publiek en Transitous is verwittigd en akkoord |
-| **0.4.0** | Dieplinks + opgeruimd detailpaneel | Link naar de rit in de Transitous-planner en naar de fietsroute op de ORS-kaart · adres en contactgegevens bovenaan het detailpaneel, reisinfo apart onder "Hoe geraak je er?" | **Klaar**, in review op branch `v0.4.0-dieplinks-en-detailpaneel` |
-| **0.5.0** | Vergelijken en duiden | 4 GOK-leerlingenkenmerken per school met kaderende uitleg · vestigingen zonder studieaanbod wegfilteren · 2–4 campussen naast elkaar vergelijken (was 0.8.0) · link naar het doorlichtingsverslag | **Deels klaar om te bouwen.** GOK: xlsx bij AgODi, join geverifieerd op 269/272 scholen. Vergelijken: puur frontend. Doorlichting: bron nog niet geverifieerd — zie hieronder |
-| **0.6.0** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
-| **0.7.0** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
-| **Geen nummer** | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder versienummer.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder. Een nummer zou een planning suggereren die er niet is |
-| ~~Geparkeerd~~ | Openbaar vervoer | Reistijd met de bus | **Uit de parkeerstand gehaald en uitgebracht in 0.3.0** via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken |
+| 1 | Lege vestigingen wegfilteren | Vestigingen zonder studieaanbod verbergen — 50 van de 303 campussen | **Klaar om te bouwen.** Geen externe bron nodig, geen datawijziging — zie hieronder |
+| 2 | GOK-indicatoren | 4 leerlingenkenmerken per school, met kaderende uitleg | **Klaar om te bouwen.** Downloadbare xlsx bij AgODi, join geverifieerd op 269/272 scholen. Per school, niet per vestiging — zie hieronder |
+| 3 | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig. Natuurlijke plek voor de GOK-cijfers uit 2, dus best erna |
+| 4 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
+| 5 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
+| 6 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
+| — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
+
+Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
+via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
 
 ## 0.2.0 — stand van zaken
 
@@ -149,15 +166,15 @@ Uitgangspunten voor wie dit bouwt:
   scrollgebied). Een kortere lijst maakt dat minder nijpend, maar lost het niet op: de
   gemeentelijst heeft nog steeds z'n eigen scrollbalk binnen een meescrollende kolom.
 
-## 0.5.0 — Doorlichting: wel linken, nooit scoren
+## Doorlichting: wel linken, nooit scoren
 
-Tonen wat de onderwijsinspectie over een school zegt. Stond eerst zonder versienummer geparkeerd,
-sinds 28/08/2026 opgenomen in 0.5.0 — beslist door de gebruiker.
+Tonen wat de onderwijsinspectie over een school zegt. Stond eerst helemaal buiten de planning,
+sinds 28/08/2026 staat het in de volgorde hierboven — beslist door de gebruiker.
 
 ⚠️ **Het uitzoekwerk onderaan deze sectie is nog niet gedaan.** Er is geen geverifieerde bron:
 of de verslagen per `schoolnummer` op te halen zijn, is nooit nagekeken. Blijkt dat niet te
-kunnen, dan valt dit onderdeel terug op handwerk per school en hoort het uit 0.5.0 te schuiven —
-de andere drie onderdelen hangen er niet van af.
+kunnen, dan valt dit onderdeel terug op handwerk per school en gaat het uit de volgorde —
+de andere onderdelen hangen er niet van af.
 
 **De vorm ligt wél al vast, en dat is het belangrijkste deel.** Geen cijfer, geen samenvatting,
 geen ranglijst: enkel een link naar het verslag met de datum erbij ("doorgelicht in maart 2024 —
@@ -207,10 +224,11 @@ staan op sites met eigen voorwaarden, en ze wijzigen per schooljaar.
 jaartal erbij, en link naar de bron in plaats van de procedure over te nemen — anders staat er
 volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
-## 0.5.0 — vier onderdelen
+## Vergelijken en duiden — vier stukken, los uit te brengen
 
-De versie bundelt wat een ouder helpt kiezen tussen scholen die op afstand en aanbod al door de
-filter zijn geraakt. Vier onderdelen, in volgorde van zekerheid:
+Samen helpen ze een ouder kiezen tussen scholen die op afstand en aanbod al door de filter zijn
+geraakt. Ze hangen niet van elkaar af, dus elk stuk gaat als eigen MINOR naar `main` zodra het
+werkt. Hieronder in volgorde van zekerheid — dat is ook de bouwvolgorde uit de tabel:
 
 1. **Vestigingen zonder studieaanbod wegfilteren.** Geverifieerd op de huidige dataset:
    **50 van de 303 campussen** hebben geen enkele richting, en **152 van de 559 vestigingen**.
@@ -225,13 +243,13 @@ filter zijn geraakt. Vier onderdelen, in volgorde van zekerheid:
    - Let op de campus-samenvoeging: leeg betekent hier *geen enkele school op dat adres* heeft
      een richting. Eén school met aanbod houdt het hele adres zichtbaar.
 2. **GOK-leerlingenkenmerken**, per school. Bron en join geverifieerd — zie hieronder.
-3. **Campussen vergelijken** (2–4 naast elkaar, exporteerbare shortlist). Vervroegd van 0.8.0
-   naar 0.5.0 op 28/08/2026. Puur frontend, geen externe bron nodig; de vergelijkingstabel is
-   meteen de natuurlijke plek voor de GOK-cijfers uit punt 2.
+3. **Campussen vergelijken** (2–4 naast elkaar, exporteerbare shortlist). Stond achteraan de
+   planning, op 28/08/2026 naar voren gehaald. Puur frontend, geen externe bron nodig; de
+   vergelijkingstabel is meteen de natuurlijke plek voor de GOK-cijfers uit punt 2, dus erna.
 4. **Link naar het doorlichtingsverslag.** Zie de sectie hierboven — vorm ligt vast, bron nog
    niet geverifieerd. Dit is het enige onderdeel dat kan afvallen.
 
-## 0.5.0 — GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026)
+## GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026)
 
 **Dit vervangt de Tableau-route hieronder als eerste keuze.** AgODi publiceert de
 leerlingenkenmerken per school als gewone xlsx op het documentenportaal. Geen Tableau, geen
@@ -286,7 +304,7 @@ https://data-onderwijs.vlaanderen.be/documenten/bestanden/
 hieronder. Afweging: automatisch en per school (dit bestand), of handwerk en per vestiging
 (Tableau). Voor v0.5 is dit bestand de betere ruil.
 
-## 0.5.0 — Dataloep-route (per vestigingsplaats, handmatig)
+## GOK-indicatoren — Dataloep-route (per vestigingsplaats, handmatig)
 
 - Bron: **Dataloep Leerlingenkenmerken Secundair**, op de Tableau Server van de overheid:
   `https://onderwijs-tableau.vlaanderen.be/t/EXTERN/views/DataloepLeerlingenkenmerkenSecundair/SOCijfersperschooljaar`

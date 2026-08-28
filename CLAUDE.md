@@ -432,9 +432,8 @@ De roadmap staat in een apart bestand: **[ROADMAP.md](./ROADMAP.md)**. Daar staa
 wat er nog komt, welke bron er al geverifieerd is en welke beslissingen er onderweg genomen
 zijn. Wat er al uitgebracht is, staat in [CHANGELOG.md](./CHANGELOG.md).
 
-**Lees ROADMAP.md vóór je begint** wanneer: er een versienummer valt (0.5.0, "de volgende
-versie", een `v0.x.y`-branch), er gevraagd wordt wat er nu aan de beurt is of wat er nog moet
-komen, er een functionaliteit besproken wordt die nog niet bestaat, of er een bron/API
+**Lees ROADMAP.md vóór je begint** wanneer: er een versienummer valt of een `v0.x.y`-branch,
+er gevraagd wordt wat er nu aan de beurt is of wat er nog moet komen, er een functionaliteit besproken wordt die nog niet bestaat, of er een bron/API
 onderzocht wordt voor een nieuwe functionaliteit. Bij werk aan bestaande code (bugfix, refactor,
 tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar bij, niet hier.**
 
@@ -494,17 +493,32 @@ API-portaal publiceert geen expliciete hergebruikslicentie bij deze producten (n
 
 ### Versienummering (SemVer)
 
-Het project gebruikt **MAJOR.MINOR.PATCH**. Drie plaatsen moeten samen kloppen:
+Het project gebruikt **MAJOR.MINOR.PATCH**.
 
-- **`package.json`** draagt de huidige versie. Staat sinds de merge van 0.3.0 op `0.3.0`. Zet
+**Een nummer wordt toegekend bij de release, niet bij de planning.** [ROADMAP.md](./ROADMAP.md)
+houdt de volgorde bij zonder cijfers; wat af is en naar `main` gaat, krijgt op dat moment het
+volgende nummer. Zo kan één afgewerkte feature los uitkomen zonder dat de rest van de planning
+moet verschuiven. Vooraf nummeren heeft hier al twee keer tot hernummeren geleid — niet opnieuw
+doen. Het versienummer valt dus pas wanneer je de branch aanmaakt (die draagt het in de naam),
+en dan nog steeds na de vraag aan de gebruiker of het MAJOR, MINOR of PATCH wordt.
+
+**Eén feature = één MINOR.** Een thema dat uit meerdere losse stukken bestaat, wordt niet in één
+grote branch verzameld: elk stuk gaat apart naar `main`, met eigen changelog-kop en eigen tag.
+Een lang openstaande branch houdt werk onnodig van de site af — de merge is wat live gaat. Dat
+betekent ook dat je nieuwe functionaliteit **nooit als PATCH** uitbrengt om "nog even bij het
+oude thema te blijven": een filter erbij is een MINOR, hoe klein ook.
+
+Drie plaatsen moeten samen kloppen:
+
+- **`package.json`** draagt de huidige versie. Staat sinds de merge van 0.4.0 op `0.4.0`. Zet
   het nummer in de versie-branch zelf, niet achteraf op `main` — dan komt de bump mee in de PR
   die de functionaliteit brengt.
 - **Een git tag per release**, `v<versie>` (bv. `v0.3.0`), gezet op `main` *nadat* de PR gemerged
   is. Nooit taggen op een branch die nog niet gemerged is — die commit ligt na de merge niet meer
   in de geschiedenis van `main`, dus de tag wijst dan naar een losse commit.
-- **De branchnaam** draagt het versienummer: `v0.4.0-aanmelden` voor een roadmapversie. Losse
-  bugfixronden buiten een versie blijven `fix/<kort-onderwerp>`; die krijgen hun nummer pas
-  wanneer ze in een release meegaan.
+- **De branchnaam** draagt het versienummer: `v0.5.0-lege-vestigingen-filteren` voor een
+  roadmapthema. Losse bugfixronden buiten een versie blijven `fix/<kort-onderwerp>`; die krijgen
+  hun nummer pas wanneer ze in een release meegaan.
 
 **Release notes horen in [CHANGELOG.md](./CHANGELOG.md)**, niet in de roadmaptabel en niet enkel
 op GitHub. Werkwijze:
@@ -524,8 +538,8 @@ Schrijf de notes vanuit wat een bezoeker merkt ("je ziet nu de reistijd met bus 
 als opsomming van commits — die staat al in git. Wat er niet werkt of niet meegenomen is, hoort er
 ook in: een changelog die enkel goed nieuws bevat, wordt niet gelezen.
 
-Wat welk cijfer verhoogt: MINOR bij een nieuwe roadmapversie (nieuwe functionaliteit), PATCH bij
-bugfixes en tekstcorrecties zonder gedragswijziging. MAJOR blijft 0 zolang de site niet publiek
+Wat welk cijfer verhoogt: MINOR bij elke nieuwe functionaliteit die een bezoeker merkt, ook al
+is het maar één filter; PATCH bij bugfixes en tekstcorrecties zonder gedragswijziging. MAJOR blijft 0 zolang de site niet publiek
 aangekondigd is.
 
 **Wat wanneer live gaat.** De volledige gang: branch → PR → merge in `main` → Netlify deployt
