@@ -272,6 +272,35 @@ Geeft 4 reisopties terug met wandeldelen, overstappen en lijnnummers — o.a. bu
 Respons: `itineraries[].duration` (seconden), `.transfers`, en `.legs[]` met `mode`,
 `routeShortName`, `agencyName`, `from.name`/`to.name`.
 
+#### Dieplink naar de Transitous-webplanner (geen API-gebruik)
+
+Naast de API is er een veel goedkopere weg: **rechtstreeks naar hun webplanner linken met de
+route al ingevuld.** De zoekwidget op `transitous.org` bouwt deze URL — afgeleid uit hun
+`widget.js` en daarna live nagespeeld (28/08/2026), niet gegokt:
+
+```
+https://api.transitous.org?fromPlace=<lat,lon>&toPlace=<lat,lon>
+    &fromName=<label>&toName=<label>&time=<YYYY-MM-DDTHH:mm>&arriveBy=true
+```
+
+`api.transitous.org` serveert op de root de MOTIS-webinterface (de API zelf zit onder `/api/`).
+Getest met Antwerpen-Centraal → Wilrijk: toont de reisopties, neemt de namen over in de
+invoervelden en zet de knop correct op "Arrival".
+
+**Waarom dit belangrijk is: een hyperlink is géén API-gebruik.** Het gebruiksbeleid van
+Transitous (open source, niet commercieel, User-Agent, attributie) gaat over hun API. Wie
+doorlinkt, doet zelf geen enkele call. **Deze dieplink kan dus nú al**, zonder dat de repo
+publiek is en zonder LICENSE — in tegenstelling tot de API-route hieronder.
+
+Aandachtspunten:
+- Zet `arriveBy=true` met een **aankomsttijd op een schooldag** (bv. 08:15 op de eerstvolgende
+  weekdag). "Nu vertrekken" is voor een ouder die schoolvervoer bekijkt zinloos. Bereken die
+  datum, hardcode ze niet — een vaste datum veroudert stil.
+- Werkt alleen als de gebruiker z'n eigen adres heeft ingevuld, net als de fietsroute.
+- Dit is de MOTIS-webinterface, geen product-URL met stabiliteitsgarantie. Verandert ze, dan is
+  het gevolg een dode link, geen kapotte app — dat is precies waarom deze weg zo goedkoop is.
+- Raakt de CSP niet: een link is geen `connect-src`.
+
 **De voorwaarden** (`transitous.org/api`) — toegang mag als het project open source is, niet
 commercieel, licht voor hun infrastructuur, en zich aan het gebruiksbeleid houdt:
 
