@@ -800,7 +800,11 @@ op GitHub. Werkwijze:
 1. Tijdens het werk vult de versie-branch de kop **Niet uitgebracht** aan, in dezelfde PR als de
    wijziging zelf. Zo is de tekst reviewbaar vóór de merge, in plaats van achteraf uit commits
    gereconstrueerd te worden.
-2. Bij de merge wordt die kop het versienummer met datum, en `package.json` gaat mee omhoog.
+2. **Nog in dezelfde branch, vóór de merge:** die kop wordt het versienummer met datum, en
+   `package.json` gaat mee omhoog. Allebei in de PR, niet achteraf op `main`. Anders draagt de
+   Netlify-deploy die uit de merge volgt nog het vorige nummer, en bevat de commit waar de tag
+   op komt te staan een changelog met "Niet uitgebracht" erin. Dat is bij 0.4.0 misgegaan: de
+   correctie belandde ná de tag.
 3. Ná de merge: de tag zetten, en dezelfde tekst als GitHub Release bij die tag plakken. Het
    bestand is de bron, de Release is de kopie.
 
