@@ -8,7 +8,7 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
-## Niet uitgebracht
+## 0.4.0 — 28 augustus 2026
 
 **Nieuw**
 
@@ -28,7 +28,7 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
   staat nu groot bovenaan met de afstand ernaast, en telefoon, e-mail en website staan daaronder
   in een apart kadertje. Die rijen zijn volledig aanklikbaar: op een telefoon bel je met één tik,
   en de website toont enkel het domein in plaats van een lange URL. De reisinformatie is
-  samengebracht onder de kop "Hoe raak je er?".
+  samengebracht onder de kop "Hoe geraak je er?".
 - De algemene link naar Transitous in het detailpaneel is vervangen door die dieplink; hij stond
   onderaan de pagina toch al.
 
