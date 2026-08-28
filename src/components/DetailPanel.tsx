@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
 import {
   campusAanbod,
@@ -8,13 +8,20 @@ import {
   FINALITEIT_TEKEN,
 } from '../lib/aanbod'
 import { NET_CHIP, NET_STYLES } from '../lib/net'
-import { berekenFietsroute, type FietsrouteResultaat } from '../lib/fietsroute'
-import { berekenOvReis, type OvReisResultaat } from '../lib/ov'
+import { berekenFietsroute, orsKaartUrl, type FietsrouteResultaat } from '../lib/fietsroute'
+import {
+  berekenOvReis,
+  transitousPlannerUrl,
+  volgendeSchooldagOchtend,
+  type OvReisResultaat,
+} from '../lib/ov'
 
 interface DetailPanelProps {
   campus: CampusMetAfstand | null
   school: SchoolOpCampus | null
   zoeklocatie: { lat: number; lon: number } | null
+  /** Label van het gezochte adres, om in de dieplink naar de OV-planner te tonen. */
+  zoeklocatieLabel: string | null
   /** Schooljaar waarop het aanbod slaat, uit meta.json. Null = onbekend, dan tonen we het niet. */
   schooljaarAanbod: number | null
   onClose: () => void
@@ -24,11 +31,17 @@ export function DetailPanel({
   campus,
   school,
   zoeklocatie,
+  zoeklocatieLabel,
   schooljaarAanbod,
   onClose,
 }: DetailPanelProps) {
   const [fietsroute, setFietsroute] = useState<FietsrouteResultaat | 'laden' | null>(null)
   const [ovReis, setOvReis] = useState<OvReisResultaat | 'laden' | null>(null)
+
+  // Eén keer vastleggen, zodat de API-call en de dieplink naar de planner over exact hetzelfde
+  // moment gaan. Zou de link z'n eigen moment berekenen, dan kan die net over de grens van 8u30
+  // vallen en een andere dag tonen dan het resultaat ernaast.
+  const aankomstmoment = useMemo(() => volgendeSchooldagOchtend(), [])
 
   useEffect(() => {
     if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
@@ -54,13 +67,13 @@ export function DetailPanel({
     }
     let actief = true
     setOvReis('laden')
-    berekenOvReis(zoeklocatie, { lat: campus.lat, lon: campus.lon }).then((resultaat) => {
+    berekenOvReis(zoeklocatie, { lat: campus.lat, lon: campus.lon }, aankomstmoment).then((resultaat) => {
       if (actief) setOvReis(resultaat)
     })
     return () => {
       actief = false
     }
-  }, [campus, zoeklocatie])
+  }, [campus, zoeklocatie, aankomstmoment])
 
   // Een modaal venster hoort met Escape te sluiten; dat ontbrak. Zonder dit kun je het paneel
   // met het toetsenbord alleen kwijtraken door naar de sluitknop te tabben.
@@ -79,6 +92,26 @@ export function DetailPanel({
   // delen vullen elkaars aanbod aan. Zo afgesproken, zie CLAUDE.md.
   const aanbod = campusAanbod(campus)
   const perGraad = groepeerPerGraad(aanbod)
+
+  // Dieplink naar de webplanner van Transitous, met van/naar en de aankomsttijd al ingevuld.
+  // Alleen zinvol als we allebei de punten kennen — zonder eigen adres is er niets te plannen.
+  const routePunten =
+    zoeklocatie && campus.lat !== null && campus.lon !== null
+      ? {
+          van: zoeklocatie,
+          naar: { lat: campus.lat, lon: campus.lon },
+          namen: {
+            van: zoeklocatieLabel ?? 'Mijn adres',
+            naar: `${school.naam}, ${campus.straat} ${campus.huisnummer}, ${campus.gemeente}`,
+          },
+        }
+      : null
+  const plannerUrl = routePunten
+    ? transitousPlannerUrl(routePunten.van, routePunten.naar, routePunten.namen, aankomstmoment)
+    : null
+  const fietskaartUrl = routePunten
+    ? orsKaartUrl(routePunten.van, routePunten.naar, routePunten.namen)
+    : null
 
   return (
     <div
@@ -118,30 +151,81 @@ export function DetailPanel({
           </p>
         )}
 
-        <dl className="mt-4 space-y-3 text-sm">
-          <div>
-            <dt className="text-zacht">Adres</dt>
-            <dd className="text-inkt">
-              {campus.straat} {campus.huisnummer}, {campus.postcode} {campus.gemeente}
-            </dd>
-            {campus.lat === null && (
-              <dd className="text-xs text-waarschuwing mt-0.5">
-                Geen coördinaten bekend in de brondata — niet op de kaart en geen afstand
-                berekenbaar.
-              </dd>
-            )}
-          </div>
-
-          {campus.afstandKm !== null && (
-            <div>
-              <dt className="text-zacht">Afstand</dt>
-              <dd className="text-inkt">
+        {/* Adres en contact staan bovenaan en apart van de reisinformatie. Wie een school
+            aanklikt, wil eerst weten wáár ze ligt en hoe je ze bereikt; die vier gegevens
+            stonden eerder als gewone regels tussen de (veel wijdlopiger) fiets- en OV-blokken,
+            waardoor ze wegvielen. */}
+        <address className="mt-4 not-italic">
+          <p className="text-base font-medium text-inkt">
+            {campus.straat} {campus.huisnummer}
+          </p>
+          <p className="text-sm text-zacht">
+            {campus.postcode} {campus.gemeente}
+            {campus.afstandKm !== null && (
+              <>
+                {' · '}
                 {campus.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km
                 hemelsbreed
-              </dd>
-            </div>
+              </>
+            )}
+          </p>
+          {campus.lat === null && (
+            <p className="mt-0.5 text-xs text-waarschuwing">
+              Geen coördinaten bekend in de brondata — niet op de kaart en geen afstand
+              berekenbaar.
+            </p>
           )}
+        </address>
 
+        {/* Elke rij is volledig aanklikbaar: bellen op een telefoon, mailen, of naar de site.
+            De labels links houden de kolom scanbaar zonder dat er iconen bij moeten. */}
+        {(school.telefoon || school.email || school.website) && (
+          <ul className="mt-3 divide-y divide-rand overflow-hidden rounded-md border border-rand text-sm">
+            {school.telefoon && (
+              <li>
+                <a
+                  href={`tel:${school.telefoon.replace(/[^\d+]/g, '')}`}
+                  className="flex items-baseline justify-between gap-3 px-3 py-2 hover:bg-hover"
+                >
+                  <span className="text-zacht">Telefoon</span>
+                  <span className="text-right text-inkt">{school.telefoon}</span>
+                </a>
+              </li>
+            )}
+            {school.email && (
+              <li>
+                <a
+                  href={`mailto:${school.email}`}
+                  className="flex items-baseline justify-between gap-3 px-3 py-2 hover:bg-hover"
+                >
+                  <span className="shrink-0 text-zacht">E-mail</span>
+                  <span className="break-all text-right text-inkt">{school.email}</span>
+                </a>
+              </li>
+            )}
+            {school.website && (
+              <li>
+                <a
+                  href={school.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-baseline justify-between gap-3 px-3 py-2 hover:bg-hover"
+                >
+                  <span className="shrink-0 text-zacht">Website</span>
+                  {/* Enkel het domein tonen: de volledige URL is vaak een lange padnaam die
+                      de rij laat overlopen, en zegt niets extra. */}
+                  <span className="break-all text-right text-inkt">{toonUrl(school.website)}</span>
+                </a>
+              </li>
+            )}
+          </ul>
+        )}
+
+        <h3 className="mt-6 border-t border-rand pt-4 text-sm font-medium text-inkt">
+          Hoe geraak je er?
+        </h3>
+
+        <dl className="mt-3 space-y-3 text-sm">
           {!zoeklocatie && (
             <div>
               <dt className="text-zacht">Met de fiets of het openbaar vervoer</dt>
@@ -164,17 +248,25 @@ export function DetailPanel({
               </dd>
               {/* De footer draagt dezelfde attributie, maar dit paneel ligt er als modaal
                   venster overheen. Vermeld het dus ook hier, naast het resultaat zelf. */}
+              {/* Zelfde idee als bij het openbaar vervoer: rechtstreeks naar de kaart met déze
+                  route erop, in plaats van naar de homepage van openrouteservice — die staat al
+                  in de footer. Een hyperlink is geen API-gebruik, dus dit kost geen quota. */}
+              {fietskaartUrl && (
+                <dd className="text-xs">
+                  <a
+                    href={fietskaartUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline text-inkt"
+                  >
+                    Bekijk de fietsroute op de kaart ↗
+                  </a>
+                </dd>
+              )}
+              {/* De vermelding zelf is contractueel verplicht (HeiGIT-voorwaarden), de link
+                  erin niet. Zie CLAUDE.md. */}
               <dd className="text-zacht text-xs">
-                Route ©{' '}
-                <a
-                  href="https://openrouteservice.org/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline"
-                >
-                  openrouteservice
-                </a>{' '}
-                by HeiGIT, data van OpenStreetMap
+                Route © openrouteservice by HeiGIT, data van OpenStreetMap
               </dd>
             </div>
           )}
@@ -224,17 +316,19 @@ export function DetailPanel({
               </dd>
               {/* Verplichte attributie: de footer draagt ze ook, maar dit paneel ligt daar als
                   modaal venster overheen. Zelfde reden als bij de fietsroute. */}
+              {/* Rechtstreeks naar de webplanner met déze route al ingevuld — daar staan de
+                  haltes, de vertrekuren en de alternatieven die hier niet passen. De algemene
+                  link naar Transitous staat al in de footer, dus die hoeft hier niet nog eens.
+                  Een hyperlink is geen API-gebruik; zie CLAUDE.md. */}
+              {plannerUrl && (
+                <dd className="text-xs">
+                  <a href={plannerUrl} target="_blank" rel="noreferrer" className="underline text-inkt">
+                    Bekijk de rit stap voor stap ↗
+                  </a>
+                </dd>
+              )}
               <dd className="text-zacht text-xs">
-                Reisadvies via{' '}
-                <a
-                  href="https://transitous.org/sources/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline"
-                >
-                  Transitous
-                </a>
-                , op basis van de dienstregeling van De Lijn en NMBS
+                Reisadvies via Transitous, op basis van de dienstregeling van De Lijn en NMBS
               </dd>
             </div>
           )}
@@ -258,40 +352,6 @@ export function DetailPanel({
             <div>
               <dt className="text-zacht">Met het openbaar vervoer</dt>
               <dd className="text-zacht italic">Momenteel niet beschikbaar, probeer later opnieuw.</dd>
-            </div>
-          )}
-
-          {school.telefoon && (
-            <div>
-              <dt className="text-zacht">Telefoon</dt>
-              <dd className="text-inkt">{school.telefoon}</dd>
-            </div>
-          )}
-
-          {school.email && (
-            <div>
-              <dt className="text-zacht">E-mail</dt>
-              <dd>
-                <a href={`mailto:${school.email}`} className="text-inkt underline">
-                  {school.email}
-                </a>
-              </dd>
-            </div>
-          )}
-
-          {school.website && (
-            <div>
-              <dt className="text-zacht">Website</dt>
-              <dd>
-                <a
-                  href={school.website}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-inkt underline"
-                >
-                  {school.website}
-                </a>
-              </dd>
             </div>
           )}
 
@@ -372,4 +432,17 @@ export function DetailPanel({
       </div>
     </div>
   )
+}
+
+/**
+ * Toont een website als kaal domein ("sintjozef.be" in plaats van
+ * "https://www.sintjozef.be/secundair/"). Valt terug op de ruwe waarde als het geen geldige URL
+ * is — de brondata bevat af en toe een adres zonder protocol.
+ */
+function toonUrl(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return url
+  }
 }

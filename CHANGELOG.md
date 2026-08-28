@@ -10,7 +10,27 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ## Niet uitgebracht
 
-_Nog niets sinds 0.3.0._
+**Nieuw**
+
+- **"Bekijk de rit stap voor stap"** onder het reisadvies in het detailpaneel. Die link opent de
+  reisplanner van Transitous met jouw adres, de school en dezelfde aankomsttijd (8u30) al
+  ingevuld, zodat je de haltes, de vertrekuren en de alternatieven ziet die niet in het paneel
+  passen. De link verschijnt zodra je je eigen adres hebt ingevuld.
+- **"Bekijk de fietsroute op de kaart"** doet hetzelfde voor de fiets: die opent de kaart van
+  openrouteservice met jouw route erop, inclusief de weg die genomen wordt en het hoogteprofiel.
+  Let op: die kaart opent soms sterk ingezoomd en heeft even nodig om naar de hele route uit te
+  zoomen; met de knop rechtsboven op de kaart forceer je dat meteen.
+
+**Gewijzigd**
+
+- **De bovenkant van het detailpaneel is opgeruimd.** Adres, telefoon, e-mail en website stonden
+  als gewone regels tussen de fiets- en OV-informatie, waardoor je ze moest zoeken. Het adres
+  staat nu groot bovenaan met de afstand ernaast, en telefoon, e-mail en website staan daaronder
+  in een apart kadertje. Die rijen zijn volledig aanklikbaar: op een telefoon bel je met één tik,
+  en de website toont enkel het domein in plaats van een lange URL. De reisinformatie is
+  samengebracht onder de kop "Hoe raak je er?".
+- De algemene link naar Transitous in het detailpaneel is vervangen door die dieplink; hij stond
+  onderaan de pagina toch al.
 
 ---
 

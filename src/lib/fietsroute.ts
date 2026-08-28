@@ -60,3 +60,32 @@ export async function berekenFietsroute(
   cache.set(key, resultaat)
   return resultaat
 }
+
+/**
+ * Dieplink naar de kaart van openrouteservice (`maps.openrouteservice.org`), met déze fietsroute
+ * al ingevuld. Zelfde redenering als bij de OV-planner: een hyperlink is geen API-gebruik, dus
+ * hier komt geen key aan te pas en telt dit niet mee voor onze quota.
+ *
+ * De vorm is een hash-route met een JSON-blok erin, live nagespeeld op 28/08/2026 (Antwerpen-
+ * Centraal → Wilrijk): de kaart berekent de rit, zet het profiel op de fiets en neemt de namen
+ * over in de invoervelden. **Let op: `coordinates` is lon,lat — omgekeerd van de rest van deze
+ * app.** Punten scheiden met `;`, en niet gokken op extra opties: `zoom` in dat blok heeft geen
+ * merkbaar effect, de kaart zoomt zelf naar de route (dat duurt een seconde of tien).
+ */
+export function orsKaartUrl(
+  van: { lat: number; lon: number },
+  naar: { lat: number; lon: number },
+  namen: { van: string; naar: string },
+): string {
+  const data = {
+    coordinates: `${van.lon},${van.lat};${naar.lon},${naar.lat}`,
+    options: { profile: 'cycling-regular', preference: 'recommended' },
+  }
+  // Ook de namen encoderen: ze zitten in het pad, en een schoolnaam met een schuine streep
+  // erin zou de route anders in stukken hakken.
+  return (
+    'https://maps.openrouteservice.org/#/directions/' +
+    `${encodeURIComponent(namen.van)}/${encodeURIComponent(namen.naar)}/data/` +
+    encodeURIComponent(JSON.stringify(data))
+  )
+}

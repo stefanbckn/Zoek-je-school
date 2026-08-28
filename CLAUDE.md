@@ -198,6 +198,36 @@ zo beslist door de gebruiker.
   staan onder **CC-BY-SA 4.0**. Weghalen mag dus niet, ook niet "even voor de opmaak".
   Geverifieerd in de ToS op `account.heigit.org/info/tos` (27/08/2026); diezelfde ToS bevat
   géén non-commerciële beperking, dus een donatieknop op de site raakt dit niet.
+#### Dieplink naar de kaart van openrouteservice (geen API-gebruik)
+
+Naast de API-call is er dezelfde goedkope weg als bij Transitous: **linken naar
+`maps.openrouteservice.org` met de route al ingevuld.** Geen key, geen quota — wie de link volgt,
+doet zelf de call. Geïmplementeerd als `orsKaartUrl()` in `src/lib/fietsroute.ts`.
+
+```
+https://maps.openrouteservice.org/#/directions/<vanNaam>/<naarNaam>/data/
+  {"coordinates":"<lon,lat>;<lon,lat>","options":{"profile":"cycling-regular","preference":"recommended"}}
+```
+
+Live nagespeeld op 28/08/2026 (Antwerpen-Centraal → Wilrijk, en Antwerpen-Centraal → Onyx): de
+kaart berekent de rit, zet het profiel op de fiets en toont naam, afstand en tijd in de zijbalk.
+Punten om niet in te lopen:
+
+- **Het is een hash-route met een JSON-blok erin**, geen gewone querystring. Query-parameters op
+  het pad (`?a=…&b=1`, zoals oudere forumposts tonen) worden **stil genegeerd** — geverifieerd:
+  de app laadt dan gewoon de wereldkaart. Encodeer ook de namen: die staan in het pad, en een
+  schoolnaam met een schuine streep zou de route anders in stukken hakken.
+- **`coordinates` is `lon,lat`** — omgekeerd van de rest van deze app — en de punten scheiden
+  met een puntkomma.
+- **`"zoom"` in het optieblok doet niets merkbaars**, en een `/@lon,lat,zoom`-achtervoegsel
+  evenmin. Beide geprobeerd. De kaart opent op straatniveau en zoomt pas na tien tot dertig
+  seconden uit naar de volledige route (één keer wél gezien, één keer niet binnen 40 s). De
+  bezoeker kan zelf op de "volledige route"-knop rechtsboven klikken. Dat is de bekende
+  ruwe kant van deze link; de berekende route zelf klopt wel.
+- De verplichte HeiGIT-vermelding blijft in de UI staan; alleen de link op het woord
+  "openrouteservice" is uit het detailpaneel gehaald (die staat in de footer). De vermelding
+  zelf is contractueel, de link erin niet.
+
 - Account/key aanvragen via `https://account.heigit.org` (self-service signup).
 - Wordt enkel aangeroepen voor de **geselecteerde** school in het detailpaneel (niet voor elke
   kaart in de resultatenlijst) — anders is de gratis quota in enkele zoekopdrachten op.
@@ -232,7 +262,7 @@ Alle endpoints hieronder zijn geverifieerd door ze effectief aan te roepen zonde
   **niet** meer in de API: de volledige operatielijst telt 47 items zonder routeplan, en elke
   padvariant geeft 404 terwijl `/haltes` op dezelfde basis netjes 401 geeft. Niet opnieuw gaan
   zoeken, en niet gokken dat het "vast wel ergens" zit.
-- **Wél nuttig voor v0.6:** `GET /haltes/indebuurt/{lat,lng}` geeft haltes in de buurt van
+- **Wél nuttig voor v0.7:** `GET /haltes/indebuurt/{lat,lng}` geeft haltes in de buurt van
   coördinaten, van álle vervoersmaatschappijen. Dat dekt "afstand tot halte" zonder dat we zelf
   GTFS moeten verwerken.
 - De GTFS-feeds lopen ook via de Belgische NAP-proxy
@@ -271,6 +301,44 @@ GET https://api.transitous.org/api/v1/plan
 Geeft 4 reisopties terug met wandeldelen, overstappen en lijnnummers — o.a. bus 17 in 34 minuten.
 Respons: `itineraries[].duration` (seconden), `.transfers`, en `.legs[]` met `mode`,
 `routeShortName`, `agencyName`, `from.name`/`to.name`.
+
+#### Dieplink naar de Transitous-webplanner (geen API-gebruik)
+
+Naast de API is er een veel goedkopere weg: **rechtstreeks naar hun webplanner linken met de
+route al ingevuld.** De zoekwidget op `transitous.org` bouwt deze URL — afgeleid uit hun
+`widget.js` en daarna live nagespeeld (28/08/2026), niet gegokt:
+
+```
+https://api.transitous.org?fromPlace=<lat,lon>&toPlace=<lat,lon>
+    &fromName=<label>&toName=<label>&time=<YYYY-MM-DDTHH:mm>&arriveBy=true
+```
+
+`api.transitous.org` serveert op de root de MOTIS-webinterface (de API zelf zit onder `/api/`).
+Getest met Antwerpen-Centraal → Wilrijk: toont de reisopties, neemt de namen over in de
+invoervelden en zet de knop correct op "Arrival".
+
+**Geïmplementeerd** in `transitousPlannerUrl()` in `src/lib/ov.ts`, getoond in `DetailPanel`
+als "Bekijk de rit stap voor stap" naast het API-resultaat. Twee dingen daarbij: het paneel geeft
+dezelfde `aankomst` mee aan de link als aan de API-call (anders opent de planner op een ander
+moment dan wat er op het scherm staat), en de tijd gaat er in **lokale tijd** als
+`YYYY-MM-DDTHH:mm` in — `toISOString()` zou er in de zomer 06:30 van maken. Live nagekeken:
+de planner neemt namen, tijd en "Arrival" correct over. De verplichte attributielink naar
+`transitous.org/sources/` staat in de footer; die is uit het paneel verdwenen omdat de dieplink
+daar nu staat.
+
+**Waarom dit belangrijk is: een hyperlink is géén API-gebruik.** Het gebruiksbeleid van
+Transitous (open source, niet commercieel, User-Agent, attributie) gaat over hun API. Wie
+doorlinkt, doet zelf geen enkele call. **Deze dieplink kan dus nú al**, zonder dat de repo
+publiek is en zonder LICENSE — in tegenstelling tot de API-route hieronder.
+
+Aandachtspunten:
+- Zet `arriveBy=true` met een **aankomsttijd op een schooldag** (bv. 08:15 op de eerstvolgende
+  weekdag). "Nu vertrekken" is voor een ouder die schoolvervoer bekijkt zinloos. Bereken die
+  datum, hardcode ze niet — een vaste datum veroudert stil.
+- Werkt alleen als de gebruiker z'n eigen adres heeft ingevuld, net als de fietsroute.
+- Dit is de MOTIS-webinterface, geen product-URL met stabiliteitsgarantie. Verandert ze, dan is
+  het gevolg een dode link, geen kapotte app — dat is precies waarom deze weg zo goedkoop is.
+- Raakt de CSP niet: een link is geen `connect-src`.
 
 **De voorwaarden** (`transitous.org/api`) — toegang mag als het project open source is, niet
 commercieel, licht voor hun infrastructuur, en zich aan het gebruiksbeleid houdt:
@@ -348,7 +416,7 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
   geen algemene datacenter-blokkade, dat is getest en weerlegd). Dat probleem is met de overstap
   naar de API weg, maar de fallback-logica is blijven staan omdat ze nu de API dekt.
 - `src/types.ts` — het datamodel: `Campus` (adres, coördinaten) met `SchoolOpCampus[]` erin,
-  elk met `Richting[]`. Lege placeholders (`kostprijs`, `vervoer`) blijven staan voor v0.5/v0.6.
+  elk met `Richting[]`. Lege placeholders (`kostprijs`, `vervoer`) blijven staan voor v0.6/v0.7.
 - `src/lib/` — pure functies: haversine-afstand, net-labels, URL-state hook.
 - `src/components/` — UI-componenten, geen state-logica die ook elders nodig is.
 - Filterstatus leeft in de URL-querystring (geen router nodig, single-page app — vermijd
@@ -362,7 +430,7 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
 
 Let op: deze nummering **vervangt** de oorspronkelijke backlog-nummering uit de opzet. De oude
 v0.2 (Reizen) is deels al opgeleverd — fietsafstand/-tijd zit in 0.1.1 — en de resterende oude
-backlog-items zijn doorgeschoven naar 0.5.0–0.7.0.
+backlog-items zijn doorgeschoven naar 0.6.0–0.8.0.
 
 Alles staat op drie posities (MAJOR.MINOR.PATCH), gelijk aan `package.json` en de git tags. Wat
 er per uitgebrachte versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet hier.
@@ -375,10 +443,11 @@ Deze tabel gaat over wat er nog komt; de changelog over wat er al is.
 | **0.2.0** | API Onderwijs Vlaanderen | Schooldata via API · studieaanbod + finaliteit per vestiging · net-onderscheid via soort_bestuur | **Datalaag opgeleverd**; UI nog te doen. Infodagen geschrapt: geen bron. |
 | **0.2.1** | UI-verbeteringen | Actieve filters zichtbaar onder de zoekbalk + reset · kleurenpalet herzien (kleurenblindheid) · thema's/dark mode | **Opgeleverd**, zie hieronder |
 | **0.3.0** | Openbaar vervoer + pagineren | AGPL-3.0-licentie · reistijd met bus/trein via Transitous · contactgegevens in de footer · lijst pagineren | **Uitgebracht** op 27/08/2026, tag `v0.3.0`. Repo is publiek en Transitous is verwittigd en akkoord |
-| **0.4.0** | GOK-indicatoren | 4 leerlingenkenmerken per school, met kaderende uitleg | **Klaar om te bouwen.** Downloadbare xlsx bij AgODi, join geverifieerd op 269/272 scholen. Per school, niet per vestiging — zie hieronder |
-| **0.5.0** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
-| **0.6.0** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
-| **0.7.0** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
+| **0.4.0** | Dieplinks + opgeruimd detailpaneel | Link naar de rit in de Transitous-planner en naar de fietsroute op de ORS-kaart · adres en contactgegevens bovenaan het detailpaneel, reisinfo apart onder "Hoe geraak je er?" | **Klaar**, in review op branch `v0.4.0-dieplinks-en-detailpaneel` |
+| **0.5.0** | GOK-indicatoren | 4 leerlingenkenmerken per school, met kaderende uitleg | **Klaar om te bouwen.** Downloadbare xlsx bij AgODi, join geverifieerd op 269/272 scholen. Per school, niet per vestiging — zie hieronder |
+| **0.6.0** | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
+| **0.7.0** | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen). Rest nog te onderzoeken |
+| **0.8.0** | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | Puur frontend, geen externe bron nodig |
 | **Geen nummer** | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder versienummer.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder. Een nummer zou een planning suggereren die er niet is |
 | **Geen nummer** | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Idee, niet ingepland.** Nooit als score tonen, zie hieronder. Eerst uit te zoeken of de verslagen per schoolnummer op te halen zijn |
 | ~~Geparkeerd~~ | Openbaar vervoer | Reistijd met de bus | **Uit de parkeerstand gehaald en uitgebracht in 0.3.0** via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken |
@@ -560,7 +629,7 @@ staan op sites met eigen voorwaarden, en ze wijzigen per schooljaar.
 jaartal erbij, en link naar de bron in plaats van de procedure over te nemen — anders staat er
 volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
-### 0.4.0 — GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026)
+### 0.5.0 — GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026)
 
 **Dit vervangt de Tableau-route hieronder als eerste keuze.** AgODi publiceert de
 leerlingenkenmerken per school als gewone xlsx op het documentenportaal. Geen Tableau, geen
@@ -613,9 +682,9 @@ https://data-onderwijs.vlaanderen.be/documenten/bestanden/
 
 **Per vestigingsplaats bestaat het wél, maar enkel handmatig** — dat is de Dataloep-route
 hieronder. Afweging: automatisch en per school (dit bestand), of handwerk en per vestiging
-(Tableau). Voor v0.4 is dit bestand de betere ruil.
+(Tableau). Voor v0.5 is dit bestand de betere ruil.
 
-### 0.4.0 — Dataloep-route (per vestigingsplaats, handmatig)
+### 0.5.0 — Dataloep-route (per vestigingsplaats, handmatig)
 
 - Bron: **Dataloep Leerlingenkenmerken Secundair**, op de Tableau Server van de overheid:
   `https://onderwijs-tableau.vlaanderen.be/t/EXTERN/views/DataloepLeerlingenkenmerkenSecundair/SOCijfersperschooljaar`
@@ -772,10 +841,12 @@ automatisch → tag zetten → GitHub Release aanmaken. Twee dingen die daarbij 
   `fix/ios-zoom-invoervelden`, afgetakt van een **verse** `main` (`git fetch` eerst — dat is hier
   al een keer misgegaan). Die PR bevat de oplossing én haalt de regel uit `BUGS.md` weg. De
   git-geschiedenis bewaart de bug, de lijst toont alleen wat nog open staat.
+- **Vraag eerst of het een MAJOR, MINOR of PATCH wordt, vóór je een branch aanmaakt.** Ook bij
+  een kleine vraag die niet in de roadmap staat: het versienummer bepaalt de branchnaam, en
+  achteraf hernoemen is rommelig. Niet zelf inschatten — de gebruiker beslist dat.
 - **Begin elke nieuwe versie op een eigen branch, meteen bij de eerste commit.** Niet op `main`
   werken en achteraf verplaatsen. Naamgeving: `v0.4.0-gok-indicatoren` — het volledige
-  versienummer uit de roadmap plus een kort thema. Doe dit vóór de eerste wijziging — vraag het niet
-  telkens opnieuw, het is de standaard. Alleen losse fixes buiten een versie mogen rechtstreeks
+  versienummer plus een kort thema. Alleen losse fixes buiten een versie mogen rechtstreeks
   op `main`.
 - De gebruiker werkt met feature branches + pull requests op GitHub
   (`git@github.com:stefanbckn/Zoek-je-school.git`, SSH — de HTTPS-remote heeft geen credentials).

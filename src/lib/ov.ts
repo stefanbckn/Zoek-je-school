@@ -137,3 +137,39 @@ function naarOvReis(rit: TransitousItinerary): OvReis {
     aankomst: new Date(rit.endTime),
   }
 }
+
+/**
+ * Dieplink naar de webplanner van Transitous, met de route al ingevuld.
+ *
+ * Dit is géén API-gebruik: `api.transitous.org` serveert op de root de MOTIS-webinterface (de
+ * API zelf zit onder `/api/`). Wie de link volgt, doet zelf een call — wij niet. De URL-vorm is
+ * afgeleid uit hun `widget.js` en daarna live nagespeeld (28/08/2026), zie CLAUDE.md.
+ *
+ * Bewust dezelfde `aankomst` als de API-call meegeven: anders opent de link op "nu vertrekken"
+ * en ziet de gebruiker andere reistijden dan wat er op het scherm staat.
+ */
+export function transitousPlannerUrl(
+  van: { lat: number; lon: number },
+  naar: { lat: number; lon: number },
+  namen: { van: string; naar: string },
+  aankomst = volgendeSchooldagOchtend(),
+): string {
+  const params = new URLSearchParams({
+    fromPlace: `${van.lat},${van.lon}`,
+    toPlace: `${naar.lat},${naar.lon}`,
+    fromName: namen.van,
+    toName: namen.naar,
+    time: lokaleTijdstempel(aankomst),
+    arriveBy: 'true',
+  })
+  return `https://api.transitous.org?${params.toString()}`
+}
+
+/**
+ * `YYYY-MM-DDTHH:mm` in lokale tijd — het formaat dat de webplanner in z'n URL gebruikt.
+ * Niet `toISOString()`: dat zet om naar UTC, en dan opent de planner in de zomer op 6u30.
+ */
+function lokaleTijdstempel(d: Date): string {
+  const p = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`
+}
