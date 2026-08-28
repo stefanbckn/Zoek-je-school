@@ -151,30 +151,81 @@ export function DetailPanel({
           </p>
         )}
 
-        <dl className="mt-4 space-y-3 text-sm">
-          <div>
-            <dt className="text-zacht">Adres</dt>
-            <dd className="text-inkt">
-              {campus.straat} {campus.huisnummer}, {campus.postcode} {campus.gemeente}
-            </dd>
-            {campus.lat === null && (
-              <dd className="text-xs text-waarschuwing mt-0.5">
-                Geen coördinaten bekend in de brondata — niet op de kaart en geen afstand
-                berekenbaar.
-              </dd>
-            )}
-          </div>
-
-          {campus.afstandKm !== null && (
-            <div>
-              <dt className="text-zacht">Afstand</dt>
-              <dd className="text-inkt">
+        {/* Adres en contact staan bovenaan en apart van de reisinformatie. Wie een school
+            aanklikt, wil eerst weten wáár ze ligt en hoe je ze bereikt; die vier gegevens
+            stonden eerder als gewone regels tussen de (veel wijdlopiger) fiets- en OV-blokken,
+            waardoor ze wegvielen. */}
+        <address className="mt-4 not-italic">
+          <p className="text-base font-medium text-inkt">
+            {campus.straat} {campus.huisnummer}
+          </p>
+          <p className="text-sm text-zacht">
+            {campus.postcode} {campus.gemeente}
+            {campus.afstandKm !== null && (
+              <>
+                {' · '}
                 {campus.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km
                 hemelsbreed
-              </dd>
-            </div>
+              </>
+            )}
+          </p>
+          {campus.lat === null && (
+            <p className="mt-0.5 text-xs text-waarschuwing">
+              Geen coördinaten bekend in de brondata — niet op de kaart en geen afstand
+              berekenbaar.
+            </p>
           )}
+        </address>
 
+        {/* Elke rij is volledig aanklikbaar: bellen op een telefoon, mailen, of naar de site.
+            De labels links houden de kolom scanbaar zonder dat er iconen bij moeten. */}
+        {(school.telefoon || school.email || school.website) && (
+          <ul className="mt-3 divide-y divide-rand overflow-hidden rounded-md border border-rand text-sm">
+            {school.telefoon && (
+              <li>
+                <a
+                  href={`tel:${school.telefoon.replace(/[^\d+]/g, '')}`}
+                  className="flex items-baseline justify-between gap-3 px-3 py-2 hover:bg-hover"
+                >
+                  <span className="text-zacht">Telefoon</span>
+                  <span className="text-right text-inkt">{school.telefoon}</span>
+                </a>
+              </li>
+            )}
+            {school.email && (
+              <li>
+                <a
+                  href={`mailto:${school.email}`}
+                  className="flex items-baseline justify-between gap-3 px-3 py-2 hover:bg-hover"
+                >
+                  <span className="shrink-0 text-zacht">E-mail</span>
+                  <span className="break-all text-right text-inkt">{school.email}</span>
+                </a>
+              </li>
+            )}
+            {school.website && (
+              <li>
+                <a
+                  href={school.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-baseline justify-between gap-3 px-3 py-2 hover:bg-hover"
+                >
+                  <span className="shrink-0 text-zacht">Website</span>
+                  {/* Enkel het domein tonen: de volledige URL is vaak een lange padnaam die
+                      de rij laat overlopen, en zegt niets extra. */}
+                  <span className="break-all text-right text-inkt">{toonUrl(school.website)}</span>
+                </a>
+              </li>
+            )}
+          </ul>
+        )}
+
+        <h3 className="mt-6 border-t border-rand pt-4 text-sm font-medium text-inkt">
+          Hoe raak je er?
+        </h3>
+
+        <dl className="mt-3 space-y-3 text-sm">
           {!zoeklocatie && (
             <div>
               <dt className="text-zacht">Met de fiets of het openbaar vervoer</dt>
@@ -304,40 +355,6 @@ export function DetailPanel({
             </div>
           )}
 
-          {school.telefoon && (
-            <div>
-              <dt className="text-zacht">Telefoon</dt>
-              <dd className="text-inkt">{school.telefoon}</dd>
-            </div>
-          )}
-
-          {school.email && (
-            <div>
-              <dt className="text-zacht">E-mail</dt>
-              <dd>
-                <a href={`mailto:${school.email}`} className="text-inkt underline">
-                  {school.email}
-                </a>
-              </dd>
-            </div>
-          )}
-
-          {school.website && (
-            <div>
-              <dt className="text-zacht">Website</dt>
-              <dd>
-                <a
-                  href={school.website}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-inkt underline"
-                >
-                  {school.website}
-                </a>
-              </dd>
-            </div>
-          )}
-
         </dl>
 
         <section className="mt-6 border-t border-rand pt-4">
@@ -415,4 +432,17 @@ export function DetailPanel({
       </div>
     </div>
   )
+}
+
+/**
+ * Toont een website als kaal domein ("sintjozef.be" in plaats van
+ * "https://www.sintjozef.be/secundair/"). Valt terug op de ruwe waarde als het geen geldige URL
+ * is — de brondata bevat af en toe een adres zonder protocol.
+ */
+function toonUrl(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return url
+  }
 }
