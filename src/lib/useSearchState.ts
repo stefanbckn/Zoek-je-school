@@ -18,6 +18,13 @@ export interface SearchState {
   finaliteiten: FinaliteitKeuze[]
   /** Vrije tekst om op studierichting/studiegebied te zoeken. Leeg = geen filter. */
   richting: string
+  /**
+   * Adressen zonder enig studieaanbod meetonen. Standaard `false`: dat zijn meestal
+   * administratief geregistreerde adressen zonder les, en voor wie een school zoekt is dat ruis.
+   * Bewust een zichtbaar vinkje en geen stille weglating — een school waarvan het aanbod om een
+   * andere reden ontbreekt, zou anders spoorloos verdwijnen.
+   */
+  toonZonderAanbod: boolean
 }
 
 const DEFAULT_STATE: SearchState = {
@@ -30,6 +37,7 @@ const DEFAULT_STATE: SearchState = {
   tekst: '',
   finaliteiten: [],
   richting: '',
+  toonZonderAanbod: false,
 }
 
 function parseList(raw: string | null): string[] {
@@ -104,6 +112,9 @@ function parseState(search: string): SearchState {
       (FINALITEIT_OPTIONS as readonly string[]).includes(f),
     ),
     richting: params.get('richting') ?? '',
+    // Alleen de expliciete '1' zet dit aan. Elke andere waarde (leeg, 'true', onzin uit een
+    // bewerkte URL) valt terug op de standaard, net als bij de andere parameters hierboven.
+    toonZonderAanbod: params.get('zonderaanbod') === '1',
   }
 }
 
@@ -118,6 +129,7 @@ function toSearchParams(state: SearchState): URLSearchParams {
   if (state.tekst) params.set('q', state.tekst)
   if (state.finaliteiten.length > 0) params.set('finaliteit', state.finaliteiten.join(','))
   if (state.richting) params.set('richting', state.richting)
+  if (state.toonZonderAanbod) params.set('zonderaanbod', '1')
   return params
 }
 

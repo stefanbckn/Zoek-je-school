@@ -7,7 +7,7 @@ import { MapView } from './components/MapView'
 import { ResultList } from './components/ResultList'
 import { SearchBar } from './components/SearchBar'
 import { ThemaToggle } from './components/ThemaToggle'
-import { richtingMatcht } from './lib/aanbod'
+import { heeftAanbod, richtingMatcht } from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
 import { NET_OPTIONS } from './lib/net'
 import { useSearchState } from './lib/useSearchState'
@@ -31,7 +31,8 @@ function App() {
     state.gemeenten.length +
     state.finaliteiten.length +
     (state.tekst.trim() ? 1 : 0) +
-    (state.richting.trim() ? 1 : 0)
+    (state.richting.trim() ? 1 : 0) +
+    (state.toonZonderAanbod ? 1 : 0)
 
   // Alleen netten aanbieden die in de dataset voorkomen. 'Officieel gesubsidieerd' (OCMW,
   // intercommunale) bestaat als categorie maar heeft in provincie Antwerpen geen enkele school;
@@ -55,7 +56,7 @@ function App() {
     [state.lat, state.lon],
   )
 
-  const zichtbareCampussen = useMemo(() => {
+  const { zichtbareCampussen, verborgenZonderAanbod } = useMemo(() => {
     const tekstLower = state.tekst.trim().toLowerCase()
     const richtingTerm = state.richting.trim()
     const filtertOpAanbod = richtingTerm.length > 0 || state.finaliteiten.length > 0
@@ -108,7 +109,18 @@ function App() {
       binnenStraal.sort((a, b) => (a.afstandKm ?? Infinity) - (b.afstandKm ?? Infinity))
     }
 
-    return binnenStraal
+    // Adressen zonder studieaanbod als láátste stap eruit, na alle andere filters. Zo telt
+    // `verborgenZonderAanbod` alleen wat door dít filter wegvalt en niet door een ander —
+    // dat cijfer staat in de UI, dus het moet kloppen met wat de bezoeker terugkrijgt als hij
+    // het vinkje aanzet. (Filtert iemand op finaliteit of richting, dan zijn lege adressen daar
+    // al uit gevallen en is dit cijfer terecht 0.)
+    const zonderAanbod = binnenStraal.filter((c) => !heeftAanbod(c))
+    return {
+      zichtbareCampussen: state.toonZonderAanbod
+        ? binnenStraal
+        : binnenStraal.filter((c) => heeftAanbod(c)),
+      verborgenZonderAanbod: state.toonZonderAanbod ? 0 : zonderAanbod.length,
+    }
   }, [
     campussen,
     state.lat,
@@ -119,6 +131,7 @@ function App() {
     state.tekst,
     state.finaliteiten,
     state.richting,
+    state.toonZonderAanbod,
   ])
 
   function selecteer(campus: CampusMetAfstand, school: SchoolOpCampus) {
@@ -151,7 +164,14 @@ function App() {
         state={state}
         onUpdate={update}
         onWisAlles={() =>
-          update({ netten: [], gemeenten: [], finaliteiten: [], tekst: '', richting: '' })
+          update({
+            netten: [],
+            gemeenten: [],
+            finaliteiten: [],
+            tekst: '',
+            richting: '',
+            toonZonderAanbod: false,
+          })
         }
       />
 
@@ -165,11 +185,14 @@ function App() {
             tekst={state.tekst}
             finaliteiten={state.finaliteiten}
             richting={state.richting}
+            toonZonderAanbod={state.toonZonderAanbod}
+            verborgenZonderAanbod={verborgenZonderAanbod}
             onNettenChange={(netten) => update({ netten })}
             onGemeentenChange={(gemeenten) => update({ gemeenten })}
             onTekstChange={(tekst) => update({ tekst })}
             onFinaliteitenChange={(finaliteiten) => update({ finaliteiten })}
             onRichtingChange={(richting) => update({ richting })}
+            onToonZonderAanbodChange={(toonZonderAanbod) => update({ toonZonderAanbod })}
           />
         </div>
 
@@ -209,6 +232,25 @@ function App() {
                   </button>
                 </div>
               </div>
+
+              {/* Het aantal verborgen adressen staat hier en niet alleen in de filterkolom:
+                  op mobiel zit die kolom achter de knop "Filters", en stil weglaten mag niet.
+                  Een school waarvan het aanbod om een andere reden ontbreekt, zou anders
+                  spoorloos verdwijnen zonder dat iemand weet dat er iets weg is. */}
+              {verborgenZonderAanbod > 0 && (
+                <p className="px-4 pt-2 text-xs text-zacht">
+                  {verborgenZonderAanbod}{' '}
+                  {verborgenZonderAanbod === 1 ? 'adres is' : 'adressen zijn'} verborgen: daar is
+                  geen studieaanbod geregistreerd.{' '}
+                  <button
+                    type="button"
+                    onClick={() => update({ toonZonderAanbod: true })}
+                    className="underline text-accent underline-offset-2"
+                  >
+                    Toon ze toch
+                  </button>
+                </p>
+              )}
 
               {weergave === 'lijst' ? (
                 <ResultList campussen={zichtbareCampussen} onSelect={selecteer} />

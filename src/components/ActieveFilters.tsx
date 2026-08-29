@@ -75,6 +75,17 @@ export function ActieveFilters({ state, onUpdate, onWisAlles }: ActieveFiltersPr
     })
   }
 
+  // Dit filter staat standaard áán (lege adressen verborgen); de chip verschijnt dus wanneer
+  // het uitgezet is. Zonder die chip zie je nergens waarom er plots 50 adressen bij staan.
+  if (state.toonZonderAanbod) {
+    chips.push({
+      sleutel: 'zonder-aanbod',
+      label: 'Ook adressen zonder aanbod',
+      wisLabel: 'Adressen zonder studieaanbod weer verbergen',
+      wis: () => onUpdate({ toonZonderAanbod: false }),
+    })
+  }
+
   if (chips.length === 0) return null
 
   return (

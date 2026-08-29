@@ -8,6 +8,30 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.5.0 — 29 augustus 2026
+
+**Nieuw**
+
+- **Adressen zonder studieaanbod staan niet meer in de weg.** 50 van de 303 adressen in de
+  bron hebben geen enkele studierichting: dat is meestal het administratieve adres van een
+  school, terwijl de lessen ergens anders doorgaan. Die staan nu niet meer standaard in de
+  lijst, zodat je er niet meer op klikt om vast te stellen dat er niets te zien is.
+  Ze verdwijnen niet stiekem: boven de lijst staat hoeveel er verborgen zijn met een knop om
+  ze toch te tonen, en in de filterkolom staat een vinkje "Toon ze ook". Dat het aanbod
+  ontbreekt, betekent trouwens niet altijd dat er geen les gegeven wordt — vandaar dat je er
+  altijd bij kan.
+
+**Details**
+
+- Het filter zit in de link, net als de andere filters (`?zonderaanbod=1`), dus een gedeelde
+  zoekopdracht toont bij de ander hetzelfde.
+- Het wordt als laatste toegepast, ná alle andere filters. Zo telt "x adressen verborgen"
+  alleen wat door dít filter wegvalt, en niet wat een ander filter al had weggenomen.
+- Leeg betekent hier: geen enkele school op dat adres heeft een richting. Staat er één school
+  mét aanbod, dan blijft het hele adres zichtbaar.
+
+---
+
 ## 0.4.0 — 28 augustus 2026
 
 **Nieuw**
