@@ -16,11 +16,15 @@ interface FilterPanelProps {
   tekst: string
   finaliteiten: FinaliteitKeuze[]
   richting: string
+  toonZonderAanbod: boolean
+  /** Hoeveel adressen op dit moment door dit filter wegvallen. 0 = niets te melden. */
+  verborgenZonderAanbod: number
   onNettenChange: (netten: Net[]) => void
   onGemeentenChange: (gemeenten: string[]) => void
   onTekstChange: (tekst: string) => void
   onFinaliteitenChange: (finaliteiten: FinaliteitKeuze[]) => void
   onRichtingChange: (richting: string) => void
+  onToonZonderAanbodChange: (toon: boolean) => void
 }
 
 /** Korte uitleg bij elke finaliteit — de termen zijn nieuw voor veel ouders. */
@@ -38,11 +42,14 @@ export function FilterPanel({
   tekst,
   finaliteiten,
   richting,
+  toonZonderAanbod,
+  verborgenZonderAanbod,
   onNettenChange,
   onGemeentenChange,
   onTekstChange,
   onFinaliteitenChange,
   onRichtingChange,
+  onToonZonderAanbodChange,
 }: FilterPanelProps) {
   function toggleNet(net: Net) {
     onNettenChange(netten.includes(net) ? netten.filter((n) => n !== net) : [...netten, net])
@@ -168,6 +175,29 @@ export function FilterPanel({
         <p className="mt-1 text-xs text-zacht">
           Toont scholen waar minstens één richting hierop matcht.
         </p>
+      </div>
+
+      {/* Standaard uit: adressen zonder aanbod zijn meestal administratief geregistreerde
+          adressen waar geen les gegeven wordt. Bewust een zichtbaar vinkje en geen stille
+          weglating — zie CLAUDE.md. */}
+      <div>
+        <h2 className="text-sm font-medium text-inkt mb-2">Adressen zonder studieaanbod</h2>
+        <label className="flex items-start gap-2 text-sm text-zacht">
+          <input
+            type="checkbox"
+            checked={toonZonderAanbod}
+            onChange={(e) => onToonZonderAanbodChange(e.target.checked)}
+            className="mt-1 rounded border-rand"
+          />
+          <span>
+            <span className="text-inkt">Toon ze ook</span>
+            <span className="block text-xs text-zacht">
+              {verborgenZonderAanbod > 0
+                ? `${verborgenZonderAanbod} ${verborgenZonderAanbod === 1 ? 'adres valt' : 'adressen vallen'} nu weg`
+                : 'Meestal een administratief adres waar geen les gegeven wordt'}
+            </span>
+          </span>
+        </label>
       </div>
 
     </aside>

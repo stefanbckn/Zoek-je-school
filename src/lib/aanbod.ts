@@ -114,3 +114,16 @@ export function richtingMatcht(richting: Richting, zoekterm: string): boolean {
     (richting.studiegebied?.toLowerCase().includes(term) ?? false)
   )
 }
+
+/**
+ * Heeft dit adres studieaanbod? Leeg betekent hier: géén enkele school op de campus heeft een
+ * richting geregistreerd. Eén school met aanbod houdt het hele adres zichtbaar — dezelfde
+ * adresniveau-logica als de aanbodfilters, zie CLAUDE.md.
+ *
+ * Zo'n leeg adres is meestal administratief: het instellingsadres staat als aparte vestiging in
+ * de bron terwijl het lesgeven elders gebeurt (Panorama staat op Bredastraat 35, de lessen zijn
+ * op Quellinstraat 31). Op de dataset van augustus 2026: 50 van de 303 campussen.
+ */
+export function heeftAanbod(campus: Campus): boolean {
+  return campus.scholen.some((s) => s.richtingen.length > 0)
+}
