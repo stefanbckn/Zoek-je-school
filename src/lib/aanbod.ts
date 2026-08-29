@@ -99,6 +99,21 @@ export function groepeerPerGraad(richtingen: Richting[]): GraadGroep[] {
     })
 }
 
+/**
+ * Zet een verzameling graadnamen in de vaste volgorde van `GRAAD_VOLGORDE`. Nodig voor de
+ * vergelijkingstabel: daar staan meerdere campussen naast elkaar en moet elke rij dezelfde
+ * graad zijn, ook als één van die campussen bijvoorbeeld geen eerste graad heeft.
+ * Onbekende graden komen achteraan, alfabetisch, zodat de volgorde stabiel blijft.
+ */
+export function sorteerGraden(graden: Iterable<string>): string[] {
+  return [...new Set(graden)].sort((a, b) => {
+    const ia = GRAAD_VOLGORDE.indexOf(a)
+    const ib = GRAAD_VOLGORDE.indexOf(b)
+    if (ia === -1 && ib === -1) return a.localeCompare(b, 'nl')
+    return (ia === -1 ? GRAAD_VOLGORDE.length : ia) - (ib === -1 ? GRAAD_VOLGORDE.length : ib)
+  })
+}
+
 /** Welke finaliteiten komen op dit adres voor? Voor de badges in de resultatenlijst. */
 export function finaliteitenVan(richtingen: Richting[]): FinaliteitKeuze[] {
   const gevonden = new Set<Finaliteit>(richtingen.map((r) => r.finaliteit))

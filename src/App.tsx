@@ -7,10 +7,13 @@ import { MapView } from './components/MapView'
 import { ResultList } from './components/ResultList'
 import { SearchBar } from './components/SearchBar'
 import { ThemaToggle } from './components/ThemaToggle'
+import { VergelijkBalk } from './components/VergelijkBalk'
+import { VergelijkPanel } from './components/VergelijkPanel'
 import { heeftAanbod, richtingMatcht } from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
 import { NET_OPTIONS } from './lib/net'
 import { useSearchState } from './lib/useSearchState'
+import { MAX_VERGELIJK, toggleVergelijking } from './lib/vergelijking'
 import { useVestigingen } from './lib/useVestigingen'
 import type { CampusMetAfstand, SchoolOpCampus } from './types'
 
@@ -25,6 +28,16 @@ function App() {
   } | null>(null)
   const [weergave, setWeergave] = useState<Weergave>('lijst')
   const [filtersOpen, setFiltersOpen] = useState(false)
+  /**
+   * De shortlist: id's van campussen, in de volgorde waarin ze aangevinkt zijn.
+   *
+   * Bewust géén URL-state, in tegenstelling tot de filters. De querystring beschrijft wát er
+   * gezocht wordt; een shortlist is een tussenstap in het kijken, net als hoe ver iemand
+   * gescrold heeft. Wie de vergelijking wil bewaren, drukt ze af — dat is de gekozen
+   * exportvorm.
+   */
+  const [vergelijking, setVergelijking] = useState<string[]>([])
+  const [vergelijkOpen, setVergelijkOpen] = useState(false)
 
   const actieveFilters =
     state.netten.length +
@@ -134,139 +147,182 @@ function App() {
     state.toonZonderAanbod,
   ])
 
+  /**
+   * De aangevinkte campussen, afgeleid uit de vólledige dataset en niet uit `zichtbareCampussen`.
+   * Dat is met opzet: wie er twee aanvinkt en daarna de gemeentefilter aanpast, mag zijn
+   * shortlist niet zien verdampen. Ook de scholen komen hier ongefilterd binnen — in de
+   * vergelijking hoort te staan wat er écht op dat adres zit, niet wat er van de netfilter
+   * overblijft.
+   */
+  const vergelekenCampussen = useMemo<CampusMetAfstand[]>(() => {
+    const perId = new Map(campussen.map((c) => [c.id, c]))
+    return vergelijking.flatMap((id) => {
+      const campus = perId.get(id)
+      if (!campus) return []
+      return [
+        {
+          ...campus,
+          afstandKm:
+            state.lat !== null && state.lon !== null && campus.lat !== null && campus.lon !== null
+              ? haversineKm(state.lat, state.lon, campus.lat, campus.lon)
+              : null,
+        },
+      ]
+    })
+  }, [campussen, vergelijking, state.lat, state.lon])
+
   function selecteer(campus: CampusMetAfstand, school: SchoolOpCampus) {
     setGeselecteerd({ campus, school })
   }
 
   return (
-    <div className="min-h-full flex flex-col">
-      {/* flex-wrap is nodig: op 375px past de driestandenknop niet naast de titel en viel
-          "Donker" buiten het scherm. Bij weinig ruimte zakt de knop naar een eigen regel. */}
-      <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-rand px-4 py-4">
-        <div>
-          <h1 className="text-xl font-semibold text-inkt">Zoek je school</h1>
-          <p className="text-sm text-zacht">Middelbare scholen in provincie Antwerpen</p>
-        </div>
-        <ThemaToggle />
-      </header>
+    <>
+      {/* Bij het afdrukken van een vergelijking hoort enkel die tabel op papier. Het venster
+          staat daarom búiten deze div, zodat `print:hidden` de hele app eronder kan wegnemen
+          zonder ook de tabel te verbergen. */}
+      <div className={`min-h-full flex flex-col ${vergelijkOpen ? 'print:hidden' : ''}`}>
+        {/* flex-wrap is nodig: op 375px past de driestandenknop niet naast de titel en viel
+            "Donker" buiten het scherm. Bij weinig ruimte zakt de knop naar een eigen regel. */}
+        <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-rand px-4 py-4">
+          <div>
+            <h1 className="text-xl font-semibold text-inkt">Zoek je school</h1>
+            <p className="text-sm text-zacht">Middelbare scholen in provincie Antwerpen</p>
+          </div>
+          <ThemaToggle />
+        </header>
 
-      <SearchBar
-        label={state.label}
-        straalKm={state.straalKm}
-        onLocatieGekozen={(locatie) =>
-          update({ lat: locatie.lat, lon: locatie.lon, label: locatie.label })
-        }
-        onStraalChange={(straalKm) => update({ straalKm })}
-        onWissen={() => update({ lat: null, lon: null, label: null })}
-      />
+        <SearchBar
+          label={state.label}
+          straalKm={state.straalKm}
+          onLocatieGekozen={(locatie) =>
+            update({ lat: locatie.lat, lon: locatie.lon, label: locatie.label })
+          }
+          onStraalChange={(straalKm) => update({ straalKm })}
+          onWissen={() => update({ lat: null, lon: null, label: null })}
+        />
 
-      <ActieveFilters
-        state={state}
-        onUpdate={update}
-        onWisAlles={() =>
-          update({
-            netten: [],
-            gemeenten: [],
-            finaliteiten: [],
-            tekst: '',
-            richting: '',
-            toonZonderAanbod: false,
-          })
-        }
-      />
+        <ActieveFilters
+          state={state}
+          onUpdate={update}
+          onWisAlles={() =>
+            update({
+              netten: [],
+              gemeenten: [],
+              finaliteiten: [],
+              tekst: '',
+              richting: '',
+              toonZonderAanbod: false,
+            })
+          }
+        />
 
-      <div className="flex-1 flex flex-col md:flex-row">
-        <div className={`${filtersOpen ? 'block' : 'hidden'} md:block`}>
-          <FilterPanel
-            netOpties={netOpties}
-            gemeenteOpties={gemeenteOpties}
-            netten={state.netten}
-            gemeenten={state.gemeenten}
-            tekst={state.tekst}
-            finaliteiten={state.finaliteiten}
-            richting={state.richting}
-            toonZonderAanbod={state.toonZonderAanbod}
-            verborgenZonderAanbod={verborgenZonderAanbod}
-            onNettenChange={(netten) => update({ netten })}
-            onGemeentenChange={(gemeenten) => update({ gemeenten })}
-            onTekstChange={(tekst) => update({ tekst })}
-            onFinaliteitenChange={(finaliteiten) => update({ finaliteiten })}
-            onRichtingChange={(richting) => update({ richting })}
-            onToonZonderAanbodChange={(toonZonderAanbod) => update({ toonZonderAanbod })}
-          />
-        </div>
+        <div className="flex-1 flex flex-col md:flex-row">
+          <div className={`${filtersOpen ? 'block' : 'hidden'} md:block`}>
+            <FilterPanel
+              netOpties={netOpties}
+              gemeenteOpties={gemeenteOpties}
+              netten={state.netten}
+              gemeenten={state.gemeenten}
+              tekst={state.tekst}
+              finaliteiten={state.finaliteiten}
+              richting={state.richting}
+              toonZonderAanbod={state.toonZonderAanbod}
+              verborgenZonderAanbod={verborgenZonderAanbod}
+              onNettenChange={(netten) => update({ netten })}
+              onGemeentenChange={(gemeenten) => update({ gemeenten })}
+              onTekstChange={(tekst) => update({ tekst })}
+              onFinaliteitenChange={(finaliteiten) => update({ finaliteiten })}
+              onRichtingChange={(richting) => update({ richting })}
+              onToonZonderAanbodChange={(toonZonderAanbod) => update({ toonZonderAanbod })}
+            />
+          </div>
 
-        <main className="flex-1 flex flex-col min-h-[60vh]">
-          {loading && <p className="p-4 text-sm text-zacht">Bezig met laden…</p>}
-          {error && <p className="p-4 text-sm text-fout">{error}</p>}
-          {!loading && !error && (
-            <>
-              <div className="flex items-center justify-between px-4 pt-4 gap-2">
-                <div className="flex items-center gap-3">
-                  <p className="text-sm text-zacht shrink-0">
-                    {zichtbareCampussen.length} resultaten
+          <main className="flex-1 flex flex-col min-h-[60vh]">
+            {loading && <p className="p-4 text-sm text-zacht">Bezig met laden…</p>}
+            {error && <p className="p-4 text-sm text-fout">{error}</p>}
+            {!loading && !error && (
+              <>
+                <div className="flex items-center justify-between px-4 pt-4 gap-2">
+                  <div className="flex items-center gap-3">
+                    <p className="text-sm text-zacht shrink-0">
+                      {zichtbareCampussen.length} resultaten
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setFiltersOpen((open) => !open)}
+                      className="md:hidden text-sm rounded-md border border-rand px-3 py-1"
+                    >
+                      Filters{actieveFilters > 0 ? ` (${actieveFilters})` : ''}
+                      {filtersOpen ? ' ▲' : ' ▼'}
+                    </button>
+                  </div>
+                  <div className="flex rounded-md border border-rand text-sm overflow-hidden">
+                    <button
+                      type="button"
+                      onClick={() => setWeergave('lijst')}
+                      className={`px-3 py-1 ${weergave === 'lijst' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
+                    >
+                      Lijst
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setWeergave('kaart')}
+                      className={`px-3 py-1 ${weergave === 'kaart' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
+                    >
+                      Kaart
+                    </button>
+                  </div>
+                </div>
+
+                {/* Het aantal verborgen adressen staat hier en niet alleen in de filterkolom:
+                    op mobiel zit die kolom achter de knop "Filters", en stil weglaten mag niet.
+                    Een school waarvan het aanbod om een andere reden ontbreekt, zou anders
+                    spoorloos verdwijnen zonder dat iemand weet dat er iets weg is. */}
+                {verborgenZonderAanbod > 0 && (
+                  <p className="px-4 pt-2 text-xs text-zacht">
+                    {verborgenZonderAanbod}{' '}
+                    {verborgenZonderAanbod === 1 ? 'adres is' : 'adressen zijn'} verborgen: daar is
+                    geen studieaanbod geregistreerd.{' '}
+                    <button
+                      type="button"
+                      onClick={() => update({ toonZonderAanbod: true })}
+                      className="underline text-accent underline-offset-2"
+                    >
+                      Toon ze toch
+                    </button>
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => setFiltersOpen((open) => !open)}
-                    className="md:hidden text-sm rounded-md border border-rand px-3 py-1"
-                  >
-                    Filters{actieveFilters > 0 ? ` (${actieveFilters})` : ''}
-                    {filtersOpen ? ' ▲' : ' ▼'}
-                  </button>
-                </div>
-                <div className="flex rounded-md border border-rand text-sm overflow-hidden">
-                  <button
-                    type="button"
-                    onClick={() => setWeergave('lijst')}
-                    className={`px-3 py-1 ${weergave === 'lijst' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
-                  >
-                    Lijst
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setWeergave('kaart')}
-                    className={`px-3 py-1 ${weergave === 'kaart' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
-                  >
-                    Kaart
-                  </button>
-                </div>
-              </div>
+                )}
 
-              {/* Het aantal verborgen adressen staat hier en niet alleen in de filterkolom:
-                  op mobiel zit die kolom achter de knop "Filters", en stil weglaten mag niet.
-                  Een school waarvan het aanbod om een andere reden ontbreekt, zou anders
-                  spoorloos verdwijnen zonder dat iemand weet dat er iets weg is. */}
-              {verborgenZonderAanbod > 0 && (
-                <p className="px-4 pt-2 text-xs text-zacht">
-                  {verborgenZonderAanbod}{' '}
-                  {verborgenZonderAanbod === 1 ? 'adres is' : 'adressen zijn'} verborgen: daar is
-                  geen studieaanbod geregistreerd.{' '}
-                  <button
-                    type="button"
-                    onClick={() => update({ toonZonderAanbod: true })}
-                    className="underline text-accent underline-offset-2"
-                  >
-                    Toon ze toch
-                  </button>
-                </p>
-              )}
-
-              {weergave === 'lijst' ? (
-                <ResultList campussen={zichtbareCampussen} onSelect={selecteer} />
-              ) : (
-                <div className="flex-1 mt-4 min-h-[400px] isolate relative">
-                  {/* `relative` hoort bij de `absolute inset-0` van de kaart zelf: op mobiel
-                      staat deze div in een kolom-flexbox zonder vaste hoogte, en dan
-                      resolveert een `h-full` op de kaart naar 0 — de kaart verdween
-                      daardoor volledig op kleine schermen. */}
-                  <MapView campussen={zichtbareCampussen} onSelect={selecteer} />
-                </div>
-              )}
-            </>
-          )}
-        </main>
+                {weergave === 'lijst' ? (
+                  <ResultList
+                    campussen={zichtbareCampussen}
+                    onSelect={selecteer}
+                    vergelijking={vergelijking}
+                    vergelijkVol={vergelijking.length >= MAX_VERGELIJK}
+                    onVergelijkToggle={(campus) =>
+                      setVergelijking((huidig) => toggleVergelijking(huidig, campus.id))
+                    }
+                  />
+                ) : (
+                  <div className="flex-1 mt-4 min-h-[400px] isolate relative">
+                    {/* `relative` hoort bij de `absolute inset-0` van de kaart zelf: op mobiel
+                        staat deze div in een kolom-flexbox zonder vaste hoogte, en dan
+                        resolveert een `h-full` op de kaart naar 0 — de kaart verdween
+                        daardoor volledig op kleine schermen. */}
+                    <MapView campussen={zichtbareCampussen} onSelect={selecteer} />
+                  </div>
+                )}
+              </>
+            )}
+          </main>
       </div>
+
+      <VergelijkBalk
+        gekozen={vergelekenCampussen}
+        onVerwijder={(id) => setVergelijking((huidig) => huidig.filter((x) => x !== id))}
+        onWisAlles={() => setVergelijking([])}
+        onOpen={() => setVergelijkOpen(true)}
+      />
 
       <DetailPanel
         campus={geselecteerd?.campus ?? null}
@@ -278,7 +334,14 @@ function App() {
       />
 
       <Footer meta={meta} />
-    </div>
+      </div>
+
+      <VergelijkPanel
+        campussen={vergelijkOpen ? vergelekenCampussen : []}
+        schooljaarAanbod={meta?.schooljaarAanbod ?? null}
+        onClose={() => setVergelijkOpen(false)}
+      />
+    </>
   )
 }
 

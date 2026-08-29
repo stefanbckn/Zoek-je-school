@@ -209,3 +209,63 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/**
+ * Afdrukken. Nodig omdat de vergelijkingstabel afgedrukt kan worden en het thema van de
+ * bezoeker dan meegaat: in donkere modus is `--c-inkt` bijna wit, en browsers drukken
+ * achtergronden standaard níét af — dat geeft witte letters op wit papier, oftewel een lege
+ * bladzijde. Het palet gaat hier dus terug naar inkt op papier, ongeacht het gekozen thema.
+ *
+ * De randen worden expres iets donkerder dan op het scherm: een lichtgrijze tabelrand die op
+ * een beeldscherm net zichtbaar is, verdwijnt op papier volledig.
+ */
+@media print {
+  /* Alle themaselectors staan hier expliciet in, en dat is nodig: het donkere palet komt uit
+     `:root:not([data-theme="light"])`, en dat is specifieker dan een kale `:root`. Zonder die
+     selector erbij wint het donkere palet ook op papier — geverifieerd, dat gaf witte letters
+     op wit papier. Media queries veranderen niets aan specificiteit; alleen de volgorde in dit
+     bestand doet dat, en dit blok staat achteraan. */
+  :root,
+  :root:not([data-theme="light"]),
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    --c-grond: #ffffff;
+    --c-kaart: #ffffff;
+    --c-rand: #949494;
+    --c-inkt: #000000;
+    --c-zacht: #3d3d3d;
+    --c-accent: #000000;
+    --c-accent-inkt: #ffffff;
+    --c-hover: #ffffff;
+
+    /* Chips: zwarte tekst op een bijna-witte vulling. Allebei nodig, want of achtergronden
+       mee afgedrukt worden is een instelling van de bezoeker. Staat ze uit, dan valt de
+       vulling weg en blijft er zwarte tekst over; staat ze aan, dan blijft de chipvorm
+       zichtbaar zonder dat zwarte letters op een donkergroen vlak belanden (dat was het
+       geval toen enkel de tekstkleur omgezet was). De naam staat er sowieso voluit bij, dus
+       er gaat geen betekenis verloren. */
+    --c-net-go-bg: #f0f0f0;
+    --c-net-prov-bg: #f0f0f0;
+    --c-net-gem-bg: #f0f0f0;
+    --c-net-vrij-bg: #f0f0f0;
+    --c-net-off-bg: #f0f0f0;
+    --c-net-onaf-bg: #f0f0f0;
+    --c-fin-door-bg: #f0f0f0;
+    --c-fin-dubbel-bg: #f0f0f0;
+    --c-fin-arbeid-bg: #f0f0f0;
+
+    --c-net-go-inkt: #000000;
+    --c-net-prov-inkt: #000000;
+    --c-net-gem-inkt: #000000;
+    --c-net-vrij-inkt: #000000;
+    --c-net-off-inkt: #000000;
+    --c-net-onaf-inkt: #000000;
+    --c-fin-door: #000000;
+    --c-fin-dubbel: #000000;
+    --c-fin-arbeid: #000000;
+  }
+
+  body {
+    background-color: #ffffff;
+  }
+}

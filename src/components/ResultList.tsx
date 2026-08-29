@@ -16,9 +16,19 @@ const PAGINA = 25
 interface ResultListProps {
   campussen: CampusMetAfstand[]
   onSelect: (campus: CampusMetAfstand, school: SchoolOpCampus) => void
+  /** Id's van de campussen die in de vergelijking zitten. */
+  vergelijking: string[]
+  vergelijkVol: boolean
+  onVergelijkToggle: (campus: CampusMetAfstand) => void
 }
 
-export function ResultList({ campussen, onSelect }: ResultListProps) {
+export function ResultList({
+  campussen,
+  onSelect,
+  vergelijking,
+  vergelijkVol,
+  onVergelijkToggle,
+}: ResultListProps) {
   // Terug naar de eerste lading zodra de zoekopdracht verandert. Zonder dit zit je na het
   // aanvinken van één gemeente nog steeds naar 75 items te kijken terwijl er 4 resultaten zijn.
   //
@@ -42,7 +52,14 @@ export function ResultList({ campussen, onSelect }: ResultListProps) {
   return (
     <div className="flex flex-col gap-3 p-4">
       {getoond.map((c) => (
-        <ResultCard key={c.id} campus={c} onSelect={onSelect} />
+        <ResultCard
+          key={c.id}
+          campus={c}
+          onSelect={onSelect}
+          vergeleken={vergelijking.includes(c.id)}
+          vergelijkVol={vergelijkVol}
+          onVergelijkToggle={onVergelijkToggle}
+        />
       ))}
 
       {/* "Scholen" en niet "adressen", ook al is één kaartje één adres dat meerdere scholen kan
