@@ -8,6 +8,44 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.6.0 — 29 augustus 2026
+
+**Nieuw**
+
+- **Twee tot vier adressen naast elkaar vergelijken.** Onder elke kaart in de resultatenlijst
+  staat "Vergelijk dit adres". Vink er twee tot vier aan en je krijgt ze naast elkaar in één
+  tabel: afstand, welke scholen er staan met hun net, hoeveel richtingen er zijn, welke
+  finaliteiten, het volledige aanbod per graad, en de contactgegevens met de link naar de
+  officiële fiche. Een graad die één van de adressen niet aanbiedt, laat daar een streepje —
+  zo zie je in één blik dat de ene school geen derde graad heeft.
+- **De vergelijking kan je afdrukken** met de knop bovenaan, ook naar PDF. Op papier valt de
+  rest van de site weg en blijft alleen de tabel over, in zwart op wit — ook als je de site in
+  donkere modus gebruikt.
+
+**Details**
+
+- Vergelijken werkt ook op een telefoon. De tabel past daar niet in de breedte, dus die scrolt
+  zijwaarts terwijl de kolom met de kenmerken links blijft staan; er staat bij dat je moet
+  scrollen. De functie weglaten op mobiel zou precies de bezoeker straffen die geen laptop bij
+  de hand heeft.
+- De vergelijking gaat over een adres, niet over één school. Op 130 van de 303 adressen staan
+  meerdere apart geregistreerde scholen die samen één gebouw en één studieaanbod delen; die
+  krijgen dus één kolom, met de scholen als rij erin.
+- Je selectie blijft staan als je daarna de filters aanpast. Ze staat wel niet in de link: wie
+  de vergelijking wil bewaren of doorsturen, drukt ze af.
+- Maximum vier, omdat een vijfde kolom smaller wordt dan een schoolnaam en je dan alleen nog
+  aan het bladeren bent in plaats van aan het vergelijken.
+
+**Wat er niet in zit**
+
+- De GOK-leerlingenkenmerken. Die horen thuis in deze vergelijkingstabel en de bron is al
+  gecontroleerd, maar ze komen in een aparte versie — zie [ROADMAP.md](./ROADMAP.md).
+- De vergelijking toont geen fiets- of reistijd per adres. Die berekening gebeurt bij één
+  school tegelijk in het detailpaneel; vier adressen tegelijk laten uitrekenen is precies de
+  belasting waar de gebruikte diensten voor waarschuwen.
+
+---
+
 ## 0.5.0 — 29 augustus 2026
 
 **Nieuw**

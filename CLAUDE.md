@@ -440,6 +440,19 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
   react-router, dat lost hier niets op en breekt deep-linking onnodig).
 - Afstand is altijd hemelsbrede afstand (haversine); benoem dat expliciet in de UI, nooit als
   "reisafstand" framen.
+- **Afdrukken (sinds 0.6.0).** De vergelijkingstabel is afdrukbaar. Twee dingen die daarbij
+  vastliggen en die je niet per ongeluk moet omkeren:
+  - `VergelijkPanel` staat in `App.tsx` bewust **buiten** de app-wrapper in de JSX. Die wrapper
+    krijgt `print:hidden` zodra het venster open staat, zodat er enkel een tabel op papier komt.
+    Zet je het venster erin, dan verdwijnt het mee.
+  - Het `@media print`-blok onderaan `src/index.css` zet het palet terug naar zwart-op-wit, en
+    somt daarvoor **alle** themaselectors op. Dat is nodig: het donkere palet staat op
+    `:root:not([data-theme="light"])`, en dat is specifieker dan een kale `:root` — media
+    queries veranderen niets aan specificiteit. Zonder die selector erbij drukt iemand in
+    donkere modus wit op wit af. Doorgemeten in de browser, niet ingeschat.
+  - Chips krijgen in print zowel een zwarte tekstkleur als een bijna-witte vulling. Of
+    achtergronden mee afgedrukt worden is een instelling van de bezoeker; enkel de tekst
+    omzetten gaf zwarte letters op een donkergroen vlak.
 - `proj4` is **verwijderd** als dependency: de API levert WGS84 rechtstreeks, er is geen
   Lambert72-conversie meer nodig.
 

@@ -73,7 +73,7 @@ geen verificatie gebleken.
 
 Wat er per versie veranderde, staat in **[CHANGELOG.md](./CHANGELOG.md)** — geschreven vanuit wat
 een bezoeker merkt. Elke uitgebrachte versie draagt op `main` de tag `v<versie>`; de huidige is
-`v0.5.0`. De afspraken over nummering en releases staan in [CLAUDE.md](./CLAUDE.md).
+`v0.6.0`. De afspraken over nummering en releases staan in [CLAUDE.md](./CLAUDE.md).
 
 ## Bekende bugs
 
