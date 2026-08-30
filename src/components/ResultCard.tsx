@@ -8,6 +8,7 @@ import {
 } from '../lib/aanbod'
 import { NET_CHIP, NET_STYLES } from '../lib/net'
 import { MAX_VERGELIJK } from '../lib/vergelijking'
+import { huisnummerLabel } from '../lib/adres'
 
 interface ResultCardProps {
   campus: CampusMetAfstand
@@ -54,7 +55,7 @@ export function ResultCard({
 
   const adresRegel = (
     <p className="mt-1 text-sm text-zacht">
-      {campus.straat} {campus.huisnummer}, {campus.postcode} {campus.gemeente}
+      {campus.straat} {huisnummerLabel(campus.huisnummer)}, {campus.postcode} {campus.gemeente}
     </p>
   )
 

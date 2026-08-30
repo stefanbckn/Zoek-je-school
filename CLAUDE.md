@@ -445,12 +445,16 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
   - `VergelijkPanel` staat in `App.tsx` bewust **buiten** de app-wrapper in de JSX. Die wrapper
     krijgt `print:hidden` zodra het venster open staat, zodat er enkel een tabel op papier komt.
     Zet je het venster erin, dan verdwijnt het mee.
-  - Het `@media print`-blok onderaan `src/index.css` zet het palet terug naar zwart-op-wit, en
-    somt daarvoor **alle** themaselectors op. Dat is nodig: het donkere palet staat op
+  - Het `@media print`-blok onderaan `src/index.css` zet het palet terug naar het **lichte**
+    palet — niet naar zwart-wit. De kleuren dragen betekenis (net en finaliteit), en wie
+    zwart-wit wil, heeft die keuze al in het printvenster van de browser; die daar nog eens
+    overrulen maakt ze onbereikbaar. Beslist door de gebruiker op 30/08/2026, nadat een eerdere
+    versie wél naar zwart-wit forceerde.
+    Het blok somt **alle** themaselectors op. Dat is nodig: het donkere palet staat op
     `:root:not([data-theme="light"])`, en dat is specifieker dan een kale `:root` — media
     queries veranderen niets aan specificiteit. Zonder die selector erbij drukt iemand in
     donkere modus wit op wit af. Doorgemeten in de browser, niet ingeschat.
-  - **Het past op A4 omdat het print-blok een `@page`-marge (12 mm) zet en de kolommen daar
+  - **Het past op A4 omdat het print-blok een `@page`-marge (10 mm) zet en de kolommen daar
     hun `min-width` verliezen.** Op het scherm dragen die een vaste breedte zodat je op een
     telefoon zijwaarts kan scrollen; op papier bestaat er geen scrollgebied, dus vier adressen
     naast elkaar werden 832 px breed terwijl er op een A4 met marge 718 px past. Doorgemeten in
@@ -463,9 +467,10 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
   - Chips dragen daarom een `chip`-klasse (`NET_CHIP` in `net.ts`, `FINALITEIT_CHIP` in
     `aanbod.ts`). In print worden ze kleiner en `inline-block`: zonder dat sneed de tekstafbreking
     "Gemeentelijk" middenin over twee regels.
-  - Chips krijgen in print zowel een zwarte tekstkleur als een bijna-witte vulling. Of
-    achtergronden mee afgedrukt worden is een instelling van de bezoeker; enkel de tekst
-    omzetten gaf zwarte letters op een donkergroen vlak.
+  - Of de chipvullingen mee op papier komen, is een instelling van de bezoeker
+    ("Achtergrondbeelden" in het printvenster). Staat die uit, dan blijft de gekleurde tekst
+    over — de inkttinten van het lichte palet halen op wit minstens 4,8:1 contrast, dus dat
+    blijft leesbaar. De naam staat er sowieso voluit bij, dus er gaat geen betekenis verloren.
 - `proj4` is **verwijderd** als dependency: de API levert WGS84 rechtstreeks, er is geen
   Lambert72-conversie meer nodig.
 

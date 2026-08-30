@@ -220,60 +220,59 @@ body {
  * een beeldscherm net zichtbaar is, verdwijnt op papier volledig.
  */
 @media print {
-  /* Alle themaselectors staan hier expliciet in, en dat is nodig: het donkere palet komt uit
+  /* Op papier gaat het thema altijd naar het lichte palet — niet naar zwart-wit. De kleuren
+     dragen betekenis (net en finaliteit) en een bezoeker die in kleur wil afdrukken, krijgt ze
+     dan ook. Wie zwart-wit wil, zet dat in het printvenster van z'n browser: die keuze staat
+     daar al, en hem hier nog eens overrulen zou ze onbereikbaar maken.
+
+     Alle themaselectors staan hier expliciet in, en dat is nodig: het donkere palet komt uit
      `:root:not([data-theme="light"])`, en dat is specifieker dan een kale `:root`. Zonder die
      selector erbij wint het donkere palet ook op papier — geverifieerd, dat gaf witte letters
      op wit papier. Media queries veranderen niets aan specificiteit; alleen de volgorde in dit
-     bestand doet dat, en dit blok staat achteraan. */
+     bestand doet dat, en dit blok staat achteraan.
+
+     De chipvullingen worden alleen afgedrukt als de bezoeker "Achtergrondbeelden" aanzet in het
+     printvenster. Staat dat uit, dan blijft de gekleurde tekst over: de inkttinten van het
+     lichte palet zijn donker genoeg om op wit te lezen (contrast >= 4.8:1, doorgemeten voor het
+     schermpalet en hier ongewijzigd overgenomen). De naam staat er sowieso voluit bij. */
   :root,
   :root:not([data-theme="light"]),
   :root[data-theme="dark"],
   :root[data-theme="light"] {
     --c-grond: #ffffff;
     --c-kaart: #ffffff;
-    --c-rand: #949494;
-    --c-inkt: #000000;
-    --c-zacht: #3d3d3d;
-    --c-accent: #000000;
+    --c-rand: #cfdde1;
+    --c-inkt: #0a1a1f;
+    --c-zacht: #52646c;
+    --c-accent: #0b5c6e;
     --c-accent-inkt: #ffffff;
     --c-hover: #ffffff;
 
-    /* Chips: zwarte tekst op een bijna-witte vulling. Allebei nodig, want of achtergronden
-       mee afgedrukt worden is een instelling van de bezoeker. Staat ze uit, dan valt de
-       vulling weg en blijft er zwarte tekst over; staat ze aan, dan blijft de chipvorm
-       zichtbaar zonder dat zwarte letters op een donkergroen vlak belanden (dat was het
-       geval toen enkel de tekstkleur omgezet was). De naam staat er sowieso voluit bij, dus
-       er gaat geen betekenis verloren. */
-    --c-net-go-bg: #f0f0f0;
-    --c-net-prov-bg: #f0f0f0;
-    --c-net-gem-bg: #f0f0f0;
-    --c-net-vrij-bg: #f0f0f0;
-    --c-net-off-bg: #f0f0f0;
-    --c-net-onaf-bg: #f0f0f0;
-    --c-fin-door-bg: #f0f0f0;
-    --c-fin-dubbel-bg: #f0f0f0;
-    --c-fin-arbeid-bg: #f0f0f0;
+    --c-net-go-bg: #d5e7f8;
+    --c-net-go-inkt: #0b4a7d;
+    --c-net-prov-bg: #fde5c8;
+    --c-net-prov-inkt: #7d4700;
+    --c-net-gem-bg: #f3dcef;
+    --c-net-gem-inkt: #7a2665;
+    --c-net-vrij-bg: #cdeae0;
+    --c-net-vrij-inkt: #0a5340;
+    --c-net-off-bg: #e4dff5;
+    --c-net-off-inkt: #453077;
+    --c-net-onaf-bg: #e2e8ea;
+    --c-net-onaf-inkt: #3b484d;
 
-    --c-net-go-inkt: #000000;
-    --c-net-prov-inkt: #000000;
-    --c-net-gem-inkt: #000000;
-    --c-net-vrij-inkt: #000000;
-    --c-net-off-inkt: #000000;
-    --c-net-onaf-inkt: #000000;
-    --c-fin-door: #000000;
-    --c-fin-dubbel: #000000;
-    --c-fin-arbeid: #000000;
+    --c-fin-door-bg: #dbeafe;
+    --c-fin-door: #1155a3;
+    --c-fin-dubbel-bg: #cfeae4;
+    --c-fin-dubbel: #00665d;
+    --c-fin-arbeid-bg: #fbe8cc;
+    --c-fin-arbeid: #9a5300;
   }
 
   body {
     background-color: #ffffff;
   }
 
-  /* Passen op A4. Zonder deze regels loopt de tabel over de papierrand: de kolommen dragen op
-     het scherm een vaste `min-width` (nodig om te kunnen scrollen op een telefoon), en vier
-     adressen naast elkaar zijn dan 832 px — breder dan de 718 px die op een A4 met 12 mm marge
-     past. Doorgemeten in de browser, niet ingeschat. Op papier bestaat er geen scrollgebied,
-     dus daar mag die min-width weg en verdeelt `table-layout: fixed` de ruimte zelf. */
   @page {
     size: A4 portrait;
     margin: 10mm;

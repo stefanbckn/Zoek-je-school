@@ -1,4 +1,5 @@
 import type { Campus } from '../types'
+import { huisnummerLabel } from './adres'
 
 /**
  * Hoeveel campussen er tegelijk vergeleken kunnen worden.
@@ -17,7 +18,7 @@ export const MIN_VERGELIJK = 2
  * meer dan één school — er ís daar geen enkele naam die het adres dekt.
  */
 export function campusLabel(campus: Campus): string {
-  return `${campus.straat} ${campus.huisnummer}, ${campus.gemeente}`
+  return `${campus.straat} ${huisnummerLabel(campus.huisnummer)}, ${campus.gemeente}`
 }
 
 /**

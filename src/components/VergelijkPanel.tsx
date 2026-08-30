@@ -10,6 +10,7 @@ import {
   FINALITEIT_TEKEN,
 } from '../lib/aanbod'
 import { NET_CHIP, NET_STYLES } from '../lib/net'
+import { huisnummerLabel } from '../lib/adres'
 
 interface VergelijkPanelProps {
   campussen: CampusMetAfstand[]
@@ -127,7 +128,7 @@ export function VergelijkPanel({ campussen, schooljaarAanbod, onClose }: Vergeli
                     className="min-w-44 border-b-2 border-rand p-2 text-left align-bottom text-inkt sm:min-w-52"
                   >
                     <span className="font-semibold">
-                      {campus.straat} {campus.huisnummer}
+                      {campus.straat} {huisnummerLabel(campus.huisnummer)}
                     </span>
                     <span className="block text-xs font-normal text-zacht">
                       {campus.postcode} {campus.gemeente}
