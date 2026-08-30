@@ -76,8 +76,8 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
           <section>
             <h3 className="font-semibold">Wat is dit?</h3>
             <p className="mt-1 text-zacht">
-              Een website waar je middelbare scholen in provincie Antwerpen, voltijds gewoon
-              secundair onderwijs, kan opzoeken. Je vult je adres in en ziet welke scholen in
+              Een website waar je middelbare scholen in provincie Antwerpen (voltijds gewoon
+              secundair onderwijs) kan opzoeken. Je vult je adres in en ziet welke scholen in
               de buurt liggen, wat ze aanbieden en hoe je er geraakt. Meer niet: geen ranglijst,
               geen scores, geen advies over welke school de beste is. Die keuze is aan jou en aan
               je kind.
@@ -172,8 +172,8 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
             <ul className="mt-2 list-disc space-y-1 pl-5 text-zacht">
               <li>
                 Voor een inschrijving, een aanmelding of een beslissing telt altijd wat de school
-                zelf en de officiële fiche van Onderwijs en Vorming zeggen. Die fiche staat bij
-                elke school in het detailpaneel.
+                zelf en de officiële fiche van Onderwijs en Vorming zeggen. De link naar die
+                fiche staat bij elke school in het detailpaneel.
               </li>
               <li>
                 Aan de gegevens op deze site kunnen geen rechten ontleend worden, en er wordt geen
