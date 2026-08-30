@@ -39,6 +39,7 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | 2 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
 | 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
+| 5 | Uitleg- en helppaneel | Paneel "Hoe werkt deze site?" met een korte uitleg van zoeken, filteren en vergelijken, zelf te openen vanuit de kop | **Klaar om te bouwen.** Geen bron nodig, puur frontend. Zelf te openen, nooit vanzelf: zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -167,6 +168,28 @@ Uitgangspunten voor wie dit bouwt:
 - Let op de samenhang met het openstaande punt uit v0.2.1 (sticky filterkolom met één
   scrollgebied). Een kortere lijst maakt dat minder nijpend, maar lost het niet op: de
   gemeentelijst heeft nog steeds z'n eigen scrollbalk binnen een meescrollende kolom.
+
+## Uitleg- en helppaneel: alleen als de bezoeker erop klikt
+
+Een paneel in de stijl van "Over deze site" (0.8.0), maar dan over het gebruik: waar je je adres
+invult, wat de straal doet, wat "in vogelvlucht" betekent, hoe je op finaliteit filtert, en hoe je
+twee tot vier adressen naast elkaar zet en afdrukt.
+
+**Het gaat nooit vanzelf open, ook niet bij een eerste bezoek.** De site zet geen cookies en houdt
+niets bij over wie er langskomt, en dat blijft zo. Zonder die opslag valt een eerste bezoek niet te
+onderscheiden van een tiende, dus elke poging tot "toon dit één keer" wordt ofwel een venster dat
+elke keer opnieuw in de weg staat, ofwel opslag die we net niet willen. De knop staat dus gewoon
+zichtbaar in de kop, naast "Over deze site", en de bezoeker beslist.
+
+Aandachtspunten voor wie dit bouwt:
+
+- **Volg de aanpak van `OverPanel.tsx`.** Zelfde soort venster, zelfde sluitgedrag (Escape), en de
+  open stand in de URL zoals `?over=1` daar. Dat betekent ook: die parameter hoort in `SearchState`
+  te leven en niet in een losse `useState`, want `update()` herschrijft de volledige querystring.
+- **`localStorage` is hier geen uitweg**, ook al gebruikt de themaschakelaar het al. Onthouden dat
+  iemand het paneel gezien heeft, is precies het bijhouden van bezoekgedrag dat we niet doen.
+- Schrijf het vanuit wat een ouder wil bereiken ("scholen op fietsafstand vergelijken"), niet als
+  rondleiding langs de knoppen.
 
 ## Doorlichting: wel linken, nooit scoren
 
