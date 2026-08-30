@@ -21,7 +21,7 @@ export function Footer({
           site" klikt, moet toch gezien hebben dat dit geen officiële bron is. De volledige
           tekst zit in OverPanel. */}
       <p className="text-inkt">
-        Geen officiële bron — de fiche van Onderwijs en Vorming gaat altijd voor.{' '}
+        Geen officiële bron: de fiche van Onderwijs en Vorming gaat altijd voor.{' '}
         <button type="button" onClick={onOverOpen} className="underline underline-offset-2">
           Over deze site
         </button>

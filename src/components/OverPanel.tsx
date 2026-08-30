@@ -76,10 +76,11 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
           <section>
             <h3 className="font-semibold">Wat is dit?</h3>
             <p className="mt-1 text-zacht">
-              Een website waar je middelbare scholen in provincie Antwerpen kan opzoeken —
-              voltijds gewoon secundair onderwijs. Je vult je adres in en ziet welke scholen in
-              de buurt liggen, wat ze aanbieden en hoe je er geraakt. Meer niet: geen ranglijst, geen scores, geen
-              advies over welke school de beste is. Die keuze is aan jou en aan je kind.
+              Een website waar je middelbare scholen in provincie Antwerpen, voltijds gewoon
+              secundair onderwijs, kan opzoeken. Je vult je adres in en ziet welke scholen in
+              de buurt liggen, wat ze aanbieden en hoe je er geraakt. Meer niet: geen ranglijst,
+              geen scores, geen advies over welke school de beste is. Die keuze is aan jou en aan
+              je kind.
             </p>
             <p className="mt-2 text-zacht">
               De site is gratis, staat er zonder advertenties en wordt in de vrije tijd gemaakt.
@@ -172,7 +173,7 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
               <li>
                 Voor een inschrijving, een aanmelding of een beslissing telt altijd wat de school
                 zelf en de officiële fiche van Onderwijs en Vorming zeggen. Die fiche staat bij
-                elke school in het detailpaneel — controleer ze.
+                elke school in het detailpaneel.
               </li>
               <li>
                 Aan de gegevens op deze site kunnen geen rechten ontleend worden, en er wordt geen
@@ -185,7 +186,7 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
               </li>
             </ul>
             <p className="mt-2 text-zacht">
-              Een fout gezien? Laat het weten — dat is de snelste manier om het recht te zetten.
+              Een fout gezien? Laat het weten, dat is de snelste manier om het recht te zetten.
             </p>
           </section>
 
@@ -195,8 +196,8 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
               Er is geen account, geen login en geen database: alles gebeurt in je browser. Je
               adres wordt niet bewaard. Wel wordt het naar de geolocatiedienst van de Vlaamse
               overheid gestuurd om er coördinaten van te maken, en gaan die coördinaten naar
-              Transitous en openrouteservice om een route te berekenen — anders is er geen reistijd
-              te tonen.
+              Transitous en openrouteservice om een route te berekenen, anders is er geen
+              reistijd te tonen.
             </p>
             <p className="mt-2 text-zacht">
               Bezoekersaantallen worden geteld met{' '}
