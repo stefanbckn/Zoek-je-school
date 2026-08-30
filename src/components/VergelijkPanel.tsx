@@ -62,7 +62,7 @@ export function VergelijkPanel({ campussen, schooljaarAanbod, onClose }: Vergeli
       onClick={onClose}
     >
       <div
-        className="mt-4 w-full max-w-5xl rounded-lg bg-kaart p-4 shadow-xl sm:mt-8 sm:p-6 print:m-0 print:max-w-none print:rounded-none print:p-0 print:shadow-none"
+        className="vergelijk-afdruk mt-4 w-full max-w-5xl rounded-lg bg-kaart p-4 shadow-xl sm:mt-8 sm:p-6 print:m-0 print:max-w-none print:rounded-none print:p-0 print:shadow-none"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">

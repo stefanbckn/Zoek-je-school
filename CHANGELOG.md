@@ -20,7 +20,9 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
   zo zie je in één blik dat de ene school geen derde graad heeft.
 - **De vergelijking kan je afdrukken** met de knop bovenaan, ook naar PDF. Op papier valt de
   rest van de site weg en blijft alleen de tabel over, in zwart op wit — ook als je de site in
-  donkere modus gebruikt.
+  donkere modus gebruikt. De tabel past op de breedte van een A4 met een normale marge, ook met
+  vier adressen naast elkaar; een lange lijst richtingen loopt gewoon door op een volgend blad,
+  met de adressen opnieuw bovenaan.
 
 **Details**
 

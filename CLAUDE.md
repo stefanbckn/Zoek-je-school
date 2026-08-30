@@ -450,6 +450,15 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
     `:root:not([data-theme="light"])`, en dat is specifieker dan een kale `:root` — media
     queries veranderen niets aan specificiteit. Zonder die selector erbij drukt iemand in
     donkere modus wit op wit af. Doorgemeten in de browser, niet ingeschat.
+  - **Het past op A4 omdat het print-blok een `@page`-marge (12 mm) zet en de kolommen daar
+    hun `min-width` verliezen.** Op het scherm dragen die een vaste breedte zodat je op een
+    telefoon zijwaarts kan scrollen; op papier bestaat er geen scrollgebied, dus vier adressen
+    naast elkaar werden 832 px breed terwijl er op een A4 met marge 718 px past. Doorgemeten in
+    de browser. `table-layout: fixed` verdeelt de ruimte; haal je dat weg, dan loopt de tabel
+    weer over de bladrand.
+  - Chips dragen daarom een `chip`-klasse (`NET_CHIP` in `net.ts`, `FINALITEIT_CHIP` in
+    `aanbod.ts`). In print worden ze kleiner en `inline-block`: zonder dat sneed de tekstafbreking
+    "Gemeentelijk" middenin over twee regels.
   - Chips krijgen in print zowel een zwarte tekstkleur als een bijna-witte vulling. Of
     achtergronden mee afgedrukt worden is een instelling van de bezoeker; enkel de tekst
     omzetten gaf zwarte letters op een donkergroen vlak.

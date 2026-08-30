@@ -268,4 +268,61 @@ body {
   body {
     background-color: #ffffff;
   }
+
+  /* Passen op A4. Zonder deze regels loopt de tabel over de papierrand: de kolommen dragen op
+     het scherm een vaste `min-width` (nodig om te kunnen scrollen op een telefoon), en vier
+     adressen naast elkaar zijn dan 832 px — breder dan de 718 px die op een A4 met 12 mm marge
+     past. Doorgemeten in de browser, niet ingeschat. Op papier bestaat er geen scrollgebied,
+     dus daar mag die min-width weg en verdeelt `table-layout: fixed` de ruimte zelf. */
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  .vergelijk-afdruk {
+    font-size: 8.5pt;
+    line-height: 1.35;
+  }
+
+  .vergelijk-afdruk table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .vergelijk-afdruk th,
+  .vergelijk-afdruk td {
+    min-width: 0;
+    width: auto;
+    padding: 3pt 4pt;
+    overflow-wrap: break-word;
+  }
+
+  /* Een chip mag nooit middenin een woord gebroken worden. Bij vier kolommen is een cel 137 px
+     en een chip als "Gemeentelijk" op schermgrootte 126 px: die past net niet naast de
+     schoolnaam en werd dan als "Gemeentelij / k" over twee regels gesneden. Kleiner zetten en
+     als blok behandelen lost dat op — de chip schuift dan in z'n geheel naar de volgende regel. */
+  .vergelijk-afdruk .chip {
+    display: inline-block;
+    overflow-wrap: normal;
+    font-size: 7.5pt;
+    padding: 0.5pt 3pt;
+  }
+
+  /* De kenmerkkolom krijgt een vaste snee van de breedte; de adressen delen de rest. */
+  .vergelijk-afdruk thead th:first-child,
+  .vergelijk-afdruk tbody th:first-child {
+    width: 18%;
+  }
+
+  /* Loopt de tabel over meer dan één blad, dan hoort de koprij bovenaan te herhalen en mag een
+     rij niet middenin gesneden worden. */
+  .vergelijk-afdruk thead {
+    display: table-header-group;
+  }
+
+  .vergelijk-afdruk tr,
+  .vergelijk-afdruk td,
+  .vergelijk-afdruk th {
+    break-inside: avoid;
+  }
 }
