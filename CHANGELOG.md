@@ -8,7 +8,7 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
-## 0.6.0 — 29 augustus 2026
+## 0.6.0 — 30 augustus 2026
 
 **Nieuw**
 
