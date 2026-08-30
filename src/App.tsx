@@ -187,7 +187,7 @@ function App() {
         <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-rand px-4 py-4">
           <div>
             <h1 className="text-xl font-semibold text-inkt">Zoek je school</h1>
-            <p className="text-sm text-zacht">Middelbare scholen in provincie Antwerpen</p>
+            <p className="text-sm text-zacht">Middelbare scholen in de provincie Antwerpen</p>
           </div>
           {/* "Over deze site" staat ook hier en niet enkel in de footer: onderaan moet je
               eerst voorbij 300 resultaten scrollen om te vinden waar de gegevens vandaan
