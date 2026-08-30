@@ -25,6 +25,14 @@ export interface SearchState {
    * andere reden ontbreekt, zou anders spoorloos verdwijnen.
    */
   toonZonderAanbod: boolean
+  /**
+   * Staat "Over deze site" open. Bewust wél in de URL, in tegenstelling tot de
+   * vergelijkselectie: een shortlist is een tussenstap in iemands zoektocht, maar "waar komt
+   * deze informatie vandaan" is precies het soort ding dat je doorstuurt. Het staat hier in
+   * SearchState en niet in een losse useState, omdat `update()` de volledige querystring
+   * herschrijft — een parameter erbuiten zou bij de eerstvolgende filterwijziging wegvallen.
+   */
+  over: boolean
 }
 
 const DEFAULT_STATE: SearchState = {
@@ -38,6 +46,7 @@ const DEFAULT_STATE: SearchState = {
   finaliteiten: [],
   richting: '',
   toonZonderAanbod: false,
+  over: false,
 }
 
 function parseList(raw: string | null): string[] {
@@ -115,6 +124,7 @@ function parseState(search: string): SearchState {
     // Alleen de expliciete '1' zet dit aan. Elke andere waarde (leeg, 'true', onzin uit een
     // bewerkte URL) valt terug op de standaard, net als bij de andere parameters hierboven.
     toonZonderAanbod: params.get('zonderaanbod') === '1',
+    over: params.get('over') === '1',
   }
 }
 
@@ -130,6 +140,7 @@ function toSearchParams(state: SearchState): URLSearchParams {
   if (state.finaliteiten.length > 0) params.set('finaliteit', state.finaliteiten.join(','))
   if (state.richting) params.set('richting', state.richting)
   if (state.toonZonderAanbod) params.set('zonderaanbod', '1')
+  if (state.over) params.set('over', '1')
   return params
 }
 

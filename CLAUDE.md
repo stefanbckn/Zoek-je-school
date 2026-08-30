@@ -474,6 +474,19 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
     mee en kost een afdruk nodeloos veel inkt. Zou een browser het toch negeren, dan blijft de
     gekleurde tekst over; die inkttinten halen op wit minstens 4,8:1 contrast, en de naam staat
     er voluit bij, dus er gaat geen betekenis verloren.
+- **Over deze site + disclaimer (sinds 0.8.0).** `OverPanel.tsx`, geopend vanuit de footer.
+  Drie dingen die vastliggen:
+  - **De korte disclaimerregel staat in de footer zelf**, niet enkel achter de link: wie nooit
+    doorklikt moet toch gezien hebben dat dit geen officiële bron is. Beslist door de gebruiker.
+  - **De contactregel en de broncodelink blijven in de footer** en verhuizen níét naar het
+    paneel — ze zijn een Transitous- respectievelijk AGPL-vereiste, zie de sectie Licentie.
+  - **De open stand staat wél in de URL (`?over=1`)**, in tegenstelling tot de vergelijk-
+    selectie. Daarom leeft `over` in `SearchState` en niet in een losse `useState`: `update()`
+    herschrijft de volledige querystring, dus een parameter erbuiten valt bij de eerstvolgende
+    filterwijziging weg.
+- **Het versienummer in de footer komt uit `package.json`** via `__APP_VERSION__` (een `define`
+  in `vite.config.ts`, gedeclareerd in `src/globals.d.ts`). Niet vervangen door een
+  hardgecodeerde string — dan veroudert het stil bij de volgende release.
 - `proj4` is **verwijderd** als dependency: de API levert WGS84 rechtstreeks, er is geen
   Lambert72-conversie meer nodig.
 

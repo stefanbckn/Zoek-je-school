@@ -3,6 +3,7 @@ import { ActieveFilters } from './components/ActieveFilters'
 import { DetailPanel } from './components/DetailPanel'
 import { FilterPanel } from './components/FilterPanel'
 import { Footer } from './components/Footer'
+import { OverPanel } from './components/OverPanel'
 import { MapView } from './components/MapView'
 import { ResultList } from './components/ResultList'
 import { SearchBar } from './components/SearchBar'
@@ -186,9 +187,22 @@ function App() {
         <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-rand px-4 py-4">
           <div>
             <h1 className="text-xl font-semibold text-inkt">Zoek je school</h1>
-            <p className="text-sm text-zacht">Middelbare scholen in provincie Antwerpen</p>
+            <p className="text-sm text-zacht">Middelbare scholen in de provincie Antwerpen</p>
           </div>
-          <ThemaToggle />
+          {/* "Over deze site" staat ook hier en niet enkel in de footer: onderaan moet je
+              eerst voorbij 300 resultaten scrollen om te vinden waar de gegevens vandaan
+              komen. In de header is het altijd zichtbaar, zonder ruimte te kosten in de
+              zoekopdracht zelf. */}
+          <div className="flex shrink-0 flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => update({ over: true })}
+              className="rounded-lg border border-rand px-2.5 py-1.5 text-xs text-zacht transition-colors hover:bg-hover hover:text-inkt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              Over deze site
+            </button>
+            <ThemaToggle />
+          </div>
         </header>
 
         <SearchBar
@@ -333,7 +347,7 @@ function App() {
         onClose={() => setGeselecteerd(null)}
       />
 
-      <Footer meta={meta} />
+      <Footer meta={meta} onOverOpen={() => update({ over: true })} />
       </div>
 
       <VergelijkPanel
@@ -341,6 +355,8 @@ function App() {
         schooljaarAanbod={meta?.schooljaarAanbod ?? null}
         onClose={() => setVergelijkOpen(false)}
       />
+
+      <OverPanel open={state.over} meta={meta} onClose={() => update({ over: false })} />
     </>
   )
 }
