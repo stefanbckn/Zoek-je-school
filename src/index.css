@@ -276,12 +276,18 @@ body {
      dus daar mag die min-width weg en verdeelt `table-layout: fixed` de ruimte zelf. */
   @page {
     size: A4 portrait;
-    margin: 12mm;
+    margin: 10mm;
   }
 
+  /* De eigen padding is geen dubbele marge maar een vangnet: Chrome negeert de `@page`-marge
+     zodra de bezoeker in het printvenster "Marges: Geen" kiest, en dan raakt de titel, de
+     tabelrand en de voetnoot de papierrand. 5 mm eigen wit houdt het dan nog leesbaar; staat
+     de marge op standaard, dan komt er gewoon 15 mm wit rond. Overschrijft `print:p-0` uit de
+     JSX — dat blijft nodig voor de schermopmaak van het venster. */
   .vergelijk-afdruk {
     font-size: 8.5pt;
     line-height: 1.35;
+    padding: 5mm;
   }
 
   .vergelijk-afdruk table {

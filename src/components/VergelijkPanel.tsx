@@ -50,6 +50,7 @@ export function VergelijkPanel({ campussen, schooljaarAanbod, onClose }: Vergeli
   // allemaal doorheen.
   const aanbodPerCampus = campussen.map((c) => campusAanbod(c))
   const graadGroepenPerCampus = aanbodPerCampus.map((aanbod) => groepeerPerGraad(aanbod))
+  const heeftAfstand = campussen.some((campus) => campus.afstandKm !== null)
   const graden = sorteerGraden(
     aanbodPerCampus.flatMap((aanbod) => aanbod.map((r) => r.graad ?? 'Overige')),
   )
@@ -137,7 +138,10 @@ export function VergelijkPanel({ campussen, schooljaarAanbod, onClose }: Vergeli
             </thead>
 
             <tbody>
-              <Rij kop="Afstand">
+              {/* Zonder eigen adres staat hier in elke kolom "Vul je adres in bovenaan". Op het
+                  scherm is dat een bruikbare hint; afgedrukt is het een lege rij met een
+                  instructie die op papier niet meer uit te voeren is. */}
+              <Rij kop="Afstand" className={heeftAfstand ? '' : 'print:hidden'}>
                 {campussen.map((campus) => (
                   <Cel key={campus.id}>
                     {campus.afstandKm !== null ? (
@@ -296,9 +300,17 @@ export function VergelijkPanel({ campussen, schooljaarAanbod, onClose }: Vergeli
 }
 
 /** Eén rij van de tabel: het kenmerk links vastgezet, de campussen ernaast. */
-function Rij({ kop, children }: { kop: string; children: React.ReactNode }) {
+function Rij({
+  kop,
+  children,
+  className = '',
+}: {
+  kop: string
+  children: React.ReactNode
+  className?: string
+}) {
   return (
-    <tr className="border-b border-rand align-top">
+    <tr className={`border-b border-rand align-top ${className}`}>
       {/* sticky left: de kenmerkkolom blijft staan terwijl je zijwaarts scrollt. Zonder dat
           weet je op een telefoon na twee kolommen niet meer waar je naar kijkt. */}
       <th

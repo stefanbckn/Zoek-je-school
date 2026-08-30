@@ -456,6 +456,10 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
     naast elkaar werden 832 px breed terwijl er op een A4 met marge 718 px past. Doorgemeten in
     de browser. `table-layout: fixed` verdeelt de ruimte; haal je dat weg, dan loopt de tabel
     weer over de bladrand.
+  - **`@page`-marge alleen is niet genoeg.** Chrome negeert ze zodra de bezoeker in het
+    printvenster "Marges: Geen" kiest, en dan raken titel, tabelrand en voetnoot de papierrand.
+    Daarom staat er náást `@page { margin: 10mm }` ook 5 mm eigen padding op `.vergelijk-afdruk`.
+    Die overschrijft de `print:p-0` uit de JSX, die voor de schermopmaak wél nodig blijft.
   - Chips dragen daarom een `chip`-klasse (`NET_CHIP` in `net.ts`, `FINALITEIT_CHIP` in
     `aanbod.ts`). In print worden ze kleiner en `inline-block`: zonder dat sneed de tekstafbreking
     "Gemeentelijk" middenin over twee regels.
