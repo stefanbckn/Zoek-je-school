@@ -311,6 +311,14 @@ body {
     overflow-wrap: normal;
     font-size: 7.5pt;
     padding: 0.5pt 3pt;
+
+    /* Vraagt de browser om de vulling áltijd af te drukken, ook als "Achtergrondbeelden" in het
+       printvenster uitstaat. Die schakelaar bestaat om inkt te sparen bij decoratieve vlakken;
+       hier is de vulling de pilvorm die net en finaliteit herkenbaar maakt. Bewust alleen op de
+       chips en niet op de hele pagina — dan zou elke achtergrond meegaan en kost een afdruk
+       nodeloos veel inkt. */
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 
   /* De kenmerkkolom krijgt een vaste snee van de breedte; de adressen delen de rest. */

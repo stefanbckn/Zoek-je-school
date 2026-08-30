@@ -467,10 +467,13 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
   - Chips dragen daarom een `chip`-klasse (`NET_CHIP` in `net.ts`, `FINALITEIT_CHIP` in
     `aanbod.ts`). In print worden ze kleiner en `inline-block`: zonder dat sneed de tekstafbreking
     "Gemeentelijk" middenin over twee regels.
-  - Of de chipvullingen mee op papier komen, is een instelling van de bezoeker
-    ("Achtergrondbeelden" in het printvenster). Staat die uit, dan blijft de gekleurde tekst
-    over — de inkttinten van het lichte palet halen op wit minstens 4,8:1 contrast, dus dat
-    blijft leesbaar. De naam staat er sowieso voluit bij, dus er gaat geen betekenis verloren.
+  - De chips dragen `print-color-adjust: exact`, zodat hun vulling ook afgedrukt wordt als
+    "Achtergrondbeelden" in het printvenster uitstaat. Die schakelaar bestaat om inkt te sparen
+    bij decoratieve vlakken; hier is de vulling de pilvorm die net en finaliteit herkenbaar
+    maakt. **Bewust alleen op de chips**, niet op de hele pagina — anders gaat elke achtergrond
+    mee en kost een afdruk nodeloos veel inkt. Zou een browser het toch negeren, dan blijft de
+    gekleurde tekst over; die inkttinten halen op wit minstens 4,8:1 contrast, en de naam staat
+    er voluit bij, dus er gaat geen betekenis verloren.
 - `proj4` is **verwijderd** als dependency: de API levert WGS84 rechtstreeks, er is geen
   Lambert72-conversie meer nodig.
 

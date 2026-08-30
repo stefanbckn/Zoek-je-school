@@ -21,7 +21,8 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 - **De vergelijking kan je afdrukken** met de knop bovenaan, ook naar PDF. Op papier valt de
   rest van de site weg en blijft alleen de tabel over, in de lichte kleuren — ook als je de site
   in donkere modus gebruikt. Of je in kleur of in zwart-wit afdrukt, kies je gewoon in het
-  printvenster van je browser. De tabel past op de breedte van een A4, ook met vier adressen
+  printvenster van je browser; de gekleurde labels voor net en finaliteit houden hun vorm, ook
+  als je achtergronden niet mee laat afdrukken. De tabel past op de breedte van een A4, ook met vier adressen
   naast elkaar; een lange lijst richtingen loopt door op een volgend blad, met de adressen
   opnieuw bovenaan.
 
