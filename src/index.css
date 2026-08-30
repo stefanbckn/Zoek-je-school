@@ -209,3 +209,133 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/**
+ * Afdrukken. Nodig omdat de vergelijkingstabel afgedrukt kan worden en het thema van de
+ * bezoeker dan meegaat: in donkere modus is `--c-inkt` bijna wit, en browsers drukken
+ * achtergronden standaard níét af — dat geeft witte letters op wit papier, oftewel een lege
+ * bladzijde. Het palet gaat hier dus terug naar inkt op papier, ongeacht het gekozen thema.
+ *
+ * De randen worden expres iets donkerder dan op het scherm: een lichtgrijze tabelrand die op
+ * een beeldscherm net zichtbaar is, verdwijnt op papier volledig.
+ */
+@media print {
+  /* Op papier gaat het thema altijd naar het lichte palet — niet naar zwart-wit. De kleuren
+     dragen betekenis (net en finaliteit) en een bezoeker die in kleur wil afdrukken, krijgt ze
+     dan ook. Wie zwart-wit wil, zet dat in het printvenster van z'n browser: die keuze staat
+     daar al, en hem hier nog eens overrulen zou ze onbereikbaar maken.
+
+     Alle themaselectors staan hier expliciet in, en dat is nodig: het donkere palet komt uit
+     `:root:not([data-theme="light"])`, en dat is specifieker dan een kale `:root`. Zonder die
+     selector erbij wint het donkere palet ook op papier — geverifieerd, dat gaf witte letters
+     op wit papier. Media queries veranderen niets aan specificiteit; alleen de volgorde in dit
+     bestand doet dat, en dit blok staat achteraan.
+
+     De chipvullingen worden alleen afgedrukt als de bezoeker "Achtergrondbeelden" aanzet in het
+     printvenster. Staat dat uit, dan blijft de gekleurde tekst over: de inkttinten van het
+     lichte palet zijn donker genoeg om op wit te lezen (contrast >= 4.8:1, doorgemeten voor het
+     schermpalet en hier ongewijzigd overgenomen). De naam staat er sowieso voluit bij. */
+  :root,
+  :root:not([data-theme="light"]),
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    --c-grond: #ffffff;
+    --c-kaart: #ffffff;
+    --c-rand: #cfdde1;
+    --c-inkt: #0a1a1f;
+    --c-zacht: #52646c;
+    --c-accent: #0b5c6e;
+    --c-accent-inkt: #ffffff;
+    --c-hover: #ffffff;
+
+    --c-net-go-bg: #d5e7f8;
+    --c-net-go-inkt: #0b4a7d;
+    --c-net-prov-bg: #fde5c8;
+    --c-net-prov-inkt: #7d4700;
+    --c-net-gem-bg: #f3dcef;
+    --c-net-gem-inkt: #7a2665;
+    --c-net-vrij-bg: #cdeae0;
+    --c-net-vrij-inkt: #0a5340;
+    --c-net-off-bg: #e4dff5;
+    --c-net-off-inkt: #453077;
+    --c-net-onaf-bg: #e2e8ea;
+    --c-net-onaf-inkt: #3b484d;
+
+    --c-fin-door-bg: #dbeafe;
+    --c-fin-door: #1155a3;
+    --c-fin-dubbel-bg: #cfeae4;
+    --c-fin-dubbel: #00665d;
+    --c-fin-arbeid-bg: #fbe8cc;
+    --c-fin-arbeid: #9a5300;
+  }
+
+  body {
+    background-color: #ffffff;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  /* De eigen padding is geen dubbele marge maar een vangnet: Chrome negeert de `@page`-marge
+     zodra de bezoeker in het printvenster "Marges: Geen" kiest, en dan raakt de titel, de
+     tabelrand en de voetnoot de papierrand. 5 mm eigen wit houdt het dan nog leesbaar; staat
+     de marge op standaard, dan komt er gewoon 15 mm wit rond. Overschrijft `print:p-0` uit de
+     JSX — dat blijft nodig voor de schermopmaak van het venster. */
+  .vergelijk-afdruk {
+    font-size: 8.5pt;
+    line-height: 1.35;
+    padding: 5mm;
+  }
+
+  .vergelijk-afdruk table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .vergelijk-afdruk th,
+  .vergelijk-afdruk td {
+    min-width: 0;
+    width: auto;
+    padding: 3pt 4pt;
+    overflow-wrap: break-word;
+  }
+
+  /* Een chip mag nooit middenin een woord gebroken worden. Bij vier kolommen is een cel 137 px
+     en een chip als "Gemeentelijk" op schermgrootte 126 px: die past net niet naast de
+     schoolnaam en werd dan als "Gemeentelij / k" over twee regels gesneden. Kleiner zetten en
+     als blok behandelen lost dat op — de chip schuift dan in z'n geheel naar de volgende regel. */
+  .vergelijk-afdruk .chip {
+    display: inline-block;
+    overflow-wrap: normal;
+    font-size: 7.5pt;
+    padding: 0.5pt 3pt;
+
+    /* Vraagt de browser om de vulling áltijd af te drukken, ook als "Achtergrondbeelden" in het
+       printvenster uitstaat. Die schakelaar bestaat om inkt te sparen bij decoratieve vlakken;
+       hier is de vulling de pilvorm die net en finaliteit herkenbaar maakt. Bewust alleen op de
+       chips en niet op de hele pagina — dan zou elke achtergrond meegaan en kost een afdruk
+       nodeloos veel inkt. */
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* De kenmerkkolom krijgt een vaste snee van de breedte; de adressen delen de rest. */
+  .vergelijk-afdruk thead th:first-child,
+  .vergelijk-afdruk tbody th:first-child {
+    width: 18%;
+  }
+
+  /* Loopt de tabel over meer dan één blad, dan hoort de koprij bovenaan te herhalen en mag een
+     rij niet middenin gesneden worden. */
+  .vergelijk-afdruk thead {
+    display: table-header-group;
+  }
+
+  .vergelijk-afdruk tr,
+  .vergelijk-afdruk td,
+  .vergelijk-afdruk th {
+    break-inside: avoid;
+  }
+}

@@ -6,6 +6,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import { useMemo } from 'react'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
+import { huisnummerLabel } from '../lib/adres'
 
 // Vite bundelt de marker-afbeeldingen niet automatisch mee onder hun verwachte pad;
 // dit is de gedocumenteerde workaround voor react-leaflet + Vite.
@@ -65,7 +66,7 @@ export function MapView({ campussen, onSelect }: MapViewProps) {
           <Popup>
             <div className="text-sm">
               <p className="text-zacht">
-                {c.straat} {c.huisnummer}, {c.postcode} {c.gemeente}
+                {c.straat} {huisnummerLabel(c.huisnummer)}, {c.postcode} {c.gemeente}
               </p>
               <ul className="mt-1">
                 {c.scholen.map((school) => (

@@ -7,13 +7,26 @@ import {
   FINALITEIT_TEKEN,
 } from '../lib/aanbod'
 import { NET_CHIP, NET_STYLES } from '../lib/net'
+import { MAX_VERGELIJK } from '../lib/vergelijking'
+import { huisnummerLabel } from '../lib/adres'
 
 interface ResultCardProps {
   campus: CampusMetAfstand
   onSelect: (campus: CampusMetAfstand, school: SchoolOpCampus) => void
+  /** Staat dit adres in de vergelijking? */
+  vergeleken: boolean
+  /** Zit de vergelijking vol? Dan kan er niets meer bij, maar wél iets uit. */
+  vergelijkVol: boolean
+  onVergelijkToggle: (campus: CampusMetAfstand) => void
 }
 
-export function ResultCard({ campus, onSelect }: ResultCardProps) {
+export function ResultCard({
+  campus,
+  onSelect,
+  vergeleken,
+  vergelijkVol,
+  onVergelijkToggle,
+}: ResultCardProps) {
   const enkeleSchool = campus.scholen.length === 1 ? campus.scholen[0] : null
 
   // Finaliteiten van het hele adres samen: scholen die een campus delen vullen elkaars
@@ -42,7 +55,7 @@ export function ResultCard({ campus, onSelect }: ResultCardProps) {
 
   const adresRegel = (
     <p className="mt-1 text-sm text-zacht">
-      {campus.straat} {campus.huisnummer}, {campus.postcode} {campus.gemeente}
+      {campus.straat} {huisnummerLabel(campus.huisnummer)}, {campus.postcode} {campus.gemeente}
     </p>
   )
 
@@ -52,25 +65,52 @@ export function ResultCard({ campus, onSelect }: ResultCardProps) {
     </p>
   )
 
+  const vol = vergelijkVol && !vergeleken
+
+  // Het vinkje staat op de kaart en niet in het detailpaneel: een shortlist bouw je terwijl je
+  // de lijst doorneemt, niet door vier keer een venster te openen en weer te sluiten. Bewust
+  // een aparte regel onder een scheidingslijn — een aanvinkvakje ín de klikbare kaart zou een
+  // knop in een knop zijn, en dat is zowel HTML-onzin als verwarrend om aan te tikken.
+  const vergelijkRij = (
+    <label
+      className={`mt-3 flex items-center gap-2 border-t border-rand pt-2.5 text-xs ${
+        vol ? 'cursor-not-allowed text-zacht' : 'cursor-pointer text-zacht hover:text-inkt'
+      }`}
+    >
+      <input
+        type="checkbox"
+        checked={vergeleken}
+        disabled={vol}
+        onChange={() => onVergelijkToggle(campus)}
+        className="rounded border-rand"
+      />
+      {/* Zeggen waaróm het vinkje uit staat. Een grijs vakje zonder uitleg leest als een fout. */}
+      {vol ? `Vergelijken (maximum van ${MAX_VERGELIJK} bereikt)` : 'Vergelijk dit adres'}
+    </label>
+  )
+
   if (enkeleSchool) {
     return (
-      <button
-        type="button"
-        onClick={() => onSelect(campus, enkeleSchool)}
-        className="w-full text-left rounded-lg border border-rand bg-kaart p-4 hover:border-zacht hover:shadow-sm transition"
-      >
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="font-medium text-inkt">{enkeleSchool.naam}</h3>
-          <span
-            className={`${NET_CHIP} ${NET_STYLES[enkeleSchool.net]}`}
-          >
-            {enkeleSchool.net}
-          </span>
-        </div>
-        {adresRegel}
-        {afstandRegel}
-        {aanbodRegel}
-      </button>
+      <div className="w-full rounded-lg border border-rand bg-kaart p-4">
+        <button
+          type="button"
+          onClick={() => onSelect(campus, enkeleSchool)}
+          className="-m-2 block w-full rounded-md p-2 text-left hover:bg-hover"
+        >
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="font-medium text-inkt">{enkeleSchool.naam}</h3>
+            <span
+              className={`${NET_CHIP} ${NET_STYLES[enkeleSchool.net]}`}
+            >
+              {enkeleSchool.net}
+            </span>
+          </div>
+          {adresRegel}
+          {afstandRegel}
+          {aanbodRegel}
+        </button>
+        {vergelijkRij}
+      </div>
     )
   }
 
@@ -100,6 +140,7 @@ export function ResultCard({ campus, onSelect }: ResultCardProps) {
           </li>
         ))}
       </ul>
+      {vergelijkRij}
     </div>
   )
 }

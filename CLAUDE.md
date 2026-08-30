@@ -440,6 +440,40 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
   react-router, dat lost hier niets op en breekt deep-linking onnodig).
 - Afstand is altijd hemelsbrede afstand (haversine); benoem dat expliciet in de UI, nooit als
   "reisafstand" framen.
+- **Afdrukken (sinds 0.6.0).** De vergelijkingstabel is afdrukbaar. Twee dingen die daarbij
+  vastliggen en die je niet per ongeluk moet omkeren:
+  - `VergelijkPanel` staat in `App.tsx` bewust **buiten** de app-wrapper in de JSX. Die wrapper
+    krijgt `print:hidden` zodra het venster open staat, zodat er enkel een tabel op papier komt.
+    Zet je het venster erin, dan verdwijnt het mee.
+  - Het `@media print`-blok onderaan `src/index.css` zet het palet terug naar het **lichte**
+    palet — niet naar zwart-wit. De kleuren dragen betekenis (net en finaliteit), en wie
+    zwart-wit wil, heeft die keuze al in het printvenster van de browser; die daar nog eens
+    overrulen maakt ze onbereikbaar. Beslist door de gebruiker op 30/08/2026, nadat een eerdere
+    versie wél naar zwart-wit forceerde.
+    Het blok somt **alle** themaselectors op. Dat is nodig: het donkere palet staat op
+    `:root:not([data-theme="light"])`, en dat is specifieker dan een kale `:root` — media
+    queries veranderen niets aan specificiteit. Zonder die selector erbij drukt iemand in
+    donkere modus wit op wit af. Doorgemeten in de browser, niet ingeschat.
+  - **Het past op A4 omdat het print-blok een `@page`-marge (10 mm) zet en de kolommen daar
+    hun `min-width` verliezen.** Op het scherm dragen die een vaste breedte zodat je op een
+    telefoon zijwaarts kan scrollen; op papier bestaat er geen scrollgebied, dus vier adressen
+    naast elkaar werden 832 px breed terwijl er op een A4 met marge 718 px past. Doorgemeten in
+    de browser. `table-layout: fixed` verdeelt de ruimte; haal je dat weg, dan loopt de tabel
+    weer over de bladrand.
+  - **`@page`-marge alleen is niet genoeg.** Chrome negeert ze zodra de bezoeker in het
+    printvenster "Marges: Geen" kiest, en dan raken titel, tabelrand en voetnoot de papierrand.
+    Daarom staat er náást `@page { margin: 10mm }` ook 5 mm eigen padding op `.vergelijk-afdruk`.
+    Die overschrijft de `print:p-0` uit de JSX, die voor de schermopmaak wél nodig blijft.
+  - Chips dragen daarom een `chip`-klasse (`NET_CHIP` in `net.ts`, `FINALITEIT_CHIP` in
+    `aanbod.ts`). In print worden ze kleiner en `inline-block`: zonder dat sneed de tekstafbreking
+    "Gemeentelijk" middenin over twee regels.
+  - De chips dragen `print-color-adjust: exact`, zodat hun vulling ook afgedrukt wordt als
+    "Achtergrondbeelden" in het printvenster uitstaat. Die schakelaar bestaat om inkt te sparen
+    bij decoratieve vlakken; hier is de vulling de pilvorm die net en finaliteit herkenbaar
+    maakt. **Bewust alleen op de chips**, niet op de hele pagina — anders gaat elke achtergrond
+    mee en kost een afdruk nodeloos veel inkt. Zou een browser het toch negeren, dan blijft de
+    gekleurde tekst over; die inkttinten halen op wit minstens 4,8:1 contrast, en de naam staat
+    er voluit bij, dus er gaat geen betekenis verloren.
 - `proj4` is **verwijderd** als dependency: de API levert WGS84 rechtstreeks, er is geen
   Lambert72-conversie meer nodig.
 

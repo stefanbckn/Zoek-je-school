@@ -25,6 +25,7 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **0.3.0** | Openbaar vervoer + pagineren | AGPL-3.0-licentie · reistijd met bus/trein via Transitous · contactgegevens in de footer · lijst pagineren |
 | **0.4.0** | Dieplinks + opgeruimd detailpaneel | Link naar de rit in de Transitous-planner en naar de fietsroute op de ORS-kaart · adres en contactgegevens bovenaan het detailpaneel, reisinfo apart onder "Hoe geraak je er?" |
 | **0.5.0** | Lege adressen wegfilteren | Adressen zonder studieaanbod standaard verborgen, met teller boven de lijst en een vinkje in de filterkolom om ze terug te tonen |
+| **0.6.0** | Campussen vergelijken | 2–4 adressen naast elkaar in één tabel (afstand, scholen, aanbod per graad, contact), aan te vinken vanaf de resultatenkaarten en afdrukbaar naar papier of PDF |
 
 ## Nog te doen
 
@@ -32,11 +33,10 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| 1 | Vergelijken | 2–4 campussen naast elkaar in vergelijkingstabel + exporteerbare shortlist | **Klaar om te bouwen.** Puur frontend, geen externe bron nodig. Op 28/08/2026 naar voren gehaald; de GOK-cijfers uit 2 passen er later als extra rij bij |
-| 2 | GOK-indicatoren | 4 leerlingenkenmerken per school, met kaderende uitleg | **Klaar om te bouwen.** Downloadbare xlsx bij AgODi, join geverifieerd op 269/272 scholen. Per school, niet per vestiging — zie hieronder |
-| 3 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
-| 4 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
-| 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
+| 1 | GOK-indicatoren | 4 leerlingenkenmerken per school, met kaderende uitleg | **Klaar om te bouwen.** Downloadbare xlsx bij AgODi, join geverifieerd op 269/272 scholen. Per school, niet per vestiging — zie hieronder. De vergelijkingstabel uit 0.6.0 is de plek waar ze thuishoren |
+| 2 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
+| 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
+| 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -228,7 +228,8 @@ volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
 Samen helpen ze een ouder kiezen tussen scholen die op afstand en aanbod al door de filter zijn
 geraakt. Ze hangen niet van elkaar af, dus elk stuk gaat als eigen MINOR naar `main` zodra het
-werkt. Hieronder in volgorde van zekerheid — dat is ook de bouwvolgorde uit de tabel:
+werkt: stuk 1 kwam uit als 0.5.0, stuk 3 als 0.6.0. Stuk 2 en 4 staan nog open. Hieronder in
+volgorde van zekerheid:
 
 1. ~~**Vestigingen zonder studieaanbod wegfilteren.**~~ **Uitgebracht in 0.5.0.** Geverifieerd
    op de huidige dataset:
@@ -247,10 +248,24 @@ werkt. Hieronder in volgorde van zekerheid — dat is ook de bouwvolgorde uit de
    - Let op de campus-samenvoeging: leeg betekent hier *geen enkele school op dat adres* heeft
      een richting. Eén school met aanbod houdt het hele adres zichtbaar.
 2. **GOK-leerlingenkenmerken**, per school. Bron en join geverifieerd — zie hieronder.
-3. **Campussen vergelijken** (2–4 naast elkaar, exporteerbare shortlist). Stond achteraan de
-   planning, op 28/08/2026 naar voren gehaald — dit is het eerstvolgende stuk. Puur frontend,
-   geen externe bron nodig; de vergelijkingstabel is meteen de natuurlijke plek voor de
-   GOK-cijfers uit punt 2, die er later als extra rij bij passen.
+3. ~~**Campussen vergelijken**~~ **Uitgebracht in 0.6.0**, vóór de GOK-cijfers in plaats van
+   erna — die passen er later gewoon als extra rij bij. Wat er gebouwd is: 2 tot 4 adressen
+   naast elkaar in één tabel (`VergelijkPanel.tsx`), aan te vinken vanaf de resultatenkaarten,
+   met een balk onderaan die de selectie toont. Keuzes die daarbij gemaakt zijn:
+   - **De shortlist is exporteerbaar als afdruk**, niet als link of CSV — zo gekozen door de
+     gebruiker. Op papier valt de rest van de app weg (`print:hidden` op de app-wrapper, het
+     venster staat er bewust búiten in de JSX) en gaat het palet naar zwart-op-wit. ⚠️ Dat
+     laatste vergt dat het print-blok in `index.css` álle themaselectors opsomt: het donkere
+     palet zit op `:root:not([data-theme="light"])` en dat is specifieker dan een kale `:root`.
+     Zonder die selector erbij drukt een donkere-modus-bezoeker wit op wit af — dat is
+     doorgemeten, niet ingeschat.
+   - **De selectie zit níét in de URL**, in tegenstelling tot de filters. De querystring
+     beschrijft wát er gezocht wordt; een shortlist is een tussenstap, zoals hoever iemand
+     gescrold heeft.
+   - **Op mobiel bestaat de functie wél**, met een zijwaarts scrollende tabel en een
+     vastgezette kenmerkkolom. De kolombreedtes zijn zo gezet dat de volgende kolom net
+     aankijkt — dat is de aanzet om te scrollen.
+   - **Maximum 4.** Bij vijf kolommen wordt een kolom smaller dan een schoolnaam.
 4. **Link naar het doorlichtingsverslag.** Zie de sectie hierboven — vorm ligt vast, bron nog
    niet geverifieerd. Dit is het enige onderdeel dat kan afvallen.
 

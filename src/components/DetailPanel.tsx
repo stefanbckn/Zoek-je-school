@@ -15,6 +15,7 @@ import {
   volgendeSchooldagOchtend,
   type OvReisResultaat,
 } from '../lib/ov'
+import { huisnummerLabel } from '../lib/adres'
 
 interface DetailPanelProps {
   campus: CampusMetAfstand | null
@@ -102,7 +103,7 @@ export function DetailPanel({
           naar: { lat: campus.lat, lon: campus.lon },
           namen: {
             van: zoeklocatieLabel ?? 'Mijn adres',
-            naar: `${school.naam}, ${campus.straat} ${campus.huisnummer}, ${campus.gemeente}`,
+            naar: `${school.naam}, ${campus.straat} ${huisnummerLabel(campus.huisnummer)}, ${campus.gemeente}`,
           },
         }
       : null
@@ -157,7 +158,7 @@ export function DetailPanel({
             waardoor ze wegvielen. */}
         <address className="mt-4 not-italic">
           <p className="text-base font-medium text-inkt">
-            {campus.straat} {campus.huisnummer}
+            {campus.straat} {huisnummerLabel(campus.huisnummer)}
           </p>
           <p className="text-sm text-zacht">
             {campus.postcode} {campus.gemeente}

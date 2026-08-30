@@ -25,7 +25,7 @@ export const FINALITEIT_TEKEN: Record<FinaliteitKeuze, string> = {
 
 /** Gedeelde vormgeving van een finaliteit-chip: omlijnd, in de kleur van de finaliteit. */
 export const FINALITEIT_CHIP =
-  'inline-flex items-center gap-1 rounded-lg border-[1.5px] border-current px-1.5 py-0.5 text-xs font-medium'
+  'chip inline-flex items-center gap-1 rounded-lg border-[1.5px] border-current px-1.5 py-0.5 text-xs font-medium'
 
 /** Volgorde waarin graden getoond worden. Wat hier niet in staat, komt achteraan. */
 const GRAAD_VOLGORDE = [
@@ -97,6 +97,21 @@ export function groepeerPerGraad(richtingen: Richting[]): GraadGroep[] {
       const ib = GRAAD_VOLGORDE.indexOf(b.graad)
       return (ia === -1 ? GRAAD_VOLGORDE.length : ia) - (ib === -1 ? GRAAD_VOLGORDE.length : ib)
     })
+}
+
+/**
+ * Zet een verzameling graadnamen in de vaste volgorde van `GRAAD_VOLGORDE`. Nodig voor de
+ * vergelijkingstabel: daar staan meerdere campussen naast elkaar en moet elke rij dezelfde
+ * graad zijn, ook als één van die campussen bijvoorbeeld geen eerste graad heeft.
+ * Onbekende graden komen achteraan, alfabetisch, zodat de volgorde stabiel blijft.
+ */
+export function sorteerGraden(graden: Iterable<string>): string[] {
+  return [...new Set(graden)].sort((a, b) => {
+    const ia = GRAAD_VOLGORDE.indexOf(a)
+    const ib = GRAAD_VOLGORDE.indexOf(b)
+    if (ia === -1 && ib === -1) return a.localeCompare(b, 'nl')
+    return (ia === -1 ? GRAAD_VOLGORDE.length : ia) - (ib === -1 ? GRAAD_VOLGORDE.length : ib)
+  })
 }
 
 /** Welke finaliteiten komen op dit adres voor? Voor de badges in de resultatenlijst. */
