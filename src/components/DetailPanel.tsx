@@ -166,7 +166,7 @@ export function DetailPanel({
               <>
                 {' · '}
                 {campus.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km
-                hemelsbreed
+                in vogelvlucht
               </>
             )}
           </p>

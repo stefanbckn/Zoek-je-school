@@ -61,7 +61,7 @@ export function ResultCard({
 
   const afstandRegel = campus.afstandKm !== null && (
     <p className="mt-1 text-sm font-medium text-inkt">
-      {campus.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km hemelsbreed
+      {campus.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km in vogelvlucht
     </p>
   )
 

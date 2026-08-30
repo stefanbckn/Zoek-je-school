@@ -78,6 +78,19 @@ export function Footer({ meta }: { meta: DatasetMeta | null }) {
         </a>{' '}
         onder AGPL-3.0 · © 2026 Stefan Bocken
       </p>
+      {/* Het versienummer komt uit package.json via __APP_VERSION__ (zie vite.config.ts), zodat
+          het niet apart bijgehouden moet worden en dus niet stil kan verouderen. */}
+      <p className="mt-1">
+        Versie {__APP_VERSION__} ·{' '}
+        <a
+          href="https://github.com/stefanbckn/Zoek-je-school/blob/main/CHANGELOG.md"
+          target="_blank"
+          rel="noreferrer"
+          className="underline"
+        >
+          Wat er veranderde
+        </a>
+      </p>
     </footer>
   )
 }

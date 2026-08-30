@@ -1,7 +1,12 @@
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
+import { createRequire } from 'node:module'
 import { haalFietsroute, parsePunt } from './shared/ors.js'
+
+// package.json is de enige plek waar de versie staat; de footer toont ze via __APP_VERSION__.
+// createRequire in plaats van een gewone import, zodat we geen resolveJsonModule nodig hebben.
+const { version } = createRequire(import.meta.url)('./package.json') as { version: string }
 
 /**
  * Bootst de Netlify Function /api/fietsroute na tijdens `npm run dev`, zodat de fietsafstand
@@ -44,6 +49,9 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
     plugins: [react(), tailwindcss(), fietsrouteDevProxy(env.ORS_API_KEY)],
+    define: {
+      __APP_VERSION__: JSON.stringify(version),
+    },
     base: './',
     server: {
       port: process.env.PORT ? Number(process.env.PORT) : 5173,
