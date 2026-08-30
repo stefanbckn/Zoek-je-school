@@ -12,7 +12,7 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 **Nieuw**
 
-- **"Over deze site".** Onderaan staat nu een venster met waar de informatie vandaan komt, wat
+- **"Over deze site".** Rechtsboven in de kop, en ook onderaan, staat nu een venster met waar de informatie vandaan komt, wat
   deze site ermee doet (scholen per adres samenvoegen, richtingen per graad samenvatten,
   afstand in vogelvlucht), wat er met je gegevens gebeurt, en waarvoor je de site beter niet
   gebruikt. Het opent met de link in de footer en sluit met Escape of een klik ernaast.
@@ -21,6 +21,12 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
   deze site is geen officiële bron, en de fiche van Onderwijs en Vorming gaat altijd voor.
   De volledige tekst — bewerkte en mogelijk verouderde gegevens, geen rechten te ontlenen, niet
   te gebruiken als brondata — staat in "Over deze site".
+
+**Opgelost**
+
+- **Knoppen tonen weer een handje.** De muisaanwijzer veranderde nergens in de app als je over
+  een knop ging, waardoor niet duidelijk was dat er iets aan te klikken viel. Dat gold voor
+  alle knoppen, niet enkel voor de nieuwe link.
 
 **Niet veranderd**
 

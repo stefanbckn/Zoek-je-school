@@ -189,7 +189,20 @@ function App() {
             <h1 className="text-xl font-semibold text-inkt">Zoek je school</h1>
             <p className="text-sm text-zacht">Middelbare scholen in provincie Antwerpen</p>
           </div>
-          <ThemaToggle />
+          {/* "Over deze site" staat ook hier en niet enkel in de footer: onderaan moet je
+              eerst voorbij 300 resultaten scrollen om te vinden waar de gegevens vandaan
+              komen. In de header is het altijd zichtbaar, zonder ruimte te kosten in de
+              zoekopdracht zelf. */}
+          <div className="flex shrink-0 flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => update({ over: true })}
+              className="rounded-lg border border-rand px-2.5 py-1.5 text-xs text-zacht transition-colors hover:bg-hover hover:text-inkt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              Over deze site
+            </button>
+            <ThemaToggle />
+          </div>
         </header>
 
         <SearchBar

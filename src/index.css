@@ -201,6 +201,19 @@ body {
   filter: brightness(0.78) saturate(0.85);
 }
 
+/**
+ * Een aanwijsbare knop hoort een handje te tonen. Tailwind v4 zet in z'n preflight
+ * `cursor: default` op button-elementen — dat is een bewuste wijziging tegenover v3, maar het
+ * betekent dat élke knop in deze app aanvoelt als gewone tekst zolang we er niets tegenover
+ * zetten. Hier één keer teruggedraaid in plaats van `cursor-pointer` op tientallen knoppen.
+ * `:not(:disabled)` zodat een uitgeschakelde knop niet doet alsof er iets te klikken valt;
+ * knoppen met een eigen cursor-utility (bv. `cursor-not-allowed`) winnen alsnog, want die
+ * staat in een latere laag.
+ */
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

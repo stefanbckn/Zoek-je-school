@@ -76,9 +76,9 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
           <section>
             <h3 className="font-semibold">Wat is dit?</h3>
             <p className="mt-1 text-zacht">
-              Een zoeker voor middelbare scholen in provincie Antwerpen — voltijds gewoon
-              secundair onderwijs. Je vult je adres in en ziet welke scholen in de buurt liggen,
-              wat ze aanbieden en hoe je er geraakt. Meer niet: geen ranglijst, geen scores, geen
+              Een website waar je middelbare scholen in provincie Antwerpen kan opzoeken —
+              voltijds gewoon secundair onderwijs. Je vult je adres in en ziet welke scholen in
+              de buurt liggen, wat ze aanbieden en hoe je er geraakt. Meer niet: geen ranglijst, geen scores, geen
               advies over welke school de beste is. Die keuze is aan jou en aan je kind.
             </p>
             <p className="mt-2 text-zacht">
