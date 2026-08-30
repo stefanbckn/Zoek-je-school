@@ -3,6 +3,7 @@ import { ActieveFilters } from './components/ActieveFilters'
 import { DetailPanel } from './components/DetailPanel'
 import { FilterPanel } from './components/FilterPanel'
 import { Footer } from './components/Footer'
+import { OverPanel } from './components/OverPanel'
 import { MapView } from './components/MapView'
 import { ResultList } from './components/ResultList'
 import { SearchBar } from './components/SearchBar'
@@ -333,7 +334,7 @@ function App() {
         onClose={() => setGeselecteerd(null)}
       />
 
-      <Footer meta={meta} />
+      <Footer meta={meta} onOverOpen={() => update({ over: true })} />
       </div>
 
       <VergelijkPanel
@@ -341,6 +342,8 @@ function App() {
         schooljaarAanbod={meta?.schooljaarAanbod ?? null}
         onClose={() => setVergelijkOpen(false)}
       />
+
+      <OverPanel open={state.over} meta={meta} onClose={() => update({ over: false })} />
     </>
   )
 }

@@ -8,6 +8,28 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.8.0 — 30 augustus 2026
+
+**Nieuw**
+
+- **"Over deze site".** Onderaan staat nu een venster met waar de informatie vandaan komt, wat
+  deze site ermee doet (scholen per adres samenvoegen, richtingen per graad samenvatten,
+  afstand in vogelvlucht), wat er met je gegevens gebeurt, en waarvoor je de site beter niet
+  gebruikt. Het opent met de link in de footer en sluit met Escape of een klik ernaast.
+  De open stand staat in de link (`?over=1`), dus je kan die tekst doorsturen.
+- **Een disclaimer die altijd zichtbaar is.** Bovenaan de footer staat, ook zonder doorklikken:
+  deze site is geen officiële bron, en de fiche van Onderwijs en Vorming gaat altijd voor.
+  De volledige tekst — bewerkte en mogelijk verouderde gegevens, geen rechten te ontlenen, niet
+  te gebruiken als brondata — staat in "Over deze site".
+
+**Niet veranderd**
+
+- De contactgegevens en de link naar de broncode blijven in de footer staan en zijn niet naar
+  het venster verhuisd. Ze zijn allebei een voorwaarde van de diensten en de licentie waar deze
+  site op draait, en horen zichtbaar te zijn zonder dat je eerst iets moet openklikken.
+
+---
+
 ## 0.7.0 — 30 augustus 2026
 
 **Veranderd**

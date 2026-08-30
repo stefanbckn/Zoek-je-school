@@ -1,6 +1,12 @@
 import type { DatasetMeta } from '../types'
 
-export function Footer({ meta }: { meta: DatasetMeta | null }) {
+export function Footer({
+  meta,
+  onOverOpen,
+}: {
+  meta: DatasetMeta | null
+  onOverOpen: () => void
+}) {
   const datum = meta
     ? new Date(meta.opgehaaldOp).toLocaleDateString('nl-BE', {
         day: 'numeric',
@@ -11,8 +17,17 @@ export function Footer({ meta }: { meta: DatasetMeta | null }) {
 
   return (
     <footer className="border-t border-rand px-4 py-3 text-xs text-zacht">
+      {/* De korte disclaimer staat hier en niet enkel achter de link: wie nooit op "Over deze
+          site" klikt, moet toch gezien hebben dat dit geen officiële bron is. De volledige
+          tekst zit in OverPanel. */}
+      <p className="text-inkt">
+        Geen officiële bron — de fiche van Onderwijs en Vorming gaat altijd voor.{' '}
+        <button type="button" onClick={onOverOpen} className="underline underline-offset-2">
+          Over deze site
+        </button>
+      </p>
       {meta && (
-        <p>
+        <p className="mt-1">
           Data opgehaald op {datum} · Bron:{' '}
           <a href={meta.bron[0]} target="_blank" rel="noreferrer" className="underline">
             Onderwijs en Vorming
@@ -25,7 +40,7 @@ export function Footer({ meta }: { meta: DatasetMeta | null }) {
           vermelding letterlijk, en hun routeresultaten staan onder CC-BY-SA 4.0. Staat
           buiten de meta-check: ontbreekt meta.json, dan verdwijnt de bronvermelding wel maar
           deze niet. Zie CLAUDE.md. */}
-      <p className={meta ? 'mt-1' : undefined}>
+      <p className="mt-1">
         Fietsroutes ©{' '}
         <a href="https://openrouteservice.org/" target="_blank" rel="noreferrer" className="underline">
           openrouteservice
