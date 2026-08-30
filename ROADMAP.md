@@ -26,6 +26,7 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **0.4.0** | Dieplinks + opgeruimd detailpaneel | Link naar de rit in de Transitous-planner en naar de fietsroute op de ORS-kaart · adres en contactgegevens bovenaan het detailpaneel, reisinfo apart onder "Hoe geraak je er?" |
 | **0.5.0** | Lege adressen wegfilteren | Adressen zonder studieaanbod standaard verborgen, met teller boven de lijst en een vinkje in de filterkolom om ze terug te tonen |
 | **0.6.0** | Campussen vergelijken | 2–4 adressen naast elkaar in één tabel (afstand, scholen, aanbod per graad, contact), aan te vinken vanaf de resultatenkaarten en afdrukbaar naar papier of PDF |
+| **0.7.0** | UI-details | "Hemelsbreed" heet "in vogelvlucht" op alle plaatsen · versienummer met changelog-link onderaan in de footer |
 
 ## Nog te doen
 
@@ -37,8 +38,7 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | 2 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
 | 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
-| 5 | UI-details | "Hemelsbreed" wordt "in vogelvlucht" · versienummer onderaan in de footer | **Klaar om te bouwen.** Puur tekst en opmaak, geen bron nodig. Let op: "hemelsbreed" staat op meerdere plaatsen (resultatenkaart, detailpaneel, vergelijkingstabel en de voetnoot eronder) — pas ze samen aan |
-| 6 | Disclaimer + over deze site | Aansprakelijkheid uitsluiten (best effort, geen officiële bron, niet te gebruiken als brondata) · een pagina of paneel met Over / Contact / Meer info | Geen bron nodig. De disclaimer hoort te zeggen dat de cijfers uit de API van Onderwijs en Vorming komen maar hier bewerkt en samengevoegd zijn, dat de officiële fiche altijd voorgaat, en dat er geen rechten aan ontleend kunnen worden. Contactgegevens en broncodelink staan al in de footer — die twee zijn een Transitous- en AGPL-vereiste en mogen dus niet naar een aparte pagina verdwijnen |
+| 5 | Disclaimer + over deze site | Aansprakelijkheid uitsluiten (best effort, geen officiële bron, niet te gebruiken als brondata) · een pagina of paneel met Over / Contact / Meer info | Geen bron nodig. De disclaimer hoort te zeggen dat de cijfers uit de API van Onderwijs en Vorming komen maar hier bewerkt en samengevoegd zijn, dat de officiële fiche altijd voorgaat, en dat er geen rechten aan ontleend kunnen worden. Contactgegevens en broncodelink staan al in de footer — die twee zijn een Transitous- en AGPL-vereiste en mogen dus niet naar een aparte pagina verdwijnen |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht

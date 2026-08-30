@@ -148,7 +148,7 @@ export function VergelijkPanel({ campussen, schooljaarAanbod, onClose }: Vergeli
                     {campus.afstandKm !== null ? (
                       <>
                         {campus.afstandKm.toLocaleString('nl-BE', { maximumFractionDigits: 1 })} km
-                        <span className="block text-xs text-zacht">hemelsbreed</span>
+                        <span className="block text-xs text-zacht">in vogelvlucht</span>
                       </>
                     ) : (
                       <span className="text-zacht italic">Vul je adres in bovenaan</span>
@@ -292,7 +292,7 @@ export function VergelijkPanel({ campussen, schooljaarAanbod, onClose }: Vergeli
 
         <p className="mt-4 text-xs text-zacht">
           Richtingen zijn per graad samengevat: de brondata vermeldt elk leerjaar apart, hier
-          staat elke richting één keer. Afstanden zijn hemelsbreed, geen reisafstand. Controleer
+          staat elke richting één keer. Afstanden zijn in vogelvlucht, geen reisafstand. Controleer
           de officiële fiche voor het definitieve aanbod.
         </p>
       </div>

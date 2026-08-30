@@ -8,6 +8,19 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.7.0 — 30 augustus 2026
+
+**Veranderd**
+
+- **"Hemelsbreed" heet nu "in vogelvlucht".** Dezelfde afstand, duidelijker woord. Het staat op
+  de resultatenkaart, in het detailpaneel, in de vergelijkingstabel en in de voetnoot eronder —
+  overal aangepast. Het blijft de rechte lijn tussen twee punten, dus nog altijd geen
+  reisafstand; daarvoor staan de fiets- en OV-tijden in het detailpaneel.
+- **Het versienummer staat onderaan in de footer**, met een link naar deze pagina met
+  wijzigingen. Zo weet je welke versie je voor je hebt wanneer je een fout meldt.
+
+---
+
 ## 0.6.0 — 30 augustus 2026
 
 **Nieuw**
