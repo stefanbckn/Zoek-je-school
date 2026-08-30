@@ -345,17 +345,19 @@ commercieel, licht voor hun infrastructuur, en zich aan het gebruiksbeleid houdt
 
 1. **Open source, gepubliceerd onder een open-source licentie**, en niet-commercieel.
    Prototypen mag zonder. ✅ Licentie geregeld in v0.3: `LICENSE` bevat de letterlijke
-   AGPL-3.0-tekst van gnu.org. ⚠️ **Nog open: de repo publiek zetten.**
-   `github.com/stefanbckn/Zoek-je-school` gaf op 27/08/2026 nog HTTP 404 zonder login. Zonder
-   dat is er geen publieke broncode en is de voorwaarde niet vervuld. Doet de eigenaar zelf.
+   AGPL-3.0-tekst van gnu.org. ✅ **De repo staat publiek.** Geverifieerd op 30/08/2026:
+   `github.com/stefanbckn/Zoek-je-school` geeft HTTP 200 zonder login en de GitHub-API meldt
+   `private: false`. Een eerdere versie van dit bestand noteerde nog een 404 van 27/08/2026;
+   die notitie was verouderd. Deze voorwaarde is dus vervuld.
    Let ook op de niet-commerciële eis: een donatieknop is verdedigbaar, advertenties of een
    betaalmuur zouden deze API-toegang kosten.
 2. **Contact opnemen vóór gebruik van zware endpoints**, via hun Matrix-kanaal
    `#transitous:matrix.spline.de`. ⚠️ **Correctie op een eerdere versie van dit bestand**, die
    hier "geen harde verplichting vooraf" van maakte. De voorwaarden zeggen letterlijk *"contact
    us before using any potentially resource-intensive API endpoints (such as routing,
-   isochrones)"* — en routing is precies wat wij doen. Herlezen op 27/08/2026. Nog te doen door
-   de eigenaar; kan niet vanuit deze repo.
+   isochrones)"* — en routing is precies wat wij doen. Herlezen op 27/08/2026.
+   ✅ **Gebeurd op 27/08/2026**: de eigenaar heeft Transitous via dat kanaal gecontacteerd.
+   Niet opnieuw als openstaand punt opvoeren.
 3. **Contactgegevens meesturen.** Een `User-Agent` met naam, versie en contactadres.
    ⚠️ **Dat kan hier niet** — een browser laat `User-Agent` niet overschrijven, en `fetch`
    weigert die header stil. Transitous voorziet dat expliciet: draait de app in de browser, dan
