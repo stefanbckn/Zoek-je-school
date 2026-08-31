@@ -40,6 +40,7 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
 | 5 | Uitleg- en helppaneel | Paneel "Hoe werkt deze site?" met een korte uitleg van zoeken, filteren en vergelijken, zelf te openen vanuit de kop | **Klaar om te bouwen.** Geen bron nodig, puur frontend. Zelf te openen, nooit vanzelf: zie hieronder |
+| 6 | Markers clusteren op de kaart | Nabije adressen samengevoegd tot één bol met het aantal erin, die bij inzoomen weer uit elkaar valt | **Klaar om te bouwen, keuze van bibliotheek nog te verifiëren.** Geen bron nodig, puur frontend. Zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -190,6 +191,36 @@ Aandachtspunten voor wie dit bouwt:
   iemand het paneel gezien heeft, is precies het bijhouden van bezoekgedrag dat we niet doen.
 - Schrijf het vanuit wat een ouder wil bereiken ("scholen op fietsafstand vergelijken"), niet als
   rondleiding langs de knoppen.
+
+## Markers clusteren: de kaart begint te druk (gemeld 31/08/2026)
+
+Zonder filters staan er 303 adressen op de kaart, en bij het openen zoomt `FitBounds` uit naar de
+hele provincie. Wat je dan ziet is een blauwe soep waarin niets meer los te onderscheiden valt.
+Gemeld door een gebruiker tijdens een UX-test: de kaart is in het begin te druk, en een groepering
+met het aantal erin zou helpen, waarbij de losse markers bij inzoomen tevoorschijn komen.
+
+Waarom dit past bij wat er al vastligt: de kaart mag bewust níét pagineren (zie 0.3.0 hierboven),
+want daar is het volledige beeld het punt. Clusteren haalt niets weg. Het aantal in de bol is zelf
+informatie voor een ouder ("hier zitten er elf bij elkaar"), en dat is precies het cijfer dat nu
+onleesbaar in de overlap verdwijnt.
+
+Aandachtspunten voor wie dit bouwt:
+
+- **Een cluster is geen campus.** De campus-samenvoeging op `postcode|straat|huisnummer` is het
+  datamodel (zie CLAUDE.md); een cluster is puur visueel en hangt van het zoomniveau af. Laat een
+  cluster dus nooit iets over "een school" zeggen, en bouw er geen filter of teller op. Het aantal
+  boven de lijst blijft het aantal campussen.
+- **Op maximale zoom moeten de markers los staan.** Meerdere scholen op één adres zijn al één
+  marker met een popup eronder; een cluster die daar overheen blijft liggen verbergt dat.
+- **De bibliotheekkeuze is nog niet geverifieerd.** `leaflet.markercluster` is de standaard, maar
+  de React-wrapper daarrond moet met `react-leaflet` v5 en React 19 overweg kunnen. Eerst
+  controleren, niet aannemen. Lukt dat niet, dan is `markercluster` rechtstreeks op de
+  Leaflet-instantie aansturen (via `useMap()`) het alternatief, zoals `FitBounds` nu al doet.
+- **Toetsenbord en schermlezer meenemen.** Een clusterbol is een klikbaar element; die moet met
+  Tab te bereiken zijn en een leesbaar label dragen ("11 adressen, open om te spreiden").
+- Let op de laadtijd van de extra CSS en op het thema: de standaardstijl van markercluster brengt
+  een eigen kleurenset mee die naast het palet uit 0.2.1 valt. Doormeten met
+  `node scripts/kleurcheck.mjs` als er kleur bij komt.
 
 ## Doorlichting: wel linken, nooit scoren
 
