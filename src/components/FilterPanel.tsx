@@ -88,6 +88,23 @@ export function FilterPanel({
       </div>
 
       <div>
+        <label htmlFor="richting" className="block text-sm font-medium text-inkt mb-1">
+          Zoek op studierichting
+        </label>
+        <input
+          id="richting"
+          type="text"
+          value={richting}
+          onChange={(e) => onRichtingChange(e.target.value)}
+          placeholder="bv. Latijn, verzorging, STEM"
+          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent focus:outline-none"
+        />
+        <p className="mt-1 text-xs text-zacht">
+          Toont scholen waar minstens één richting hierop matcht.
+        </p>
+      </div>
+
+      <div>
         <h2 className="text-sm font-medium text-inkt mb-2">Net</h2>
         <div className="flex flex-col gap-2">
           {netOpties.map((net) => (
@@ -157,23 +174,6 @@ export function FilterPanel({
         </div>
         <p className="mt-2 text-xs text-zacht">
           Geldt vanaf de tweede graad. De eerste graad is voor iedereen hetzelfde.
-        </p>
-      </div>
-
-      <div>
-        <label htmlFor="richting" className="block text-sm font-medium text-inkt mb-1">
-          Zoek op studierichting
-        </label>
-        <input
-          id="richting"
-          type="text"
-          value={richting}
-          onChange={(e) => onRichtingChange(e.target.value)}
-          placeholder="bv. Latijn, verzorging, STEM"
-          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent focus:outline-none"
-        />
-        <p className="mt-1 text-xs text-zacht">
-          Toont scholen waar minstens één richting hierop matcht.
         </p>
       </div>
 
