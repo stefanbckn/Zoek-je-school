@@ -8,6 +8,29 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.9.0 — 31 augustus 2026
+
+**Nieuw**
+
+- **"Hoe werkt deze site?".** Rechtsboven in de kop, naast "Over deze site", staat nu een
+  venster met de uitleg bij het gebruik: waar je je adres invult en wat de straal doet, welke
+  filters het snelst een korte lijst geven (studierichting eerst), dat een kaartje een adres is
+  en geen school, en hoe je twee tot vier adressen naast elkaar zet en afdrukt. Het sluit met
+  Escape of een klik ernaast, en de open stand staat in de link (`?help=1`), dus je kan de
+  uitleg doorsturen aan wie ermee worstelt.
+- **Een blok "Wat je hier niet vindt".** Infodagen, aanmelden en een oordeel over kwaliteit
+  staan niet op deze site. Dat staat nu in de uitleg, met waar je het wel vindt, in plaats van
+  dat je blijft zoeken naar iets dat er niet is.
+
+**Niet veranderd**
+
+- **Het venster gaat nooit vanzelf open**, ook niet bij een eerste bezoek. De site houdt niets
+  bij over wie er langskomt, dus een eerste bezoek is niet van een tiende te onderscheiden.
+  Onthouden dat je de uitleg al gezien hebt, zou net het bijhouden van bezoekgedrag zijn dat
+  deze site niet doet. De knop staat daarom gewoon zichtbaar in de kop, en jij beslist.
+
+---
+
 ## 0.8.0 — 30 augustus 2026
 
 **Nieuw**

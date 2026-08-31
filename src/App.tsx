@@ -3,6 +3,7 @@ import { ActieveFilters } from './components/ActieveFilters'
 import { DetailPanel } from './components/DetailPanel'
 import { FilterPanel } from './components/FilterPanel'
 import { Footer } from './components/Footer'
+import { HelpPanel } from './components/HelpPanel'
 import { OverPanel } from './components/OverPanel'
 import { MapView } from './components/MapView'
 import { ResultList } from './components/ResultList'
@@ -194,6 +195,15 @@ function App() {
               komen. In de header is het altijd zichtbaar, zonder ruimte te kosten in de
               zoekopdracht zelf. */}
           <div className="flex shrink-0 flex-wrap items-center gap-3">
+            {/* De uitleg staat vóór "Over deze site": wie hier klikt zit meestal vast in het
+                zoeken zelf, niet in de vraag waar de gegevens vandaan komen. */}
+            <button
+              type="button"
+              onClick={() => update({ help: true })}
+              className="rounded-lg border border-rand px-2.5 py-1.5 text-xs text-zacht transition-colors hover:bg-hover hover:text-inkt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              Hoe werkt deze site?
+            </button>
             <button
               type="button"
               onClick={() => update({ over: true })}
@@ -357,6 +367,14 @@ function App() {
       />
 
       <OverPanel open={state.over} meta={meta} onClose={() => update({ over: false })} />
+
+      {/* Van de uitleg naar de herkomst is één klik: het ene paneel sluit terwijl het andere
+          opengaat, in dezelfde update, anders zou de tussenstand even beide tonen. */}
+      <HelpPanel
+        open={state.help}
+        onClose={() => update({ help: false })}
+        onOverOpen={() => update({ help: false, over: true })}
+      />
     </>
   )
 }

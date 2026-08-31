@@ -33,6 +33,15 @@ export interface SearchState {
    * herschrijft — een parameter erbuiten zou bij de eerstvolgende filterwijziging wegvallen.
    */
   over: boolean
+  /**
+   * Staat "Hoe werkt deze site?" open. Zelfde redenering als `over`: in de URL, zodat je de
+   * uitleg kan doorsturen aan wie met de site worstelt, en in SearchState omdat `update()` de
+   * volledige querystring herschrijft.
+   *
+   * Het paneel gaat nooit vanzelf open, ook niet bij een eerste bezoek: de site houdt niets
+   * bij over wie er langskomt, dus een eerste bezoek is niet van een tiende te onderscheiden.
+   */
+  help: boolean
 }
 
 const DEFAULT_STATE: SearchState = {
@@ -47,6 +56,7 @@ const DEFAULT_STATE: SearchState = {
   richting: '',
   toonZonderAanbod: false,
   over: false,
+  help: false,
 }
 
 function parseList(raw: string | null): string[] {
@@ -125,6 +135,7 @@ function parseState(search: string): SearchState {
     // bewerkte URL) valt terug op de standaard, net als bij de andere parameters hierboven.
     toonZonderAanbod: params.get('zonderaanbod') === '1',
     over: params.get('over') === '1',
+    help: params.get('help') === '1',
   }
 }
 
@@ -141,6 +152,7 @@ function toSearchParams(state: SearchState): URLSearchParams {
   if (state.richting) params.set('richting', state.richting)
   if (state.toonZonderAanbod) params.set('zonderaanbod', '1')
   if (state.over) params.set('over', '1')
+  if (state.help) params.set('help', '1')
   return params
 }
 
