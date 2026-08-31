@@ -486,6 +486,20 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
     selectie. Daarom leeft `over` in `SearchState` en niet in een losse `useState`: `update()`
     herschrijft de volledige querystring, dus een parameter erbuiten valt bij de eerstvolgende
     filterwijziging weg.
+- **Hoe werkt deze site? (sinds 0.9.0).** `HelpPanel.tsx`, geopend met de knop in de kop naast
+  "Over deze site". Drie dingen die vastliggen:
+  - **Het gaat nooit vanzelf open, ook niet bij een eerste bezoek.** De site bewaart niets over
+    wie er langskomt, dus een eerste bezoek is niet van een tiende te onderscheiden. Elke poging
+    tot "toon dit één keer" wordt ofwel een venster dat elke keer in de weg staat, ofwel opslag
+    die we net niet willen. `localStorage` is hier dus géén uitweg, ook al gebruikt de
+    themaschakelaar het.
+  - **Taakverdeling met `OverPanel`:** dat paneel beantwoordt "kan ik dit vertrouwen" (herkomst,
+    bewerkingen, disclaimer, privacy), dit paneel "hoe krijg ik hieruit wat ik zoek". De bronnen
+    staan hier bewust niet nog eens; er is één link naar het andere paneel, die in dezelfde
+    `update()` het ene sluit en het andere opent.
+  - **`?help=1` leeft in `SearchState`**, om dezelfde reden als `over`. Zie de vorige bullet.
+  - De volgorde van de filters in de tekst is die van wat het meest oplevert, met studierichting
+    eerst. Beslist door de gebruiker; niet omgooien naar de volgorde van het scherm.
 - **Het versienummer in de footer komt uit `package.json`** via `__APP_VERSION__` (een `define`
   in `vite.config.ts`, gedeclareerd in `src/globals.d.ts`). Niet vervangen door een
   hardgecodeerde string — dan veroudert het stil bij de volgende release.
