@@ -80,7 +80,8 @@ een bezoeker merkt. Elke uitgebrachte versie draagt op `main` de tag `v<versie>`
 Eén regel per open bug. De diagnose, wat al uitgezocht is en wat nog geverifieerd moet worden
 staat in **[BUGS.md](./BUGS.md)** — houd die twee gelijk als je er een toevoegt of oplost.
 
-Op dit moment staan er geen bugs open.
+- Op een smal telefoonscherm steekt de knoppenrij in de kop (uitleg, over, thema) buiten het
+  scherm, waardoor de pagina horizontaal scrollbaar wordt.
 
 ## Sanity check
 
