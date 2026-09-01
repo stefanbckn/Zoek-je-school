@@ -42,6 +42,7 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
 | 5 | Markers clusteren op de kaart | Nabije adressen samengevoegd tot één bol met het aantal erin, die bij inzoomen weer uit elkaar valt | **Klaar om te bouwen, keuze van bibliotheek nog te verifiëren.** Geen bron nodig, puur frontend. **Voorwaarde voor 6**, dus niet doorschuiven. Zie hieronder |
 | 6 | Andere provincies | Heel Vlaanderen doorzoekbaar, met Antwerpen als standaard en een provinciekeuze die de rest bijlaadt | **Geblokkeerd door 5, geen bron nodig.** De data wordt al opgehaald en daarna weggegooid, dus het werk zit in de UI. Clustering moet er eerst zijn: 303 markers is nu al te druk. Zie hieronder |
+| 7 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -458,3 +459,110 @@ Die is er niet. Wat gecontroleerd is, zodat niemand het een derde keer doet:
   databank zelf zit bovendien op gemeenteniveau, niet per vestigingsplaats.
 - Het **Tableau-dashboard staat er nog** en laadt (geverifieerd vandaag). De handmatige
   kruistabel-export blijft de route.
+
+## Kwaliteitsbewaking: CI, tests en schemavalidatie (besproken 01/09/2026)
+
+Eén thema, want de losse stukken hangen samen: zonder CI draait er niets automatisch, en zonder
+tests bewaakt die CI niets dat de build niet al bewaakt. Niet gebouwd, wel doorgemeten.
+
+**De aanleiding.** `scripts/kleurcheck.mjs` is vandaag de enige echte controle in het project
+(contrast en kleurafstand, ook gesimuleerd voor kleurenblindheid) en die draait alleen wanneer
+iemand eraan denkt. Netlify draait hem nooit. Precies het soort fout dat hij vangt, ziet er op je
+eigen scherm prima uit.
+
+### Stap 1: een CI-workflow bij elke push en PR
+
+Onderstaande versie is lokaal doorgemeten: `oxlint`, `tsc -b`, `tsc --noEmit -p tsconfig.app.json`
+en `node scripts/kleurcheck.mjs` geven alle vier exitcode 0 op de huidige `main`.
+
+```yaml
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx oxlint --deny-warnings
+      - run: npm run build
+      - run: node scripts/kleurcheck.mjs
+```
+
+Vier dingen die vastliggen, elk omdat een voor de hand liggende variant stilzwijgend fout gaat:
+
+- **Node 22, niet 24.** `netlify.toml` zet `NODE_VERSION = "22"` en `ververs-scholendata.yml`
+  gebruikt 22. Loopt CI op een andere major, dan kan CI groen zijn terwijl de deploy breekt.
+- **Geen losse typecheck-stap.** `npm run build` doet `tsc -b`, en dat dekt zowel
+  `tsconfig.app.json` als `tsconfig.node.json`, dus ook `scripts/`, `netlify/`, `shared/` en
+  `vite.config.ts`. Een stap `tsc --noEmit -p tsconfig.app.json` ervoor dekt alleen `src` en voegt
+  dus niets toe. Als losse `typecheck`-npm-script voor lokale snelle feedback is het wel zinvol;
+  maak er dan `tsc -b --force` van.
+- **`--deny-warnings` bij oxlint.** `react/only-export-components` staat in `.oxlintrc.json` op
+  `warn`; zonder die vlag passeren waarschuwingen stil en is de lintstap half decoratief.
+- **`permissions` en `concurrency`.** Minimale tokenrechten, en achterhaalde runs op dezelfde PR
+  worden geannuleerd.
+
+Kleine noot bij de versies: `actions/checkout` en `actions/setup-node` staan intussen op **v7**
+(nagekeken via de GitHub-API op 01/09/2026), de bestaande data-workflow op v5. Kies één lijn voor
+beide workflows in plaats van ze uit elkaar te laten lopen.
+
+⚠️ **Nog te controleren in de Netlify-UI:** staan deploy previews aan? Zo ja, dan bouwt Netlify je
+PR-branches al en is de buildstap in CI deels dubbel. Ze blijft dan nog steeds nuttig als snelle
+faalmelding en omdat ze los staat van de `ignore`-regel in `netlify.toml`.
+
+### Stap 2: tests, maar alleen op wat al eens misging
+
+Er zijn vandaag nul tests: geen vitest, geen testbestand, geen `test`-script. Niet naar
+dekkingsgraad streven, wel de handvol beslissingen vastpinnen die in CLAUDE.md al een eigen
+waarschuwing hebben. Vijf kandidaten, allemaal pure functies zonder DOM:
+
+- **`NET_MIGRATIE`** in `useSearchState.ts`: een oude link met `?net=Officieel gesubsidieerd` moet
+  Provinciaal plus Gemeentelijk opleveren. Breekt dat, dan geeft een gedeelde link een lege
+  pagina, zonder foutmelding.
+- **`volgendeSchooldagOchtend()`** in `ov.ts`: datumlogica rond weekend en zomertijd, plus de
+  lokale-tijd-val waar `toISOString()` er 06:30 van maakt.
+- **`transitousPlannerUrl()`** en **`orsKaartUrl()`**: encodering van namen met een schuine streep,
+  en de omgekeerde `lon,lat`-volgorde.
+- **`campusAanbod()`** in `aanbod.ts`: aanbod per adres samenvoegen zonder duplicaten.
+- De groepeersleutel **`postcode|straat|huisnummer`** in `fetch-data.ts`, met busnummer genegeerd.
+
+Schatting: een uurtje met vitest, zo'n twintig assertions. Pas hierna bewaakt CI iets dat de
+build niet al bewaakt.
+
+### Stap 3: schemavalidatie op de API-responses (valibot)
+
+Alleen in `scripts/fetch-data.ts`, want daar zit de enige echt onbetrouwbare grens. Hernoemt
+Onderwijs en Vorming een veld, dan schrijft het script nu stil `null` weg; de omvangcontrole van
+15% vangt alleen krimp, niet stille verarming. Een schema per endpoint maakt daar een luide fout
+van.
+
+**Niet client-side gebruiken.** `public/data/vestigingen.json` maakt je eigen script; die 4 MB
+opnieuw valideren in de browser kost bundle en parsetijd voor nul winst. Valibot is boven zod de
+juiste keuze vanwege tree-shaking, al speelt dat in een buildscript niet eens. Laatste versie op
+npm: 1.4.2 (nagekeken 01/09/2026).
+
+### Wat er bewust NIET in zit
+
+- **Geen CI-badge in de README, zolang er geen tests zijn.** Een badge zou dan zeggen "de build
+  slaagt", en dat weet je al: Netlify bouwt elke push op `main`. Bovendien is het publiek
+  beperkt; de repo staat publiek omdat de AGPL en Transitous dat vragen, niet omdat er
+  bijdragers langskomen. Na stap 2 is de badge wel iets waard.
+- **CodeQL: mag, maar verwacht er weinig van.** Dit is een client-side app zonder database of
+  authenticatie; het enige serverpad is de ORS-proxy. Via *default setup* (Settings → Code
+  security) kost het bijna niets en is er geen workflowbestand te onderhouden. **Dependabot
+  levert hier meer op**, want het risico zit in dependencies. ⚠️ Niet geverifieerd: default setup
+  zet géén workflowbestand in de repo, en de badge-URL verwijst naar een workflowbestand. Wil je
+  per se een CodeQL-badge, dan moet je waarschijnlijk de advanced variant nemen.
