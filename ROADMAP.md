@@ -28,6 +28,7 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **0.6.0** | Campussen vergelijken | 2–4 adressen naast elkaar in één tabel (afstand, scholen, aanbod per graad, contact), aan te vinken vanaf de resultatenkaarten en afdrukbaar naar papier of PDF |
 | **0.7.0** | UI-details | "Hemelsbreed" heet "in vogelvlucht" op alle plaatsen · versienummer met changelog-link onderaan in de footer |
 | **0.8.0** | Disclaimer + over deze site | Paneel "Over deze site" met herkomst, bewerkingen, privacy en disclaimer (deelbaar via `?over=1`), te openen vanuit de kop én de footer · korte disclaimerregel altijd zichtbaar in de footer |
+| **0.10.0** | GOK-leerlingenkenmerken | Vier leerlingenkenmerken per school in het detailpaneel (opleiding moeder, schooltoeslag, thuistaal, buurt), met schooljaar, teldatum en de kadering dat het indicatieve achtergrondcijfers zijn · automatisch opgehaald uit de AgODi-xlsx, join op 266 van de 272 scholen |
 | **0.9.0** | Uitleg- en helppaneel | Paneel "Hoe werkt deze site?" in de kop met uitleg bij zoeken, filteren, één adres bekijken en vergelijken, plus een blok over wat de site niet toont (deelbaar via `?help=1`) |
 
 ## Nog te doen
@@ -36,13 +37,12 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| 1 | GOK-indicatoren | 4 leerlingenkenmerken per school, met kaderende uitleg | **Klaar om te bouwen.** Downloadbare xlsx bij AgODi, join geverifieerd op 269/272 scholen. Per school, niet per vestiging — zie hieronder. De vergelijkingstabel uit 0.6.0 is de plek waar ze thuishoren |
-| 2 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
-| 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
-| 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
-| 5 | Markers clusteren op de kaart | Nabije adressen samengevoegd tot één bol met het aantal erin, die bij inzoomen weer uit elkaar valt | **Klaar om te bouwen, keuze van bibliotheek nog te verifiëren.** Geen bron nodig, puur frontend. **Voorwaarde voor 6**, dus niet doorschuiven. Zie hieronder |
-| 6 | Andere provincies | Heel Vlaanderen doorzoekbaar, met Antwerpen als standaard en een provinciekeuze die de rest bijlaadt | **Geblokkeerd door 5, geen bron nodig.** De data wordt al opgehaald en daarna weggegooid, dus het werk zit in de UI. Clustering moet er eerst zijn: 303 markers is nu al te druk. Zie hieronder |
-| 7 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 1 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
+| 2 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
+| 3 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
+| 4 | Markers clusteren op de kaart | Nabije adressen samengevoegd tot één bol met het aantal erin, die bij inzoomen weer uit elkaar valt | **Klaar om te bouwen, keuze van bibliotheek nog te verifiëren.** Geen bron nodig, puur frontend. **Voorwaarde voor 5**, dus niet doorschuiven. Zie hieronder |
+| 5 | Andere provincies | Heel Vlaanderen doorzoekbaar, met Antwerpen als standaard en een provinciekeuze die de rest bijlaadt | **Geblokkeerd door 4, geen bron nodig.** De data wordt al opgehaald en daarna weggegooid, dus het werk zit in de UI. Clustering moet er eerst zijn: 303 markers is nu al te druk. Zie hieronder |
+| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -341,7 +341,12 @@ volgorde van zekerheid:
      telt de teller wat door dít filter wegvalt en niet wat een ander filter al wegnam.
    - Let op de campus-samenvoeging: leeg betekent hier *geen enkele school op dat adres* heeft
      een richting. Eén school met aanbod houdt het hele adres zichtbaar.
-2. **GOK-leerlingenkenmerken**, per school. Bron en join geverifieerd — zie hieronder.
+2. ~~**GOK-leerlingenkenmerken**, per school.~~ **Uitgebracht in 0.10.0.** Wat er gebouwd is:
+   `scripts/leerlingenkenmerken.ts` haalt de xlsx op van het documentenportaal en
+   `scripts/xlsx.ts` leest ze uit zonder dependency; de vier percentages staan in het
+   detailpaneel onder het studieaanbod. Wat daarbij vastligt, staat in [CLAUDE.md](./CLAUDE.md).
+   **Nog open: de vergelijkingstabel.** Daar horen ze thuis (zie 0.6.0 hieronder), maar vier
+   rijen naast elkaar nodigen uit tot een ranglijst; dat vraagt een eigen ontwerp.
 3. ~~**Campussen vergelijken**~~ **Uitgebracht in 0.6.0**, vóór de GOK-cijfers in plaats van
    erna — die passen er later gewoon als extra rij bij. Wat er gebouwd is: 2 tot 4 adressen
    naast elkaar in één tabel (`VergelijkPanel.tsx`), aan te vinken vanaf de resultatenkaarten,
@@ -363,7 +368,7 @@ volgorde van zekerheid:
 4. **Link naar het doorlichtingsverslag.** Zie de sectie hierboven — vorm ligt vast, bron nog
    niet geverifieerd. Dit is het enige onderdeel dat kan afvallen.
 
-## GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026)
+## GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026, gebouwd in 0.10.0)
 
 **Dit vervangt de Tableau-route hieronder als eerste keuze.** AgODi publiceert de
 leerlingenkenmerken per school als gewone xlsx op het documentenportaal. Geen Tableau, geen
@@ -402,9 +407,12 @@ https://data-onderwijs.vlaanderen.be/documenten/bestanden/
 
 **Join tegen onze dataset, geverifieerd op het bestand 2024-2025:**
 
-- Op `schoolnummer`: **269 van onze 272 scholen matchen.** De drie die ontbreken zijn Arkades
-  (Herentals, onafhankelijk — krijgt geen werkingstoelagen, dus terecht afwezig) en Mariagaarde
-  secundair I en II (Malle, recent gesplitst; nog niet in de telling van feb 2024).
+- Op `schoolnummer`: **266 van onze 272 scholen matchen** (bij het bouwen op 01/09/2026; de
+  eerste verkenning telde er 269, de dataset is sindsdien gegroeid). De zes die ontbreken zijn
+  Arkades (Herentals) en Safe college (Mechelen) — allebei onafhankelijk, dus zonder
+  werkingstoelagen en terecht afwezig — plus Mariagaarde secundair I en II (Westmalle) en
+  Heilig Hart - Bovenbouw 2 en Middenschool 2 (Heist-op-den-Berg), die recent zijn gesplitst en
+  nog niet in de telling van februari 2024 zaten.
 - ⚠️ **Het adres in dit bestand is dat van de instelling, niet van de vestigingsplaats.** Bij
   86 van de 269 gematchte scholen wijkt het af van het campusadres dat wij tonen (bv. Panorama
   staat er met Bredastraat 35, wij tonen Quellinstraat 31). **Join dus op schoolnummer, nooit op
