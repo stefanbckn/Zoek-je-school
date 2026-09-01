@@ -8,6 +8,19 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.9.1 — 1 september 2026
+
+**Opgelost**
+
+- **Op een smalle telefoon paste de site niet meer op het scherm.** De rij knoppen bovenaan
+  ("Hoe werkt deze site?", "Over deze site" en de keuze Licht/Systeem/Donker) bleef op één
+  regel staan en stak buiten het scherm, waardoor je de hele pagina zijwaarts moest schuiven en
+  "Donker" half wegviel. De knoppen zakken nu naar een tweede regel als ze niet passen. Op een
+  scherm van 320 pixels breed was de pagina 464 pixels breed; dat is nu exact 320. Op een breed
+  scherm verandert er niets aan de kop.
+
+---
+
 ## 0.9.0 — 31 augustus 2026
 
 **Nieuw**
