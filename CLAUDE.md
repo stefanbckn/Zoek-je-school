@@ -184,10 +184,16 @@ https://data-onderwijs.vlaanderen.be/documenten/bestanden/
 - **Framing ligt vast**: kansarmoede-indicatoren, geen kwaliteitsoordeel. De balkjes in het
   detailpaneel zijn neutraal grijs, bewust geen kleurschaal van groen naar rood, en onder het
   blok staat dat het indicatieve achtergrondcijfers zijn waarop je geen schoolkeuze baseert.
-  **In de vergelijkingstabel staan enkel de percentages, zonder balk** — vier balken naast
-  elkaar worden een grafiek waarin de langste vanzelf "slechter" lijkt. Niet "consistent maken"
-  door ze daar alsnog toe te voegen. De labels en de volgorde staan één keer in
-  `src/lib/leerlingenkenmerken.ts`, zodat beide plekken niet uiteenlopen.
+  Hetzelfde balkje staat in de vergelijkingstabel; een eerdere versie liet het daar weg om er
+  geen grafiek van te maken, maar een percentage suggereert net zo goed een rangorde en snel
+  naast elkaar leggen is precies waar die tabel voor bestaat. De labels en de volgorde staan één
+  keer in `src/lib/leerlingenkenmerken.ts`, zodat beide plekken niet uiteenlopen.
+- ⚠️ **De baan van het balkje heeft een vaste breedte in de vergelijkingstabel**
+  (`KenmerkBalkje`, `w-28`), niet de celbreedte. De kolommen daar zijn niet even breed, dus een
+  baan die meeloopt met de cel tekent 66,7% in een smalle kolom kórter dan 57,7% in een brede.
+  Doorgemeten in de browser. Op papier maakt `table-layout: fixed` de kolommen wél gelijk;
+  daar staat de baan op 60% van de cel. En net als bij de chips draagt het balkje
+  `print-color-adjust: exact`, anders is het bij "Achtergrondbeelden uit" een lege streep.
 - **Faalt het ophalen, dan is dat geen harde fout**: de dataset komt er zonder kenmerken uit
   (luide waarschuwing) en het blok valt weg in de app. Faalt het *lezen* van een gevonden
   bestand, dan stopt het script wél — dan is er iets aan de publicatie veranderd en moet er

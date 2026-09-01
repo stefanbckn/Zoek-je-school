@@ -22,11 +22,12 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
   die telling dient: de berekening van de werkingstoelagen. Uitdrukkelijk vermeld: het zijn
   indicatieve achtergrondcijfers over de leerlingengroep, ze zeggen niets over de kwaliteit van
   het onderwijs, en het is geen basis voor een schoolkeuze.
-- **Ook in de vergelijkingstabel**, als vier extra rijen met enkel het percentage. Bewust zonder
-  de balkjes uit het detailpaneel: naast elkaar worden vier balken een grafiek waarin de langste
-  vanzelf "slechter" lijkt, en dat oordeel zit niet in deze cijfers. Staan er meerdere scholen op
+- **Ook in de vergelijkingstabel**, als vier extra rijen met hetzelfde percentage en balkje.
+  Alle banen zijn daar even breed, ook als de ene kolom breder is dan de andere — anders zou een
+  hoger percentage in een smalle kolom een korter balkje krijgen. Staan er meerdere scholen op
   een adres, dan krijgt elke school haar eigen regel in de cel, want anders dan de rest van de
-  tabel gaan deze cijfers per school en niet per adres.
+  tabel gaan deze cijfers per school en niet per adres. Op de afdruk blijven de balkjes staan,
+  ook als je "Achtergrondbeelden" uitzet.
 - **"Over deze site" vermeldt de nieuwe bron**, met de link naar de publicatie zelf en met de
   kanttekening dat de percentages hier berekend zijn uit aantallen.
 

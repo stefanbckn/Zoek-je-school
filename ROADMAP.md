@@ -28,7 +28,7 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **0.6.0** | Campussen vergelijken | 2–4 adressen naast elkaar in één tabel (afstand, scholen, aanbod per graad, contact), aan te vinken vanaf de resultatenkaarten en afdrukbaar naar papier of PDF |
 | **0.7.0** | UI-details | "Hemelsbreed" heet "in vogelvlucht" op alle plaatsen · versienummer met changelog-link onderaan in de footer |
 | **0.8.0** | Disclaimer + over deze site | Paneel "Over deze site" met herkomst, bewerkingen, privacy en disclaimer (deelbaar via `?over=1`), te openen vanuit de kop én de footer · korte disclaimerregel altijd zichtbaar in de footer |
-| **0.10.0** | GOK-leerlingenkenmerken | Vier leerlingenkenmerken per school in het detailpaneel (opleiding moeder, schooltoeslag, thuistaal, buurt) én als rijen in de vergelijkingstabel, met schooljaar, teldatum en de kadering dat het indicatieve achtergrondcijfers zijn · automatisch opgehaald uit de AgODi-xlsx, join op 266 van de 272 scholen |
+| **0.10.0** | GOK-leerlingenkenmerken | Vier leerlingenkenmerken per school in het detailpaneel (opleiding moeder, schooltoeslag, thuistaal, buurt) én als rijen met balkje in de vergelijkingstabel, met schooljaar, teldatum en de kadering dat het indicatieve achtergrondcijfers zijn · automatisch opgehaald uit de AgODi-xlsx, join op 266 van de 272 scholen |
 | **0.9.0** | Uitleg- en helppaneel | Paneel "Hoe werkt deze site?" in de kop met uitleg bij zoeken, filteren, één adres bekijken en vergelijken, plus een blok over wat de site niet toont (deelbaar via `?help=1`) |
 
 ## Nog te doen
@@ -345,9 +345,9 @@ volgorde van zekerheid:
 2. ~~**GOK-leerlingenkenmerken**, per school.~~ **Uitgebracht in 0.10.0.** Wat er gebouwd is:
    `scripts/leerlingenkenmerken.ts` haalt de xlsx op van het documentenportaal en
    `scripts/xlsx.ts` leest ze uit zonder dependency; de vier percentages staan in het
-   detailpaneel onder het studieaanbod, en als vier rijen in de vergelijkingstabel — daar enkel
-   als percentage, zonder balk, om er geen grafiek van te maken. Wat daarbij vastligt, staat in
-   [CLAUDE.md](./CLAUDE.md).
+   detailpaneel onder het studieaanbod, en als vier rijen in de vergelijkingstabel, met daar
+   dezelfde balkjes op een vaste breedte zodat ongelijke kolommen de vergelijking niet
+   vertekenen. Wat daarbij vastligt, staat in [CLAUDE.md](./CLAUDE.md).
 3. ~~**Campussen vergelijken**~~ **Uitgebracht in 0.6.0**, vóór de GOK-cijfers in plaats van
    erna — die passen er later gewoon als extra rij bij. Wat er gebouwd is: 2 tot 4 adressen
    naast elkaar in één tabel (`VergelijkPanel.tsx`), aan te vinken vanaf de resultatenkaarten,

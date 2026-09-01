@@ -334,6 +334,23 @@ button:not(:disabled) {
     -webkit-print-color-adjust: exact;
   }
 
+  /* Zelfde reden als bij de chips hierboven: zonder dit verdwijnt zowel de baan als de vulling
+     van het balkje zodra "Achtergrondbeelden" uitstaat, en dan staat er een lege streep op
+     papier. Het percentage ernaast blijft sowieso leesbaar, dus er gaat nooit informatie
+     verloren — dit maakt de afdruk enkel even snel scanbaar als het scherm. */
+  .vergelijk-afdruk .kenmerkbalk,
+  .vergelijk-afdruk .kenmerkbalk > * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Op papier is een pixelbreedte uit de JSX zinloos; hier telt de bladbreedte. `table-layout:
+     fixed` maakt de kolommen wél even breed, dus een baan van 60% van de cel is in elke kolom
+     even lang en blijft de vergelijking kloppen. */
+  .vergelijk-afdruk .kenmerkbalk {
+    width: 60%;
+  }
+
   /* De kenmerkkolom krijgt een vaste snee van de breedte; de adressen delen de rest. */
   .vergelijk-afdruk thead th:first-child,
   .vergelijk-afdruk tbody th:first-child {

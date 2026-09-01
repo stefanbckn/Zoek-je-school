@@ -12,6 +12,7 @@ import {
 import { NET_CHIP, NET_STYLES } from '../lib/net'
 import { huisnummerLabel } from '../lib/adres'
 import { datumLabel, KENMERKEN, percentageLabel } from '../lib/leerlingenkenmerken'
+import { KenmerkBalkje } from './KenmerkBalkje'
 
 interface VergelijkPanelProps {
   campussen: CampusMetAfstand[]
@@ -247,10 +248,11 @@ export function VergelijkPanel({
               {/* Leerlingenkenmerken staan ná het aanbod: wie twee scholen vergelijkt, kijkt
                   eerst naar wat er te studeren valt.
 
-                  **Bewust geen balkjes hier, alleen percentages.** In het detailpaneel staat één
-                  school en helpt een balk om een getal snel te plaatsen; naast elkaar in een
-                  tabel worden vier balken een grafiek waarin de langste balk vanzelf "slechter"
-                  lijkt. De cijfers dragen geen oordeel, de opmaak mag er dus ook geen suggereren.
+                  **Met hetzelfde balkje als in het detailpaneel.** Een eerdere versie liet het
+                  hier weg om er geen grafiek van te maken, maar dat argument houdt geen steek:
+                  een percentage suggereert net zo goed een rangorde, en snel naast elkaar kunnen
+                  leggen is precies waarvoor deze tabel bestaat. Wat wél vastligt, is dat het
+                  balkje neutraal grijs blijft — geen kleurschaal van groen naar rood.
 
                   **Per school, niet per adres** — anders dan elke andere rij in deze tabel. Dat
                   staat er in de cel bij zodra er meer dan één school op het adres staat. */}
@@ -266,9 +268,19 @@ export function VergelijkPanel({
                                 <span className="block text-xs text-zacht">{school.naam}</span>
                               )}
                               {school.leerlingenkenmerken ? (
-                                <span className="tabular-nums text-inkt">
-                                  {percentageLabel(school.leerlingenkenmerken[kenmerk.veld])}
-                                </span>
+                                <>
+                                  <span className="tabular-nums text-inkt">
+                                    {percentageLabel(school.leerlingenkenmerken[kenmerk.veld])}
+                                  </span>
+                                  {/* Vaste breedte, niet de celbreedte: de kolommen zijn niet
+                                      even breed, en een baan die meeloopt met de cel maakt een
+                                      hoger percentage in een smalle kolom korter dan een lager
+                                      in een brede. Zie KenmerkBalkje. */}
+                                  <KenmerkBalkje
+                                    aandeel={school.leerlingenkenmerken[kenmerk.veld]}
+                                    className="w-28 max-w-full"
+                                  />
+                                </>
                               ) : (
                                 <span className="text-zacht">—</span>
                               )}

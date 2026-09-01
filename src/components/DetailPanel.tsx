@@ -17,6 +17,7 @@ import {
 } from '../lib/ov'
 import { huisnummerLabel } from '../lib/adres'
 import { datumLabel, KENMERKEN, percentageLabel } from '../lib/leerlingenkenmerken'
+import { KenmerkBalkje } from './KenmerkBalkje'
 
 interface DetailPanelProps {
   campus: CampusMetAfstand | null
@@ -510,12 +511,7 @@ function Kenmerkbalk({
           {percentageLabel(aandeel)}
         </dd>
       </div>
-      {aandeel !== null && (
-        // De balk herhaalt enkel het percentage ernaast; schermlezers hebben er niets aan.
-        <div aria-hidden="true" className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-rand">
-          <div className="h-full rounded-full bg-zacht" style={{ width: `${aandeel * 100}%` }} />
-        </div>
-      )}
+      <KenmerkBalkje aandeel={aandeel} />
       <p className="mt-1 text-xs text-zacht">{uitleg}</p>
     </div>
   )
