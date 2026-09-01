@@ -183,8 +183,8 @@ function App() {
           staat daarom búiten deze div, zodat `print:hidden` de hele app eronder kan wegnemen
           zonder ook de tabel te verbergen. */}
       <div className={`min-h-full flex flex-col ${vergelijkOpen ? 'print:hidden' : ''}`}>
-        {/* flex-wrap is nodig: op 375px past de driestandenknop niet naast de titel en viel
-            "Donker" buiten het scherm. Bij weinig ruimte zakt de knop naar een eigen regel. */}
+        {/* flex-wrap is nodig: op 375px past de knoppenrij niet naast de titel en viel
+            "Donker" buiten het scherm. Bij weinig ruimte zakt ze naar een eigen regel. */}
         <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-rand px-4 py-4">
           <div>
             <h1 className="text-xl font-semibold text-inkt">Zoek je school</h1>
@@ -194,7 +194,13 @@ function App() {
               eerst voorbij 300 resultaten scrollen om te vinden waar de gegevens vandaan
               komen. In de header is het altijd zichtbaar, zonder ruimte te kosten in de
               zoekopdracht zelf. */}
-          <div className="flex shrink-0 flex-wrap items-center gap-3">
+          {/* Geen `shrink-0` hier, en dat is geen detail: met shrink-0 krimpt deze rij nooit
+              onder haar max-content-breedte, dus perkte de header ze nooit in en had het
+              `flex-wrap` erop niets om op te reageren. De knoppen wrapten dan nooit en de
+              themaschakelaar stak op een smalle telefoon buiten het scherm, wat de hele pagina
+              horizontaal scrollbaar maakte. `min-w-0` erbij omdat de standaard `min-width: auto`
+              van een flex-item anders alsnog op de inhoud terugvalt. */}
+          <div className="flex min-w-0 flex-wrap items-center justify-end gap-3">
             {/* De uitleg staat vóór "Over deze site": wie hier klikt zit meestal vast in het
                 zoeken zelf, niet in de vraag waar de gegevens vandaan komen. */}
             <button

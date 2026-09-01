@@ -72,16 +72,17 @@ geen verificatie gebleken.
 ## Releases
 
 Wat er per versie veranderde, staat in **[CHANGELOG.md](./CHANGELOG.md)** — geschreven vanuit wat
-een bezoeker merkt. Elke uitgebrachte versie draagt op `main` de tag `v<versie>`; de huidige is
-`v0.6.0`. De afspraken over nummering en releases staan in [CLAUDE.md](./CLAUDE.md).
+een bezoeker merkt. Elke uitgebrachte versie draagt op `main` de tag `v<versie>`; welke de
+laatste is, staat bovenaan de changelog. Hier stond dat nummer eerst voluit, maar het bleef bij
+`v0.6.0` hangen terwijl er al drie versies verder waren, dus het staat nog op één plaats.
+De afspraken over nummering en releases staan in [CLAUDE.md](./CLAUDE.md).
 
 ## Bekende bugs
 
 Eén regel per open bug. De diagnose, wat al uitgezocht is en wat nog geverifieerd moet worden
 staat in **[BUGS.md](./BUGS.md)** — houd die twee gelijk als je er een toevoegt of oplost.
 
-- Op een smal telefoonscherm steekt de knoppenrij in de kop (uitleg, over, thema) buiten het
-  scherm, waardoor de pagina horizontaal scrollbaar wordt.
+Op dit moment staan er geen bugs open.
 
 ## Sanity check
 
