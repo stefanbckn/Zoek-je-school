@@ -181,9 +181,13 @@ https://data-onderwijs.vlaanderen.be/documenten/bestanden/
 - **Geen zelfberekende OKI.** De som van de vier gedeeld door het leerlingenaantal benadert de
   gepubliceerde OKI, maar is een afleiding. Zolang die niet naast het officiële cijfer in
   Dataloep gelegd is: vier percentages tonen, geen samengesteld getal.
-- **Framing ligt vast**: kansarmoede-indicatoren, geen kwaliteitsoordeel. De balkjes in de UI
-  zijn neutraal grijs, bewust geen kleurschaal van groen naar rood, en onder het blok staat dat
-  het indicatieve achtergrondcijfers zijn waarop je geen schoolkeuze baseert.
+- **Framing ligt vast**: kansarmoede-indicatoren, geen kwaliteitsoordeel. De balkjes in het
+  detailpaneel zijn neutraal grijs, bewust geen kleurschaal van groen naar rood, en onder het
+  blok staat dat het indicatieve achtergrondcijfers zijn waarop je geen schoolkeuze baseert.
+  **In de vergelijkingstabel staan enkel de percentages, zonder balk** — vier balken naast
+  elkaar worden een grafiek waarin de langste vanzelf "slechter" lijkt. Niet "consistent maken"
+  door ze daar alsnog toe te voegen. De labels en de volgorde staan één keer in
+  `src/lib/leerlingenkenmerken.ts`, zodat beide plekken niet uiteenlopen.
 - **Faalt het ophalen, dan is dat geen harde fout**: de dataset komt er zonder kenmerken uit
   (luide waarschuwing) en het blok valt weg in de app. Faalt het *lezen* van een gevonden
   bestand, dan stopt het script wél — dan is er iets aan de publicatie veranderd en moet er

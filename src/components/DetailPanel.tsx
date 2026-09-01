@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { CampusMetAfstand, DatasetMeta, Leerlingenkenmerken, SchoolOpCampus } from '../types'
+import type { CampusMetAfstand, DatasetMeta, SchoolOpCampus } from '../types'
 import {
   campusAanbod,
   groepeerPerGraad,
@@ -16,6 +16,7 @@ import {
   type OvReisResultaat,
 } from '../lib/ov'
 import { huisnummerLabel } from '../lib/adres'
+import { datumLabel, KENMERKEN, percentageLabel } from '../lib/leerlingenkenmerken'
 
 interface DetailPanelProps {
   campus: CampusMetAfstand | null
@@ -489,38 +490,6 @@ export function DetailPanel({
 }
 
 /**
- * De vier GOK-indicatoren, in de bewoording van een ouder in plaats van die van de regelgeving
- * ("leerling wiens moeder niet gediplomeerd is in het secundair onderwijs"). De uitleg eronder
- * blijft wel dicht bij de officiële definitie — zonder die zin is "buurt" niet te begrijpen.
- */
-const KENMERKEN: {
-  veld: Exclude<keyof Leerlingenkenmerken, 'aantalLeerlingen'>
-  label: string
-  uitleg: string
-}[] = [
-  {
-    veld: 'opleidingMoeder',
-    label: 'Moeder zonder diploma secundair onderwijs',
-    uitleg: 'De moeder heeft het secundair onderwijs niet afgemaakt.',
-  },
-  {
-    veld: 'schooltoelage',
-    label: 'Krijgt een schooltoeslag',
-    uitleg: 'De toeslag die het gezin krijgt op basis van zijn inkomen.',
-  },
-  {
-    veld: 'thuistaal',
-    label: 'Spreekt thuis geen Nederlands',
-    uitleg: 'De taal die de leerling thuis met het gezin spreekt, is niet het Nederlands.',
-  },
-  {
-    veld: 'buurt',
-    label: 'Woont in een buurt met veel schoolse vertraging',
-    uitleg: 'In die buurt lopen relatief veel leerlingen schoolachterstand op.',
-  },
-]
-
-/**
  * Eén indicator als percentage met een balk erbij. De balk is bewust neutraal grijs: een
  * kleurschaal van groen naar rood zou er een oordeel van maken, en dat is het niet.
  */
@@ -538,9 +507,7 @@ function Kenmerkbalk({
       <div className="flex items-baseline justify-between gap-3 text-sm">
         <dt className="text-inkt">{label}</dt>
         <dd className="shrink-0 tabular-nums text-inkt">
-          {aandeel === null
-            ? 'onbekend'
-            : `${(aandeel * 100).toLocaleString('nl-BE', { maximumFractionDigits: 1 })}%`}
+          {percentageLabel(aandeel)}
         </dd>
       </div>
       {aandeel !== null && (
@@ -552,15 +519,6 @@ function Kenmerkbalk({
       <p className="mt-1 text-xs text-zacht">{uitleg}</p>
     </div>
   )
-}
-
-/** ISO-datum uit meta.json als leesbare Nederlandse datum. */
-function datumLabel(iso: string): string {
-  return new Date(`${iso}T00:00:00`).toLocaleDateString('nl-BE', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
 }
 
 /**

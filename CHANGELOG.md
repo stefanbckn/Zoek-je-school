@@ -22,6 +22,11 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
   die telling dient: de berekening van de werkingstoelagen. Uitdrukkelijk vermeld: het zijn
   indicatieve achtergrondcijfers over de leerlingengroep, ze zeggen niets over de kwaliteit van
   het onderwijs, en het is geen basis voor een schoolkeuze.
+- **Ook in de vergelijkingstabel**, als vier extra rijen met enkel het percentage. Bewust zonder
+  de balkjes uit het detailpaneel: naast elkaar worden vier balken een grafiek waarin de langste
+  vanzelf "slechter" lijkt, en dat oordeel zit niet in deze cijfers. Staan er meerdere scholen op
+  een adres, dan krijgt elke school haar eigen regel in de cel, want anders dan de rest van de
+  tabel gaan deze cijfers per school en niet per adres.
 - **"Over deze site" vermeldt de nieuwe bron**, met de link naar de publicatie zelf en met de
   kanttekening dat de percentages hier berekend zijn uit aantallen.
 
@@ -42,9 +47,6 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 - **Geen OKI-cijfer.** De gemiddelde onderwijskansarmoede-indicator is met deze vier tellingen
   na te rekenen, maar dat blijft een afleiding en geen gepubliceerd cijfer. Zolang die niet naast
   het officiële cijfer gelegd is, staan er vier percentages en geen samengesteld getal.
-- **Nog niet in de vergelijkingstabel.** Daar horen ze thuis, maar vier extra rijen naast elkaar
-  nodigen precies uit tot de ranglijst die deze site niet wil zijn. Dat vraagt een eigen ontwerp
-  en volgt later.
 
 ---
 

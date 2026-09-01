@@ -370,6 +370,7 @@ function App() {
       <VergelijkPanel
         campussen={vergelijkOpen ? vergelekenCampussen : []}
         schooljaarAanbod={meta?.schooljaarAanbod ?? null}
+        kenmerkenMeta={meta?.leerlingenkenmerken ?? null}
         onClose={() => setVergelijkOpen(false)}
       />
 
