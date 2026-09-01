@@ -37,12 +37,13 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| 1 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
-| 2 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
-| 3 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
-| 4 | Markers clusteren op de kaart | Nabije adressen samengevoegd tot één bol met het aantal erin, die bij inzoomen weer uit elkaar valt | **Klaar om te bouwen, keuze van bibliotheek nog te verifiëren.** Geen bron nodig, puur frontend. **Voorwaarde voor 5**, dus niet doorschuiven. Zie hieronder |
-| 5 | Andere provincies | Heel Vlaanderen doorzoekbaar, met Antwerpen als standaard en een provinciekeuze die de rest bijlaadt | **Geblokkeerd door 4, geen bron nodig.** De data wordt al opgehaald en daarna weggegooid, dus het werk zit in de UI. Clustering moet er eerst zijn: 303 markers is nu al te druk. Zie hieronder |
-| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 1 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, ontsluiting niet geverifieerd.** Staat in ScholenKompas (publiek, per school); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Eerst uitzoeken of het in bulk of via een dieplink kan — zie hieronder |
+| 2 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
+| 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
+| 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
+| 5 | Markers clusteren op de kaart | Nabije adressen samengevoegd tot één bol met het aantal erin, die bij inzoomen weer uit elkaar valt | **Klaar om te bouwen, keuze van bibliotheek nog te verifiëren.** Geen bron nodig, puur frontend. **Voorwaarde voor 6**, dus niet doorschuiven. Zie hieronder |
+| 6 | Andere provincies | Heel Vlaanderen doorzoekbaar, met Antwerpen als standaard en een provinciekeuze die de rest bijlaadt | **Geblokkeerd door 5, geen bron nodig.** De data wordt al opgehaald en daarna weggegooid, dus het werk zit in de UI. Clustering moet er eerst zijn: 303 markers is nu al te druk. Zie hieronder |
+| 7 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -367,6 +368,76 @@ volgorde van zekerheid:
    - **Maximum 4.** Bij vijf kolommen wordt een kolom smaller dan een schoolnaam.
 4. **Link naar het doorlichtingsverslag.** Zie de sectie hierboven — vorm ligt vast, bron nog
    niet geverifieerd. Dit is het enige onderdeel dat kan afvallen.
+
+## Dropouts en doorstroom naar het hoger onderwijs: ScholenKompas (onderzocht 01/09/2026)
+
+Gevraagd: vier categorieën uit Notion, waarvan we er twee al hebben (thuistaal, schooltoeslag).
+De twee andere — **dropouts** en **verder studeren in het hoger onderwijs** — bestaan wél per
+school, maar niet in een bron die we vandaag kunnen automatiseren.
+
+**Waar ze níét staan:**
+
+- **Niet in het API-portaal.** De catalogus is bekend (zie [CLAUDE.md](./CLAUDE.md)); er is geen
+  product met loopbaan- of doorstroomcijfers.
+- **Niet in de AgODi-xlsx** die we in 0.10.0 gebruiken. Die bevat enkel de vier
+  GOK-leerlingenkenmerken.
+- **Vroegtijdig schoolverlaten staat in Dataloep enkel op Vlaams niveau en per stad/gemeente**,
+  niet per school. Herhaald bevestigd op de pagina's van Onderwijs en Vorming, en zichtbaar in de
+  leeswijzer bij die cijfers: de uitsplitsingen zijn uitstroompositie, loopbaantypologie, schoolse
+  achterstand, leeftijd, graad/leerjaar, studiegebied, nationaliteit, provincie en centrumsteden —
+  **instelling staat er niet tussen.** Niet opnieuw gaan zoeken in Dataloep zelf.
+
+**Waar ze wél staan: ScholenKompas.** Een publiek dashboard van Onderwijs en Vorming met
+cijfers per school, voor alle 706 scholen gewoon secundair onderwijs in Vlaanderen. Geen login.
+
+```
+https://www.vlaanderen.be/onderwijs-en-vorming/scholenkompas
+→ https://public.tableau.com/views/ScholenKompasSecundair/Landingspagina
+```
+
+Let op: dit staat op **Tableau Public**, niet op de Tableau-server van de overheid waar Dataloep
+draait. Andere host, andere mogelijkheden — dat is nog niet uitgezocht.
+
+Uit de technische fiche (`data-onderwijs.vlaanderen.be/documenten/bestanden/
+technische-fiche-scholenkompas.pdf`), letterlijk nagelezen:
+
+- **3.4 Vroegtijdige schoolverlaters**, op basis van administratieve data. In de toepassing zijn
+  de 2de en 3de graad samengenomen.
+- **3.11 Rechtstreekse doorstroom van het secundair naar het hoger onderwijs**: hoeveel procent
+  van de leerlingen zich na hun diploma rechtstreeks inschrijft, opgesplitst naar professionele
+  bachelor, academische bachelor en graduaat. Daarbovenop **studierendement** (welk aandeel van
+  de opgenomen studiepunten ze in het eerste jaar behalen) en **studiesucces** vier jaar na het
+  secundair: wie een studiebewijs haalde, wie nog studeert, en wie stopte zonder diploma. Dat
+  laatste is een tweede soort drop-out — die van het hoger onderwijs, niet van de school zelf.
+  **Twee verschillende dingen, niet door elkaar halen in de UI.**
+- Verder nog: oriënteringsattesten (A/B/C), schoolse vordering en zittenblijven, ongewettigde
+  afwezigheden, nationaliteit, personeelscijfers, en dezelfde vier leerlingenkenmerken die we al
+  hebben.
+- **Rapportageniveau is de 'unit'** (alle vestigingsplaatsen van een school samen), niet de
+  vestigingsplaats. Leerlingencijfers worden per vestigingsplaats verzameld maar per unit
+  getoond; personeelscijfers gaan soms over een nog hoger niveau ('complex'). Dat sluit aan bij
+  hoe wij de leerlingenkenmerken al tonen: per school, niet per adres.
+- **Privacydrempels**: cijfers verdwijnen als de groep te klein is (bv. minder dan 5 uitgereikte
+  attesten). Reken dus op gaten, net als de `(*)` in Dataloep.
+
+**Wat nog uitgezocht moet worden vóór dit gebouwd kan worden:**
+
+1. **Kan je er in bulk aan?** Het dashboard toont één school per keer, na een zoekopdracht. Een
+   kruistabel-export per school zou 706 keer handwerk zijn — onbruikbaar. Of Tableau Public een
+   werkblad met álle scholen bevat, of een download toestaat, is **niet geverifieerd**. Een
+   poging om de werkmap als `.twb`/`.twbx` te downloaden gaf 404.
+2. **Kan je per school dieplinken?** Zo ja, dan is er ook zonder eigen cijfers een goedkope
+   winst: een knop "Bekijk deze school in ScholenKompas" naast de bestaande link naar de
+   officiële fiche. Het instellingsnummer zit in de bron (sectie 2.1 van de fiche), maar de
+   naam van de URL-parameter is nog niet nagekeken. **Niet gokken — uittesten.**
+3. **Hergebruiksvoorwaarden.** Zoals bij de rest van dit portaal is er geen expliciete
+   open-datalicentie gevonden. Doorlinken kan altijd; overnemen niet zomaar.
+
+**Kadering, als het er komt.** Katholiek Onderwijs waarschuwt bij ScholenKompas expliciet voor
+strategisch gedrag om indicatoren te beïnvloeden, schoolkeuze die te sterk op cijfers steunt, en
+toenemende segregatie. ScholenKompas zelf maakt daarom géén ranglijsten en toont de resultaten
+van de Vlaamse toetsen niet. Dezelfde lijn als bij de GOK-cijfers hierboven: context tonen, met
+uitleg, nooit als score.
 
 ## GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026, gebouwd in 0.10.0)
 
