@@ -140,6 +140,72 @@ zo beslist door de gebruiker.
   een lege pagina. **Splits je ooit nog een filterwaarde, doe daar dan hetzelfde.**
 - De oude tekst-heuristiek op de bestuursnaam is definitief van tafel — niet meer gebruiken.
 
+### GOK-leerlingenkenmerken (build-time, xlsx) — opgeleverd in v0.10
+
+Vier leerlingenkenmerken per school, uit de AgODi-publicatie **"Overzicht leerlingkenmerken
+secundair onderwijs voorschot werkingstoelagen"** op het documentenportaal. Opgehaald door
+`scripts/leerlingenkenmerken.ts`, uitgelezen door `scripts/xlsx.ts`, gejoind in `fetch-data.ts`.
+
+```
+https://data-onderwijs.vlaanderen.be/documenten/bestanden/
+  Publicaties_Leerlingenkenmerken_Overzicht_<jaar>-<jaar+1>_so.xlsx
+```
+
+- **Geen API-key, geen registratie.** Gewone HTTP GET, geverifieerd (HTTP 200).
+- ⚠️ **De bestandsnaam is niet voorspelbaar.** 2021-2022 en 2022-2023 heten `..._so_1.xlsx`,
+  2023-2024 en 2024-2025 heten `..._so.xlsx`. Het script probeert daarom **beide varianten,
+  vier schooljaren terug, nieuwste eerst** en neemt de eerste die bestaat. Het jaartal ophogen
+  in één vast patroon gaat stuk — niet "vereenvoudigen".
+- **Het schooljaar komt uit de titelregel van het bestand zelf**, niet uit de URL die toevallig
+  werkte. Idem de teldatum: die staat per rij als Excel-serieel getal in de kolom Teldatum.
+- **Nieuwste publicatie is 2024-2025** (nagekeken 01/09/2026: 2025-2026 geeft 404, ook in
+  Dataloep is 2024-2025 het laatste schooljaar). De cijfers lopen dus een schooljaar achter op
+  het studieaanbod. Dat staat in de UI, en het is geen fout om "op te lossen".
+- **Het zijn absolute aantallen, geen percentages**, met halven erin (733,5) doordat leerlingen
+  in co-ouderschap half meetellen. Wij delen door `Aantal lln` en bewaren een fractie.
+- **Teldatum is 1 februari van het jaar ervóór** (bestand 2024-2025 telt op 01/02/2024). Het is
+  de financieringsteling, geen momentopname van het huidige schooljaar.
+- **Kolomkoppen bevatten dubbele en harde spaties** (`Indicator         "opleiding moeder"`).
+  Het script zoekt de kolommen genormaliseerd op inhoud, niet op vaste letters, en de kopregel
+  wordt gezocht op de tekst "Provincie" — die staat pas rond rij 11, na een titel en lege rijen.
+  Kolomvolgorde geverifieerd tegen een gepubliceerd percentage (Sint-Jan Berchmanscollege
+  Brussel: 14,7 / 65,6 / 24,2 / 62,3), dus J=opleiding moeder, K=schooltoelage, L=thuistaal,
+  M=buurt. Niet op volgorde vertrouwen zonder die controle: de koppen zijn de bron van waarheid.
+- **Join op `schoolnummer`, nooit op adres.** Het adres in dit bestand is dat van de instelling
+  en wijkt bij 86 van de gematchte scholen af van het campusadres dat wij tonen.
+- **266 van de 272 scholen matchen** (01/09/2026). De rest: twee onafhankelijke scholen (geen
+  werkingstoelagen) en vier recent gesplitste. Dat is verwacht, geen bug.
+- **Het hangt aan `SchoolOpCampus`, niet aan `Campus`.** Anders dan het studieaanbod wordt dit
+  **niet** per adres samengevoegd: optellen over scholen die een campus delen zou een gemiddelde
+  over andere leerlingenpopulaties maken. De UI zegt er expliciet bij over welke school het gaat.
+- **Geen zelfberekende OKI.** De som van de vier gedeeld door het leerlingenaantal benadert de
+  gepubliceerde OKI, maar is een afleiding. Zolang die niet naast het officiële cijfer in
+  Dataloep gelegd is: vier percentages tonen, geen samengesteld getal.
+- **Framing ligt vast**: kansarmoede-indicatoren, geen kwaliteitsoordeel. De balkjes in het
+  detailpaneel zijn neutraal grijs, bewust geen kleurschaal van groen naar rood, en onder het
+  blok staat dat het indicatieve achtergrondcijfers zijn waarop je geen schoolkeuze baseert.
+  Hetzelfde balkje staat in de vergelijkingstabel; een eerdere versie liet het daar weg om er
+  geen grafiek van te maken, maar een percentage suggereert net zo goed een rangorde en snel
+  naast elkaar leggen is precies waar die tabel voor bestaat. De labels en de volgorde staan één
+  keer in `src/lib/leerlingenkenmerken.ts`, zodat beide plekken niet uiteenlopen.
+- ⚠️ **De baan van het balkje heeft een vaste breedte in de vergelijkingstabel**
+  (`KenmerkBalkje`, `w-28`), niet de celbreedte. De kolommen daar zijn niet even breed, dus een
+  baan die meeloopt met de cel tekent 66,7% in een smalle kolom kórter dan 57,7% in een brede.
+  Doorgemeten in de browser. Op papier maakt `table-layout: fixed` de kolommen wél gelijk;
+  daar staat de baan op 60% van de cel. En net als bij de chips draagt het balkje
+  `print-color-adjust: exact`, anders is het bij "Achtergrondbeelden uit" een lege streep.
+- **Faalt het ophalen, dan is dat geen harde fout**: de dataset komt er zonder kenmerken uit
+  (luide waarschuwing) en het blok valt weg in de app. Faalt het *lezen* van een gevonden
+  bestand, dan stopt het script wél — dan is er iets aan de publicatie veranderd en moet er
+  iemand kijken.
+- **`scripts/xlsx.ts` is bewust een eigen mini-lezer** (zip + sharedStrings + één werkblad,
+  geen dependency). Wat er niet in zit: formules, datumopmaak, meerdere werkbladen, zip64.
+  Heb je dat nodig, neem dan een echte bibliotheek — niet dit uitbreiden.
+
+De **Dataloep-route** (per vestigingsplaats, handmatige kruistabel-export uit Tableau) blijft
+beschreven in [ROADMAP.md](./ROADMAP.md). Die is níét nodig voor de huidige functionaliteit;
+ze is de weg als we het ooit per vestigingsplaats willen in plaats van per school.
+
 ### API-key
 
 - Env var `ONDERWIJS_API_KEY`, gelezen via `process.loadEnvFile()` (Node 21+, geen `dotenv`).
@@ -412,8 +478,11 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
 ## Architectuur
 
 - `scripts/fetch-data.ts` — Node-script (draai met `npm run fetch-data`), haalt 5 gepagineerde
-  API-calls op, joint ze, en schrijft `public/data/vestigingen.json` + `public/data/meta.json`
-  (ophaaldatum, bronvermelding, schooljaar van het aanbod, aantallen).
+  API-calls én de leerlingenkenmerken-xlsx op, joint ze, en schrijft
+  `public/data/vestigingen.json` + `public/data/meta.json` (ophaaldatum, bronvermelding,
+  schooljaar van het aanbod, aantallen, herkomst van de leerlingenkenmerken).
+- `scripts/leerlingenkenmerken.ts` + `scripts/xlsx.ts` — de GOK-cijfers ophalen en uitlezen.
+  Zie de sectie GOK-leerlingenkenmerken hierboven.
 - **`public/data/*.json` staat bewust WEL in git** (~4 MB), en is sinds v0.2 de *primaire* bron
   voor de build: `npm run build` leest die JSON, de API wordt niet tijdens elke deploy bevraagd.
   Verversen is een aparte, periodieke stap (zie Workflow).
@@ -424,7 +493,7 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
   geen algemene datacenter-blokkade, dat is getest en weerlegd). Dat probleem is met de overstap
   naar de API weg, maar de fallback-logica is blijven staan omdat ze nu de API dekt.
 - `src/types.ts` — het datamodel: `Campus` (adres, coördinaten) met `SchoolOpCampus[]` erin,
-  elk met `Richting[]`. Lege placeholders (`kostprijs`, `vervoer`) blijven staan voor v0.6/v0.7.
+  elk met `Richting[]` en `Leerlingenkenmerken | null`. Lege placeholders (`kostprijs`, `vervoer`) blijven staan voor v0.6/v0.7.
 - `src/lib/` — pure functies: haversine-afstand, net-labels, URL-state hook.
 - `src/components/` — UI-componenten, geen state-logica die ook elders nodig is.
 - Filterstatus leeft in de URL-querystring (geen router nodig, single-page app — vermijd

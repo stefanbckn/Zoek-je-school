@@ -8,6 +8,49 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.10.0 — 1 september 2026
+
+**Nieuw**
+
+- **Vier leerlingenkenmerken per school, in het detailpaneel.** Onder het studieaanbod staat nu
+  hoeveel procent van de leerlingen een moeder zonder diploma secundair onderwijs heeft, een
+  schooltoeslag krijgt, thuis geen Nederlands spreekt, en in een buurt met veel schoolse
+  vertraging woont. Met een balkje erbij, in neutraal grijs: het zijn geen punten en er is geen
+  goede of slechte kant.
+- **Er staat bij waar het vandaan komt en wat je ermee kan.** Elk kenmerk krijgt een zin uitleg,
+  en onder het blok staat het schooljaar (2024-2025), de teldatum (1 februari 2024) en waarvoor
+  die telling dient: de berekening van de werkingstoelagen. Uitdrukkelijk vermeld: het zijn
+  indicatieve achtergrondcijfers over de leerlingengroep, ze zeggen niets over de kwaliteit van
+  het onderwijs, en het is geen basis voor een schoolkeuze.
+- **Ook in de vergelijkingstabel**, als vier extra rijen met hetzelfde percentage en balkje.
+  Alle banen zijn daar even breed, ook als de ene kolom breder is dan de andere — anders zou een
+  hoger percentage in een smalle kolom een korter balkje krijgen. Staan er meerdere scholen op
+  een adres, dan krijgt elke school haar eigen regel in de cel, want anders dan de rest van de
+  tabel gaan deze cijfers per school en niet per adres. Op de afdruk blijven de balkjes staan,
+  ook als je "Achtergrondbeelden" uitzet.
+- **"Over deze site" vermeldt de nieuwe bron**, met de link naar de publicatie zelf en met de
+  kanttekening dat de percentages hier berekend zijn uit aantallen.
+
+**Wat je moet weten bij deze cijfers**
+
+- **Ze lopen een schooljaar achter op de rest van de site.** Het studieaanbod gaat over
+  2026-2027, deze telling over 2024-2025. Dat is de meest recente publicatie die er is.
+- **Ze gelden per school, niet per adres.** Anders dan het studieaanbod worden ze níét
+  samengeteld over scholen die een campus delen: dat zou een gemiddelde over andere
+  leerlingengroepen maken. Staan er meerdere scholen op een adres, dan zegt het paneel er
+  expliciet bij over welke school het gaat.
+- **266 van de 272 scholen hebben cijfers.** De zes andere staan niet in de publicatie omdat ze
+  geen werkingstoelagen krijgen of pas onlangs zijn opgericht of gesplitst. Bij die scholen staat
+  dat er met zoveel woorden, in plaats van dat het blok stil verdwijnt.
+
+**Bewust niet gedaan**
+
+- **Geen OKI-cijfer.** De gemiddelde onderwijskansarmoede-indicator is met deze vier tellingen
+  na te rekenen, maar dat blijft een afleiding en geen gepubliceerd cijfer. Zolang die niet naast
+  het officiële cijfer gelegd is, staan er vier percentages en geen samengesteld getal.
+
+---
+
 ## 0.9.1 — 1 september 2026
 
 **Opgelost**

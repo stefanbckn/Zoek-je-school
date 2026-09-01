@@ -58,6 +58,32 @@ export interface Richting {
 }
 
 /**
+ * De vier GOK-leerlingenkenmerken van één school, als aandeel van de leerlingen (0 tot 1).
+ * Uit de AgODi-publicatie "voorschot werkingstoelagen" — zie CLAUDE.md.
+ *
+ * Drie dingen die hier vastliggen:
+ * - **Dit hangt aan de school, niet aan de campus.** De publicatie telt per instelling; een
+ *   school met drie vestigingen heeft één cijfer voor alle drie. Optellen over scholen die een
+ *   adres delen zou een gemiddelde over andere leerlingenpopulaties maken. Niet doen.
+ * - **Geen zelfberekende OKI.** De som van de vier gedeeld door het leerlingenaantal lijkt op
+ *   de gepubliceerde OKI, maar is een afleiding. Zolang die niet naast het officiële cijfer
+ *   gelegd is, tonen we de vier percentages en geen samengesteld getal.
+ * - Een kenmerk kan `null` zijn als de bron de telling niet invult.
+ */
+export interface Leerlingenkenmerken {
+  /** Leerlingen op de teldatum. Halven bestaan: leerlingen in co-ouderschap tellen half mee. */
+  aantalLeerlingen: number
+  /** Moeder is niet gediplomeerd in het secundair onderwijs. */
+  opleidingMoeder: number | null
+  /** Kreeg een schooltoeslag (selectiebeurs). */
+  schooltoelage: number | null
+  /** Spreekt thuis niet (of niet altijd) Nederlands met gezinsleden. */
+  thuistaal: number | null
+  /** Woont in een buurt met een hoge schoolse vertraging. */
+  buurt: number | null
+}
+
+/**
  * Eén apart geregistreerde school (eigen schoolnummer) op een campus. Meerdere scholen
  * kunnen hetzelfde fysieke adres (dezelfde Campus) delen — zie CLAUDE.md.
  */
@@ -79,6 +105,12 @@ export interface SchoolOpCampus {
   scholengemeenschap: string | null
   /** Studieaanbod op déze vestiging. Lege array = geen aanbod geregistreerd. */
   richtingen: Richting[]
+  /**
+   * GOK-leerlingenkenmerken van de school. Null als ze niet in de publicatie staat — dat komt
+   * voor bij scholen die geen werkingstoelagen krijgen en bij recent gesplitste scholen.
+   * Schooljaar en teldatum staan één keer in `DatasetMeta`, niet bij elke school.
+   */
+  leerlingenkenmerken: Leerlingenkenmerken | null
   /** Placeholder voor v0.6 (kostprijs/materiaalkost). */
   kostprijs: null
   /** Placeholder voor v0.7 (fietsenstalling, halte-afstand, ...). */
@@ -118,4 +150,17 @@ export interface DatasetMeta {
   aantalVestigingenAntwerpen: number
   aantalCampussenAntwerpen: number
   aantalRichtingen: number
+  /**
+   * Herkomst van de leerlingenkenmerken: één schooljaar en één teldatum voor de hele dataset.
+   * Null als de publicatie niet opgehaald kon worden; de UI toont het blok dan niet.
+   */
+  leerlingenkenmerken: {
+    /** Bv. '2024-2025'. */
+    schooljaar: string
+    /** ISO-datum. De financieringsteling van 1 februari van het jaar ervóór. */
+    teldatum: string
+    bron: string
+    /** Aantal scholen in onze dataset waarvoor er cijfers gevonden zijn. */
+    aantalScholenMetCijfers: number
+  } | null
 }

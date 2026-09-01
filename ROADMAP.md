@@ -28,6 +28,7 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **0.6.0** | Campussen vergelijken | 2–4 adressen naast elkaar in één tabel (afstand, scholen, aanbod per graad, contact), aan te vinken vanaf de resultatenkaarten en afdrukbaar naar papier of PDF |
 | **0.7.0** | UI-details | "Hemelsbreed" heet "in vogelvlucht" op alle plaatsen · versienummer met changelog-link onderaan in de footer |
 | **0.8.0** | Disclaimer + over deze site | Paneel "Over deze site" met herkomst, bewerkingen, privacy en disclaimer (deelbaar via `?over=1`), te openen vanuit de kop én de footer · korte disclaimerregel altijd zichtbaar in de footer |
+| **0.10.0** | GOK-leerlingenkenmerken | Vier leerlingenkenmerken per school in het detailpaneel (opleiding moeder, schooltoeslag, thuistaal, buurt) én als rijen met balkje in de vergelijkingstabel, met schooljaar, teldatum en de kadering dat het indicatieve achtergrondcijfers zijn · automatisch opgehaald uit de AgODi-xlsx, join op 266 van de 272 scholen |
 | **0.9.0** | Uitleg- en helppaneel | Paneel "Hoe werkt deze site?" in de kop met uitleg bij zoeken, filteren, één adres bekijken en vergelijken, plus een blok over wat de site niet toont (deelbaar via `?help=1`) |
 
 ## Nog te doen
@@ -36,7 +37,7 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| 1 | GOK-indicatoren | 4 leerlingenkenmerken per school, met kaderende uitleg | **Klaar om te bouwen.** Downloadbare xlsx bij AgODi, join geverifieerd op 269/272 scholen. Per school, niet per vestiging — zie hieronder. De vergelijkingstabel uit 0.6.0 is de plek waar ze thuishoren |
+| 1 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, ontsluiting niet geverifieerd.** Staat in ScholenKompas (publiek, per school); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Eerst uitzoeken of het in bulk of via een dieplink kan — zie hieronder |
 | 2 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
 | 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
@@ -341,7 +342,12 @@ volgorde van zekerheid:
      telt de teller wat door dít filter wegvalt en niet wat een ander filter al wegnam.
    - Let op de campus-samenvoeging: leeg betekent hier *geen enkele school op dat adres* heeft
      een richting. Eén school met aanbod houdt het hele adres zichtbaar.
-2. **GOK-leerlingenkenmerken**, per school. Bron en join geverifieerd — zie hieronder.
+2. ~~**GOK-leerlingenkenmerken**, per school.~~ **Uitgebracht in 0.10.0.** Wat er gebouwd is:
+   `scripts/leerlingenkenmerken.ts` haalt de xlsx op van het documentenportaal en
+   `scripts/xlsx.ts` leest ze uit zonder dependency; de vier percentages staan in het
+   detailpaneel onder het studieaanbod, en als vier rijen in de vergelijkingstabel, met daar
+   dezelfde balkjes op een vaste breedte zodat ongelijke kolommen de vergelijking niet
+   vertekenen. Wat daarbij vastligt, staat in [CLAUDE.md](./CLAUDE.md).
 3. ~~**Campussen vergelijken**~~ **Uitgebracht in 0.6.0**, vóór de GOK-cijfers in plaats van
    erna — die passen er later gewoon als extra rij bij. Wat er gebouwd is: 2 tot 4 adressen
    naast elkaar in één tabel (`VergelijkPanel.tsx`), aan te vinken vanaf de resultatenkaarten,
@@ -363,7 +369,77 @@ volgorde van zekerheid:
 4. **Link naar het doorlichtingsverslag.** Zie de sectie hierboven — vorm ligt vast, bron nog
    niet geverifieerd. Dit is het enige onderdeel dat kan afvallen.
 
-## GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026)
+## Dropouts en doorstroom naar het hoger onderwijs: ScholenKompas (onderzocht 01/09/2026)
+
+Gevraagd: vier categorieën uit Notion, waarvan we er twee al hebben (thuistaal, schooltoeslag).
+De twee andere — **dropouts** en **verder studeren in het hoger onderwijs** — bestaan wél per
+school, maar niet in een bron die we vandaag kunnen automatiseren.
+
+**Waar ze níét staan:**
+
+- **Niet in het API-portaal.** De catalogus is bekend (zie [CLAUDE.md](./CLAUDE.md)); er is geen
+  product met loopbaan- of doorstroomcijfers.
+- **Niet in de AgODi-xlsx** die we in 0.10.0 gebruiken. Die bevat enkel de vier
+  GOK-leerlingenkenmerken.
+- **Vroegtijdig schoolverlaten staat in Dataloep enkel op Vlaams niveau en per stad/gemeente**,
+  niet per school. Herhaald bevestigd op de pagina's van Onderwijs en Vorming, en zichtbaar in de
+  leeswijzer bij die cijfers: de uitsplitsingen zijn uitstroompositie, loopbaantypologie, schoolse
+  achterstand, leeftijd, graad/leerjaar, studiegebied, nationaliteit, provincie en centrumsteden —
+  **instelling staat er niet tussen.** Niet opnieuw gaan zoeken in Dataloep zelf.
+
+**Waar ze wél staan: ScholenKompas.** Een publiek dashboard van Onderwijs en Vorming met
+cijfers per school, voor alle 706 scholen gewoon secundair onderwijs in Vlaanderen. Geen login.
+
+```
+https://www.vlaanderen.be/onderwijs-en-vorming/scholenkompas
+→ https://public.tableau.com/views/ScholenKompasSecundair/Landingspagina
+```
+
+Let op: dit staat op **Tableau Public**, niet op de Tableau-server van de overheid waar Dataloep
+draait. Andere host, andere mogelijkheden — dat is nog niet uitgezocht.
+
+Uit de technische fiche (`data-onderwijs.vlaanderen.be/documenten/bestanden/
+technische-fiche-scholenkompas.pdf`), letterlijk nagelezen:
+
+- **3.4 Vroegtijdige schoolverlaters**, op basis van administratieve data. In de toepassing zijn
+  de 2de en 3de graad samengenomen.
+- **3.11 Rechtstreekse doorstroom van het secundair naar het hoger onderwijs**: hoeveel procent
+  van de leerlingen zich na hun diploma rechtstreeks inschrijft, opgesplitst naar professionele
+  bachelor, academische bachelor en graduaat. Daarbovenop **studierendement** (welk aandeel van
+  de opgenomen studiepunten ze in het eerste jaar behalen) en **studiesucces** vier jaar na het
+  secundair: wie een studiebewijs haalde, wie nog studeert, en wie stopte zonder diploma. Dat
+  laatste is een tweede soort drop-out — die van het hoger onderwijs, niet van de school zelf.
+  **Twee verschillende dingen, niet door elkaar halen in de UI.**
+- Verder nog: oriënteringsattesten (A/B/C), schoolse vordering en zittenblijven, ongewettigde
+  afwezigheden, nationaliteit, personeelscijfers, en dezelfde vier leerlingenkenmerken die we al
+  hebben.
+- **Rapportageniveau is de 'unit'** (alle vestigingsplaatsen van een school samen), niet de
+  vestigingsplaats. Leerlingencijfers worden per vestigingsplaats verzameld maar per unit
+  getoond; personeelscijfers gaan soms over een nog hoger niveau ('complex'). Dat sluit aan bij
+  hoe wij de leerlingenkenmerken al tonen: per school, niet per adres.
+- **Privacydrempels**: cijfers verdwijnen als de groep te klein is (bv. minder dan 5 uitgereikte
+  attesten). Reken dus op gaten, net als de `(*)` in Dataloep.
+
+**Wat nog uitgezocht moet worden vóór dit gebouwd kan worden:**
+
+1. **Kan je er in bulk aan?** Het dashboard toont één school per keer, na een zoekopdracht. Een
+   kruistabel-export per school zou 706 keer handwerk zijn — onbruikbaar. Of Tableau Public een
+   werkblad met álle scholen bevat, of een download toestaat, is **niet geverifieerd**. Een
+   poging om de werkmap als `.twb`/`.twbx` te downloaden gaf 404.
+2. **Kan je per school dieplinken?** Zo ja, dan is er ook zonder eigen cijfers een goedkope
+   winst: een knop "Bekijk deze school in ScholenKompas" naast de bestaande link naar de
+   officiële fiche. Het instellingsnummer zit in de bron (sectie 2.1 van de fiche), maar de
+   naam van de URL-parameter is nog niet nagekeken. **Niet gokken — uittesten.**
+3. **Hergebruiksvoorwaarden.** Zoals bij de rest van dit portaal is er geen expliciete
+   open-datalicentie gevonden. Doorlinken kan altijd; overnemen niet zomaar.
+
+**Kadering, als het er komt.** Katholiek Onderwijs waarschuwt bij ScholenKompas expliciet voor
+strategisch gedrag om indicatoren te beïnvloeden, schoolkeuze die te sterk op cijfers steunt, en
+toenemende segregatie. ScholenKompas zelf maakt daarom géén ranglijsten en toont de resultaten
+van de Vlaamse toetsen niet. Dezelfde lijn als bij de GOK-cijfers hierboven: context tonen, met
+uitleg, nooit als score.
+
+## GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026, gebouwd in 0.10.0)
 
 **Dit vervangt de Tableau-route hieronder als eerste keuze.** AgODi publiceert de
 leerlingenkenmerken per school als gewone xlsx op het documentenportaal. Geen Tableau, geen
@@ -402,9 +478,12 @@ https://data-onderwijs.vlaanderen.be/documenten/bestanden/
 
 **Join tegen onze dataset, geverifieerd op het bestand 2024-2025:**
 
-- Op `schoolnummer`: **269 van onze 272 scholen matchen.** De drie die ontbreken zijn Arkades
-  (Herentals, onafhankelijk — krijgt geen werkingstoelagen, dus terecht afwezig) en Mariagaarde
-  secundair I en II (Malle, recent gesplitst; nog niet in de telling van feb 2024).
+- Op `schoolnummer`: **266 van onze 272 scholen matchen** (bij het bouwen op 01/09/2026; de
+  eerste verkenning telde er 269, de dataset is sindsdien gegroeid). De zes die ontbreken zijn
+  Arkades (Herentals) en Safe college (Mechelen) — allebei onafhankelijk, dus zonder
+  werkingstoelagen en terecht afwezig — plus Mariagaarde secundair I en II (Westmalle) en
+  Heilig Hart - Bovenbouw 2 en Middenschool 2 (Heist-op-den-Berg), die recent zijn gesplitst en
+  nog niet in de telling van februari 2024 zaten.
 - ⚠️ **Het adres in dit bestand is dat van de instelling, niet van de vestigingsplaats.** Bij
   86 van de 269 gematchte scholen wijkt het af van het campusadres dat wij tonen (bv. Panorama
   staat er met Bredastraat 35, wij tonen Quellinstraat 31). **Join dus op schoolnummer, nooit op

@@ -113,6 +113,24 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
               )}{' '}
               Ze wordt niet live opgehaald, dus wat je ziet is een momentopname.
             </p>
+            {meta?.leerlingenkenmerken && (
+              <p className="mt-2 text-zacht">
+                De leerlingenkenmerken in het detailpaneel komen uit de publicatie{' '}
+                <a
+                  href={meta.leerlingenkenmerken.bron}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  Overzicht leerlingkenmerken secundair onderwijs
+                </a>{' '}
+                van AgODi, voor schooljaar {meta.leerlingenkenmerken.schooljaar}. Dat is de
+                telling die de werkingstoelagen bepaalt, dus ze loopt een schooljaar achter op
+                het studieaanbod hierboven. Van de scholen in deze dataset staan er{' '}
+                {meta.leerlingenkenmerken.aantalScholenMetCijfers} in die publicatie; de rest
+                krijgt geen werkingstoelagen of is te recent opgericht.
+              </p>
+            )}
             <p className="mt-2 text-zacht">
               De reistijd met bus of trein komt van{' '}
               <a
@@ -140,7 +158,7 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
           <section>
             <h3 className="font-semibold">Wat deze site met die gegevens doet</h3>
             <p className="mt-1 text-zacht">
-              De ruwe data is niet zomaar bruikbaar, dus ze wordt hier bewerkt. Drie dingen die
+              De ruwe data is niet zomaar bruikbaar, dus ze wordt hier bewerkt. Vier dingen die
               het verschil maken met wat er in de bron staat:
             </p>
             <ul className="mt-2 list-disc space-y-1 pl-5 text-zacht">
@@ -154,6 +172,15 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
                 <strong className="font-medium text-inkt">Richtingen staan één keer per graad.</strong>{' '}
                 De bron vermeldt elk leerjaar apart; dat is hier samengevat tot één regel per
                 richting per graad.
+              </li>
+              <li>
+                <strong className="font-medium text-inkt">
+                  De leerlingenkenmerken zijn omgerekend naar percentages.
+                </strong>{' '}
+                De publicatie geeft aantallen leerlingen; hier staat het aandeel van de school.
+                Die cijfers gelden per school, niet per adres: ze worden niet samengeteld over
+                scholen die een campus delen, want dat zou een gemiddelde over andere
+                leerlingengroepen maken.
               </li>
               <li>
                 <strong className="font-medium text-inkt">De afstand is in vogelvlucht.</strong>{' '}

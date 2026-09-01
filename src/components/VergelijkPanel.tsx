@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import type { CampusMetAfstand, Richting } from '../types'
+import type { CampusMetAfstand, DatasetMeta, Richting } from '../types'
 import {
   campusAanbod,
   finaliteitenVan,
@@ -11,11 +11,15 @@ import {
 } from '../lib/aanbod'
 import { NET_CHIP, NET_STYLES } from '../lib/net'
 import { huisnummerLabel } from '../lib/adres'
+import { datumLabel, KENMERKEN, percentageLabel } from '../lib/leerlingenkenmerken'
+import { KenmerkBalkje } from './KenmerkBalkje'
 
 interface VergelijkPanelProps {
   campussen: CampusMetAfstand[]
   /** Schooljaar waarop het aanbod slaat, uit meta.json. Null = onbekend, dan tonen we het niet. */
   schooljaarAanbod: number | null
+  /** Schooljaar en teldatum van de leerlingenkenmerken. Null = geen publicatie, rijen vallen weg. */
+  kenmerkenMeta: DatasetMeta['leerlingenkenmerken']
   onClose: () => void
 }
 
@@ -32,7 +36,12 @@ interface VergelijkPanelProps {
  * helemaal weglaten straft precies de bezoeker die geen laptop bij de hand heeft. De tabel
  * scrollt dus zijwaarts met de kenmerkkolom vastgezet, zodat je altijd ziet waar je naar kijkt.
  */
-export function VergelijkPanel({ campussen, schooljaarAanbod, onClose }: VergelijkPanelProps) {
+export function VergelijkPanel({
+  campussen,
+  schooljaarAanbod,
+  kenmerkenMeta,
+  onClose,
+}: VergelijkPanelProps) {
   const open = campussen.length > 0
 
   // Zelfde afspraak als in DetailPanel: een modaal venster hoort met Escape te sluiten.
@@ -236,6 +245,53 @@ export function VergelijkPanel({ campussen, schooljaarAanbod, onClose }: Vergeli
                 </Rij>
               ))}
 
+              {/* Leerlingenkenmerken staan ná het aanbod: wie twee scholen vergelijkt, kijkt
+                  eerst naar wat er te studeren valt.
+
+                  **Met hetzelfde balkje als in het detailpaneel.** Een eerdere versie liet het
+                  hier weg om er geen grafiek van te maken, maar dat argument houdt geen steek:
+                  een percentage suggereert net zo goed een rangorde, en snel naast elkaar kunnen
+                  leggen is precies waarvoor deze tabel bestaat. Wat wél vastligt, is dat het
+                  balkje neutraal grijs blijft — geen kleurschaal van groen naar rood.
+
+                  **Per school, niet per adres** — anders dan elke andere rij in deze tabel. Dat
+                  staat er in de cel bij zodra er meer dan één school op het adres staat. */}
+              {kenmerkenMeta &&
+                KENMERKEN.map((kenmerk) => (
+                  <Rij key={kenmerk.veld} kop={kenmerk.kortLabel}>
+                    {campussen.map((campus) => (
+                      <Cel key={campus.id}>
+                        <ul className="flex flex-col gap-1">
+                          {campus.scholen.map((school) => (
+                            <li key={school.id}>
+                              {campus.scholen.length > 1 && (
+                                <span className="block text-xs text-zacht">{school.naam}</span>
+                              )}
+                              {school.leerlingenkenmerken ? (
+                                <>
+                                  <span className="tabular-nums text-inkt">
+                                    {percentageLabel(school.leerlingenkenmerken[kenmerk.veld])}
+                                  </span>
+                                  {/* Vaste breedte, niet de celbreedte: de kolommen zijn niet
+                                      even breed, en een baan die meeloopt met de cel maakt een
+                                      hoger percentage in een smalle kolom korter dan een lager
+                                      in een brede. Zie KenmerkBalkje. */}
+                                  <KenmerkBalkje
+                                    aandeel={school.leerlingenkenmerken[kenmerk.veld]}
+                                    className="w-28 max-w-full"
+                                  />
+                                </>
+                              ) : (
+                                <span className="text-zacht">—</span>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </Cel>
+                    ))}
+                  </Rij>
+                ))}
+
               <Rij kop="Contact">
                 {campussen.map((campus) => (
                   <Cel key={campus.id}>
@@ -295,6 +351,17 @@ export function VergelijkPanel({ campussen, schooljaarAanbod, onClose }: Vergeli
           staat elke richting één keer. Afstanden zijn in vogelvlucht, geen reisafstand. Controleer
           de officiële fiche voor het definitieve aanbod.
         </p>
+
+        {kenmerkenMeta && (
+          <p className="mt-2 text-xs text-zacht">
+            De vier leerlingenkenmerken komen uit de leerlingentelling van{' '}
+            {datumLabel(kenmerkenMeta.teldatum)} (schooljaar {kenmerkenMeta.schooljaar}) voor de
+            berekening van de werkingstoelagen, en gelden per school in plaats van per adres. Het
+            zijn indicatieve achtergrondcijfers over de leerlingengroep: ze zeggen niets over de
+            kwaliteit van het onderwijs. Een streepje betekent dat de school niet in die
+            publicatie staat.
+          </p>
+        )}
       </div>
     </div>
   )

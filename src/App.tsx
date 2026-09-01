@@ -360,6 +360,7 @@ function App() {
         zoeklocatie={zoeklocatie}
         zoeklocatieLabel={state.label}
         schooljaarAanbod={meta?.schooljaarAanbod ?? null}
+        kenmerkenMeta={meta?.leerlingenkenmerken ?? null}
         onClose={() => setGeselecteerd(null)}
       />
 
@@ -369,6 +370,7 @@ function App() {
       <VergelijkPanel
         campussen={vergelijkOpen ? vergelekenCampussen : []}
         schooljaarAanbod={meta?.schooljaarAanbod ?? null}
+        kenmerkenMeta={meta?.leerlingenkenmerken ?? null}
         onClose={() => setVergelijkOpen(false)}
       />
 

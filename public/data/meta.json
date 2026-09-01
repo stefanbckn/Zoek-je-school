@@ -1,5 +1,5 @@
 {
-  "opgehaaldOp": "2026-08-27T13:26:59.554Z",
+  "opgehaaldOp": "2026-09-01T17:59:59.716Z",
   "bron": [
     "https://onderwijs-api-portaal.vlaanderen.be/documentatie/instellingsgegevens",
     "https://onderwijs.api.vlaanderen.be/instellingsgegevens/instellingslocatie/v1/instellingslocatie",
@@ -8,8 +8,14 @@
     "https://onderwijs.api.vlaanderen.be/instellingsgegevens/onderwijsaanbod_so/v2/administratievegroep"
   ],
   "schooljaarAanbod": 2026,
-  "aantalVestigingenTotaal": 2145,
-  "aantalVestigingenAntwerpen": 559,
+  "aantalVestigingenTotaal": 2153,
+  "aantalVestigingenAntwerpen": 560,
   "aantalCampussenAntwerpen": 303,
-  "aantalRichtingen": 8265
+  "aantalRichtingen": 8359,
+  "leerlingenkenmerken": {
+    "schooljaar": "2024-2025",
+    "teldatum": "2024-02-01",
+    "bron": "https://data-onderwijs.vlaanderen.be/documenten/bestanden/Publicaties_Leerlingenkenmerken_Overzicht_2024-2025_so.xlsx",
+    "aantalScholenMetCijfers": 266
+  }
 }

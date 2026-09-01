@@ -9,6 +9,7 @@ import type {
   SchoolOpCampus,
   SoortBestuur,
 } from '../src/types.ts'
+import { haalLeerlingenkenmerken } from './leerlingenkenmerken.ts'
 
 // Laad .env.local (voorrang) en .env. Node 21+ heeft loadEnvFile ingebouwd — geen dotenv nodig.
 for (const bestand of ['.env', '.env.local']) {
@@ -204,7 +205,7 @@ async function controleerOmvang(nieuweCampussen: Campus[]): Promise<void> {
 async function bouwDataset() {
   console.log('Ophalen via de API van Onderwijs en Vorming...')
 
-  const [locaties, instellingen, besturen, ingericht, catalogus] = await Promise.all([
+  const [locaties, instellingen, besturen, ingericht, catalogus, kenmerken] = await Promise.all([
     haalAlles<any>('vestigingsplaatsen (311)', EP.locaties, {
       filter_instellingslocatie_hoofdstructuur: HOOFDSTRUCTUUR_VOLTIJDS_SO,
     }),
@@ -212,6 +213,7 @@ async function bouwDataset() {
     haalAlles<any>('schoolbesturen', EP.instellingen, { filter_instelling_type: TYPE_BESTUUR }),
     haalAlles<any>('ingericht aanbod', EP.ingerichtAanbod),
     haalAlles<any>('richtingencatalogus', EP.catalogus),
+    haalLeerlingenkenmerken(),
   ])
 
   const instellingPerNr = new Map<number, any>(instellingen.map((i) => [i.instelling_nummer, i]))
@@ -296,6 +298,9 @@ async function bouwDataset() {
         ? String(inst.instelling_scholengemeenschap.instellingsnummer)
         : null,
       richtingen: richtingen.sort((a, b) => a.naam.localeCompare(b.naam, 'nl')),
+      // Join op schoolnummer, nooit op adres: de publicatie draagt het adres van de instelling,
+      // dat bij 86 van de 269 gematchte scholen afwijkt van het campusadres dat wij tonen.
+      leerlingenkenmerken: kenmerken?.perSchoolnummer.get(String(loc.instelling_nummer)) ?? null,
       kostprijs: null,
       vervoer: null,
     }
@@ -343,11 +348,31 @@ async function bouwDataset() {
   )
   const gedeeldeAdressen = campussen.filter((c) => c.scholen.length > 1).length
 
+  // Tel per school, niet per vestiging: een school met drie campussen deelt één cijfer.
+  const eigenSchoolnummers = new Set<string>()
+  const schoolnummersMetCijfers = new Set<string>()
+  for (const campus of campussen) {
+    for (const school of campus.scholen) {
+      eigenSchoolnummers.add(school.schoolnummer)
+      if (school.leerlingenkenmerken) schoolnummersMetCijfers.add(school.schoolnummer)
+    }
+  }
+
   console.log(
     `\n${campussen.length} campussen (adressen) met ${aantalScholen} vestigingen, waarvan ` +
       `${gedeeldeAdressen} adressen met meer dan 1 apart geregistreerde school.`,
   )
   console.log(`${aantalRichtingen} richtingen gekoppeld (schooljaar ${schooljaarAanbod}); ${zonderAanbod} vestiging(en) zonder aanbod.`)
+  if (kenmerken) {
+    console.log(
+      `Leerlingenkenmerken (${kenmerken.schooljaar}): ${schoolnummersMetCijfers.size} van ` +
+        `${eigenSchoolnummers.size} scholen gekoppeld.`,
+    )
+  } else {
+    // Geen harde fout: de cijfers zijn een aanvulling. Wel luid, want stil verdwijnen is
+    // precies wat je bij een ongesuperviseerde run niet wil.
+    console.warn('Let op: geen leerlingenkenmerken in deze dataset — het blok valt weg in de app.')
+  }
 
   const meta: DatasetMeta = {
     opgehaaldOp: new Date().toISOString(),
@@ -357,6 +382,14 @@ async function bouwDataset() {
     aantalVestigingenAntwerpen: aantalScholen,
     aantalCampussenAntwerpen: campussen.length,
     aantalRichtingen,
+    leerlingenkenmerken: kenmerken
+      ? {
+          schooljaar: kenmerken.schooljaar,
+          teldatum: kenmerken.teldatum,
+          bron: kenmerken.bron,
+          aantalScholenMetCijfers: schoolnummersMetCijfers.size,
+        }
+      : null,
   }
 
   return { campussen, meta }
