@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { CampusMetAfstand, SchoolOpCampus } from '../types'
+import type { CampusMetAfstand, DatasetMeta, Leerlingenkenmerken, SchoolOpCampus } from '../types'
 import {
   campusAanbod,
   groepeerPerGraad,
@@ -25,6 +25,8 @@ interface DetailPanelProps {
   zoeklocatieLabel: string | null
   /** Schooljaar waarop het aanbod slaat, uit meta.json. Null = onbekend, dan tonen we het niet. */
   schooljaarAanbod: number | null
+  /** Schooljaar en teldatum van de leerlingenkenmerken. Null = geen publicatie, blok valt weg. */
+  kenmerkenMeta: DatasetMeta['leerlingenkenmerken']
   onClose: () => void
 }
 
@@ -34,6 +36,7 @@ export function DetailPanel({
   zoeklocatie,
   zoeklocatieLabel,
   schooljaarAanbod,
+  kenmerkenMeta,
   onClose,
 }: DetailPanelProps) {
   const [fietsroute, setFietsroute] = useState<FietsrouteResultaat | 'laden' | null>(null)
@@ -422,6 +425,56 @@ export function DetailPanel({
           </p>
         </section>
 
+        {/* Leerlingenkenmerken staan ná het studieaanbod: wie een school bekijkt, zoekt eerst
+            wat je er kan studeren. Ze staan er wel bij, want ze zeggen iets over de groep waarin
+            je kind terechtkomt — met de nodige omkadering, zie de voetnoot onderaan het blok. */}
+        {kenmerkenMeta && (
+          <section className="mt-6 border-t border-rand pt-4">
+            <h3 className="text-sm font-medium text-inkt">
+              Leerlingenkenmerken
+              <span className="ml-1 font-normal text-zacht">
+                schooljaar {kenmerkenMeta.schooljaar}
+              </span>
+            </h3>
+
+            {school.leerlingenkenmerken === null ? (
+              <p className="mt-2 text-sm text-zacht italic">
+                Deze school staat niet in de publicatie van schooljaar {kenmerkenMeta.schooljaar}.
+                Dat gebeurt bij scholen die geen werkingstoelagen krijgen en bij scholen die pas
+                onlangs zijn opgesplitst of opgericht.
+              </p>
+            ) : (
+              <>
+                {/* Het aanbod hierboven geldt voor het hele adres, deze cijfers niet. Dat
+                    verschil moet er staan, anders leest iemand ze als kenmerken van de campus. */}
+                <p className="mt-1 text-xs text-zacht">
+                  {campus.scholen.length > 1
+                    ? `Alleen van ${school.naam}, niet van de andere scholen op dit adres.`
+                    : 'Van deze school, over al haar vestigingen samen.'}
+                </p>
+
+                <dl className="mt-3 flex flex-col gap-3">
+                  {KENMERKEN.map((kenmerk) => (
+                    <Kenmerkbalk
+                      key={kenmerk.veld}
+                      label={kenmerk.label}
+                      uitleg={kenmerk.uitleg}
+                      aandeel={school.leerlingenkenmerken![kenmerk.veld]}
+                    />
+                  ))}
+                </dl>
+
+                <p className="mt-4 text-xs text-zacht">
+                  Geteld op {datumLabel(kenmerkenMeta.teldatum)} voor de berekening van de
+                  werkingstoelagen. Het zijn indicatieve achtergrondcijfers over de
+                  leerlingengroep: ze zeggen niets over de kwaliteit van het onderwijs of over hoe
+                  je kind het er zou doen. Baseer er dus geen schoolkeuze op.
+                </p>
+              </>
+            )}
+          </section>
+        )}
+
         <a
           href={school.linkFiche}
           target="_blank"
@@ -433,6 +486,81 @@ export function DetailPanel({
       </div>
     </div>
   )
+}
+
+/**
+ * De vier GOK-indicatoren, in de bewoording van een ouder in plaats van die van de regelgeving
+ * ("leerling wiens moeder niet gediplomeerd is in het secundair onderwijs"). De uitleg eronder
+ * blijft wel dicht bij de officiële definitie — zonder die zin is "buurt" niet te begrijpen.
+ */
+const KENMERKEN: {
+  veld: Exclude<keyof Leerlingenkenmerken, 'aantalLeerlingen'>
+  label: string
+  uitleg: string
+}[] = [
+  {
+    veld: 'opleidingMoeder',
+    label: 'Moeder zonder diploma secundair onderwijs',
+    uitleg: 'De moeder heeft het secundair onderwijs niet afgemaakt.',
+  },
+  {
+    veld: 'schooltoelage',
+    label: 'Krijgt een schooltoeslag',
+    uitleg: 'De toeslag die het gezin krijgt op basis van zijn inkomen.',
+  },
+  {
+    veld: 'thuistaal',
+    label: 'Spreekt thuis geen Nederlands',
+    uitleg: 'De taal die de leerling thuis met het gezin spreekt, is niet het Nederlands.',
+  },
+  {
+    veld: 'buurt',
+    label: 'Woont in een buurt met veel schoolse vertraging',
+    uitleg: 'In die buurt lopen relatief veel leerlingen schoolachterstand op.',
+  },
+]
+
+/**
+ * Eén indicator als percentage met een balk erbij. De balk is bewust neutraal grijs: een
+ * kleurschaal van groen naar rood zou er een oordeel van maken, en dat is het niet.
+ */
+function Kenmerkbalk({
+  label,
+  uitleg,
+  aandeel,
+}: {
+  label: string
+  uitleg: string
+  aandeel: number | null
+}) {
+  return (
+    <div>
+      <div className="flex items-baseline justify-between gap-3 text-sm">
+        <dt className="text-inkt">{label}</dt>
+        <dd className="shrink-0 tabular-nums text-inkt">
+          {aandeel === null
+            ? 'onbekend'
+            : `${(aandeel * 100).toLocaleString('nl-BE', { maximumFractionDigits: 1 })}%`}
+        </dd>
+      </div>
+      {aandeel !== null && (
+        // De balk herhaalt enkel het percentage ernaast; schermlezers hebben er niets aan.
+        <div aria-hidden="true" className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-rand">
+          <div className="h-full rounded-full bg-zacht" style={{ width: `${aandeel * 100}%` }} />
+        </div>
+      )}
+      <p className="mt-1 text-xs text-zacht">{uitleg}</p>
+    </div>
+  )
+}
+
+/** ISO-datum uit meta.json als leesbare Nederlandse datum. */
+function datumLabel(iso: string): string {
+  return new Date(`${iso}T00:00:00`).toLocaleDateString('nl-BE', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
 }
 
 /**
