@@ -545,6 +545,33 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
     mee en kost een afdruk nodeloos veel inkt. Zou een browser het toch negeren, dan blijft de
     gekleurde tekst over; die inkttinten halen op wit minstens 4,8:1 contrast, en de naam staat
     er voluit bij, dus er gaat geen betekenis verloren.
+- **Markers clusteren (sinds 0.11.0).** `MapView.tsx` hangt de markers in een
+  `<MarkerClusterGroup>` van **`react-leaflet-cluster`** — het enige onderhouden pakket met
+  `react-leaflet@^5` en `react@^19` in z'n peers (nagekeken in het npm-register, zie
+  [ROADMAP.md](./ROADMAP.md)). Vier dingen die vastliggen:
+  - **`MarkerCluster.Default.css` wordt bewust NIET geïmporteerd**, alleen `MarkerCluster.css`
+    voor de positionering en de uitklap-animatie. Die standaardstijl brengt een eigen
+    groen/geel/rood-schaal mee die naast het palet van 0.2.1 valt, en die suggereert dat een
+    groot cluster erger is dan een klein. De bollen krijgen hun uiterlijk in `src/index.css`.
+  - **De clusterkleur volgt bewust het thema niet.** `--c-cluster` staat alleen in `:root` en
+    wordt niet herhaald in de donkere blokken. De tegellaag van OpenStreetMap is altijd licht
+    (in donkere modus enkel gedempt), en de losse markers zijn in beide thema's hetzelfde blauwe
+    speldje; een bol die naar de lichte accentkleur omslaat, zou op die lichte kaart net
+    onleesbaar worden. De waarde is gelijk aan het lichte accent (#0b5c6e), witte tekst haalt
+    daarop 7,58:1. Geen nieuwe kleur, dus `scripts/kleurcheck.mjs` hoefde er niet over.
+  - ⚠️ **De klasse staat als `.leaflet-marker-icon.cluster-bol` in de CSS.** Leaflet zet
+    `display: block` op `.leaflet-marker-icon`, even specifiek als een kale `.cluster-bol`, dus
+    wie er één klasse van maakt laat het toeval van de bundelvolgorde beslissen of het cijfer
+    gecentreerd staat. Doorgemeten in de browser: met één klasse stond het linksboven.
+  - **Toegankelijkheid: Leaflet zet zelf `tabindex="0"` en `role="button"` op de bol** (nagekeken
+    in de DOM), dus die is met Tab bereikbaar en wordt als knop aangekondigd. De naam komt uit de
+    inhoud: het zichtbare cijfer staat `aria-hidden` en ernaast staat een `sr-only`-zin
+    ("11 adressen, open om te spreiden"). Een `aria-label` op het buitenste element kan niet,
+    want `iconCreateFunction` levert enkel de inhoud, niet de wikkel.
+  - `import 'leaflet.markercluster'` in `MapView.tsx` staat er **voor TypeScript**, niet voor de
+    runtime (react-leaflet-cluster laadt de bibliotheek zelf al). `types` in `tsconfig.app.json`
+    staat op `["vite/client"]`, dus @types-pakketten komen niet vanzelf mee en zonder die regel
+    kent `L` het type `MarkerCluster` niet.
 - **Over deze site + disclaimer (sinds 0.8.0).** `OverPanel.tsx`, geopend vanuit de footer.
   Drie dingen die vastliggen:
   - **De korte disclaimerregel staat in de footer zelf**, niet enkel achter de link: wie nooit
