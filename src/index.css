@@ -202,6 +202,58 @@ body {
 }
 
 /**
+ * Clusterbollen op de kaart. Nabije adressen worden samengevoegd tot één bol met het aantal
+ * erin; klikken zoomt in tot de bol uit elkaar valt.
+ *
+ * De kleur volgt bewust NIET het thema. De tegellaag van OpenStreetMap is altijd licht (in
+ * donkere modus enkel gedempt, zie hierboven), en de losse markers zijn in beide thema's
+ * hetzelfde blauwe speldje. Een bol die in donkere modus omslaat naar de lichte accentkleur
+ * zou op die lichte kaart net onleesbaar worden. Daarom één vaste kleur, gelijk aan de
+ * accentkleur van het lichte palet: die is al doorgemeten voor witte tekst.
+ */
+:root {
+  --c-cluster: #0b5c6e;
+  --c-cluster-inkt: #ffffff;
+}
+
+/* De klasse staat naast `.leaflet-marker-icon`, die `display: block` zet en even specifiek is.
+   Welke van de twee wint, hangt dan af van de volgorde waarin de stijlbladen gebundeld raken;
+   doorgemeten in de browser stond het cijfer daardoor linksboven in plaats van gecentreerd.
+   Beide klassen samen halen die twijfel weg. */
+.leaflet-marker-icon.cluster-bol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: var(--c-cluster);
+  color: var(--c-cluster-inkt);
+  /* Witte ring: houdt de bol leesbaar boven een donkere tegel (bos, water, snelweg) en boven
+     de blauwe speldjes die er bij het uitklappen onder vandaan komen. */
+  box-shadow: 0 0 0 3px rgb(255 255 255 / 0.85);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.cluster-bol--klein {
+  font-size: 0.8125rem;
+}
+
+.cluster-bol--midden {
+  font-size: 0.875rem;
+}
+
+.cluster-bol--groot {
+  font-size: 0.9375rem;
+}
+
+/* Leaflet maakt de bol focusbaar met Tab; zonder dit is er geen zichtbare focus. */
+.cluster-bol:focus-visible {
+  outline: 3px solid var(--c-inkt);
+  outline-offset: 3px;
+}
+
+/**
  * Een aanwijsbare knop hoort een handje te tonen. Tailwind v4 zet in z'n preflight
  * `cursor: default` op button-elementen — dat is een bewuste wijziging tegenover v3, maar het
  * betekent dat élke knop in deze app aanvoelt als gewone tekst zolang we er niets tegenover
