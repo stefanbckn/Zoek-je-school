@@ -8,6 +8,31 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.11.0 — 2 september 2026
+
+**Nieuw**
+
+- **De kaart is niet langer een blauwe soep.** Adressen die dicht bij elkaar liggen worden
+  samengevoegd tot één bol met het aantal erin. Klik erop en de kaart zoomt in tot de bol uit
+  elkaar valt; vanaf straatniveau staan alle speldjes weer los, met hun popup eronder. Zonder
+  filters stonden er 303 speldjes over elkaar zodra de kaart uitzoomde naar de hele provincie.
+- **Het aantal in de bol is zelf informatie.** "Hier zitten er elf bij elkaar" is precies wat
+  eerder in de overlap verdween.
+- **Ook met het toetsenbord.** Een bol is met Tab te bereiken, wordt als knop aangekondigd en
+  leest voor als "11 adressen, open om te spreiden".
+
+**Wat je moet weten**
+
+- **Een bol is geen school en geen campus.** Het is een tijdelijke groepering die van het
+  zoomniveau afhangt: zoom in en hij valt uit elkaar. Het resultaataantal boven de lijst blijft
+  het aantal adressen tellen, niet het aantal bollen.
+- **Er is niets verborgen.** De kaart toont nog steeds alle resultaten, ook die op "pagina 2"
+  van de lijst staan. Clusteren stapelt op, het knipt niets weg.
+- De bollen hebben in donkere modus dezelfde kleur als in lichte. De kaart zelf blijft ook in het
+  donker een lichte kaart, en een lichtere bol zou daarop juist wegvallen.
+
+---
+
 ## 0.10.0 — 1 september 2026
 
 **Nieuw**

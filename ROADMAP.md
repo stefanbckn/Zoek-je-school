@@ -30,6 +30,7 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **0.8.0** | Disclaimer + over deze site | Paneel "Over deze site" met herkomst, bewerkingen, privacy en disclaimer (deelbaar via `?over=1`), te openen vanuit de kop én de footer · korte disclaimerregel altijd zichtbaar in de footer |
 | **0.10.0** | GOK-leerlingenkenmerken | Vier leerlingenkenmerken per school in het detailpaneel (opleiding moeder, schooltoeslag, thuistaal, buurt) én als rijen met balkje in de vergelijkingstabel, met schooljaar, teldatum en de kadering dat het indicatieve achtergrondcijfers zijn · automatisch opgehaald uit de AgODi-xlsx, join op 266 van de 272 scholen |
 | **0.9.0** | Uitleg- en helppaneel | Paneel "Hoe werkt deze site?" in de kop met uitleg bij zoeken, filteren, één adres bekijken en vergelijken, plus een blok over wat de site niet toont (deelbaar via `?help=1`) |
+| **0.11.0** | Markers clusteren | Nabije adressen op de kaart samengevoegd tot één bol met het aantal erin, die bij klikken en inzoomen uit elkaar valt · vanaf zoom 16 staan alle markers los |
 
 ## Nog te doen
 
@@ -41,9 +42,8 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | 2 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
 | 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
-| 5 | Markers clusteren op de kaart | Nabije adressen samengevoegd tot één bol met het aantal erin, die bij inzoomen weer uit elkaar valt | **Klaar om te bouwen, keuze van bibliotheek nog te verifiëren.** Geen bron nodig, puur frontend. **Voorwaarde voor 6**, dus niet doorschuiven. Zie hieronder |
-| 6 | Andere provincies | Heel Vlaanderen doorzoekbaar, met Antwerpen als standaard en een provinciekeuze die de rest bijlaadt | **Geblokkeerd door 5, geen bron nodig.** De data wordt al opgehaald en daarna weggegooid, dus het werk zit in de UI. Clustering moet er eerst zijn: 303 markers is nu al te druk. Zie hieronder |
-| 7 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 5 | Andere provincies | Heel Vlaanderen doorzoekbaar, met Antwerpen als standaard en een provinciekeuze die de rest bijlaadt | **Klaar om te bouwen, geen bron nodig.** De clustering die hiervoor moest bestaan, zit sinds 0.11.0 in `main`. De data wordt al opgehaald en daarna weggegooid, dus het werk zit in de UI. Zie hieronder |
+| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -173,35 +173,38 @@ Uitgangspunten voor wie dit bouwt:
   scrollgebied). Een kortere lijst maakt dat minder nijpend, maar lost het niet op: de
   gemeentelijst heeft nog steeds z'n eigen scrollbalk binnen een meescrollende kolom.
 
-## Markers clusteren: de kaart begint te druk (gemeld 31/08/2026)
+## Markers clusteren — opgeleverd in 0.11.0
 
-Zonder filters staan er 303 adressen op de kaart, en bij het openen zoomt `FitBounds` uit naar de
-hele provincie. Wat je dan ziet is een blauwe soep waarin niets meer los te onderscheiden valt.
-Gemeld door een gebruiker tijdens een UX-test: de kaart is in het begin te druk, en een groepering
-met het aantal erin zou helpen, waarbij de losse markers bij inzoomen tevoorschijn komen.
+Gemeld door een gebruiker tijdens een UX-test op 31/08/2026: zonder filters stonden er 303
+adressen op de kaart, en bij het openen zoomt `FitBounds` uit naar de hele provincie. Wat je dan
+zag was een blauwe soep waarin niets meer los te onderscheiden viel.
 
-Waarom dit past bij wat er al vastligt: de kaart mag bewust níét pagineren (zie 0.3.0 hierboven),
+Waarom dit paste bij wat er al vastlag: de kaart mag bewust níét pagineren (zie 0.3.0 hierboven),
 want daar is het volledige beeld het punt. Clusteren haalt niets weg. Het aantal in de bol is zelf
-informatie voor een ouder ("hier zitten er elf bij elkaar"), en dat is precies het cijfer dat nu
-onleesbaar in de overlap verdwijnt.
+informatie voor een ouder ("hier zitten er elf bij elkaar"), en dat is precies het cijfer dat
+eerder onleesbaar in de overlap verdween.
 
-Aandachtspunten voor wie dit bouwt:
+**De bibliotheekkeuze is uitgezocht**, dat was het enige open punt. In het npm-register staan drie
+kandidaten naast elkaar: `react-leaflet-cluster` 4.1.3 (31/03/2026) heeft `react-leaflet@^5`,
+`react@^19` en `leaflet.markercluster` in z'n peers en is dus de enige onderhouden stabiele
+release die met deze versies overweg kan. `react-leaflet-markercluster` 5.0.0-rc.0 kan het ook,
+maar staat al sinds januari 2025 in rc; `@changey/react-leaflet-markercluster` zit nog op
+react-leaflet 4 en valt af. De terugvalweg (markercluster rechtstreeks op de Leaflet-instantie
+via `useMap()`, zoals `FitBounds` doet) was niet nodig.
+
+Wat er bij het bouwen uit voortkwam, staat in [CLAUDE.md](./CLAUDE.md) onder Architectuur: de
+vaste clusterkleur, de specificiteit tegenover `.leaflet-marker-icon`, en waarom
+`MarkerCluster.Default.css` er níét bij hoort.
+
+Wat vastligt en wat je niet moet omkeren:
 
 - **Een cluster is geen campus.** De campus-samenvoeging op `postcode|straat|huisnummer` is het
   datamodel (zie CLAUDE.md); een cluster is puur visueel en hangt van het zoomniveau af. Laat een
   cluster dus nooit iets over "een school" zeggen, en bouw er geen filter of teller op. Het aantal
   boven de lijst blijft het aantal campussen.
-- **Op maximale zoom moeten de markers los staan.** Meerdere scholen op één adres zijn al één
-  marker met een popup eronder; een cluster die daar overheen blijft liggen verbergt dat.
-- **De bibliotheekkeuze is nog niet geverifieerd.** `leaflet.markercluster` is de standaard, maar
-  de React-wrapper daarrond moet met `react-leaflet` v5 en React 19 overweg kunnen. Eerst
-  controleren, niet aannemen. Lukt dat niet, dan is `markercluster` rechtstreeks op de
-  Leaflet-instantie aansturen (via `useMap()`) het alternatief, zoals `FitBounds` nu al doet.
-- **Toetsenbord en schermlezer meenemen.** Een clusterbol is een klikbaar element; die moet met
-  Tab te bereiken zijn en een leesbaar label dragen ("11 adressen, open om te spreiden").
-- Let op de laadtijd van de extra CSS en op het thema: de standaardstijl van markercluster brengt
-  een eigen kleurenset mee die naast het palet uit 0.2.1 valt. Doormeten met
-  `node scripts/kleurcheck.mjs` als er kleur bij komt.
+- **Vanaf zoom 16 staan de markers los** (`disableClusteringAtZoom`). Meerdere scholen op één
+  adres zijn al één marker met een popup eronder; een cluster die daar overheen blijft liggen
+  verbergt dat.
 
 ## Doorlichting: wel linken, nooit scoren
 
@@ -253,12 +256,11 @@ alles bij het openen van de pagina ophaalt.
 
 Aandachtspunten voor wie dit bouwt:
 
-- ⚠️ **De markerclustering (punt 5 hierboven) moet eerst af zijn.** Dat is een voorwaarde, geen
-  voorkeursvolgorde, zo beslist door de gebruiker op 01/09/2026. Bij 303 adressen is de
-  uitgezoomde kaart al gemeld als te druk; die melding is de reden dat punt 5 bestaat. Per
-  provincie blijft het even druk als vandaag, maar de bezoeker kan straks wél uitzoomen over
-  provinciegrenzen heen en een brede straal kiezen, en dan valt de kaart om. Begin dus niet aan
-  de provincies zolang de clustering niet in `main` zit.
+- ✅ **De markerclustering die hier eerst moest zijn, is uitgebracht in 0.11.0.** Dat was een
+  voorwaarde, geen voorkeursvolgorde, zo beslist door de gebruiker op 01/09/2026: per provincie
+  blijft het even druk als vandaag, maar de bezoeker kan straks wél uitzoomen over
+  provinciegrenzen heen en een brede straal kiezen, en dan zou de kaart omvallen. Dat obstakel
+  is weg.
 - **De gemeentefilter schaalt niet mee.** Die vult zich uit de data (`gemeenteOpties` in
   `App.tsx`) en gaat van ongeveer 70 naar 300 gemeenten in een lijst met `max-h-48`. Er moet een
   zoekveldje in, of de lijst volgt de gekozen provincie.
