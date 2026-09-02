@@ -8,6 +8,35 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.12.0 — 2 september 2026
+
+**Nieuw**
+
+- **De site toont heel Vlaanderen en Brussel.** Waar er eerst enkel scholen in provincie
+  Antwerpen stonden, zijn het er nu 2145 op 1075 adressen. De data werd al opgehaald en meteen
+  weggegooid; dat gebeurt niet meer.
+- **Brussel zit erbij**, met de 80 Nederlandstalige scholen van de Vlaamse Gemeenschap.
+  Franstalige scholen staan niet in de bron en dus ook niet hier.
+- **Filter op provincie**, met Brussel als aparte keuze onderaan de lijst. Het is een gewest,
+  geen provincie, en het tussen Antwerpen en Limburg zetten zou iets anders suggereren.
+- **De gemeentefilter is herbouwd.** Er zit een zoekveldje boven, de lijst toont enkel gemeenten
+  waar na je andere filters nog iets staat, en achter elke gemeente staat hoeveel adressen je
+  eraan overhoudt. Met 245 gemeenten was de oude lijst met vinkjes onwerkbaar geworden.
+- **Je straal stopt niet aan een provinciegrens.** Wie in Rumst woont en 15 km instelt, ziet ook
+  wat er in Vlaams-Brabant ligt.
+
+**Wat je moet weten**
+
+- **Antwerpen staat in de bron als districten.** Deurne, Berchem, Borgerhout en Wilrijk zijn
+  aparte gemeenten in de filterlijst. Wie "Antwerpen" aanvinkt, krijgt Deurne er niet bij. Dat
+  was al zo, maar het valt nu meer op.
+- **De hele dataset wordt in één keer geladen**, ongeveer 190 KB. Bij een volgend bezoek haalt je
+  browser hem niet opnieuw op zolang de gegevens niet veranderd zijn.
+- **Zoeken op schoolnaam geeft vaker naamgenoten**, simpelweg omdat er nu vijf keer zoveel scholen
+  in staan. Het adres onder de naam zegt welke je voor je hebt.
+
+---
+
 ## 0.11.0 — 2 september 2026
 
 **Nieuw**
