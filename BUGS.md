@@ -101,3 +101,35 @@ blijft, de lege rij verdwijnt. **Nagerekend wat dat weggooit** (02/09/2026):
   hij adressen; met een filter per rij verdwijnt er iets zonder dat het cijfer beweegt.
 - Of zoeken op naam de rij nog moet vinden. Wie "Safe college" intikt terwijl de filter aanstaat,
   krijgt met een naïeve implementatie nul resultaten en geen uitleg.
+
+**Onderzochte piste: de website als sleutel** (02/09/2026, idee van de gebruiker). Eén school
+heeft vaak meerdere instellingsnummers en adressen, maar één website. Doorgemeten op de
+gecommitte dataset:
+
+| | |
+| --- | --- |
+| Scholen | 994 |
+| Unieke hosts (zonder `www.`) | 562 |
+| Scholen zonder website, dus zonder sleutel | 27 |
+| Schoolrijen na groeperen op host binnen één adres | 1495 in plaats van 2145, over 346 adressen |
+
+- **Als identiteitssleutel is het te risicovol.** Sommige domeinen zijn koepeldomeinen:
+  `stedelijkonderwijs.be` draagt 10 verschillende Antwerpse stadsscholen in 6 gemeenten. Op
+  Eikenstraat 8 zou dat Panorama en Explora tot één school maken, en dat zijn ze niet. Eén
+  foute samenvoeging gevonden, maar dat volstaat. Daar komt bij dat alles wat per schoolnummer
+  verschilt (telefoon, erkenning, fiche-link, en vooral de GOK-cijfers, die nooit over scholen
+  opgeteld mogen worden, zie CLAUDE.md) bij een echte merge een winnaar moet aanwijzen.
+- **Als verbergregel werkt het wel.** Verberg een schoolrij zonder aanbod wanneer een andere
+  school op hetzelfde adres dezelfde host heeft. Dat ruimt **138 van de 404** rijen op, precies
+  de gemelde gevallen: Hast 39107 verdwijnt op Guffenslaan omdat Hast 39115 daar aanbod heeft,
+  idem de vier WICO-nummers op Stationsstraat in Pelt. Er wordt niets samengevoegd en niets
+  gemiddeld.
+- **Waarom dat veilig is:** een verborgen rij is per definitie leeg, dus er verdwijnt geen enkele
+  richting van het scherm. Panorama en Explora hebben allebei aanbod en worden dus nooit geraakt.
+  De 37 gevallen die de risicomarker (host over drie of meer gemeenten) opwierp, blijken bij
+  inspectie net de bedoelde gevallen: campushast.be en wico.be zijn één school over meerdere
+  gemeenten.
+- De overige 266 lege rijen lost dit niet op. Daarvoor blijft de filter per schoolrij nodig.
+
+**Er is nog niets beslist.** Deze piste staat hier genoteerd zodat de meting niet opnieuw gedaan
+moet worden, niet als gekozen oplossing.
