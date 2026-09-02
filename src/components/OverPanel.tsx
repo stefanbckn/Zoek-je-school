@@ -77,7 +77,7 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
             <h3 className="font-semibold">Wat is dit?</h3>
             <p className="mt-1 text-zacht">
               Een website waar je middelbare scholen (voltijds gewoon secundair onderwijs) in
-              de provincie Antwerpen kan opzoeken. Je vult je adres in en ziet welke scholen in
+              Vlaanderen en Brussel kan opzoeken. Je vult je adres in en ziet welke scholen in
               de buurt liggen, wat ze aanbieden en hoe je er geraakt. Meer niet: geen ranglijst,
               geen scores, geen advies over welke school de beste is. Die keuze is aan jou en aan
               je kind.
@@ -104,8 +104,7 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
                 <>
                   {' '}
                   Die data is hier opgehaald op {datum} en gaat over{' '}
-                  {meta.aantalVestigingenAntwerpen} vestigingen op{' '}
-                  {meta.aantalCampussenAntwerpen} adressen
+                  {meta.aantalVestigingen} vestigingen op {meta.aantalCampussen} adressen
                   {meta.schooljaarAanbod !== null &&
                     `, met het studieaanbod van schooljaar ${meta.schooljaarAanbod}-${meta.schooljaarAanbod + 1}`}
                   .

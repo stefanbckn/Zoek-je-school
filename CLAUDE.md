@@ -1,6 +1,6 @@
 # Zoek je school — projectconventies
 
-Zoeker voor middelbare scholen (voltijds gewoon secundair onderwijs) in provincie Antwerpen.
+Zoeker voor middelbare scholen (voltijds gewoon secundair onderwijs) in Vlaanderen en Brussel.
 Volledig client-side (Vite + React + TypeScript + Tailwind v4), geen backend, geen database.
 Data wordt op build-time opgehaald via de API's van Onderwijs en Vorming en weggeschreven als
 statische JSON — de app doet nooit live calls naar overheidsbronnen voor de scholendata
@@ -24,9 +24,22 @@ geeft toegang tot alle producten hieronder — geverifieerd, geen aparte aanvraa
 | Codelijst v1 | `.../codelijst/v1/codelijst/{lijst}` | Decodeert codes (o.a. `soort_bestuur`, `net`). Eenmalig geraadpleegd, niet in het script. |
 
 **Scope-filter:** vestigingsplaatsen met `filter_instellingslocatie_hoofdstructuur=311`
-(gewoon voltijds secundair onderwijs), daarna client-side gefilterd op
-`instellingslocatie_provincie === 'Provincie Antwerpen'` — de API heeft géén provinciefilter
-(`filter_instellingslocatie_provincie` geeft HTTP 400). Levert 559 vestigingen / 303 campussen.
+(gewoon voltijds secundair onderwijs). **Sinds 0.12.0 gaat alles mee wat die filter teruggeeft**:
+2151 vestigingsplaatsen in heel Vlaanderen en Brussel, waarvan er 2145 een bijhorende instelling
+hebben, samen 1075 campussen. Tot dan werd er client-side op `instellingslocatie_provincie ===
+'Provincie Antwerpen'` gefilterd en ging ruim driekwart meteen weg.
+
+**Brussel hoort erbij en vraagt geen extra filter.** De bron is de API van de Vlaamse
+onderwijsadministratie, dus er zit per definitie enkel onderwijs van de Vlaamse Gemeenschap in;
+de 80 Brusselse vestigingen zijn de Nederlandstalige scholen. Franstalige scholen komen er niet
+in voor. Verdeling geverifieerd op 02/09/2026: Oost-Vlaanderen 569, Antwerpen 560,
+West-Vlaanderen 461, Limburg 277, Vlaams-Brabant 204, Brussel 80.
+
+De API heeft géén provinciefilter (`filter_instellingslocatie_provincie` geeft HTTP 400); het
+provincieveld staat wel op elke vestigingsplaats en wordt in `Campus.provincie` bewaard, met
+ingekorte labels ('Antwerpen', 'Brussel') omdat ze in de filterkolom en in de URL staan. Een
+onbekende provinciewaarde is een **harde fout** in `fetch-data.ts`, geen stille overslag: dan is
+de bron veranderd en horen er geen adressen ongemerkt te verdwijnen.
 
 **Coördinaten:** `gps_breedtegraad` / `gps_lengtegraad` staan rechtstreeks in de API, in WGS84.
 De Lambert72-conversie en de `proj4`-dependency zijn daarmee verdwenen. 4 vestigingen hebben
@@ -61,6 +74,28 @@ geen coördinaten en krijgen `lat/lon = null`.
   leerlingenaantallen nodigen uit tot een populariteitsranglijst die deze site niet wil zijn.
 - **Directeursnaam** (`instelling_directeur`) — persoonsgegeven, en voor een zoeksite overbodig
   naast telefoon en website. Beslist door de gebruiker.
+
+### Waarom één bestand voor heel Vlaanderen, en niet één per provincie
+
+Bij het inplannen stond in de roadmap één JSON per provincie, met bijladen bij het wisselen.
+**Dat is bij het bouwen omgedraaid, op basis van metingen** (02/09/2026):
+
+- `vestigingen.json` is 12,2 MB ruw maar **192 KB over de lijn** (brotli). De schatting in de
+  roadmap ging uit van ~530 KB en was te somber: de helft van het bestand zijn richtingen, en
+  daarvan zijn er maar een fractie uniek, dus brotli vreet die herhaling op.
+- Netlify serveert het met `cache-control: public,max-age=0,must-revalidate` plus ETag.
+  Nagemeten met een conditionele request: **een herbezoek krijgt HTTP 304 en nul bytes.** Alleen
+  het eerste bezoek betaalt, en pas na een verversing opnieuw. De site is een statische build;
+  er wordt niets per bezoek gegenereerd.
+- Daar staat tegenover dat een splitsing een hele categorie problemen meebrengt die nu niet
+  bestaat: geen grensgevallen bij een straal die over een provinciegrens gaat, geen provincie
+  die uit een ingevuld adres afgeleid moet worden, geen laadvolgorde waarin de provincie vóór
+  de eerste render vast moet liggen, geen omvangcontrole per bestand, en geen melding in de UI
+  dat resultaten aan een grens afgekapt zijn.
+
+**Provincie is daardoor gewoon een filter geworden**, zoals gemeente en net, en straal werkt
+vanzelf over grenzen heen. Wil je dit ooit toch splitsen, doe dat dan pas als het bestand echt
+te zwaar wordt en meet opnieuw — niet op een schatting.
 
 ### Campus-groepering (belangrijk datamodel-detail)
 
@@ -492,7 +527,7 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
   Die faalden op Netlify met `ECONNRESET` tijdens de TLS-handshake (oorzaak nooit bevestigd —
   geen algemene datacenter-blokkade, dat is getest en weerlegd). Dat probleem is met de overstap
   naar de API weg, maar de fallback-logica is blijven staan omdat ze nu de API dekt.
-- `src/types.ts` — het datamodel: `Campus` (adres, coördinaten) met `SchoolOpCampus[]` erin,
+- `src/types.ts` — het datamodel: `Campus` (adres, provincie, coördinaten) met `SchoolOpCampus[]` erin,
   elk met `Richting[]` en `Leerlingenkenmerken | null`. Lege placeholders (`kostprijs`, `vervoer`) blijven staan voor v0.6/v0.7.
 - `src/lib/` — pure functies: haversine-afstand, net-labels, URL-state hook.
 - `src/components/` — UI-componenten, geen state-logica die ook elders nodig is.
@@ -545,6 +580,24 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
     mee en kost een afdruk nodeloos veel inkt. Zou een browser het toch negeren, dan blijft de
     gekleurde tekst over; die inkttinten halen op wit minstens 4,8:1 contrast, en de naam staat
     er voluit bij, dus er gaat geen betekenis verloren.
+- **Provincie- en gemeentefilter (sinds 0.12.0).** Beide zijn gewone URL-filters
+  (`?provincie=`, `?gemeenten=`). Drie dingen die vastliggen:
+  - **De gemeentelijst toont enkel gemeenten die in de huidige resultaten voorkomen**, met het
+    aantal adressen erachter, plus een zoekveldje. 245 gemeenten hebben minstens één school; die
+    allemaal als vinkje aanbieden maakt van een filter een zoekopdracht op zich.
+  - ⚠️ **De gemeentefilter staat als láátste in de filterpijplijn in `App.tsx`, en dat is geen
+    toeval.** De tellingen worden berekend op de lijst mét alle andere filters maar zónder de
+    gemeentefilter zelf, want anders zet één aangevinkte gemeente alle andere op 0 en is het
+    cijfer waardeloos. Verplaats je die filter naar voren, dan klopt de teller niet meer.
+    `verborgenZonderAanbod` wordt daarentegen wél ná de gemeentefilter geteld, anders telt het
+    adressen mee die de bezoeker toch niet zou zien.
+  - **Aangevinkte gemeenten blijven altijd in de lijst staan**, bovenaan, ook als ze op 0 vallen
+    of niet op de zoekterm matchen. Anders zie je een lege pagina zonder vinkje om weer uit te
+    zetten. Zelfde regel als bij de netten.
+  - **Brussel staat achteraan in `PROVINCIE_OPTIONS`**, niet alfabetisch tussen Antwerpen en
+    Limburg: het is een gewest, geen provincie, en die volgorde zou het omgekeerde suggereren.
+  - `DATA_MIDDEN` in `MapView.tsx` is het midden van de databounds, geen gekozen stad. Het is
+    alleen zichtbaar vóór `FitBounds` de resultaten inpast en bij nul resultaten.
 - **Markers clusteren (sinds 0.11.0).** `MapView.tsx` hangt de markers in een
   `<MarkerClusterGroup>` van **`react-leaflet-cluster`** — het enige onderhouden pakket met
   `react-leaflet@^5` en `react@^19` in z'n peers (nagekeken in het npm-register, zie

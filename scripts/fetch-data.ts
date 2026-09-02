@@ -5,6 +5,7 @@ import type {
   DatasetMeta,
   Finaliteit,
   Net,
+  Provincie,
   Richting,
   SchoolOpCampus,
   SoortBestuur,
@@ -34,7 +35,25 @@ const FICHE_BASE_URL = 'https://data-onderwijs.vlaanderen.be/onderwijsaanbod/ins
 
 /** Hoofdstructuur 311 = gewoon voltijds secundair onderwijs. Dat is de scope van deze site. */
 const HOOFDSTRUCTUUR_VOLTIJDS_SO = '311'
-const PROVINCIE = 'Provincie Antwerpen'
+/**
+ * De provincielabels zoals de bron ze schrijft, vertaald naar de kortere vorm die in de UI en
+ * in de URL staat. Het Brussels Hoofdstedelijk Gewest is geen provincie, maar zit wel in
+ * dezelfde bron: de API is die van de Vlaamse onderwijsadministratie, dus dat zijn de
+ * Nederlandstalige scholen van de Vlaamse Gemeenschap in Brussel. Verdeling geverifieerd op
+ * 02/09/2026: Oost-Vlaanderen 569, Antwerpen 560, West-Vlaanderen 461, Limburg 277,
+ * Vlaams-Brabant 204, Brussel 80.
+ *
+ * Een onbekende waarde is een harde fout en geen stille overslag: dan is er iets veranderd aan
+ * de bron, en dan hoort er iemand naar te kijken in plaats van dat er adressen verdwijnen.
+ */
+const PROVINCIES: Record<string, Provincie> = {
+  'Provincie Antwerpen': 'Antwerpen',
+  'Provincie Limburg': 'Limburg',
+  'Provincie Oost-Vlaanderen': 'Oost-Vlaanderen',
+  'Provincie Vlaams-Brabant': 'Vlaams-Brabant',
+  'Provincie West-Vlaanderen': 'West-Vlaanderen',
+  'Brussels Hoofdstedelijk Gewest': 'Brussel',
+}
 /** Instellingstype 300 = Bestuur. Daar (en niet op de school) zit `instelling_soort_bestuur`. */
 const TYPE_BESTUUR = '300'
 
@@ -220,10 +239,17 @@ async function bouwDataset() {
   const bestuurPerNr = new Map<number, any>(besturen.map((b) => [b.instelling_nummer, b]))
   const richtingPerCode = new Map<number, any>(catalogus.map((c) => [c.administratievegroep_code, c]))
 
-  // De API kent geen provinciefilter — dat doen we hier. Geverifieerd: het provincieveld
-  // staat op de vestigingsplaats zelf, niet enkel op de hoofdzetel.
-  const antwerpen = locaties.filter((l) => l.instellingslocatie_provincie === PROVINCIE)
-  console.log(`\nVestigingsplaatsen in ${PROVINCIE}: ${antwerpen.length} (van ${locaties.length} in Vlaanderen/Brussel)`)
+  // Sinds 0.12.0 gaat heel Vlaanderen en Brussel mee. Tot dan werd hier op één provincie
+  // gefilterd en ging ruim driekwart van de opgehaalde data meteen de vuilnisbak in.
+  const perProvincie = new Map<Provincie, number>()
+  for (const l of locaties) {
+    const p = PROVINCIES[l.instellingslocatie_provincie]
+    if (p) perProvincie.set(p, (perProvincie.get(p) ?? 0) + 1)
+  }
+  console.log(
+    `\nVestigingsplaatsen: ${locaties.length} in ` +
+      [...perProvincie].map(([p, n]) => `${p} ${n}`).join(', '),
+  )
 
   // Aanbod per (school, vestiging). Dit endpoint geeft enkel de kóppeling; de inhoudelijke
   // velden (finaliteit, graad, studiegebied) komen uit de catalogus, join op de code.
@@ -264,7 +290,7 @@ async function bouwDataset() {
   let zonderInstelling = 0
   let zonderAanbod = 0
 
-  for (const loc of antwerpen) {
+  for (const loc of locaties) {
     const inst = instellingPerNr.get(loc.instelling_nummer)
     if (!inst) {
       zonderInstelling++
@@ -307,6 +333,15 @@ async function bouwDataset() {
 
     // Busnummer telt niet mee in de sleutel: een andere ingang van hetzelfde gebouw is
     // nog steeds dezelfde campus.
+    const provincie = PROVINCIES[loc.instellingslocatie_provincie]
+    if (!provincie) {
+      throw new Error(
+        `Onbekende provincie "${loc.instellingslocatie_provincie}" bij instelling ` +
+          `${loc.instelling_nummer}. De bron is veranderd — vul PROVINCIES aan in plaats van ` +
+          'deze vestiging over te slaan.',
+      )
+    }
+
     const straat = loc.instellingslocatie_straatnaam ?? ''
     const huisnummer = loc.instellingslocatie_huisnummer ?? ''
     const postcode = loc.instellingslocatie_postcode ?? ''
@@ -321,6 +356,7 @@ async function bouwDataset() {
         postcode,
         gemeente: loc.instellingslocatie_gemeente ?? '',
         niscode: String(loc.instellingslocatie_gemeente_nis ?? ''),
+        provincie,
         lat: heeftCoordinaten ? loc.gps_breedtegraad : null,
         lon: heeftCoordinaten ? loc.gps_lengtegraad : null,
         scholen: [],
@@ -330,8 +366,11 @@ async function bouwDataset() {
     campus.scholen.push(school)
   }
 
-  const campussen = [...campussenPerAdres.values()].sort((a, b) =>
-    a.gemeente.localeCompare(b.gemeente, 'nl') || a.straat.localeCompare(b.straat, 'nl'),
+  const campussen = [...campussenPerAdres.values()].sort(
+    (a, b) =>
+      a.provincie.localeCompare(b.provincie, 'nl') ||
+      a.gemeente.localeCompare(b.gemeente, 'nl') ||
+      a.straat.localeCompare(b.straat, 'nl'),
   )
 
   if (zonderInstelling > 0) {
@@ -379,8 +418,8 @@ async function bouwDataset() {
     bron: [BRON_PAGINA, EP.locaties, EP.instellingen, EP.ingerichtAanbod, EP.catalogus],
     schooljaarAanbod,
     aantalVestigingenTotaal: locaties.length,
-    aantalVestigingenAntwerpen: aantalScholen,
-    aantalCampussenAntwerpen: campussen.length,
+    aantalVestigingen: aantalScholen,
+    aantalCampussen: campussen.length,
     aantalRichtingen,
     leerlingenkenmerken: kenmerken
       ? {

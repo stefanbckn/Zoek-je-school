@@ -30,7 +30,13 @@ const defaultIcon = L.icon({
   shadowSize: [41, 41],
 })
 
-const ANTWERPEN_CENTRUM: [number, number] = [51.2194, 4.4025]
+/**
+ * Waar de kaart staat vóór `FitBounds` de resultaten inpast, en bij nul resultaten. Het midden
+ * van de databounds (lat 50,72 tot 51,47 en lon 2,59 tot 5,79, gemeten op de volledige dataset
+ * op 02/09/2026), niet een gekozen stad: elke stad hier neerzetten is een keuze die niets
+ * oplevert en die veroudert zodra de dataset verschuift.
+ */
+const DATA_MIDDEN: [number, number] = [51.09, 4.19]
 
 // Vanaf dit zoomniveau staan alle markers los. Een cluster dat op straatniveau blijft liggen,
 // verbergt precies wat je dan wil zien: één adres kan meerdere scholen dragen, en die staan
@@ -85,8 +91,8 @@ export function MapView({ campussen, onSelect }: MapViewProps) {
 
   return (
     <MapContainer
-      center={ANTWERPEN_CENTRUM}
-      zoom={10}
+      center={DATA_MIDDEN}
+      zoom={8}
       className="absolute inset-0"
       scrollWheelZoom
     >

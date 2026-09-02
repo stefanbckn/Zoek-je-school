@@ -31,6 +31,7 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **0.10.0** | GOK-leerlingenkenmerken | Vier leerlingenkenmerken per school in het detailpaneel (opleiding moeder, schooltoeslag, thuistaal, buurt) én als rijen met balkje in de vergelijkingstabel, met schooljaar, teldatum en de kadering dat het indicatieve achtergrondcijfers zijn · automatisch opgehaald uit de AgODi-xlsx, join op 266 van de 272 scholen |
 | **0.9.0** | Uitleg- en helppaneel | Paneel "Hoe werkt deze site?" in de kop met uitleg bij zoeken, filteren, één adres bekijken en vergelijken, plus een blok over wat de site niet toont (deelbaar via `?help=1`) |
 | **0.11.0** | Markers clusteren | Nabije adressen op de kaart samengevoegd tot één bol met het aantal erin, die bij klikken en inzoomen uit elkaar valt · vanaf zoom 16 staan alle markers los |
+| **0.12.0** | Heel Vlaanderen en Brussel | Alle 2145 vestigingen op 1075 adressen in één keer geladen in plaats van enkel provincie Antwerpen · filter op provincie · gemeentefilter met zoekveld, resultaataantallen en enkel gemeenten die nog resultaten hebben |
 
 ## Nog te doen
 
@@ -42,8 +43,7 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | 2 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
 | 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
-| 5 | Andere provincies | Heel Vlaanderen doorzoekbaar, met Antwerpen als standaard en een provinciekeuze die de rest bijlaadt | **Klaar om te bouwen, geen bron nodig.** De clustering die hiervoor moest bestaan, zit sinds 0.11.0 in `main`. De data wordt al opgehaald en daarna weggegooid, dus het werk zit in de UI. Zie hieronder |
-| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 5 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -240,62 +240,49 @@ lees het verslag"). Drie redenen, alle drie door de gebruiker aangebracht of ond
 Niets hiervan is nagekeken — dit is een genoteerd idee, geen geverifieerde bron. Wie eraan begint,
 begint bij die drie vragen.
 
-## Andere provincies: de data ligt er al
+## Heel Vlaanderen en Brussel — opgeleverd in 0.12.0
 
-Vandaag toont de site enkel provincie Antwerpen. Dat is geen beperking van de bron: `fetch-data.ts`
-haalt in dezelfde call **alle 2145 vestigingen** van Vlaanderen en Brussel op en gooit er 1586 weg
-met één regel (`instellingslocatie_provincie === PROVINCIE`). Er is dus geen extra endpoint, geen
-extra key en geen extra API-call nodig. Geverifieerd op de huidige dataset, 01/09/2026.
+Tot 0.11.0 toonde de site enkel provincie Antwerpen, terwijl `fetch-data.ts` in dezelfde call
+alle vestigingen van Vlaanderen en Brussel ophaalde en er ruim driekwart weggooide met één regel.
+Die regel is weg. De dataset telt nu 2145 vestigingen op 1075 adressen.
 
-**Zo gekozen (door de gebruiker): één JSON per provincie, Antwerpen als standaard, de rest wordt
-pas ingeladen wanneer de bezoeker van provincie wisselt.** Niet één groot bestand voor heel
-Vlaanderen. Reden: `vestigingen.json` is nu 3,2 MB (138 KB gzipped) voor 559 vestigingen; heel
-Vlaanderen wordt daar ruwweg 3,8 keer zo groot, dus ~12 MB en ~530 KB over de lijn. Dat zou
-iedereen laten betalen voor data die de meeste bezoekers nooit bekijken, terwijl `useVestigingen.ts`
-alles bij het openen van de pagina ophaalt.
+**Eén bestand, geen splitsing per provincie.** De oorspronkelijke planning hier was één JSON per
+provincie met bijladen bij het wisselen. Dat is bij het bouwen omgedraaid nadat de cijfers
+gemeten waren in plaats van geschat: 192 KB over de lijn, en een herbezoek krijgt HTTP 304 met
+nul bytes. De volledige afweging staat in [CLAUDE.md](./CLAUDE.md) onder "Waarom één bestand voor
+heel Vlaanderen". Belangrijk gevolg: de grensgevallen waar dit punt op stukliep bestaan niet
+meer. Een straal van 15 km rond Rumst pakt gewoon mee wat er in Vlaams-Brabant ligt.
 
-Aandachtspunten voor wie dit bouwt:
+**Brussel hoort erbij en vroeg geen extra werk.** De bron is de API van de Vlaamse
+onderwijsadministratie, dus er zit enkel onderwijs van de Vlaamse Gemeenschap in; de 80 Brusselse
+vestigingen zijn de Nederlandstalige scholen. In de filterkolom staat Brussel achteraan, niet
+alfabetisch: het is een gewest, geen provincie.
 
-- ✅ **De markerclustering die hier eerst moest zijn, is uitgebracht in 0.11.0.** Dat was een
-  voorwaarde, geen voorkeursvolgorde, zo beslist door de gebruiker op 01/09/2026: per provincie
-  blijft het even druk als vandaag, maar de bezoeker kan straks wél uitzoomen over
-  provinciegrenzen heen en een brede straal kiezen, en dan zou de kaart omvallen. Dat obstakel
-  is weg.
-- **De gemeentefilter schaalt niet mee.** Die vult zich uit de data (`gemeenteOpties` in
-  `App.tsx`) en gaat van ongeveer 70 naar 300 gemeenten in een lijst met `max-h-48`. Er moet een
-  zoekveldje in, of de lijst volgt de gekozen provincie.
-- **Brussel zit in die 2145.** Het Brussels Hoofdstedelijk Gewest is geen provincie. Beslis
-  expliciet of het een eigen keuze wordt of wegvalt, en gok niet dat het provincieveld het voor
-  je oplost.
-- **De provinciekeuze hoort in de URL**, zoals alle filters, dus in `SearchState`
-  (`useSearchState.ts`). Een gedeelde link naar een school in Gent moet in Gent openen.
-  Let op de laadvolgorde: de provincie bepaalt welk JSON-bestand er gehaald wordt, dus dat moet
-  vóór de eerste render van de resultatenlijst vastliggen.
-- **Kies de provincie bij het invullen van een adres, niet enkel via een keuzelijst.** Wie zijn
-  adres in Sint-Niklaas invult, hoort niet eerst nog eens handmatig Oost-Vlaanderen te moeten
-  aanklikken.
-- **Grensgevallen bestaan.** Iemand in Rumst met een straal van 15 km hoort ook scholen in
-  Mechelen te zien, maar niet die in Vlaams-Brabant, terwijl die soms dichterbij liggen dan een
-  Antwerpse. Één provincie tegelijk laden is de eenvoudige weg; als de resultaten daardoor
-  zichtbaar afgekapt worden aan de provinciegrens, zeg dat dan in de UI in plaats van het stil te
-  laten.
-- **Rond de kaart en de meta:** `MapView.tsx` centreert hardgecodeerd op Antwerpen
-  (`ANTWERPEN_CENTRUM`), en `DatasetMeta` draagt de velden `aantalVestigingenAntwerpen` en
-  `aantalCampussenAntwerpen`, die in de footer en in `OverPanel` gebruikt worden. Die worden
-  per provincie, of ze verhuizen naar een structuur per provincie.
-- **"provincie Antwerpen" staat op zes plaatsen als vaste tekst**: `App.tsx` (ondertitel),
-  `index.html` (meta-description), `OverPanel.tsx`, `HelpPanel.tsx`, `Footer.tsx` en `types.ts`.
-- **De omvangcontrole in `fetch-data.ts` vergelijkt met de vorige dataset.** Splits je in
-  bestanden per provincie, dan moet die controle per provincie gebeuren, anders is ze bij de
-  eerste run zinloos.
+**Wat er mee opgelost is uit de oude aandachtspunten:**
+
+- De gemeentefilter schaalde niet mee. Die heeft nu een zoekveldje, toont enkel gemeenten die na
+  de andere filters nog resultaten hebben, en zet het aantal adressen erachter. Er zijn 245
+  gemeenten met minstens één school.
+- `ANTWERPEN_CENTRUM` in `MapView.tsx` is `DATA_MIDDEN` geworden: het midden van de databounds,
+  geen gekozen stad.
+- De meta-velden `aantalVestigingenAntwerpen` en `aantalCampussenAntwerpen` heten nu
+  `aantalVestigingen` en `aantalCampussen`.
+- "provincie Antwerpen" als vaste tekst is overal "Vlaanderen en Brussel" geworden: `App.tsx`,
+  `index.html`, `OverPanel.tsx`, `HelpPanel.tsx`, `Footer.tsx`, `README.md` en `CLAUDE.md`.
+- De omvangcontrole in `fetch-data.ts` bleef zoals ze was. Ze vergelijkt met de vorige dataset en
+  groei is nooit verdacht, dus de sprong van 559 naar 2145 vestigingen ging er zonder `--force`
+  door.
+
+**Nog open, bewust niet meegenomen:** een school opzoeken levert nu resultaten in heel Vlaanderen,
+dus de naamfilter geeft vaker naamgenoten terug. Als dat in de praktijk stoort, is de oplossing
+de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
 
 **Groeperen op bestuursniveau is hier geen alternatief voor** (gevraagd 01/09/2026). Het verliest
-geen scholen: alle 559 vestigingen hebben een bekend bestuur (376 Vrij, 102 GO!, 63 Gemeente,
-18 Provincie, 0 onbekend). Maar een bestuur kan scholen over verschillende gemeenten hebben, dus
-kaartjes op bestuursniveau zetten campussen bij elkaar die tientallen kilometers uit elkaar
-liggen. De adresgroepering bestaat net omdat scholen hetzelfde gebouw delen. Als filter of als
-regel in het detailpaneel kan bestuur wel nuttig zijn; daarvoor moet `SchoolOpCampus` het
-bestuursnummer en de naam gaan dragen, want vandaag staat er enkel `soortBestuur` (het type) in.
+geen scholen, maar een bestuur kan scholen over verschillende gemeenten hebben, dus kaartjes op
+bestuursniveau zetten campussen bij elkaar die tientallen kilometers uit elkaar liggen. De
+adresgroepering bestaat net omdat scholen hetzelfde gebouw delen. Als filter of als regel in het
+detailpaneel kan bestuur wel nuttig zijn; daarvoor moet `SchoolOpCampus` het bestuursnummer en de
+naam gaan dragen, want vandaag staat er enkel `soortBestuur` (het type) in.
 
 ## Aanmelden: geen centrale bron (onderzocht 27/08/2026)
 

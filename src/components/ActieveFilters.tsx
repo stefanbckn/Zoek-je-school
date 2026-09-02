@@ -1,6 +1,6 @@
 import type { SearchState } from '../lib/useSearchState'
 import type { FinaliteitKeuze } from '../lib/aanbod'
-import type { Net } from '../types'
+import type { Net, Provincie } from '../types'
 
 interface ActieveFiltersProps {
   state: SearchState
@@ -63,6 +63,16 @@ export function ActieveFilters({ state, onUpdate, onWisAlles }: ActieveFiltersPr
         onUpdate({
           finaliteiten: state.finaliteiten.filter((f: FinaliteitKeuze) => f !== finaliteit),
         }),
+    })
+  }
+
+  for (const provincie of state.provincies) {
+    chips.push({
+      sleutel: `prov-${provincie}`,
+      label: provincie,
+      wisLabel: `Provincie ${provincie} wissen`,
+      wis: () =>
+        onUpdate({ provincies: state.provincies.filter((p: Provincie) => p !== provincie) }),
     })
   }
 
