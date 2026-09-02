@@ -48,3 +48,56 @@ filters):
 - Let op mobiel: daar is het wiel geen kwestie, maar de kaart heeft er wél een minimumhoogte
   nodig, en er staat al een opmerking bij die `relative` over een kaart die op kleine schermen
   naar hoogte 0 zakte. Niet opnieuw introduceren.
+
+---
+
+## Scholen zonder studieaanbod blijven staan op een adres dat wél aanbod heeft (gemeld 02/09/2026)
+
+**Wat er gebeurt.** Op Guffenslaan 27 in Hasselt staat "Hast Katholiek Onderwijs Hasselt 039107"
+tussen de scholen op dat adres, maar wie de officiële fiche opent, vindt Guffenslaan daar niet
+terug. De bezoeker besluit dan dat ons adres fout is.
+
+**Het adres is niet fout.** Nagekeken op de bron (02/09/2026): instelling 39107 heeft zeven
+vestigingsplaatsen in `instellingslocatie/v1`, waaronder nummer 10 op Guffenslaan 27, actief
+sinds 01/09/2023 en zonder einddatum. De fiche op data-onderwijs.vlaanderen.be staat standaard
+op **"met studieaanbod"**, en op die vestiging richt 39107 dit schooljaar geen enkele richting
+in. Zet je de fiche op "zonder", dan staat Guffenslaan er wel. Twee lijsten, andere filter.
+
+**Wat de oorzaak is.** De schakelaar "adressen zonder studieaanbod verbergen" werkt op
+**adresniveau**, niet per school (`heeftAanbod` in `App.tsx`). Guffenslaan 27 telt acht scholen,
+waarvan er zes wel aanbod hebben (Virga Jessecollege en co). Het adres blijft dus terecht staan,
+maar de rijen van 39107 en Middenschool Kindsheid Jesu liften mee zonder één richting. Daar komt
+bij dat het aanbodblok in het detailpaneel **per adres** samengevoegd is (`campusAanbod`), zodat
+je bij 39107 het aanbod van de buren leest.
+
+**Omvang, geteld op de gecommitte dataset (02/09/2026):**
+
+| | |
+| --- | --- |
+| Schoolrijen in de dataset | 2145 |
+| Rijen zonder enige richting | 688 |
+| ... waarvan op een adres dat wél aanbod heeft, dus nu zichtbaar | 404 |
+| ... waarvan op een adres zonder aanbod, dus nu al verborgen | 284 |
+| Adressen zonder enig aanbod (nu al verborgen) | 163 van 1075 |
+
+**De voor de hand liggende oplossing** is de filter ook per schoolrij laten werken: het adres
+blijft, de lege rij verdwijnt. **Nagerekend wat dat weggooit** (02/09/2026):
+
+- Van de 994 scholen in de dataset hebben er **2** op geen enkel adres aanbod. Eén daarvan valt
+  nu al weg via de adresfilter; de andere, **Safe college** (onafhankelijk, één adres), zou
+  nieuw onzichtbaar worden zodra de filter aanstaat. Alle andere 404 rijen horen bij een school
+  die elders wél aanbod heeft, dus die school blijft vindbaar op haar andere adressen.
+- Geen enkele rij is leeg door onze verwerking. Alle 1769 (school, vestiging)-paren met aanbod
+  in de bron overleven de catalogusjoin; er is geen paar dat enkel leeg lijkt doordat een
+  richtingcode ontbreekt in `/administratievegroep`. Van die 1769 vallen er 312 buiten onze
+  dataset omdat ze op een vestiging staan die niet in hoofdstructuur 311 zit.
+
+**Nog te verifiëren vóór er een oplossing gekozen wordt:**
+
+- Wat er met het detailpaneel gebeurt. Het toont vandaag het aanbod van het hele adres bij één
+  specifieke school. Verdwijnt de rij uit de lijst, dan blijft een gedeelde link naar die school
+  bestaan; die mag geen leeg of misleidend paneel geven.
+- Of de teller in de filterkolom ("x adressen vallen nu weg") schoolrijen moet meetellen. Nu telt
+  hij adressen; met een filter per rij verdwijnt er iets zonder dat het cijfer beweegt.
+- Of zoeken op naam de rij nog moet vinden. Wie "Safe college" intikt terwijl de filter aanstaat,
+  krijgt met een naïeve implementatie nul resultaten en geen uitleg.

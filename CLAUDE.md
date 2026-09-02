@@ -57,6 +57,16 @@ geen coördinaten en krijgen `lat/lon = null`.
   merk je een typefout meteen.
 - Respons-envelop: `{ meta: { total_elements, total_pages, number, last, ... }, content: [...] }`.
   De `links`-array is altijd leeg — niet op vertrouwen voor paginatie.
+- **`instelling_naam_volledig` bevat soms het instellingsnummer**, bijvoorbeeld "Hast Katholiek
+  Onderwijs Hasselt 039107". Dat is geen fout van ons: bij 25 van de 1182 SO-instellingen zit
+  het nummer letterlijk in dat veld (geteld 02/09/2026), want het is de manier waarop de bron
+  gelijknamige scholen uit elkaar houdt — 39107 en 39115 heten allebei "Hast Katholiek Onderwijs
+  Hasselt". Niet wegpoetsen met een regex: dan zijn die twee op het scherm niet meer te
+  onderscheiden.
+- **Een vestigingsplaats in `instellingslocatie` heeft niet noodzakelijk studieaanbod.** Van de
+  2145 (school, vestiging)-paren in onze dataset hebben er 688 geen enkele richting. De fiche op
+  data-onderwijs.vlaanderen.be staat standaard op "met studieaanbod" en toont zo'n adres dan
+  niet, wat de indruk wekt dat ons adres verzonnen is. Zie de bug hierover in [BUGS.md](./BUGS.md).
 
 #### Wat er NIET in zit
 

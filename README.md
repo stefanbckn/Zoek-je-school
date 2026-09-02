@@ -83,6 +83,7 @@ Eén regel per open bug. De diagnose, wat al uitgezocht is en wat nog geverifiee
 staat in **[BUGS.md](./BUGS.md)** — houd die twee gelijk als je er een toevoegt of oplost.
 
 - **De kaart is hoger dan het scherm en het muiswiel zoomt in plaats van te scrollen** (gemeld 02/09/2026).
+- **Scholen zonder studieaanbod blijven staan op een adres dat wél aanbod heeft** (gemeld 02/09/2026).
 
 ## Sanity check
 
