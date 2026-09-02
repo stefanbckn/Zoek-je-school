@@ -37,7 +37,7 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| 1 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, ontsluiting niet geverifieerd.** Staat in ScholenKompas (publiek, per school); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Eerst uitzoeken of het in bulk of via een dieplink kan — zie hieronder |
+| 1 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik — zie hieronder |
 | 2 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
 | 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
 | 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
@@ -420,18 +420,36 @@ technische-fiche-scholenkompas.pdf`), letterlijk nagelezen:
 - **Privacydrempels**: cijfers verdwijnen als de groep te klein is (bv. minder dan 5 uitgereikte
   attesten). Reken dus op gaten, net als de `(*)` in Dataloep.
 
-**Wat nog uitgezocht moet worden vóór dit gebouwd kan worden:**
+**De data is niet te downloaden (uitgezocht 02/09/2026).** Dit is nagekeken, niet ingeschat:
 
-1. **Kan je er in bulk aan?** Het dashboard toont één school per keer, na een zoekopdracht. Een
-   kruistabel-export per school zou 706 keer handwerk zijn — onbruikbaar. Of Tableau Public een
-   werkblad met álle scholen bevat, of een download toestaat, is **niet geverifieerd**. Een
-   poging om de werkmap als `.twb`/`.twbx` te downloaden gaf 404.
-2. **Kan je per school dieplinken?** Zo ja, dan is er ook zonder eigen cijfers een goedkope
-   winst: een knop "Bekijk deze school in ScholenKompas" naast de bestaande link naar de
-   officiële fiche. Het instellingsnummer zit in de bron (sectie 2.1 van de fiche), maar de
-   naam van de URL-parameter is nog niet nagekeken. **Niet gokken — uittesten.**
-3. **Hergebruiksvoorwaarden.** Zoals bij de rest van dit portaal is er geen expliciete
-   open-datalicentie gevonden. Doorlinken kan altijd; overnemen niet zomaar.
+1. **De uitgever heeft data-download uitgezet.** De werkmap-metadata van Tableau Public
+   (`https://public.tableau.com/profile/api/single_workbook/ScholenKompasSecundair`) geeft
+   `"allowDataAccess": false`. Dat is de instelling achter "Download workbook or data"; die
+   staat dus bewust af. De `.csv`-suffix op de view geeft 404, net als `.twb` en `.twbx`.
+2. **Er staat geen bestand op het documentenportaal.** Bij de GOK-kenmerken bestond er wél een
+   publieke xlsx; hier linkt de ScholenKompas-pagina enkel naar de technische fiche, verder niets.
+3. **Het vizql-protocol scrapen doen we niet.** Dat stond hier al voor Dataloep (fragiel,
+   niet-ondersteund) en hier komt er een tweede reden bij: het omzeilt een instelling die de
+   uitgever expliciet heeft uitgezet.
+**Blijft dus over, in deze volgorde:**
+
+1. **De cijfers opvragen bij Onderwijs en Vorming.** Het Bestuursdecreet geeft een algemeen
+   **recht op hergebruik van bestuursdocumenten**, en datasets vallen daar uitdrukkelijk onder.
+   Belangrijk detail: een aanvraag moet over een **bestaand** document gaan — je kan een bestuur
+   niet vragen iets nieuws samen te stellen. Dat zit hier goed, want de dataset achter het
+   dashboard bestaat al. Vergoedingen zijn beperkt tot marginale kopieerkosten, en er zijn drie
+   modellicenties (CC0, vrij hergebruik, hergebruik tegen betaling). Er is bovendien een
+   precedent bij dezelfde afdeling: de GOK-leerlingenkenmerken staan al als open xlsx online.
+   Kanaal: het contactformulier op de ScholenKompas-pagina, of 1700 (keuze 2, Onderwijs).
+   Vraag concreet om de onderliggende cijfers **per instellingsnummer**, als xlsx of csv, onder
+   een modellicentie.
+2. **Ondertussen dieplinken.** Een knop "Bekijk deze school in ScholenKompas" naast de link naar
+   de officiële fiche. Dan hoeven we niets over te nemen en blijft de kadering van de bron
+   staan. Nog uit te testen: of Tableau Public een URL-parameter aanvaardt die meteen de juiste
+   school opent. Het instellingsnummer zit in hun bron (sectie 2.1 van de fiche), maar de naam
+   van de parameter is nog niet nagekeken. **Niet gokken — uittesten.**
+3. **Zelf cijfers overnemen kan pas na 1.** Zonder expliciete licentie is doorlinken het enige
+   dat sowieso mag.
 
 **Kadering, als het er komt.** Katholiek Onderwijs waarschuwt bij ScholenKompas expliciet voor
 strategisch gedrag om indicatoren te beïnvloeden, schoolkeuze die te sterk op cijfers steunt, en
