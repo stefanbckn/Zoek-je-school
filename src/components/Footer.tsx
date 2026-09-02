@@ -32,8 +32,8 @@ export function Footer({
           <a href={meta.bron[0]} target="_blank" rel="noreferrer" className="underline">
             Onderwijs en Vorming
           </a>{' '}
-          · {meta.aantalVestigingenAntwerpen} vestigingen op {meta.aantalCampussenAntwerpen} adressen
-          in de provincie Antwerpen
+          · {meta.aantalVestigingen} vestigingen op {meta.aantalCampussen} adressen in
+          Vlaanderen en Brussel
         </p>
       )}
       {/* Verplichte attributie voor de fietsroute. De voorwaarden van HeiGIT eisen deze

@@ -63,7 +63,7 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
         </div>
 
         <p className="mt-2 text-sm text-zacht">
-          Zoek middelbare scholen in de provincie Antwerpen, vergelijk ze op afstand en
+          Zoek middelbare scholen in Vlaanderen en Brussel, vergelijk ze op afstand en
           studieaanbod, en beslis daarna zelf verder.
         </p>
 
@@ -105,6 +105,13 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
               <li>
                 <strong className="font-medium text-inkt">Net.</strong> Wie de school inricht:
                 GO!, provinciaal, gemeentelijk of vrij gesubsidieerd.
+              </li>
+              <li>
+                <strong className="font-medium text-inkt">Provincie en gemeente.</strong> De
+                site toont heel Vlaanderen en Brussel, dus dit is de snelste weg naar je eigen
+                streek als je geen adres wil invullen. De gemeentelijst toont enkel gemeenten
+                die na je andere filters nog resultaten hebben, met het aantal adressen erachter,
+                en heeft een zoekveldje omdat het er 245 zijn.
               </li>
               <li>
                 <strong className="font-medium text-inkt">Schoolnaam</strong>, als je al weet

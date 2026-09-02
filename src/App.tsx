@@ -14,6 +14,7 @@ import { VergelijkPanel } from './components/VergelijkPanel'
 import { heeftAanbod, richtingMatcht } from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
 import { NET_OPTIONS } from './lib/net'
+import { PROVINCIE_OPTIONS } from './lib/provincie'
 import { useSearchState } from './lib/useSearchState'
 import { MAX_VERGELIJK, toggleVergelijking } from './lib/vergelijking'
 import { useVestigingen } from './lib/useVestigingen'
@@ -43,6 +44,7 @@ function App() {
 
   const actieveFilters =
     state.netten.length +
+    state.provincies.length +
     state.gemeenten.length +
     state.finaliteiten.length +
     (state.tekst.trim() ? 1 : 0) +
@@ -50,7 +52,7 @@ function App() {
     (state.toonZonderAanbod ? 1 : 0)
 
   // Alleen netten aanbieden die in de dataset voorkomen. 'Officieel gesubsidieerd' (OCMW,
-  // intercommunale) bestaat als categorie maar heeft in provincie Antwerpen geen enkele school;
+  // intercommunale) bestaat als categorie maar heeft in de huidige dataset geen enkele school;
   // dat als vinkje tonen levert enkel een filter op die gegarandeerd niets teruggeeft.
   const netOpties = useMemo(() => {
     const aanwezig = new Set(campussen.flatMap((c) => c.scholen.map((s) => s.net)))
@@ -59,10 +61,11 @@ function App() {
     return NET_OPTIONS.filter((n) => aanwezig.has(n) || state.netten.includes(n))
   }, [campussen, state.netten])
 
-  const gemeenteOpties = useMemo(
-    () => [...new Set(campussen.map((c) => c.gemeente))].sort((a, b) => a.localeCompare(b, 'nl')),
-    [campussen],
-  )
+  // Zelfde redenering als bij de netten: enkel wat in de data zit, plus wat aangevinkt staat.
+  const provincieOpties = useMemo(() => {
+    const aanwezig = new Set(campussen.map((c) => c.provincie))
+    return PROVINCIE_OPTIONS.filter((p) => aanwezig.has(p) || state.provincies.includes(p))
+  }, [campussen, state.provincies])
 
   // Stabiele referentie: anders herstart DetailPanel's fietsroute-effect bij elke
   // ongerelateerde re-render (bv. lijst/kaart wisselen) terwijl het paneel open staat.
@@ -71,7 +74,7 @@ function App() {
     [state.lat, state.lon],
   )
 
-  const { zichtbareCampussen, verborgenZonderAanbod } = useMemo(() => {
+  const { zichtbareCampussen, verborgenZonderAanbod, gemeenteTellingen } = useMemo(() => {
     const tekstLower = state.tekst.trim().toLowerCase()
     const richtingTerm = state.richting.trim()
     const filtertOpAanbod = richtingTerm.length > 0 || state.finaliteiten.length > 0
@@ -87,7 +90,10 @@ function App() {
       }))
       .filter((c) => {
         if (c.scholen.length === 0) return false
-        if (state.gemeenten.length > 0 && !state.gemeenten.includes(c.gemeente)) return false
+        if (state.provincies.length > 0 && !state.provincies.includes(c.provincie)) return false
+        // De gemeentefilter staat bewust NIET hier maar helemaal achteraan: de tellingen achter
+        // de gemeentenamen moeten zeggen hoeveel resultaten je krijgt als je er één aanvinkt,
+        // en dat kan alleen als ze berekend zijn op de lijst zónder die filter erop.
         if (!filtertOpAanbod) return true
         // Aanbodfilters gelden op adresniveau, niet per school: scholen die een campus delen
         // vullen elkaars aanbod aan, en wie op "Latijn" zoekt wil dat adres zien — ook als
@@ -124,17 +130,33 @@ function App() {
       binnenStraal.sort((a, b) => (a.afstandKm ?? Infinity) - (b.afstandKm ?? Infinity))
     }
 
+    // Hoeveel adressen elke gemeente oplevert, berekend op alles behalve de gemeentefilter
+    // zelf. Anders zou een aangevinkte gemeente alle andere op 0 zetten en was het cijfer
+    // waardeloos. Adressen zonder aanbod tellen alleen mee als de bezoeker ze ook te zien
+    // krijgt, zodat het getal klopt met wat er na het aanvinken in de lijst staat.
+    const telbaar = state.toonZonderAanbod ? binnenStraal : binnenStraal.filter((c) => heeftAanbod(c))
+    const gemeenteTellingen = new Map<string, number>()
+    for (const c of telbaar) {
+      gemeenteTellingen.set(c.gemeente, (gemeenteTellingen.get(c.gemeente) ?? 0) + 1)
+    }
+
+    const naGemeente =
+      state.gemeenten.length === 0
+        ? binnenStraal
+        : binnenStraal.filter((c) => state.gemeenten.includes(c.gemeente))
+
     // Adressen zonder studieaanbod als láátste stap eruit, na alle andere filters. Zo telt
     // `verborgenZonderAanbod` alleen wat door dít filter wegvalt en niet door een ander —
     // dat cijfer staat in de UI, dus het moet kloppen met wat de bezoeker terugkrijgt als hij
     // het vinkje aanzet. (Filtert iemand op finaliteit of richting, dan zijn lege adressen daar
     // al uit gevallen en is dit cijfer terecht 0.)
-    const zonderAanbod = binnenStraal.filter((c) => !heeftAanbod(c))
+    const zonderAanbod = naGemeente.filter((c) => !heeftAanbod(c))
     return {
       zichtbareCampussen: state.toonZonderAanbod
-        ? binnenStraal
-        : binnenStraal.filter((c) => heeftAanbod(c)),
+        ? naGemeente
+        : naGemeente.filter((c) => heeftAanbod(c)),
       verborgenZonderAanbod: state.toonZonderAanbod ? 0 : zonderAanbod.length,
+      gemeenteTellingen,
     }
   }, [
     campussen,
@@ -142,12 +164,26 @@ function App() {
     state.lon,
     state.straalKm,
     state.netten,
+    state.provincies,
     state.gemeenten,
     state.tekst,
     state.finaliteiten,
     state.richting,
     state.toonZonderAanbod,
   ])
+
+  /**
+   * De gemeenten die de filterkolom aanbiedt: enkel die in de huidige resultaten voorkomen.
+   * Met 245 gemeenten in heel Vlaanderen en Brussel is een volledige lijst geen filter meer,
+   * en een gemeente aanbieden waar na de andere filters niets meer staat, levert gegarandeerd
+   * 0 resultaten op. Aangevinkte gemeenten blijven altijd staan, ook als ze op 0 vallen —
+   * anders zie je een lege pagina zonder vinkje om weer uit te zetten.
+   */
+  const gemeenteOpties = useMemo(() => {
+    const namen = new Set(gemeenteTellingen.keys())
+    for (const g of state.gemeenten) namen.add(g)
+    return [...namen].sort((a, b) => a.localeCompare(b, 'nl'))
+  }, [gemeenteTellingen, state.gemeenten])
 
   /**
    * De aangevinkte campussen, afgeleid uit de vólledige dataset en niet uit `zichtbareCampussen`.
@@ -188,7 +224,7 @@ function App() {
         <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-rand px-4 py-4">
           <div>
             <h1 className="text-xl font-semibold text-inkt">Zoek je school</h1>
-            <p className="text-sm text-zacht">Middelbare scholen in de provincie Antwerpen</p>
+            <p className="text-sm text-zacht">Middelbare scholen in Vlaanderen en Brussel</p>
           </div>
           {/* "Over deze site" staat ook hier en niet enkel in de footer: onderaan moet je
               eerst voorbij 300 resultaten scrollen om te vinden waar de gegevens vandaan
@@ -237,6 +273,7 @@ function App() {
           onWisAlles={() =>
             update({
               netten: [],
+              provincies: [],
               gemeenten: [],
               finaliteiten: [],
               tekst: '',
@@ -250,8 +287,11 @@ function App() {
           <div className={`${filtersOpen ? 'block' : 'hidden'} md:block`}>
             <FilterPanel
               netOpties={netOpties}
+              provincieOpties={provincieOpties}
               gemeenteOpties={gemeenteOpties}
+              gemeenteTellingen={gemeenteTellingen}
               netten={state.netten}
+              provincies={state.provincies}
               gemeenten={state.gemeenten}
               tekst={state.tekst}
               finaliteiten={state.finaliteiten}
@@ -259,6 +299,7 @@ function App() {
               toonZonderAanbod={state.toonZonderAanbod}
               verborgenZonderAanbod={verborgenZonderAanbod}
               onNettenChange={(netten) => update({ netten })}
+              onProvinciesChange={(provincies) => update({ provincies })}
               onGemeentenChange={(gemeenten) => update({ gemeenten })}
               onTekstChange={(tekst) => update({ tekst })}
               onFinaliteitenChange={(finaliteiten) => update({ finaliteiten })}

@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react'
 import { FINALITEIT_OPTIONS, type FinaliteitKeuze } from './aanbod'
 import { NET_OPTIONS } from './net'
-import type { Net } from '../types'
+import { PROVINCIE_OPTIONS } from './provincie'
+import type { Net, Provincie } from '../types'
 
 export interface SearchState {
   lat: number | null
@@ -11,6 +12,8 @@ export interface SearchState {
   straalKm: number | null
   /** Leeg = alle netten. */
   netten: Net[]
+  /** Leeg = heel Vlaanderen en Brussel. */
+  provincies: Provincie[]
   /** Leeg = alle gemeenten. */
   gemeenten: string[]
   tekst: string
@@ -50,6 +53,7 @@ const DEFAULT_STATE: SearchState = {
   label: null,
   straalKm: 10,
   netten: [],
+  provincies: [],
   gemeenten: [],
   tekst: '',
   finaliteiten: [],
@@ -123,6 +127,11 @@ function parseState(search: string): SearchState {
     label: heeftLocatie ? params.get('label') : null,
     straalKm: parseStraal(params.get('straal')),
     netten: parseNetten(params.get('net')),
+    // Zelfde reden als bij netten: een onbekende waarde uit een bewerkte URL zou een filter
+    // opleveren die nooit matcht, en dus 0 resultaten zonder zichtbaar vinkje.
+    provincies: parseList(params.get('provincie')).filter((p): p is Provincie =>
+      (PROVINCIE_OPTIONS as readonly string[]).includes(p),
+    ),
     gemeenten: parseList(params.get('gemeenten')),
     tekst: params.get('q') ?? '',
     // Zelfde reden als bij netten: een onbekende waarde uit een bewerkte URL mag geen
@@ -146,6 +155,7 @@ function toSearchParams(state: SearchState): URLSearchParams {
   if (state.label) params.set('label', state.label)
   params.set('straal', state.straalKm === null ? 'alles' : String(state.straalKm))
   if (state.netten.length > 0) params.set('net', state.netten.join(','))
+  if (state.provincies.length > 0) params.set('provincie', state.provincies.join(','))
   if (state.gemeenten.length > 0) params.set('gemeenten', state.gemeenten.join(','))
   if (state.tekst) params.set('q', state.tekst)
   if (state.finaliteiten.length > 0) params.set('finaliteit', state.finaliteiten.join(','))
