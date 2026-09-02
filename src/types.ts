@@ -5,8 +5,8 @@
  * schoolbestuur — zie CLAUDE.md.
  *
  * 'Officieel gesubsidieerd' blijft bestaan als terugval voor officiële scholen met een bestuur
- * dat noch provincie noch gemeente is (OCMW, intercommunale, Vlaamse Gemeenschap). Die komen in
- * provincie Antwerpen momenteel niet voor, maar de mapping mag daar niet stilzwijgend op gokken.
+ * dat noch provincie noch gemeente is (OCMW, intercommunale, Vlaamse Gemeenschap). De mapping
+ * mag er niet stilzwijgend op gokken dat die categorie leeg blijft.
  */
 export type Net =
   | 'GO!'
@@ -31,6 +31,23 @@ export type SoortBestuur =
   | 'Intercommunale'
   | 'Vlaamse Gemeenschap'
   | 'Andere'
+
+/**
+ * Het gebied waarin een adres ligt. Vijf provincies plus Brussel, want het Brussels
+ * Hoofdstedelijk Gewest is geen provincie maar staat wél in dezelfde bron: de API is die van
+ * de Vlaamse onderwijsadministratie, dus er zit per definitie enkel Nederlandstalig onderwijs
+ * van de Vlaamse Gemeenschap in. Franstalige Brusselse scholen komen er niet in voor.
+ *
+ * De labels zijn ingekort tegenover de bron ('Provincie Antwerpen', 'Brussels Hoofdstedelijk
+ * Gewest'), want ze staan als vinkje in de filterkolom en in de URL.
+ */
+export type Provincie =
+  | 'Antwerpen'
+  | 'Limburg'
+  | 'Oost-Vlaanderen'
+  | 'Vlaams-Brabant'
+  | 'West-Vlaanderen'
+  | 'Brussel'
 
 export type StatusErkenning = 'S' | 'E'
 
@@ -130,6 +147,7 @@ export interface Campus {
   postcode: string
   gemeente: string
   niscode: string
+  provincie: Provincie
   /** Null als de bron geen (geldige) coördinaten heeft voor dit adres. */
   lat: number | null
   lon: number | null
@@ -146,9 +164,12 @@ export interface DatasetMeta {
   bron: string[]
   /** Schooljaar waarop het studieaanbod slaat (bv. 2026 = schooljaar 2026-2027). */
   schooljaarAanbod: number | null
+  /** Alles wat de bron voor hoofdstructuur 311 teruggeeft, vóór onze eigen filters. */
   aantalVestigingenTotaal: number
-  aantalVestigingenAntwerpen: number
-  aantalCampussenAntwerpen: number
+  /** Vestigingen in de dataset. Sinds 0.12.0 heel Vlaanderen en Brussel, dus gelijk aan het totaal
+      op de vestigingen na die geen bijhorende instelling hebben. */
+  aantalVestigingen: number
+  aantalCampussen: number
   aantalRichtingen: number
   /**
    * Herkomst van de leerlingenkenmerken: één schooljaar en één teldatum voor de hele dataset.
