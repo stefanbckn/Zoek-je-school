@@ -135,9 +135,18 @@ automatisch → tag zetten → GitHub Release aanmaken. Twee dingen die daarbij 
   werken en achteraf verplaatsen. Naamgeving: `v0.4.0-gok-indicatoren` — het volledige
   versienummer plus een kort thema. Alleen losse fixes buiten een versie mogen rechtstreeks
   op `main`.
+- **Maak een branch met `git switch -c <naam> --no-track origin/main`.** `--no-track` is hier
+  geen detail: zonder dat zet `git checkout -b <naam> origin/main` de upstream van de nieuwe
+  branch op `origin/main`, en dan gaat een gewone `git push` van die branch rechtstreeks naar
+  `main`. Dat is op 03/09/2026 gebeurd bij 0.12.1: er kwam geen branch op GitHub, de commits
+  landden op `main`, Netlify deployde meteen, en de `Fixes #22`/`Fixes #24` in de commitberichten
+  sloten de issues zonder dat er iemand naar de PR gekeken had. Controleer het met
+  `git config --get branch.<naam>.merge`: dat mag niet op `refs/heads/main` staan.
 - De gebruiker werkt met feature branches + pull requests op GitHub
   (`git@github.com:stefanbckn/Zoek-je-school.git`, SSH — de HTTPS-remote heeft geen credentials).
   Netlify deployt enkel vanaf `main`, dus werk op een branch gaat niet live tot de PR gemerged is.
-- `gh` CLI staat geïnstalleerd maar is **niet ingelogd** (vereist interactieve browser-login).
-  PR's aanmaken doet de gebruiker zelf, of via een voorgevulde compare-link.
+- **`gh` is ingelogd** (account `stefanbckn`, scope `repo`), dus `gh pr create`, `gh issue` en
+  `gh release create` werken gewoon. De regel hierboven in deze skill dat het niet ingelogd was,
+  gold tot 03/09/2026. Pushen blijft wel iets waar per keer akkoord voor nodig is, ook voor een
+  tag.
 
