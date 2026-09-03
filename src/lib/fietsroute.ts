@@ -1,7 +1,7 @@
 // Roept onze EIGEN server-side proxy aan (Netlify Function op /api/fietsroute), niet
 // OpenRouteService rechtstreeks. Reden: de ORS-key mag volgens hun documentatie niet
 // client-side gebruikt worden. De key zit dus in de serveromgeving en komt nooit in deze
-// bundle terecht. Bijkomend voordeel: same-origin, dus geen CORS-kwestie. Zie CLAUDE.md.
+// bundle terecht. Bijkomend voordeel: same-origin, dus geen CORS-kwestie. Zie .claude/rules/reistijd.md.
 const PROXY_URL = `${import.meta.env.BASE_URL}api/fietsroute`
 
 export interface Fietsroute {

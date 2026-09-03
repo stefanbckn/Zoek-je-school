@@ -9,7 +9,7 @@ import { ResultCard } from './ResultCard'
  *
  * Een "Toon meer"-knop en géén genummerde pagina's: de lijst staat op afstand gesorteerd, dus
  * wat bovenaan staat is wat telt — niemand bladert doelgericht naar pagina 7. Een knop houdt
- * bovendien de scrollpositie intact, en dat is op mobiel het verschil. Zie CLAUDE.md.
+ * bovendien de scrollpositie intact, en dat is op mobiel het verschil. Zie .claude/rules/frontend.md.
  */
 const PAGINA = 25
 

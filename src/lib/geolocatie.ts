@@ -1,5 +1,5 @@
 // Geolocation API van Digitaal Vlaanderen. Geverifieerd endpoint + response-vorm
-// (zie CLAUDE.md) — geen key nodig, CORS werkt in de praktijk ondanks de docs.
+// (zie .claude/rules/reistijd.md) — geen key nodig, CORS werkt in de praktijk ondanks de docs.
 const BASE_URL = 'https://geo.api.vlaanderen.be/geolocation/v4'
 
 export interface LocatieSuggestie {

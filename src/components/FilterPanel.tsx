@@ -273,7 +273,7 @@ export function FilterPanel({
 
       {/* Standaard uit: adressen zonder aanbod zijn meestal administratief geregistreerde
           adressen waar geen les gegeven wordt. Bewust een zichtbaar vinkje en geen stille
-          weglating — zie CLAUDE.md. */}
+          weglating — zie .claude/rules/frontend.md. */}
       <div>
         <h2 className="text-sm font-medium text-inkt mb-2">Adressen zonder studieaanbod</h2>
         <label className="flex items-start gap-2 text-sm text-zacht">

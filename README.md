@@ -5,8 +5,8 @@
 Zoeker voor middelbare scholen (voltijds gewoon secundair onderwijs) in Vlaanderen en Brussel.
 Live op [zoekjeschool.netlify.app](https://zoekjeschool.netlify.app/).
 
-Zie [CLAUDE.md](./CLAUDE.md) voor de bronbeschrijving, de datamodel-keuzes en de
-projectconventies.
+Zie [CLAUDE.md](./CLAUDE.md) voor de projectconventies, `.claude/rules/` voor de afspraken per
+gebied, en [docs/onderzoek/](./docs/onderzoek/) voor de bronbeschrijving en de datamodel-keuzes.
 
 ## Ontwikkelen
 
@@ -55,7 +55,8 @@ De reistijd met bus of trein in het detailpaneel komt van
 voorwaarden: het project moet open source en niet-commercieel zijn, de contactgegevens en de
 bronvermelding in de footer moeten blijven staan, en zware endpoints (zoals routing) gebruik je
 pas na een seintje via hun Matrix-kanaal `#transitous:matrix.spline.de`. Zie
-[CLAUDE.md](./CLAUDE.md) voor de volledige lijst en wat er geverifieerd is.
+[docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md) voor de volledige
+lijst en wat er geverifieerd is.
 
 ## Controles
 

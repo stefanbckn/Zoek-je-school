@@ -95,7 +95,7 @@ export function DetailPanel({
   if (!campus || !school) return null
 
   // Aanbod van het hele adres, niet enkel van de geselecteerde school: scholen die een campus
-  // delen vullen elkaars aanbod aan. Zo afgesproken, zie CLAUDE.md.
+  // delen vullen elkaars aanbod aan. Zo afgesproken, zie .claude/rules/datamodel.md.
   const aanbod = campusAanbod(campus)
   const perGraad = groepeerPerGraad(aanbod)
 
@@ -270,7 +270,7 @@ export function DetailPanel({
                 </dd>
               )}
               {/* De vermelding zelf is contractueel verplicht (HeiGIT-voorwaarden), de link
-                  erin niet. Zie CLAUDE.md. */}
+                  erin niet. Zie .claude/rules/reistijd.md. */}
               <dd className="text-zacht text-xs">
                 Route © openrouteservice by HeiGIT, data van OpenStreetMap
               </dd>
@@ -325,7 +325,7 @@ export function DetailPanel({
               {/* Rechtstreeks naar de webplanner met déze route al ingevuld — daar staan de
                   haltes, de vertrekuren en de alternatieven die hier niet passen. De algemene
                   link naar Transitous staat al in de footer, dus die hoeft hier niet nog eens.
-                  Een hyperlink is geen API-gebruik; zie CLAUDE.md. */}
+                  Een hyperlink is geen API-gebruik; zie .claude/rules/reistijd.md. */}
               {plannerUrl && (
                 <dd className="text-xs">
                   <a href={plannerUrl} target="_blank" rel="noreferrer" className="underline text-inkt">

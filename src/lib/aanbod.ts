@@ -53,7 +53,7 @@ export function korteNaam(naam: string): string {
 
 /**
  * Het studieaanbod van een heel adres: alle scholen op de campus samen. Meerdere apart
- * geregistreerde scholen delen vaak één gebouw (zie CLAUDE.md), en wie een school zoekt wil
+ * geregistreerde scholen delen vaak één gebouw (zie .claude/rules/datamodel.md), en wie een school zoekt wil
  * weten wat je op dát adres kan studeren — niet welke juridische entiteit wat inricht.
  *
  * Ontdubbeld op (korte naam, graad, finaliteit): de leerjaren van dezelfde richting en
@@ -133,7 +133,7 @@ export function richtingMatcht(richting: Richting, zoekterm: string): boolean {
 /**
  * Heeft dit adres studieaanbod? Leeg betekent hier: géén enkele school op de campus heeft een
  * richting geregistreerd. Eén school met aanbod houdt het hele adres zichtbaar — dezelfde
- * adresniveau-logica als de aanbodfilters, zie CLAUDE.md.
+ * adresniveau-logica als de aanbodfilters, zie .claude/rules/datamodel.md.
  *
  * Zo'n leeg adres is meestal administratief: het instellingsadres staat als aparte vestiging in
  * de bron terwijl het lesgeven elders gebeurt (Panorama staat op Bredastraat 35, de lessen zijn

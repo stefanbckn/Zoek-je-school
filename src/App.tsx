@@ -97,7 +97,7 @@ function App() {
         if (!filtertOpAanbod) return true
         // Aanbodfilters gelden op adresniveau, niet per school: scholen die een campus delen
         // vullen elkaars aanbod aan, en wie op "Latijn" zoekt wil dat adres zien — ook als
-        // de richting bij de buurschool op hetzelfde adres hoort. Zie CLAUDE.md.
+        // de richting bij de buurschool op hetzelfde adres hoort. Zie .claude/rules/datamodel.md.
         return c.scholen.some((s) =>
           s.richtingen.some((r) => {
             if (state.finaliteiten.length > 0) {

@@ -99,7 +99,7 @@ async function haalPagina<T>(url: string): Promise<Pagina<T>> {
 
 /**
  * Haalt alle pagina's op. Let op: de paginatieparameter is `page` — `number` wordt stil
- * genegeerd en levert dan eindeloos pagina 1 op (geverifieerd, zie CLAUDE.md).
+ * genegeerd en levert dan eindeloos pagina 1 op (geverifieerd, zie .claude/rules/data-import.md).
  */
 async function haalAlles<T>(label: string, basisUrl: string, params: Record<string, string> = {}): Promise<T[]> {
   const alles: T[] = []
@@ -284,7 +284,7 @@ async function bouwDataset() {
 
   // Groepeer vestigingsplaatsen op fysiek adres tot één campus. Meerdere apart geregistreerde
   // scholen (elk een eigen schoolnummer) delen vaak hetzelfde gebouw — dat als losse kaartjes
-  // tonen is pure ruis voor wie een school zoekt. Zie CLAUDE.md.
+  // tonen is pure ruis voor wie een school zoekt. Zie .claude/rules/datamodel.md.
   const campussenPerAdres = new Map<string, Campus>()
   let zonderCoordinaten = 0
   let zonderInstelling = 0

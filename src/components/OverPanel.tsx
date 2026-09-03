@@ -12,7 +12,7 @@ interface OverPanelProps {
  * "Over deze site" — herkomst van de informatie, wat de site ermee doet, en de disclaimer.
  *
  * **Waarom een paneel en geen aparte pagina.** De app is bewust één pagina zonder router
- * (zie CLAUDE.md); een tweede HTML-bestand zou een bouwstap en een navigatiepatroon
+ * (zie .claude/rules/frontend.md); een tweede HTML-bestand zou een bouwstap en een navigatiepatroon
  * introduceren voor één stuk tekst. Het paneel volgt hetzelfde patroon als DetailPanel en
  * VergelijkPanel: overlay, sluiten met Escape of met een klik ernaast.
  *

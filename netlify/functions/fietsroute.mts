@@ -3,7 +3,7 @@ import { haalFietsroute, parsePunt } from '../../shared/ors.js'
 /**
  * Server-side proxy naar OpenRouteService.
  *
- * Bestaat omdat de ORS-key niet client-side gebruikt mág worden (zie shared/ors.ts en CLAUDE.md).
+ * Bestaat omdat de ORS-key niet client-side gebruikt mág worden (zie shared/ors.ts en .claude/rules/reistijd.md).
  * De browser roept dit endpoint aan zonder key; de key blijft in de server-side omgeving.
  *
  * Let op: dit endpoint is publiek bereikbaar — dat kan niet anders, de site is publiek. De

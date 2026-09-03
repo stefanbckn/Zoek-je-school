@@ -2,7 +2,7 @@
  * Het net zoals de app het toont. Fijner opgedeeld dan het `instelling_net`-veld van de API:
  * dat kent alleen GO! / Officieel gesubsidieerd / Vrij gesubsidieerd, waardoor provinciale en
  * gemeentelijke scholen op één hoop belanden. Het onderscheid komt uit `soort_bestuur` van het
- * schoolbestuur — zie CLAUDE.md.
+ * schoolbestuur — zie .claude/rules/datamodel.md.
  *
  * 'Officieel gesubsidieerd' blijft bestaan als terugval voor officiële scholen met een bestuur
  * dat noch provincie noch gemeente is (OCMW, intercommunale, Vlaamse Gemeenschap). De mapping
@@ -20,7 +20,7 @@ export type Net =
  * Soort schoolbestuur, uit de Codelijst-API (`/codelijst/soort_bestuur`). Dit maakt het
  * onderscheid dat `net` niet kan maken: binnen "Officieel gesubsidieerd" zitten zowel
  * provinciale als gemeentelijke/stedelijke scholen. Zit niet op de school zelf maar op het
- * bestuur — zie CLAUDE.md.
+ * bestuur — zie .claude/rules/datamodel.md.
  */
 export type SoortBestuur =
   | 'GO!'
@@ -76,7 +76,7 @@ export interface Richting {
 
 /**
  * De vier GOK-leerlingenkenmerken van één school, als aandeel van de leerlingen (0 tot 1).
- * Uit de AgODi-publicatie "voorschot werkingstoelagen" — zie CLAUDE.md.
+ * Uit de AgODi-publicatie "voorschot werkingstoelagen" — zie .claude/rules/data-import.md.
  *
  * Drie dingen die hier vastliggen:
  * - **Dit hangt aan de school, niet aan de campus.** De publicatie telt per instelling; een
@@ -102,7 +102,7 @@ export interface Leerlingenkenmerken {
 
 /**
  * Eén apart geregistreerde school (eigen schoolnummer) op een campus. Meerdere scholen
- * kunnen hetzelfde fysieke adres (dezelfde Campus) delen — zie CLAUDE.md.
+ * kunnen hetzelfde fysieke adres (dezelfde Campus) delen — zie .claude/rules/datamodel.md.
  */
 export interface SchoolOpCampus {
   id: string

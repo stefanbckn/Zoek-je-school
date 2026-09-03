@@ -1,6 +1,6 @@
 ---
 name: release
-description: De release- en git-werkwijze van Zoek je school. Gebruik dit bij het uitbrengen van een versie, het aanmaken van een branch, het bijwerken van de changelog, het zetten van een tag, het verversen van de scholendata, of wanneer er gevraagd wordt hoe iets live gaat.
+description: De release-, git- en dataverversingswerkwijze van Zoek je school. Gebruik dit bij het uitbrengen van een versie, het aanmaken van een branch, het bumpen van het versienummer, het bijwerken van de changelog, het zetten van een tag, het opzetten van een PR, het draaien van npm run fetch-data, de jaarlijkse of periodieke refresh van de scholendataset, de GitHub Action ververs-scholendata, of wanneer er gevraagd wordt hoe iets live gaat.
 ---
 
 # Release en git-werkwijze — Zoek je school
@@ -8,6 +8,9 @@ description: De release- en git-werkwijze van Zoek je school. Gebruik dit bij he
 Twee regels staan bewust ook in CLAUDE.md zelf, omdat ze moeten gelden ook als deze skill niet
 geladen is: **nooit pushen zonder akkoord op dat moment**, en **vraag eerst of het MAJOR, MINOR
 of PATCH wordt vóór je een branch aanmaakt.**
+
+De valkuilen van `fetch-data.ts` zelf (API-paginatie, de xlsx-bestandsnaam, de joins) staan niet
+hier maar in `.claude/rules/data-import.md`; die laadt vanzelf zodra je aan `scripts/` werkt.
 
 ## Workflow
 

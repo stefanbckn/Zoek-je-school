@@ -4,7 +4,7 @@
 // Bewust RECHTSTREEKS vanuit de browser, niet via een Netlify Function zoals de fietsroute.
 // Daar was de reden een geheime key; die is hier niet. Proxyen zou hier zelfs schadelijk zijn:
 // Transitous herkent browsergebruikers aan de Referer-header, en die verdwijnt zodra onze eigen
-// server de call doorzet. Zie CLAUDE.md.
+// server de call doorzet. Zie .claude/rules/reistijd.md.
 //
 // De Lijn heeft zelf géén routeplanner-API (die is uit hun v1 verdwenen) — niet opnieuw gaan
 // zoeken.
@@ -143,7 +143,7 @@ function naarOvReis(rit: TransitousItinerary): OvReis {
  *
  * Dit is géén API-gebruik: `api.transitous.org` serveert op de root de MOTIS-webinterface (de
  * API zelf zit onder `/api/`). Wie de link volgt, doet zelf een call — wij niet. De URL-vorm is
- * afgeleid uit hun `widget.js` en daarna live nagespeeld (28/08/2026), zie CLAUDE.md.
+ * afgeleid uit hun `widget.js` en daarna live nagespeeld (28/08/2026), zie .claude/rules/reistijd.md.
  *
  * Bewust dezelfde `aankomst` als de API-call meegeven: anders opent de link op "nu vertrekken"
  * en ziet de gebruiker andere reistijden dan wat er op het scherm staat.
