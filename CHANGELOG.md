@@ -12,9 +12,10 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 **Opgelost**
 
-- **De kaart past nu in je scherm.** Hij was zo hoog als de filterkolom ernaast geworden: op een
-  laptop liep hij ruim 700 pixels onder de rand van het venster door, en de onderkant bereiken
-  kon niet.
+- **De kaart is zo hoog als je scherm.** Hij was zo hoog als de filterkolom ernaast geworden: op
+  een laptop liep hij ruim 700 pixels onder de rand van het venster door, en de onderkant
+  bereiken kon niet, want scrollen boven de kaart zoomde. Nu scrol je er een stukje naartoe en
+  vult de kaart je hele scherm.
 - **Scrollen boven de kaart scrolt de pagina.** Het muiswiel zoomde in en uit, waardoor je boven
   de kaart vastzat. Inzoomen met het wiel gaat nog steeds, met ctrl of ⌘ erbij; de kaart zegt dat
   ook kort wanneer je scrolt.
@@ -23,9 +24,9 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 **Wat je moet weten**
 
-- Op een telefoon houdt de kaart een minimumhoogte van 400 pixels. Op een klein of laag scherm
-  loopt hij dus nog een stuk door onder de rand: een kaartstrook van honderd pixels is
-  onbruikbaar.
+- De kaart begint onder de zoekbalk en is een volle schermhoogte hoog, dus je ziet hem pas
+  helemaal nadat je een stukje gescrold hebt. Op een heel laag venster houdt hij een
+  minimumhoogte van 400 pixels aan: een kaartstrook van honderd pixels is onbruikbaar.
 
 ---
 

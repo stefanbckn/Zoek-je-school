@@ -15,7 +15,6 @@ import { heeftAanbod, richtingMatcht } from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
 import { NET_OPTIONS } from './lib/net'
 import { PROVINCIE_OPTIONS } from './lib/provincie'
-import { useKaartHoogte } from './lib/useKaartHoogte'
 import { useSearchState } from './lib/useSearchState'
 import { MAX_VERGELIJK, toggleVergelijking } from './lib/vergelijking'
 import { useVestigingen } from './lib/useVestigingen'
@@ -31,7 +30,6 @@ function App() {
     school: SchoolOpCampus
   } | null>(null)
   const [weergave, setWeergave] = useState<Weergave>('lijst')
-  const { ref: kaartRef, hoogte: kaartHoogte } = useKaartHoogte(weergave === 'kaart')
   const [filtersOpen, setFiltersOpen] = useState(false)
   /**
    * De shortlist: id's van campussen, in de volgorde waarin ze aangevinkt zijn.
@@ -377,17 +375,20 @@ function App() {
                     }
                   />
                 ) : (
-                  <div
-                    ref={kaartRef}
-                    className="flex-1 mt-4 min-h-[400px] isolate relative"
-                    // `flex: none` hoort bij de gemeten hoogte: zonder dat rekt `flex-1` de
-                    // kaart alsnog uit tot de hoogte van de filterkolom ernaast.
-                    style={kaartHoogte ? { height: kaartHoogte, flex: 'none' } : undefined}
-                  >
-                    {/* `relative` hoort bij de `absolute inset-0` van de kaart zelf: op mobiel
+                  <div className="mt-4 h-[calc(100dvh-1rem)] min-h-[400px] isolate relative">
+                    {/* De kaart is zo hoog als het venster, niet zo hoog als de filterkolom
+                        ernaast. Die kolom groeit met elke filter erbij, en als flex-item nam de
+                        kaart die hoogte over: op 1440 x 800 werd hij 1305px en liep hij 765px
+                        onder de vouw door, met een muiswiel dat de pagina niet verder liet
+                        scrollen. Sinds het wiel dat wél doet (zie MapView) mag de kaart weer
+                        groter zijn dan wat er onder de kop overblijft.
+
+                        `dvh` en niet `vh`, want op een telefoon verandert de zichtbare hoogte
+                        mee met de adresbalk. `min-h` blijft nodig voor een laag venster, en de
+                        `relative` hoort bij de `absolute inset-0` van de kaart zelf: op mobiel
                         staat deze div in een kolom-flexbox zonder vaste hoogte, en dan
-                        resolveert een `h-full` op de kaart naar 0 — de kaart verdween
-                        daardoor volledig op kleine schermen. */}
+                        resolveert een `h-full` op de kaart naar 0, waardoor de kaart op kleine
+                        schermen volledig verdween. */}
                     <MapView campussen={zichtbareCampussen} onSelect={selecteer} />
                   </div>
                 )}

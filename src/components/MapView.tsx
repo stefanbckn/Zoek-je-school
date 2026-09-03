@@ -109,10 +109,10 @@ function WielAlleenMetToets({ onGeblokkeerd }: { onGeblokkeerd: () => void }) {
 
 /**
  * Leaflet meet zijn container één keer bij het opzetten en daarna enkel nog bij een
- * venster-resize. Sinds de kaarthoogte gemeten wordt (zie `useKaartHoogte`) verandert die
- * container ook zónder resize, en dan blijft Leaflet met de oude hoogte rekenen: tegels boven
- * een gebied dat er niet meer is, en een muispositie die niet klopt met wat je aanwijst.
- * Nagemeten: zonder dit hield `map.getSize()` 1305px vast terwijl de kaart al 524px was.
+ * venster-resize. De kaart staat op `100dvh`, en dat verandert op een telefoon ook zonder resize
+ * mee met de adresbalk. Rekent Leaflet dan met de oude hoogte, dan haalt het tegels voor een
+ * gebied dat er niet meer is en klopt de muispositie niet met wat je aanwijst. Nagemeten: zonder
+ * dit hield `map.getSize()` 1305px vast terwijl de kaart al 524px was.
  */
 function VolgtGrootte() {
   const map = useMap()
