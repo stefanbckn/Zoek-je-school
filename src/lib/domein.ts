@@ -45,8 +45,14 @@ export const DOMEIN_VOLGORDE: readonly string[] = ['1', '2', '3', '4', '5', '6',
 /** Domeinoverschrijdend: de richtingen die bij geen enkel domein horen (o.a. de ASO-richtingen). */
 export const DOMEIN_OVERSCHRIJDEND = '9'
 
-/** Alle codes die in de matrix een rij krijgen, domeinoverschrijdend achteraan. */
-export const DOMEIN_RIJEN: readonly string[] = [...DOMEIN_VOLGORDE, DOMEIN_OVERSCHRIJDEND]
+/**
+ * Alle codes die in de matrix een rij krijgen, **domeinoverschrijdend eerst**.
+ *
+ * Dat is geen alfabetische uitzondering maar een inhoudelijke: domeinoverschrijdend is breder
+ * dan de acht domeinen eronder, geen negende ernaast. Het is bovendien de rij met de meeste
+ * doorstroomrichtingen, dus ze staat waar de meeste ouders beginnen te lezen.
+ */
+export const DOMEIN_RIJEN: readonly string[] = [DOMEIN_OVERSCHRIJDEND, ...DOMEIN_VOLGORDE]
 
 /**
  * Het label van een domeincode. Onbekende codes komen als de code zelf terug in plaats van

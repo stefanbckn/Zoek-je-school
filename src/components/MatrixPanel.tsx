@@ -156,7 +156,7 @@ export function MatrixPanel({
                 {domeinLabel(rij.domeinCode)}
                 {rij.domeinCode === DOMEIN_OVERSCHRIJDEND && (
                   <span className="mt-0.5 block text-xs font-normal text-zacht">
-                    hoort bij geen enkel domein
+                    gaat over de domeinen heen
                   </span>
                 )}
               </h3>
