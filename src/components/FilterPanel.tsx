@@ -7,6 +7,7 @@ import {
   verborgenOmschrijving,
 } from '../lib/aanbod'
 import { useMemo, useState } from 'react'
+import { DOMEIN_RIJEN, domeinLabel } from '../lib/domein'
 import { NET_CHIP, NET_STYLES, NET_UITLEG } from '../lib/net'
 import { PROVINCIE_UITLEG } from '../lib/provincie'
 import type { Net, Provincie } from '../types'
@@ -22,6 +23,8 @@ interface FilterPanelProps {
   gemeenten: string[]
   tekst: string
   finaliteiten: FinaliteitKeuze[]
+  /** Aangevinkte studiedomeinen, als code. Leeg = alle. */
+  domeinen: string[]
   richting: string
   toonZonderAanbod: boolean
   /** Hoeveel adressen op dit moment door dit filter wegvallen. 0 = niets te melden. */
@@ -33,6 +36,9 @@ interface FilterPanelProps {
   onGemeentenChange: (gemeenten: string[]) => void
   onTekstChange: (tekst: string) => void
   onFinaliteitenChange: (finaliteiten: FinaliteitKeuze[]) => void
+  onDomeinenChange: (domeinen: string[]) => void
+  /** Opent de matrix vanuit de filterkolom, waar het domein voor het eerst opduikt. */
+  onMatrixOpen: () => void
   onRichtingChange: (richting: string) => void
   onToonZonderAanbodChange: (toon: boolean) => void
 }
@@ -54,6 +60,7 @@ export function FilterPanel({
   gemeenten,
   tekst,
   finaliteiten,
+  domeinen,
   richting,
   toonZonderAanbod,
   verborgenZonderAanbod,
@@ -63,6 +70,8 @@ export function FilterPanel({
   onGemeentenChange,
   onTekstChange,
   onFinaliteitenChange,
+  onDomeinenChange,
+  onMatrixOpen,
   onRichtingChange,
   onToonZonderAanbodChange,
 }: FilterPanelProps) {
@@ -88,6 +97,12 @@ export function FilterPanel({
 
   function toggleNet(net: Net) {
     onNettenChange(netten.includes(net) ? netten.filter((n) => n !== net) : [...netten, net])
+  }
+
+  function toggleDomein(domein: string) {
+    onDomeinenChange(
+      domeinen.includes(domein) ? domeinen.filter((d) => d !== domein) : [...domeinen, domein],
+    )
   }
 
   function toggleFinaliteit(finaliteit: FinaliteitKeuze) {
@@ -276,6 +291,34 @@ export function FilterPanel({
         </div>
         <p className="mt-2 text-xs text-zacht">
           Geldt vanaf de tweede graad. De eerste graad is voor iedereen hetzelfde.
+        </p>
+      </div>
+
+      <div>
+        <h2 className="text-sm font-medium text-inkt mb-2">Studiedomein</h2>
+        <div className="flex flex-col gap-1.5">
+          {DOMEIN_RIJEN.map((domein) => (
+            <label key={domein} className="flex items-center gap-2 text-sm text-zacht">
+              <input
+                type="checkbox"
+                checked={domeinen.includes(domein)}
+                onChange={() => toggleDomein(domein)}
+                className="rounded border-rand"
+              />
+              <span>{domeinLabel(domein)}</span>
+            </label>
+          ))}
+        </div>
+        <p className="mt-2 text-xs text-zacht">
+          Ook vanaf de tweede graad.{' '}
+          <button
+            type="button"
+            onClick={onMatrixOpen}
+            className="text-accent underline underline-offset-2"
+          >
+            Bekijk alle richtingen per domein
+          </button>
+          .
         </p>
       </div>
 

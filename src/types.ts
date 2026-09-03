@@ -68,7 +68,28 @@ export interface Richting {
   finaliteit: Finaliteit
   /** Oude onderwijsvorm (ASO/TSO/BSO/KSO/GSO). Blijft in de brondata naast finaliteit bestaan. */
   onderwijsvorm: string | null
-  studiegebied: string | null
+  /**
+   * Code van het studiedomein uit `administratievegroep_domein` ('1' t/m '10'), de tweede as
+   * van de matrix secundair onderwijs. Niet de omschrijving: die komt in hoofdletters uit de
+   * bron en de labels staan één keer in `src/lib/domein.ts`.
+   *
+   * `null` waar een domein niet bestaat: eerste graad A/B, OKAN en HBO5. Geverifieerd op een
+   * live respons: 998 van de 1010 richtingcodes in deze dataset hebben er een.
+   *
+   * ⚠️ Code '10' is "Eerste graad" en is géén inhoudelijk domein. Zie
+   * docs/onderzoek/matrix-studiedomein.md.
+   */
+  domeinCode: string | null
+  /**
+   * De studierichting achter de administratieve groep (`administratievegroep_studierichting`):
+   * een stabiele code die alle leerjaren van dezelfde richting delen, plus de kale naam zonder
+   * "1e leerjaar in de 3e graad ..." en zonder "TSO" erachter.
+   *
+   * Dit is de sleutel om op te groeperen en te filteren — niet de naam, en niet `code`, die
+   * per leerjaar verschilt. De kale naam staat bewust niet op elke rij maar één keer in
+   * `richtingen.json` (`Studierichting`): op 31390 rijen scheelt dat ruim een megabyte.
+   */
+  studierichtingCode: string | null
   duaal: boolean
   /** Of er voor dit schooljaar ingeschreven kan worden in deze richting op deze vestiging. */
   inschrijvingenOpen: boolean
@@ -159,6 +180,34 @@ export interface CampusMetAfstand extends Campus {
   afstandKm: number | null
 }
 
+/**
+ * Eén studierichting uit de matrix, zoals ze in `public/data/richtingen.json` staat: de
+ * catalogus achter `Richting.studierichtingCode`. Bevat enkel richtingen die ergens in
+ * Vlaanderen of Brussel effectief aangeboden worden, want ze wordt uit ons eigen aanbod
+ * opgebouwd.
+ *
+ * Sleutel is `code` + `graad`: dezelfde studierichting bestaat in de tweede én de derde graad.
+ */
+export interface Studierichting {
+  /** `administratievegroep_studierichting.code`, gelijk aan `Richting.studierichtingCode`. */
+  code: string
+  /** De kale naam, zonder leerjaar ervoor en zonder onderwijsvorm erachter. */
+  naam: string
+  graad: string | null
+  finaliteit: Finaliteit
+  domeinCode: string | null
+  /** ASO/TSO/BSO/KSO/GSO. Meestal één, maar de leerjaren eronder kunnen verschillen. */
+  onderwijsvormen: string[]
+  duaal: boolean
+  /**
+   * Een zevende leerjaar. Die hebben wél een domein maar geen finaliteit (broncode `7E`), en
+   * horen daarom niet tussen de drie finaliteitskolommen van de matrix.
+   */
+  zevendeLeerjaar: boolean
+  /** Aantal adressen in de dataset waar deze richting aangeboden wordt. */
+  aantalAdressen: number
+}
+
 export interface DatasetMeta {
   opgehaaldOp: string
   bron: string[]
@@ -171,6 +220,8 @@ export interface DatasetMeta {
   aantalVestigingen: number
   aantalCampussen: number
   aantalRichtingen: number
+  /** Unieke studierichtingen (per graad) in `richtingen.json`. */
+  aantalStudierichtingen: number
   /**
    * Herkomst van de leerlingenkenmerken: één schooljaar en één teldatum voor de hele dataset.
    * Null als de publicatie niet opgehaald kon worden; de UI toont het blok dan niet.

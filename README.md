@@ -37,7 +37,9 @@ Twee manieren, allebei dezelfde code:
 npm run fetch-data
 ```
 
-Lokaal, met `ONDERWIJS_API_KEY` in `.env.local`. Commit daarna `public/data/*.json` mee.
+Lokaal, met `ONDERWIJS_API_KEY` in `.env.local`. Commit daarna `public/data/*.json` mee: dat
+zijn `vestigingen.json` (de adressen met hun scholen), `richtingen.json` (de catalogus achter
+de matrix) en `meta.json` (herkomst en tellingen).
 
 Automatisch draait de GitHub Action
 [`ververs-scholendata.yml`](./.github/workflows/ververs-scholendata.yml) elk kwartaal (en

@@ -103,6 +103,11 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
                 richting je op voorbereidt: verder studeren, allebei, of meteen aan het werk.
               </li>
               <li>
+                <strong className="font-medium text-inkt">Studiedomein.</strong> Waarover een
+                richting gaat: STEM, sport, taal en cultuur, en zo verder. Acht domeinen, ook
+                pas vanaf de tweede graad.
+              </li>
+              <li>
                 <strong className="font-medium text-inkt">Net.</strong> Wie de school inricht:
                 GO!, provinciaal, gemeentelijk of vrij gesubsidieerd.
               </li>
@@ -126,6 +131,23 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
             <p className="mt-2 text-zacht">
               Wat je aangevinkt hebt, staat als knopjes onder de zoekbalk. Daar zet je een filter
               weer af, of alles in één keer met "wis filters".
+            </p>
+          </section>
+
+          <section>
+            <h3 className="font-semibold">Weet je nog niet wat je zoekt?</h3>
+            <p className="mt-1 text-zacht">
+              Klik bovenaan op "Alle richtingen". Daar staat de matrix: de indeling van het
+              secundair onderwijs in acht studiedomeinen tegen drie finaliteiten, per graad.
+              Achter elke richting staat op hoeveel adressen ze te vinden is, geteld binnen de
+              gemeente of de straal die je al gekozen hebt. Staat er nul, dan bestaat de
+              richting wel maar niet daar. Klik op een richting en je krijgt meteen de adressen
+              die ze aanbieden.
+            </p>
+            <p className="mt-2 text-zacht">
+              Wat er niet in staat: welke richting van de derde graad op welke van de tweede
+              volgt. Die doorstroom staat in geen enkele bron die wij kunnen ophalen, en we
+              gaan ze niet zelf verzinnen.
             </p>
           </section>
 

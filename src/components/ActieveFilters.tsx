@@ -1,9 +1,12 @@
 import type { SearchState } from '../lib/useSearchState'
 import type { FinaliteitKeuze } from '../lib/aanbod'
+import { domeinLabel } from '../lib/domein'
 import type { Net, Provincie } from '../types'
 
 interface ActieveFiltersProps {
   state: SearchState
+  /** Studierichtingcode → naam, uit `richtingen.json`. Voor de chip van een klik in de matrix. */
+  richtingNamen: Map<string, string>
   onUpdate: (patch: Partial<SearchState>) => void
   onWisAlles: () => void
 }
@@ -24,7 +27,12 @@ interface Chip {
  *
  * De locatie en de straal horen hier bewust niet bij: die staan al zichtbaar in de zoekbalk zelf.
  */
-export function ActieveFilters({ state, onUpdate, onWisAlles }: ActieveFiltersProps) {
+export function ActieveFilters({
+  state,
+  richtingNamen,
+  onUpdate,
+  onWisAlles,
+}: ActieveFiltersProps) {
   const chips: Chip[] = []
 
   if (state.tekst.trim()) {
@@ -42,6 +50,29 @@ export function ActieveFilters({ state, onUpdate, onWisAlles }: ActieveFiltersPr
       label: `Richting: ${state.richting.trim()}`,
       wisLabel: `Richting ${state.richting.trim()} wissen`,
       wis: () => onUpdate({ richting: '' }),
+    })
+  }
+
+  // Aangeklikt in de matrix. De naam staat er voluit, niet de code: "rcode=1271" zegt niemand
+  // iets, ook niet in een gedeelde link. De graad staat erbij omdat dezelfde richting in de
+  // tweede en de derde graad bestaat, en de chip anders twee verschillende filters even noemt.
+  if (state.richtingCode !== null) {
+    const naam = richtingNamen.get(state.richtingCode) ?? state.richtingCode
+    const label = state.richtingGraad ? `${naam} (${state.richtingGraad.toLowerCase()})` : naam
+    chips.push({
+      sleutel: 'rcode',
+      label: `Richting: ${label}`,
+      wisLabel: `Richting ${label} wissen`,
+      wis: () => onUpdate({ richtingCode: null, richtingGraad: null }),
+    })
+  }
+
+  for (const domein of state.domeinen) {
+    chips.push({
+      sleutel: `domein-${domein}`,
+      label: domeinLabel(domein),
+      wisLabel: `Studiedomein ${domeinLabel(domein)} wissen`,
+      wis: () => onUpdate({ domeinen: state.domeinen.filter((d) => d !== domein) }),
     })
   }
 

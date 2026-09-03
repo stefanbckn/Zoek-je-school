@@ -9,6 +9,7 @@ import type {
   Richting,
   SchoolOpCampus,
   SoortBestuur,
+  Studierichting,
 } from '../src/types.ts'
 import { haalLeerlingenkenmerken } from './leerlingenkenmerken.ts'
 
@@ -162,6 +163,46 @@ const FINALITEIT: Record<string, Finaliteit> = {
   '7E': null,
 }
 
+/**
+ * De catalogus achter `Richting.studierichtingCode`, opgebouwd uit het aanbod dat we effectief
+ * koppelen. Sleutel is code + graad: "Bedrijfswetenschappen" bestaat in de tweede én de derde
+ * graad, met een andere finaliteit.
+ *
+ * `aantalAdressen` blijft hier op 0 staan; dat wordt pas geteld als de campussen gegroepeerd
+ * zijn, want tot dan is een vestigingsplaats nog geen adres.
+ */
+function verzamelStudierichting(
+  catalogus: Map<string, Studierichting>,
+  cat: any,
+): void {
+  const sr = cat.administratievegroep_studierichting
+  if (!sr) return
+  const graad = cat.administratievegroep_graad?.omschrijving ?? null
+  const sleutel = `${sr.code}|${graad}`
+  const finaliteitCode = cat.administratievegroep_finaliteit?.code
+  const bestaand = catalogus.get(sleutel)
+  const onderwijsvorm = cat.administratievegroep_onderwijsvorm?.code
+  if (bestaand) {
+    if (onderwijsvorm && !bestaand.onderwijsvormen.includes(onderwijsvorm)) {
+      bestaand.onderwijsvormen.push(onderwijsvorm)
+    }
+    return
+  }
+  catalogus.set(sleutel, {
+    code: sr.code,
+    naam: sr.omschrijving,
+    graad,
+    finaliteit: finaliteitCode ? (FINALITEIT[finaliteitCode] ?? null) : null,
+    domeinCode: cat.administratievegroep_domein?.code ?? null,
+    onderwijsvormen: onderwijsvorm ? [onderwijsvorm] : [],
+    duaal: cat.administratievegroep_duaal === true,
+    // Broncode 7E is "n.v.t. (7e leerjaar)", te onderscheiden van E (eerste graad). Onze
+    // `Finaliteit` maakt van allebei null, dus dat onderscheid moet hier vandaan komen.
+    zevendeLeerjaar: finaliteitCode === '7E',
+    aantalAdressen: 0,
+  })
+}
+
 function normalizeWebsite(raw: string | undefined): string | null {
   const trimmed = raw?.trim()
   if (!trimmed) return null
@@ -252,8 +293,9 @@ async function bouwDataset() {
   )
 
   // Aanbod per (school, vestiging). Dit endpoint geeft enkel de kóppeling; de inhoudelijke
-  // velden (finaliteit, graad, studiegebied) komen uit de catalogus, join op de code.
+  // velden (finaliteit, graad, domein, studierichting) komen uit de catalogus, join op de code.
   const aanbodPerVestiging = new Map<string, Richting[]>()
+  const studierichtingen = new Map<string, Studierichting>()
   let schooljaarAanbod: number | null = null
   let zonderCatalogus = 0
   for (const rij of ingericht) {
@@ -272,11 +314,13 @@ async function bouwDataset() {
       graad: cat.administratievegroep_graad?.omschrijving ?? null,
       finaliteit: finaliteitCode ? (FINALITEIT[finaliteitCode] ?? null) : null,
       onderwijsvorm: cat.administratievegroep_onderwijsvorm?.code ?? null,
-      studiegebied: cat.administratievegroep_studiegebied?.omschrijving ?? null,
+      domeinCode: cat.administratievegroep_domein?.code ?? null,
+      studierichtingCode: cat.administratievegroep_studierichting?.code ?? null,
       duaal: cat.administratievegroep_duaal === true,
       inschrijvingenOpen: rij.inschrijvingen === true,
     })
     aanbodPerVestiging.set(sleutel, lijst)
+    verzamelStudierichting(studierichtingen, cat)
   }
   if (zonderCatalogus > 0) {
     console.warn(`Let op: ${zonderCatalogus} aanbodrijen verwijzen naar een richtingcode die niet in de catalogus staat — overgeslagen.`)
@@ -413,6 +457,33 @@ async function bouwDataset() {
     console.warn('Let op: geen leerlingenkenmerken in deze dataset — het blok valt weg in de app.')
   }
 
+  // Op hoeveel adressen elke studierichting aangeboden wordt. Per adres, niet per school:
+  // twee scholen op één campus die dezelfde richting inrichten, zijn voor wie zoekt één plek.
+  // Zie .claude/rules/datamodel.md.
+  const studierichtingLijst = [...studierichtingen.values()]
+  const srPerSleutel = new Map(studierichtingLijst.map((s) => [`${s.code}|${s.graad}`, s]))
+  for (const campus of campussen) {
+    const opDitAdres = new Set<string>()
+    for (const school of campus.scholen) {
+      for (const richting of school.richtingen) {
+        if (richting.studierichtingCode) {
+          opDitAdres.add(`${richting.studierichtingCode}|${richting.graad}`)
+        }
+      }
+    }
+    for (const sleutel of opDitAdres) {
+      const sr = srPerSleutel.get(sleutel)
+      if (sr) sr.aantalAdressen++
+    }
+  }
+  studierichtingLijst.sort((a, b) => a.naam.localeCompare(b.naam, 'nl'))
+
+  const zonderDomein = studierichtingLijst.filter((s) => s.domeinCode === null).length
+  console.log(
+    `${studierichtingLijst.length} unieke studierichtingen (per graad), waarvan ${zonderDomein} zonder ` +
+      `studiedomein — die vallen buiten de matrix.`,
+  )
+
   const meta: DatasetMeta = {
     opgehaaldOp: new Date().toISOString(),
     bron: [BRON_PAGINA, EP.locaties, EP.instellingen, EP.ingerichtAanbod, EP.catalogus],
@@ -421,6 +492,7 @@ async function bouwDataset() {
     aantalVestigingen: aantalScholen,
     aantalCampussen: campussen.length,
     aantalRichtingen,
+    aantalStudierichtingen: studierichtingLijst.length,
     leerlingenkenmerken: kenmerken
       ? {
           schooljaar: kenmerken.schooljaar,
@@ -431,7 +503,7 @@ async function bouwDataset() {
       : null,
   }
 
-  return { campussen, meta }
+  return { campussen, meta, studierichtingLijst }
 }
 
 async function main() {
@@ -470,6 +542,11 @@ async function main() {
   await writeFile(
     path.join(OUTPUT_DIR, 'vestigingen.json'),
     JSON.stringify(resultaat.campussen, null, 2),
+    'utf-8',
+  )
+  await writeFile(
+    path.join(OUTPUT_DIR, 'richtingen.json'),
+    JSON.stringify(resultaat.studierichtingLijst, null, 2),
     'utf-8',
   )
   await writeFile(path.join(OUTPUT_DIR, 'meta.json'), JSON.stringify(resultaat.meta, null, 2), 'utf-8')

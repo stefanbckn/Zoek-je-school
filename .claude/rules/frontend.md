@@ -42,8 +42,9 @@ react-router**: dat lost hier niets op en breekt deep-linking onnodig.
 
 | In de URL | Niet in de URL |
 | --- | --- |
-| Alle filters: `net`, `gemeenten`, `provincie`, naam, straal, `zonderaanbod` | De vergelijk-selectie |
-| De open stand van de panelen: `?over=1`, `?help=1` | Hoeveel items de lijst toont |
+| Alle filters: `net`, `gemeenten`, `provincie`, naam, straal, `zonderaanbod`, `domein`, `rcode`+`rgraad` | De vergelijk-selectie |
+| De open stand van de panelen: `?over=1`, `?help=1`, `?matrix=1` | Hoeveel items de lijst toont |
+| Welke graad de matrix toont | |
 
 De regel erachter: **de querystring beschrijft wát er gezocht wordt.** Een shortlist of een
 scrollpositie hoort daar niet bij.
@@ -149,6 +150,12 @@ dan hetzelfde.**
 - **`OverPanel`** beantwoordt "kan ik dit vertrouwen": herkomst, bewerkingen, disclaimer,
   privacy. De **korte disclaimerregel staat in de footer zelf**, niet enkel achter de link: wie
   nooit doorklikt moet toch gezien hebben dat dit geen officiële bron is.
+- **`MatrixPanel`** is het enige paneel dat iets aan de resultaten dóét in plaats van uit te
+  leggen; daarom staat de knop vooraan in de kop. Twee dingen liggen er vast. Het raster is
+  **altijd volledig**: een richting die hier nergens bestaat, staat gedimd op 0 en valt niet
+  weg, want dat ze ontbreekt is de informatie. En de tellers rekenen op `matrixCampussen` uit
+  `App.tsx`: alle filters **behalve de aanbodfilters zelf**, anders zet één aangeklikte richting
+  elke andere cel op 0. Zelfde redenering als bij de tellingen per gemeente.
 - **`HelpPanel`** beantwoordt "hoe krijg ik hieruit wat ik zoek". De bronnen staan hier bewust
   niet nog eens; er is één link naar `OverPanel`, die in dezelfde `update()` het ene sluit en het
   andere opent. De volgorde van de filters in die tekst is die van wat het meest oplevert, met

@@ -120,14 +120,11 @@ export function finaliteitenVan(richtingen: Richting[]): FinaliteitKeuze[] {
   return FINALITEIT_OPTIONS.filter((f) => gevonden.has(f))
 }
 
-/** Matcht een richting op vrije tekst? Zoekt in de naam en het studiegebied. */
+/** Matcht een richting op vrije tekst? Zoekt in de naam, die de studierichting bevat. */
 export function richtingMatcht(richting: Richting, zoekterm: string): boolean {
   const term = zoekterm.trim().toLowerCase()
   if (!term) return true
-  return (
-    richting.naam.toLowerCase().includes(term) ||
-    (richting.studiegebied?.toLowerCase().includes(term) ?? false)
-  )
+  return richting.naam.toLowerCase().includes(term)
 }
 
 /**
