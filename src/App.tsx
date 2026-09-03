@@ -4,6 +4,7 @@ import { DetailPanel } from './components/DetailPanel'
 import { FilterPanel } from './components/FilterPanel'
 import { Footer } from './components/Footer'
 import { HelpPanel } from './components/HelpPanel'
+import { MatrixPanel } from './components/MatrixPanel'
 import { OverPanel } from './components/OverPanel'
 import { MapView } from './components/MapView'
 import { ResultList } from './components/ResultList'
@@ -28,7 +29,7 @@ import type { CampusMetAfstand, SchoolOpCampus } from './types'
 type Weergave = 'lijst' | 'kaart'
 
 function App() {
-  const { campussen, meta, loading, error } = useVestigingen()
+  const { campussen, studierichtingen, meta, loading, error } = useVestigingen()
   const { state, update } = useSearchState()
   const [geselecteerd, setGeselecteerd] = useState<{
     campus: CampusMetAfstand
@@ -52,6 +53,8 @@ function App() {
     state.provincies.length +
     state.gemeenten.length +
     state.finaliteiten.length +
+    state.domeinen.length +
+    (state.richtingCode ? 1 : 0) +
     (state.tekst.trim() ? 1 : 0) +
     (state.richting.trim() ? 1 : 0) +
     (state.toonZonderAanbod ? 1 : 0)
@@ -79,13 +82,22 @@ function App() {
     [state.lat, state.lon],
   )
 
-  const { zichtbareCampussen, verborgenZonderAanbod, verborgenLegeScholen, gemeenteTellingen } =
-    useMemo(() => {
+  const {
+    zichtbareCampussen,
+    verborgenZonderAanbod,
+    verborgenLegeScholen,
+    gemeenteTellingen,
+    matrixCampussen,
+  } = useMemo(() => {
     const tekstLower = state.tekst.trim().toLowerCase()
     const richtingTerm = state.richting.trim()
-    const filtertOpAanbod = richtingTerm.length > 0 || state.finaliteiten.length > 0
+    const filtertOpAanbod =
+      richtingTerm.length > 0 ||
+      state.finaliteiten.length > 0 ||
+      state.domeinen.length > 0 ||
+      state.richtingCode !== null
 
-    const gefilterd = campussen
+    const naSchoolFilters = campussen
       .map((c) => ({
         ...c,
         scholen: c.scholen.filter((s) => {
@@ -100,20 +112,38 @@ function App() {
         // De gemeentefilter staat bewust NIET hier maar helemaal achteraan: de tellingen achter
         // de gemeentenamen moeten zeggen hoeveel resultaten je krijgt als je er één aanvinkt,
         // en dat kan alleen als ze berekend zijn op de lijst zónder die filter erop.
-        if (!filtertOpAanbod) return true
-        // Aanbodfilters gelden op adresniveau, niet per school: scholen die een campus delen
-        // vullen elkaars aanbod aan, en wie op "Latijn" zoekt wil dat adres zien — ook als
-        // de richting bij de buurschool op hetzelfde adres hoort. Zie .claude/rules/datamodel.md.
-        return c.scholen.some((s) =>
-          s.richtingen.some((r) => {
-            if (state.finaliteiten.length > 0) {
-              if (r.finaliteit === null) return false
-              if (!state.finaliteiten.includes(r.finaliteit)) return false
-            }
-            return richtingMatcht(r, richtingTerm)
-          }),
-        )
+        return true
       })
+
+    // Aanbodfilters gelden op adresniveau, niet per school: scholen die een campus delen
+    // vullen elkaars aanbod aan, en wie op "Latijn" zoekt wil dat adres zien — ook als
+    // de richting bij de buurschool op hetzelfde adres hoort. Zie .claude/rules/datamodel.md.
+    //
+    // Ze staan apart van de filters hierboven omdat de matrix de lijst nodig heeft zoals ze
+    // eruitziet zónder deze filters: anders zou het aanklikken van één richting elke andere cel
+    // op 0 zetten. Zelfde redenering als bij de tellingen per gemeente.
+    const gefilterd = !filtertOpAanbod
+      ? naSchoolFilters
+      : naSchoolFilters.filter((c) =>
+          c.scholen.some((s) =>
+            s.richtingen.some((r) => {
+              if (state.finaliteiten.length > 0) {
+                if (r.finaliteit === null) return false
+                if (!state.finaliteiten.includes(r.finaliteit)) return false
+              }
+              if (state.domeinen.length > 0) {
+                if (r.domeinCode === null || !state.domeinen.includes(r.domeinCode)) return false
+              }
+              if (state.richtingCode !== null) {
+                if (r.studierichtingCode !== state.richtingCode) return false
+                // De graad hoort bij de code: dezelfde richting bestaat in de tweede én de
+                // derde graad, en de matrix belooft het aantal van één cel.
+                if (state.richtingGraad !== null && r.graad !== state.richtingGraad) return false
+              }
+              return richtingMatcht(r, richtingTerm)
+            }),
+          ),
+        )
 
     const metAfstand: CampusMetAfstand[] = gefilterd.map((c) => ({
       ...c,
@@ -146,6 +176,16 @@ function App() {
       gemeenteTellingen.set(c.gemeente, (gemeenteTellingen.get(c.gemeente) ?? 0) + 1)
     }
 
+    // Waarop de matrix haar tellers baseert: dezelfde plaatsfilters als de lijst (net, naam,
+    // provincie, gemeente, straal), maar zónder de aanbodfilters. Klik je in de matrix op één
+    // richting, dan moet elke andere cel blijven zeggen hoeveel adressen er in jouw buurt zijn.
+    const matrixCampussen = naSchoolFilters.filter((c) => {
+      if (state.gemeenten.length > 0 && !state.gemeenten.includes(c.gemeente)) return false
+      if (state.lat === null || state.lon === null || state.straalKm === null) return true
+      if (c.lat === null || c.lon === null) return false
+      return haversineKm(state.lat, state.lon, c.lat, c.lon) <= state.straalKm
+    })
+
     const naGemeente =
       state.gemeenten.length === 0
         ? binnenStraal
@@ -162,6 +202,7 @@ function App() {
         verborgenZonderAanbod: 0,
         verborgenLegeScholen: 0,
         gemeenteTellingen,
+        matrixCampussen,
       }
     }
 
@@ -179,6 +220,7 @@ function App() {
         0,
       ),
       gemeenteTellingen,
+      matrixCampussen,
     }
   }, [
     campussen,
@@ -191,6 +233,9 @@ function App() {
     state.tekst,
     state.finaliteiten,
     state.richting,
+    state.domeinen,
+    state.richtingCode,
+    state.richtingGraad,
     state.toonZonderAanbod,
   ])
 
@@ -235,6 +280,32 @@ function App() {
     })
   }, [campussen, vergelijking, state.lat, state.lon, state.toonZonderAanbod])
 
+  /**
+   * De namen achter `richtingCodes`, voor de chips onder de zoekbalk. Een code die niet in de
+   * catalogus staat (bewerkte URL) valt terug op de code zelf: de chip blijft dan zichtbaar en
+   * wegklikbaar in plaats van een onverklaarbaar lege lijst achter te laten.
+   */
+  const richtingNamen = useMemo(
+    () => new Map(studierichtingen.map((s) => [s.code, s.naam])),
+    [studierichtingen],
+  )
+
+  /**
+   * Waar de matrix haar aantallen op telt, in woorden. Volgt dezelfde volgorde als de
+   * filterpijplijn: de gemeente is specifieker dan de straal, en die weer specifieker dan de
+   * provincie.
+   */
+  const gebiedLabel = useMemo(() => {
+    if (state.gemeenten.length > 0) return `in ${state.gemeenten.join(', ')}`
+    if (state.lat !== null && state.lon !== null && state.straalKm !== null) {
+      return state.label
+        ? `binnen ${state.straalKm} km van ${state.label}`
+        : `binnen ${state.straalKm} km`
+    }
+    if (state.provincies.length > 0) return `in ${state.provincies.join(', ')}`
+    return null
+  }, [state.gemeenten, state.lat, state.lon, state.straalKm, state.label, state.provincies])
+
   const verborgen = verborgenOmschrijving(verborgenZonderAanbod, verborgenLegeScholen)
 
   function selecteer(campus: CampusMetAfstand, school: SchoolOpCampus) {
@@ -265,6 +336,15 @@ function App() {
               horizontaal scrollbaar maakte. `min-w-0` erbij omdat de standaard `min-width: auto`
               van een flex-item anders alsnog op de inhoud terugvalt. */}
           <div className="flex min-w-0 flex-wrap items-center justify-end gap-3">
+            {/* De matrix staat vooraan: het is de enige knop hier die iets aan de resultaten
+                doet in plaats van uit te leggen. */}
+            <button
+              type="button"
+              onClick={() => update({ matrix: true })}
+              className="rounded-lg border border-rand px-2.5 py-1.5 text-xs text-zacht transition-colors hover:bg-hover hover:text-inkt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              Alle richtingen
+            </button>
             {/* De uitleg staat vóór "Over deze site": wie hier klikt zit meestal vast in het
                 zoeken zelf, niet in de vraag waar de gegevens vandaan komen. */}
             <button
@@ -297,6 +377,7 @@ function App() {
 
         <ActieveFilters
           state={state}
+          richtingNamen={richtingNamen}
           onUpdate={update}
           onWisAlles={() =>
             update({
@@ -306,6 +387,9 @@ function App() {
               finaliteiten: [],
               tekst: '',
               richting: '',
+              domeinen: [],
+              richtingCode: null,
+              richtingGraad: null,
               toonZonderAanbod: false,
             })
           }
@@ -323,6 +407,7 @@ function App() {
               gemeenten={state.gemeenten}
               tekst={state.tekst}
               finaliteiten={state.finaliteiten}
+              domeinen={state.domeinen}
               richting={state.richting}
               toonZonderAanbod={state.toonZonderAanbod}
               verborgenZonderAanbod={verborgenZonderAanbod}
@@ -332,6 +417,8 @@ function App() {
               onGemeentenChange={(gemeenten) => update({ gemeenten })}
               onTekstChange={(tekst) => update({ tekst })}
               onFinaliteitenChange={(finaliteiten) => update({ finaliteiten })}
+              onDomeinenChange={(domeinen) => update({ domeinen })}
+              onMatrixOpen={() => update({ matrix: true })}
               onRichtingChange={(richting) => update({ richting })}
               onToonZonderAanbodChange={(toonZonderAanbod) => update({ toonZonderAanbod })}
             />
@@ -456,6 +543,36 @@ function App() {
 
       {/* Van de uitleg naar de herkomst is één klik: het ene paneel sluit terwijl het andere
           opengaat, in dezelfde update, anders zou de tussenstand even beide tonen. */}
+      {/* Een richting aanklikken wist de vrije-tekstfilter op richting: die twee zouden anders
+          samen filteren (EN), en dan geeft een klik in de matrix nul resultaten zonder dat
+          zichtbaar is waarom. */}
+      <MatrixPanel
+        open={state.matrix}
+        studierichtingen={studierichtingen}
+        campussen={matrixCampussen}
+        gebiedLabel={gebiedLabel}
+        onClose={() => update({ matrix: false })}
+        onKiesRichting={(code, graad) =>
+          update({
+            matrix: false,
+            richtingCode: code,
+            richtingGraad: graad,
+            richting: '',
+            domeinen: [],
+          })
+        }
+        onKiesCel={(domeinCode, finaliteit) =>
+          update({
+            matrix: false,
+            domeinen: [domeinCode],
+            finaliteiten: [finaliteit],
+            richting: '',
+            richtingCode: null,
+            richtingGraad: null,
+          })
+        }
+      />
+
       <HelpPanel
         open={state.help}
         onClose={() => update({ help: false })}

@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 import { FINALITEIT_OPTIONS, type FinaliteitKeuze } from './aanbod'
+import { DOMEIN_RIJEN } from './domein'
+import { MATRIX_GRADEN, type MatrixGraad } from './matrix'
 import { NET_OPTIONS } from './net'
 import { PROVINCIE_OPTIONS } from './provincie'
 import type { Net, Provincie } from '../types'
@@ -21,6 +23,29 @@ export interface SearchState {
   finaliteiten: FinaliteitKeuze[]
   /** Vrije tekst om op de naam van een studierichting te zoeken. Leeg = geen filter. */
   richting: string
+  /**
+   * Codes van studiedomeinen (`Richting.domeinCode`). Leeg = alle domeinen.
+   *
+   * Enkel de rijen van de matrix zijn geldig: de acht inhoudelijke domeinen plus
+   * domeinoverschrijdend. '10' (eerste graad) hoort daar niet bij, want dat is geen keuze die
+   * een ouder maakt.
+   */
+  domeinen: string[]
+  /**
+   * Eén exacte studierichting, aangeklikt in de matrix: de code uit
+   * `Richting.studierichtingCode` plus de graad waarin ze aangeklikt is.
+   *
+   * Dit staat naast `richting` en vervangt het niet: dat veld is wat iemand intikt, dit is wat
+   * de matrix aanklikt. Een code matcht altijd exact, ook bij namen als "Grafische technieken
+   * (domein STEM)" waar een tekstzoektocht te veel of te weinig oplevert.
+   *
+   * ⚠️ **De graad hoort erbij.** Dezelfde code bestaat in de tweede én de derde graad
+   * ("Onthaal en recreatie" op 17 respectievelijk 14 adressen). Filteren op de code alleen
+   * gaf 18 resultaten terwijl de aangeklikte cel er 14 beloofde. Laat die twee dus samen
+   * reizen, ook in de URL.
+   */
+  richtingCode: string | null
+  richtingGraad: string | null
   /**
    * Adressen zonder enig studieaanbod meetonen. Standaard `false`: dat zijn meestal
    * administratief geregistreerde adressen zonder les, en voor wie een school zoekt is dat ruis.
@@ -45,6 +70,11 @@ export interface SearchState {
    * bij over wie er langskomt, dus een eerste bezoek is niet van een tiende te onderscheiden.
    */
   help: boolean
+  /**
+   * Staat de matrix open. Zelfde redenering als `over` en `help`: in de URL zodat je hem kan
+   * doorsturen, en in SearchState omdat `update()` de volledige querystring herschrijft.
+   */
+  matrix: boolean
 }
 
 const DEFAULT_STATE: SearchState = {
@@ -58,9 +88,13 @@ const DEFAULT_STATE: SearchState = {
   tekst: '',
   finaliteiten: [],
   richting: '',
+  domeinen: [],
+  richtingCode: null,
+  richtingGraad: null,
   toonZonderAanbod: false,
   over: false,
   help: false,
+  matrix: false,
 }
 
 function parseList(raw: string | null): string[] {
@@ -140,11 +174,23 @@ function parseState(search: string): SearchState {
       (FINALITEIT_OPTIONS as readonly string[]).includes(f),
     ),
     richting: params.get('richting') ?? '',
+    // Zelfde reden als bij netten: een onbekende domeincode uit een bewerkte URL zou een
+    // filter opleveren die nooit matcht.
+    domeinen: parseList(params.get('domein')).filter((d) => DOMEIN_RIJEN.includes(d)),
+    // De code wordt hier NIET gevalideerd: de geldige lijst zit in richtingen.json en die is
+    // hier niet beschikbaar. Een onbestaande code geeft 0 resultaten, maar de chip erboven
+    // blijft zichtbaar en wegklikbaar — zie ActieveFilters.
+    richtingCode: params.get('rcode'),
+    // Een onbekende graad valt terug op "geen graadbeperking" in plaats van op 0 resultaten.
+    richtingGraad: MATRIX_GRADEN.includes(params.get('rgraad') as MatrixGraad)
+      ? params.get('rgraad')
+      : null,
     // Alleen de expliciete '1' zet dit aan. Elke andere waarde (leeg, 'true', onzin uit een
     // bewerkte URL) valt terug op de standaard, net als bij de andere parameters hierboven.
     toonZonderAanbod: params.get('zonderaanbod') === '1',
     over: params.get('over') === '1',
     help: params.get('help') === '1',
+    matrix: params.get('matrix') === '1',
   }
 }
 
@@ -160,9 +206,13 @@ function toSearchParams(state: SearchState): URLSearchParams {
   if (state.tekst) params.set('q', state.tekst)
   if (state.finaliteiten.length > 0) params.set('finaliteit', state.finaliteiten.join(','))
   if (state.richting) params.set('richting', state.richting)
+  if (state.domeinen.length > 0) params.set('domein', state.domeinen.join(','))
+  if (state.richtingCode) params.set('rcode', state.richtingCode)
+  if (state.richtingGraad) params.set('rgraad', state.richtingGraad)
   if (state.toonZonderAanbod) params.set('zonderaanbod', '1')
   if (state.over) params.set('over', '1')
   if (state.help) params.set('help', '1')
+  if (state.matrix) params.set('matrix', '1')
   return params
 }
 
