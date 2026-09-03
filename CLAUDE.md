@@ -564,6 +564,30 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
   react-router, dat lost hier niets op en breekt deep-linking onnodig).
 - Afstand is altijd hemelsbrede afstand (haversine); benoem dat expliciet in de UI, nooit als
   "reisafstand" framen.
+- **Adressen zonder studieaanbod verbergen (sinds 0.5.0).** Staat standaard aan. Drie dingen
+  die vastliggen:
+  - **Verbergen, nooit stil weglaten.** Er staat altijd een teller met het aantal verborgen
+    adressen bij, zowel boven de lijst (met knop "Toon ze toch") als met een vinkje in de
+    filterkolom. Een school waarvan het aanbod om een andere reden ontbreekt, zou anders
+    spoorloos verdwijnen.
+  - De filterstatus staat in de URL (`?zonderaanbod=1`), zoals alle andere filters
+    (`useSearchState.ts`).
+  - **Leeg betekent hier: geen enkele school op dat adres heeft een richting.** Eén school met
+    aanbod houdt het hele adres zichtbaar, inclusief de lege schoolrijen ernaast. Dat laatste is
+    [issue #23](https://github.com/stefanbckn/Zoek-je-school/issues/23).
+- **Campussen vergelijken (sinds 0.6.0).** 2 tot 4 adressen naast elkaar in `VergelijkPanel.tsx`,
+  aan te vinken vanaf de resultatenkaarten, met een balk onderaan die de selectie toont. Drie
+  keuzes die vastliggen:
+  - **De selectie zit níét in de URL**, in tegenstelling tot de filters. De querystring
+    beschrijft wát er gezocht wordt; een shortlist is een tussenstap, zoals hoever iemand
+    gescrold heeft. (De open stand van `OverPanel` en `HelpPanel` staat er wél in, zie verderop;
+    dat is geen tegenspraak maar hetzelfde onderscheid.)
+  - **Maximum 4.** Bij vijf kolommen wordt een kolom smaller dan een schoolnaam.
+  - **Op mobiel bestaat de functie wél**, met een zijwaarts scrollende tabel en een vastgezette
+    kenmerkkolom. De kolombreedtes zijn zo gezet dat de volgende kolom net aankijkt; dat is de
+    aanzet om te scrollen.
+  - **Exporteren gebeurt als afdruk**, niet als link of CSV. Zo gekozen door de gebruiker. Zie
+    de volgende opsomming.
 - **Afdrukken (sinds 0.6.0).** De vergelijkingstabel is afdrukbaar. Twee dingen die daarbij
   vastliggen en die je niet per ongeluk moet omkeren:
   - `VergelijkPanel` staat in `App.tsx` bewust **buiten** de app-wrapper in de JSX. Die wrapper

@@ -98,56 +98,6 @@ staan op sites met eigen voorwaarden, en ze wijzigen per schooljaar.
 jaartal erbij, en link naar de bron in plaats van de procedure over te nemen — anders staat er
 volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
-## Vergelijken en duiden — vier stukken, los uit te brengen
-
-Samen helpen ze een ouder kiezen tussen scholen die op afstand en aanbod al door de filter zijn
-geraakt. Ze hangen niet van elkaar af, dus elk stuk gaat als eigen MINOR naar `main` zodra het
-werkt: stuk 1 kwam uit als 0.5.0, stuk 3 als 0.6.0 en stuk 2 als 0.10.0. Stuk 4 is geschrapt.
-Hieronder in volgorde van zekerheid:
-
-1. ~~**Vestigingen zonder studieaanbod wegfilteren.**~~ **Uitgebracht in 0.5.0.** Geverifieerd
-   op de huidige dataset:
-   **50 van de 303 campussen** hebben geen enkele richting, en **152 van de 559 vestigingen**.
-   Dat is meestal een administratief geregistreerd adres — vaak het instellingsadres dat als
-   aparte vestiging in de bron staat (bv. Panorama op Bredastraat 35, terwijl het lesgeven op
-   Quellinstraat 31 gebeurt; zie de waarschuwing bij de GOK-join verderop). Voor een ouder is
-   dat ruis.
-   - **Zo gebouwd: standaard verbergen, met een zichtbaar vinkje om ze terug te tonen** en het
-     aantal verborgen adressen erbij — zowel boven de lijst (met knop "Toon ze toch") als in de
-     filterkolom. Stil weglaten mag niet — een school waarvan het aanbod om een andere reden
-     ontbreekt, verdwijnt dan spoorloos.
-   - Filterstatus staat in de URL (`?zonderaanbod=1`), zoals alle andere filters
-     (`useSearchState.ts`). Het filter wordt als láátste toegepast, ná alle andere: alleen zo
-     telt de teller wat door dít filter wegvalt en niet wat een ander filter al wegnam.
-   - Let op de campus-samenvoeging: leeg betekent hier *geen enkele school op dat adres* heeft
-     een richting. Eén school met aanbod houdt het hele adres zichtbaar.
-2. ~~**GOK-leerlingenkenmerken**, per school.~~ **Uitgebracht in 0.10.0.** Wat er gebouwd is:
-   `scripts/leerlingenkenmerken.ts` haalt de xlsx op van het documentenportaal en
-   `scripts/xlsx.ts` leest ze uit zonder dependency; de vier percentages staan in het
-   detailpaneel onder het studieaanbod, en als vier rijen in de vergelijkingstabel, met daar
-   dezelfde balkjes op een vaste breedte zodat ongelijke kolommen de vergelijking niet
-   vertekenen. Wat daarbij vastligt, staat in [CLAUDE.md](./CLAUDE.md).
-3. ~~**Campussen vergelijken**~~ **Uitgebracht in 0.6.0**, vóór de GOK-cijfers in plaats van
-   erna — die passen er later gewoon als extra rij bij. Wat er gebouwd is: 2 tot 4 adressen
-   naast elkaar in één tabel (`VergelijkPanel.tsx`), aan te vinken vanaf de resultatenkaarten,
-   met een balk onderaan die de selectie toont. Keuzes die daarbij gemaakt zijn:
-   - **De shortlist is exporteerbaar als afdruk**, niet als link of CSV — zo gekozen door de
-     gebruiker. Op papier valt de rest van de app weg (`print:hidden` op de app-wrapper, het
-     venster staat er bewust búiten in de JSX) en gaat het palet naar zwart-op-wit. ⚠️ Dat
-     laatste vergt dat het print-blok in `index.css` álle themaselectors opsomt: het donkere
-     palet zit op `:root:not([data-theme="light"])` en dat is specifieker dan een kale `:root`.
-     Zonder die selector erbij drukt een donkere-modus-bezoeker wit op wit af — dat is
-     doorgemeten, niet ingeschat.
-   - **De selectie zit níét in de URL**, in tegenstelling tot de filters. De querystring
-     beschrijft wát er gezocht wordt; een shortlist is een tussenstap, zoals hoever iemand
-     gescrold heeft.
-   - **Op mobiel bestaat de functie wél**, met een zijwaarts scrollende tabel en een
-     vastgezette kenmerkkolom. De kolombreedtes zijn zo gezet dat de volgende kolom net
-     aankijkt — dat is de aanzet om te scrollen.
-   - **Maximum 4.** Bij vijf kolommen wordt een kolom smaller dan een schoolnaam.
-4. ~~**Link naar het doorlichtingsverslag.**~~ **Geschrapt op 03/09/2026**, zie "Bewust
-   geschrapt" onderaan.
-
 ## Wat volgt er na deze richting? (nog niet onderzocht)
 
 De vraag die een ouder bij de tweede graad eigenlijk stelt, is niet "wat kan mijn kind hier
