@@ -8,6 +8,28 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.12.2 — 3 september 2026
+
+**Opgelost**
+
+- **Scholen zonder studieaanbod verdwijnen nu ook van een adres waar de buren wél lesgeven.** Op
+  Guffenslaan 27 in Hasselt stond "Hast Katholiek Onderwijs Hasselt 039107" tussen de scholen,
+  terwijl die daar dit schooljaar geen enkele richting inricht. Wie doorklikte, las het aanbod
+  van de buurscholen en vond dat adres op de officiële fiche niet terug. Het vinkje "zonder
+  studieaanbod" verborg tot nu enkel hele adressen; het geldt nu ook per school. Dat ruimt 404
+  lege schoolrijen op, bovenop de 163 adressen die al wegvielen.
+
+**Wat je moet weten**
+
+- Er verdwijnt geen enkele richting van het scherm: een verborgen school is er per definitie een
+  zonder aanbod. Wil je ze toch zien, dan zet je hetzelfde vinkje aan als voorheen, in de
+  filterkolom onder "Zonder studieaanbod".
+- De teller in die filterkolom telt nu allebei, bijvoorbeeld "1 adres en 2 scholen vallen nu
+  weg". Vroeger bewoog dat cijfer niet wanneer er enkel een schoolrij wegviel.
+- Eén school valt hierdoor helemaal weg zolang het vinkje uit staat: Safe college heeft op geen
+  van haar adressen aanbod geregistreerd. Alle andere verborgen scholen blijven vindbaar op hun
+  adressen waar ze wél lesgeven.
+
 ## 0.12.1 — 3 september 2026
 
 **Opgelost**
