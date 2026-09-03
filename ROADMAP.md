@@ -1,17 +1,26 @@
 # Roadmap — Zoek je school
 
-Wat er nog komt. Wat er al is, staat in [CHANGELOG.md](./CHANGELOG.md); de projectconventies
-en de geverifieerde databronnen staan in [CLAUDE.md](./CLAUDE.md).
+Wat er nog komt. Wat er al is, staat in [CHANGELOG.md](./CHANGELOG.md); de projectconventies in
+[CLAUDE.md](./CLAUDE.md) en `.claude/rules/`, en het bronnenonderzoek per thema in
+[docs/onderzoek/](./docs/onderzoek/).
 
-**Wat hier hoort, en wat niet.** Dit bestand houdt de volgorde bij en het bronnenonderzoek voor
-wat er nog niet is: welke bron geverifieerd is, welke afviel en waarom, en wat er nog uitgezocht
-moet worden. Wat af is, wordt hier leeggehaald in plaats van te blijven staan. Regels die
-vastliggen en niet omgekeerd mogen worden gaan naar [CLAUDE.md](./CLAUDE.md), wat een bezoeker
-merkt gaat naar [CHANGELOG.md](./CHANGELOG.md), en wat kapot is staat als
-[GitHub Issue](https://github.com/stefanbckn/Zoek-je-school/issues). Zo staat elk stuk op één
-plaats. Bij de opruimronde van 03/09/2026 zijn de secties over 0.2.0, 0.2.1, 0.3.0, 0.11.0 en
-0.12.0 op die manier verdeeld; ze stonden hier grotendeels dubbel, en de sectie over 0.2.0
-beschreef de netfilter nog met de achterhaalde waarde "Stedelijk".
+**Wat hier hoort, en wat niet.** Dit bestand houdt de **volgorde** bij van wat er nog niet is,
+en het onderzoek naar wat nog niet af is. Wat af is, wordt hier leeggehaald in plaats van te
+blijven staan.
+
+| Waar | Wat |
+| --- | --- |
+| Hier | De volgorde, plus het onderzoek naar wat nog niet af is |
+| [docs/onderzoek/](./docs/onderzoek/) | Afgerond of doodgelopen bronnenonderzoek, per thema |
+| `.claude/rules/` | Regels die vastliggen en niet omgekeerd mogen worden |
+| [CHANGELOG.md](./CHANGELOG.md) | Wat een bezoeker gemerkt heeft |
+| [GitHub Issues](https://github.com/stefanbckn/Zoek-je-school/issues) | Wat kapot is |
+
+Zo staat elk stuk op één plaats. Bij de opruimronde van 03/09/2026 zijn de secties over 0.2.0,
+0.2.1, 0.3.0, 0.11.0 en 0.12.0 op die manier verdeeld; ze stonden hier grotendeels dubbel, en de
+sectie over 0.2.0 beschreef de netfilter nog met de achterhaalde waarde "Stedelijk". Later die
+dag zijn ook het afgeronde onderzoek naar aanmelden, ScholenKompas, de GOK-routes en de
+De Lijn-API naar `docs/onderzoek/` verhuisd.
 
 **Versienummers staan hier niet bij wat er nog moet komen — bewust.** Een nummer krijgt een
 thema pas op het moment dat het af is en naar `main` gaat. Zo kan elk stuk los uitgebracht
@@ -51,10 +60,10 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
 | 1 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
-| 2 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik — zie hieronder |
-| 3 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
+| 2 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
+| 3 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
 | 4 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
-| — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
+| — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie [docs/onderzoek/aanmelden.md](./docs/onderzoek/aanmelden.md) |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -74,30 +83,6 @@ anders begraven bleven in secties over versies die al uit zijn.
 - **Naamgenoten in de naamfilter.** Sinds 0.12.0 zoekt de naamfilter in heel Vlaanderen, dus
   dezelfde schoolnaam komt vaker meerdere keren terug. Als dat in de praktijk stoort, is de
   oplossing de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
-
-## Aanmelden: geen centrale bron (onderzocht 27/08/2026)
-
-Er is **geen register, dataset of API** die scholen aan een aanmeldsysteem koppelt. Nagekeken:
-de API-catalogus van het onderwijsportaal bevat geen aanmelden-product (zie [CLAUDE.md](./CLAUDE.md)), en er
-bestaat geen centrale lijst van aanmeldingsinitiatieven.
-
-Het landschap is versnipperd over minstens vier sporen:
-- `aanmelden.vlaanderen` — het gratis platform van de Vlaamse overheid, met een aparte instantie
-  per regio (bv. `zuiderkempenso.aanmelden.vlaanderen`). Secundair kreeg toegang in februari 2026.
-- `meldjeaansecundair.antwerpen.be` — stad Antwerpen draait een eigen systeem.
-- `aanmelden.school` — private aanbieder, gebruikt in een aantal regio's, met een eigen pagina
-  "deelnemende scholen".
-- Centraal Aanmeldingsregister van V-ICT-OR.
-
-**Gevolg voor de aanpak:** dit wordt handmatige curatie per gemeente/regio, net als de
-OKI-cijfers — een klein, gecommit bestand dat gemeente of schoolnummer koppelt aan de naam en
-URL van het aanmeldsysteem, dat `fetch-data.ts` erbij joint. Niet scrapen: de deelnemerslijsten
-staan op sites met eigen voorwaarden, en ze wijzigen per schooljaar.
-
-**Let op bij het tonen:** aanmeldperiodes zijn kort en jaargebonden (voor 2026-2027 liep het van
-31 maart tot 24 april 2026). Toon dus nooit een harde datum uit een gecommit bestand zonder
-jaartal erbij, en link naar de bron in plaats van de procedure over te nemen — anders staat er
-volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
 ## Wat volgt er na deze richting? (nog niet onderzocht)
 
@@ -138,7 +123,8 @@ van de tweede graad aansluiten. Wat we daarover weten:
 
 - **Het API-portaal heeft er geen veld voor.** `/administratievegroep` levert per richting
   finaliteit, graad, leerjaar, onderwijsvorm, studiegebied, studierichting, duaal, modulair,
-  niche, stem-categorie en gemoderniseerd (opsomming in [CLAUDE.md](./CLAUDE.md)). Geen enkel
+  niche, stem-categorie en gemoderniseerd (opsomming in
+  [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md)). Geen enkel
   veld verwijst naar een voorafgaande of volgende richting. Dat is de veldenlijst van v0.2 en is
   voor dit doel nog niet opnieuw nagekeken, maar reken er niet op dat het er stilletjes bij is
   gekomen.
@@ -154,156 +140,6 @@ van de tweede graad aansluiten. Wat we daarover weten:
 **Vorm, als stuk 1 er komt.** Een regel of blokje bij het aanbod in `DetailPanel`, niet een
 apart paneel, en zeker geen pijlendiagram: het gaat om een handvol richtingen per adres. In de
 vergelijkingstabel hoort het voorlopig niet thuis, daar staat het aanbod al per graad.
-
-## Dropouts en doorstroom naar het hoger onderwijs: ScholenKompas (onderzocht 01/09/2026)
-
-Gevraagd: vier categorieën uit Notion, waarvan we er twee al hebben (thuistaal, schooltoeslag).
-De twee andere — **dropouts** en **verder studeren in het hoger onderwijs** — bestaan wél per
-school, maar niet in een bron die we vandaag kunnen automatiseren.
-
-**Waar ze níét staan:**
-
-- **Niet in het API-portaal.** De catalogus is bekend (zie [CLAUDE.md](./CLAUDE.md)); er is geen
-  product met loopbaan- of doorstroomcijfers.
-- **Niet in de AgODi-xlsx** die we in 0.10.0 gebruiken. Die bevat enkel de vier
-  GOK-leerlingenkenmerken.
-- **Vroegtijdig schoolverlaten staat in Dataloep enkel op Vlaams niveau en per stad/gemeente**,
-  niet per school. Herhaald bevestigd op de pagina's van Onderwijs en Vorming, en zichtbaar in de
-  leeswijzer bij die cijfers: de uitsplitsingen zijn uitstroompositie, loopbaantypologie, schoolse
-  achterstand, leeftijd, graad/leerjaar, studiegebied, nationaliteit, provincie en centrumsteden —
-  **instelling staat er niet tussen.** Niet opnieuw gaan zoeken in Dataloep zelf.
-
-**Waar ze wél staan: ScholenKompas.** Een publiek dashboard van Onderwijs en Vorming met
-cijfers per school, voor alle 706 scholen gewoon secundair onderwijs in Vlaanderen. Geen login.
-
-```
-https://www.vlaanderen.be/onderwijs-en-vorming/scholenkompas
-→ https://public.tableau.com/views/ScholenKompasSecundair/Landingspagina
-```
-
-Let op: dit staat op **Tableau Public**, niet op de Tableau-server van de overheid waar Dataloep
-draait. Andere host, andere mogelijkheden — dat is nog niet uitgezocht.
-
-Uit de technische fiche (`data-onderwijs.vlaanderen.be/documenten/bestanden/
-technische-fiche-scholenkompas.pdf`), letterlijk nagelezen:
-
-- **3.4 Vroegtijdige schoolverlaters**, op basis van administratieve data. In de toepassing zijn
-  de 2de en 3de graad samengenomen.
-- **3.11 Rechtstreekse doorstroom van het secundair naar het hoger onderwijs**: hoeveel procent
-  van de leerlingen zich na hun diploma rechtstreeks inschrijft, opgesplitst naar professionele
-  bachelor, academische bachelor en graduaat. Daarbovenop **studierendement** (welk aandeel van
-  de opgenomen studiepunten ze in het eerste jaar behalen) en **studiesucces** vier jaar na het
-  secundair: wie een studiebewijs haalde, wie nog studeert, en wie stopte zonder diploma. Dat
-  laatste is een tweede soort drop-out — die van het hoger onderwijs, niet van de school zelf.
-  **Twee verschillende dingen, niet door elkaar halen in de UI.**
-- Verder nog: oriënteringsattesten (A/B/C), schoolse vordering en zittenblijven, ongewettigde
-  afwezigheden, nationaliteit, personeelscijfers, en dezelfde vier leerlingenkenmerken die we al
-  hebben.
-- **Rapportageniveau is de 'unit'** (alle vestigingsplaatsen van een school samen), niet de
-  vestigingsplaats. Leerlingencijfers worden per vestigingsplaats verzameld maar per unit
-  getoond; personeelscijfers gaan soms over een nog hoger niveau ('complex'). Dat sluit aan bij
-  hoe wij de leerlingenkenmerken al tonen: per school, niet per adres.
-- **Privacydrempels**: cijfers verdwijnen als de groep te klein is (bv. minder dan 5 uitgereikte
-  attesten). Reken dus op gaten, net als de `(*)` in Dataloep.
-
-**De data is niet te downloaden (uitgezocht 02/09/2026).** Dit is nagekeken, niet ingeschat:
-
-1. **De uitgever heeft data-download uitgezet.** De werkmap-metadata van Tableau Public
-   (`https://public.tableau.com/profile/api/single_workbook/ScholenKompasSecundair`) geeft
-   `"allowDataAccess": false`. Dat is de instelling achter "Download workbook or data"; die
-   staat dus bewust af. De `.csv`-suffix op de view geeft 404, net als `.twb` en `.twbx`.
-2. **Er staat geen bestand op het documentenportaal.** Bij de GOK-kenmerken bestond er wél een
-   publieke xlsx; hier linkt de ScholenKompas-pagina enkel naar de technische fiche, verder niets.
-3. **Het vizql-protocol scrapen doen we niet.** Dat stond hier al voor Dataloep (fragiel,
-   niet-ondersteund) en hier komt er een tweede reden bij: het omzeilt een instelling die de
-   uitgever expliciet heeft uitgezet.
-**Blijft dus over, in deze volgorde:**
-
-1. **De cijfers opvragen bij Onderwijs en Vorming.** Het Bestuursdecreet geeft een algemeen
-   **recht op hergebruik van bestuursdocumenten**, en datasets vallen daar uitdrukkelijk onder.
-   Belangrijk detail: een aanvraag moet over een **bestaand** document gaan — je kan een bestuur
-   niet vragen iets nieuws samen te stellen. Dat zit hier goed, want de dataset achter het
-   dashboard bestaat al. Vergoedingen zijn beperkt tot marginale kopieerkosten, en er zijn drie
-   modellicenties (CC0, vrij hergebruik, hergebruik tegen betaling). Er is bovendien een
-   precedent bij dezelfde afdeling: de GOK-leerlingenkenmerken staan al als open xlsx online.
-   Kanaal: het contactformulier op de ScholenKompas-pagina, of 1700 (keuze 2, Onderwijs).
-   Vraag concreet om de onderliggende cijfers **per instellingsnummer**, als xlsx of csv, onder
-   een modellicentie.
-2. **Ondertussen dieplinken.** Een knop "Bekijk deze school in ScholenKompas" naast de link naar
-   de officiële fiche. Dan hoeven we niets over te nemen en blijft de kadering van de bron
-   staan. Nog uit te testen: of Tableau Public een URL-parameter aanvaardt die meteen de juiste
-   school opent. Het instellingsnummer zit in hun bron (sectie 2.1 van de fiche), maar de naam
-   van de parameter is nog niet nagekeken. **Niet gokken — uittesten.**
-3. **Zelf cijfers overnemen kan pas na 1.** Zonder expliciete licentie is doorlinken het enige
-   dat sowieso mag.
-
-**Kadering, als het er komt.** Katholiek Onderwijs waarschuwt bij ScholenKompas expliciet voor
-strategisch gedrag om indicatoren te beïnvloeden, schoolkeuze die te sterk op cijfers steunt, en
-toenemende segregatie. ScholenKompas zelf maakt daarom géén ranglijsten en toont de resultaten
-van de Vlaamse toetsen niet. Dezelfde lijn als bij de GOK-cijfers hierboven: context tonen, met
-uitleg, nooit als score.
-
-## GOK-indicatoren: de xlsx-route (onderzocht 27/08/2026, gebouwd in 0.10.0)
-
-Opgeleverd in 0.10.0. **De werking, de valkuilen en de afspraken staan in
-[CLAUDE.md](./CLAUDE.md)** onder "GOK-leerlingenkenmerken"; die zijn hier niet herhaald. Wat
-hier blijft staan, is waarom deze route gekozen is boven de Dataloep-route hieronder.
-
-**Gevonden via** `onderwijsstatistieken.depuydt.eu` (Dieter Depuydt), die dezelfde cijfers toont
-en in zijn FAQ schrijft dat alles uit publieke AgODi-publicaties komt. Zijn percentages zijn
-exact gereproduceerd uit de xlsx (Sint-Jan Berchmanscollege Brussel: 14,7 / 65,6 / 24,2 / 62,3),
-dus dat is zijn bron en onze kolominterpretatie klopt.
-
-**De afweging:** automatisch en per school (de xlsx), of handwerk en per vestigingsplaats
-(Tableau/Dataloep). Het is de xlsx geworden. Per vestigingsplaats bestaat het wél, maar enkel
-handmatig; die weg staat hieronder beschreven voor als we ze ooit nodig hebben.
-
-**Zijdelings genoteerd:** de AgODi-pagina `cijfermateriaal-leerlingenkenmerken` was op
-27-28/08/2026 zelf niet bereikbaar (`www.agodi.be` geeft een DNS-fout, de redirect naar
-`paddlecms.net` loopt in een time-out). Het documentenportaal werkt wél, en dat is wat het
-script gebruikt.
-
-## GOK-indicatoren — Dataloep-route (per vestigingsplaats, handmatig)
-
-- Bron: **Dataloep Leerlingenkenmerken Secundair**, op de Tableau Server van de overheid:
-  `https://onderwijs-tableau.vlaanderen.be/t/EXTERN/views/DataloepLeerlingenkenmerkenSecundair/SOCijfersperschooljaar`
-  Publiek, geen login.
-- Zet in het dashboard de uitsplitsing **"instelling | vestigingsplaats adres"**. Rijen zien er dan
-  zo uit: `28514 - Provinciaal Instituut PIVA | Antwerpen, Desguinlei 244` met Gemiddelde OKI +
-  de 4 kenmerken in %.
-- **Join werkt**: op `(schoolnummer, "straat huisnummer")` tegen ons campusmodel. Getest op 4 rijen,
-  4/4 match.
-- **Export**: raw "Data"-download is door de publisher bewust uitgeschakeld; **"Kruistabel → CSV"**
-  is wél toegestaan (werkblad `SO | CIJF | Leerlingenkenmerken %`). Dat is de sanctioned route.
-- **Niet automatiseerbaar via URL**: de `.csv`-suffix (gedocumenteerde Tableau-feature) werkt op
-  werkbladen maar geeft leeg terug op dashboards, en parameterstate overleeft geen anonieme sessie.
-  Tableau's interne `vizql`-protocol scrapen: **niet doen**, fragiel en niet-ondersteund.
-- **Aanpak**: het is een Vlaamse Openbare Statistiek met jaarlijkse publicatiekalender → één keer
-  per jaar handmatig exporteren (filter Provincie = Antwerpen), als statisch CSV in de repo
-  committen, en `fetch-data.ts` laten joinen.
-- **Framing**: OKI is een kansarmoede-indicator, geen kwaliteitsoordeel. Katholiek Onderwijs
-  waarschuwt expliciet voor schoolkeuze te sterk op deze cijfers baseren en voor toenemende
-  segregatie. Toon het als context over de leerlingenpopulatie, met uitleg — nooit als kaal cijfer
-  of ranglijst.
-
-#### Doodlopende sporen (opnieuw nagekeken 27/08/2026)
-
-Bij het voorbereiden van v0.3 is nog eens gezocht naar een bron die wél automatiseerbaar is.
-Die is er niet. Wat gecontroleerd is, zodat niemand het een derde keer doet:
-
-- **De site is verhuisd.** `onderwijs.vlaanderen.be/nl/onderwijsstatistieken/...` geeft nu 301
-  naar `vlaanderen.be`, en die datapagina somt Dataloep, het statistisch jaarboek en het
-  API-portaal op — géén downloadbaar leerlingenkenmerken-bestand. Oude links naar
-  statistiekpagina's landen op een algemene pagina, dus een dode link betekent hier niet dat de
-  data weg is.
-- **`agodi.be` bestaat niet meer als host** (DNS-fout op `www.agodi.be`; `agodi.be` redirect naar
-  een `paddlecms.net`-adres dat time-outt). Zoekresultaten verwijzen er nog naar.
-- **provincies.incijfers.be** (Swing/ABF, het platform achter "Provincies in cijfers") heeft wél
-  een OData-service op `/viewerservices/odata/` — maar die geeft anoniem
-  `401 {"error":{"message":"Guest user group not found, No access!"}}`. Geen open API dus. De
-  databank zelf zit bovendien op gemeenteniveau, niet per vestigingsplaats.
-- Het **Tableau-dashboard staat er nog** en laadt (geverifieerd vandaag). De handmatige
-  kruistabel-export blijft de route.
 
 ## Kwaliteitsbewaking: CI, tests en schemavalidatie (besproken 01/09/2026)
 
@@ -371,7 +207,7 @@ faalmelding en omdat ze los staat van de `ignore`-regel in `netlify.toml`.
 ### Stap 2: tests, maar alleen op wat al eens misging
 
 Er zijn vandaag nul tests: geen vitest, geen testbestand, geen `test`-script. Niet naar
-dekkingsgraad streven, wel de handvol beslissingen vastpinnen die in CLAUDE.md al een eigen
+dekkingsgraad streven, wel de handvol beslissingen vastpinnen die in `.claude/rules/` al een eigen
 waarschuwing hebben. Vijf kandidaten, allemaal pure functies zonder DOM:
 
 - **`NET_MIGRATIE`** in `useSearchState.ts`: een oude link met `?net=Officieel gesubsidieerd` moet
@@ -411,46 +247,6 @@ npm: 1.4.2 (nagekeken 01/09/2026).
   levert hier meer op**, want het risico zit in dependencies. ⚠️ Niet geverifieerd: default setup
   zet géén workflowbestand in de repo, en de badge-URL verwijst naar een workflowbestand. Wil je
   per se een CodeQL-badge, dan moet je waarschijnlijk de advanced variant nemen.
-
-## De Lijn-API (onderzocht 27/08/2026, niet in gebruik)
-
-*Verplaatst uit CLAUDE.md op 03/09/2026: dit is bronnenonderzoek naar iets dat niet gebouwd is,
-en het hoefde niet elke sessie meegeladen te worden. De reistijd in de app komt van Transitous;
-dát staat wel in CLAUDE.md.*
-
-Portaal: `https://data.delijn.be` (Azure API Management). Account aanmaken → op een product
-intekenen → key. **Geen goedkeuring nodig** (`approvalRequired: false`, uitgelezen via hun eigen
-`/developer/products`-endpoint). Licentie: **Gratis Open Data Licentie Vlaanderen v1.0** —
-hergebruik mag, ook commercieel, mits bronvermelding. Limieten: 864.000 calls/dag en
-6.000/minuut per product.
-
-Alle endpoints hieronder zijn geverifieerd door ze effectief aan te roepen zonder key:
-**401 = bestaat en vraagt een key, 404 = bestaat niet.**
-
-| Product | Basis-URL | Inhoud |
-| --- | --- | --- |
-| Open Data V1 Core | `https://api.delijn.be/DLKernOpenData/api/v1/...` | 47 operaties: haltes, lijnen, dienstregelingen, real-time doorkomsten, omleidingen, storingen |
-| Open Data V1 Search | `https://api.delijn.be/DLZoekOpenData/v1/zoek/{haltes,lijnrichtingen}/{term}` | 2 operaties |
-| GTFS Static | `https://api.delijn.be/gtfs/static/v3/gtfs_transit.zip` | volledige dienstregeling, dagelijks ververst |
-| GTFS Realtime | `https://api.delijn.be/gtfs/v3/realtime` | protobuf, elke minuut |
-| NeTEx / BLTAC | `https://api.delijn.be/netex/v1/file` · `https://api.delijn.be/bltac/v1/file` | dezelfde dienstregeling, andere formaten |
-
-⚠️ **Let op de versie in het pad — die staat per API ergens anders.** GTFS Static is
-`/gtfs/static/v3/...` maar GTFS Realtime is `/gtfs/v3/realtime`. Beide andere volgordes geven 404.
-
-- **Er is GEEN routeplanner-API (meer).** Er bestond een `/routeplan/{van}/{naar}` in v1 — oude
-  blogposts, de Apiary-docs en zelfs zoekresultaten verwijzen er nog naar. Die operatie staat
-  **niet** meer in de API: de volledige operatielijst telt 47 items zonder routeplan, en elke
-  padvariant geeft 404 terwijl `/haltes` op dezelfde basis netjes 401 geeft. Niet opnieuw gaan
-  zoeken, en niet gokken dat het "vast wel ergens" zit.
-- **Wél nuttig voor v0.7:** `GET /haltes/indebuurt/{lat,lng}` geeft haltes in de buurt van
-  coördinaten, van álle vervoersmaatschappijen. Dat dekt "afstand tot halte" zonder dat we zelf
-  GTFS moeten verwerken.
-- De GTFS-feeds lopen ook via de Belgische NAP-proxy
-  (`api-management-opendata-production.azure-api.net/api/gtfs/feed/delijn/...`, header
-  `bmc-partner-key`). Die route is CC-BY-4.0. Voor ons geen voordeel — gebruik gewoon
-  `api.delijn.be` met een eigen key.
-
 
 ## Bewust geschrapt
 
