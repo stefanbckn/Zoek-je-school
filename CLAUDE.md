@@ -128,6 +128,13 @@ zo beslist door de gebruiker.
   met de scholen als losse, individueel klikbare rijen erin. `DetailPanel` toont altijd één specifieke
   school (`campus` + `school` samen als props), met een melding welke andere scholen hetzelfde adres
   delen.
+- **Groeperen op bestuursniveau is géén alternatief voor de adresgroepering** (gevraagd
+  01/09/2026). Het verliest geen scholen, maar een bestuur kan scholen over verschillende
+  gemeenten hebben, dus kaartjes op bestuursniveau zetten campussen bij elkaar die tientallen
+  kilometers uit elkaar liggen. De adresgroepering bestaat net omdat scholen hetzelfde gebouw
+  delen. Als filter of als regel in het detailpaneel kan bestuur wel nuttig zijn; daarvoor moet
+  `SchoolOpCampus` het bestuursnummer en de naam gaan dragen, want vandaag staat er enkel
+  `soortBestuur` (het type) in.
 - **Sinds v0.2 opgeleverd:** finaliteiten/richtingen worden **per adres/campus** samengevoegd
   getoond én gefilterd (een andere campus met ander aanbod blijft wél apart). `campusAanbod()` in
   `src/lib/aanbod.ts` doet die samenvoeging; `SchoolOpCampus.richtingen` is waar het per school
@@ -157,6 +164,13 @@ zo beslist door de gebruiker.
   veld. `onderwijsvorm` bewaren we apart omdat ouders die termen nog kennen.
 - Richtingen zitten per **vestiging** in het model (`SchoolOpCampus.richtingen`), niet per school:
   een school met meerdere campussen kan per campus een ander aanbod hebben.
+- **Richtingen worden ontdubbeld tot één regel per graad.** De bron noemt elk leerjaar apart
+  ("1e leerjaar in de 2e graad Latijn ASO" én "2e leerjaar in de 2e graad Latijn ASO"); dat
+  voorvoegsel wordt weggehaald en de dubbels vallen samen. Bij Sint-Gabriëlcollege: 55 ruwe
+  richtingen over 4 scholen → 24 regels. Matcht het voorvoegselpatroon niet (eerste graad, 7e
+  leerjaar, HBO5, OKAN), dan blijft de naam onaangeroerd.
+- **`studiegebied` zit in de data maar niet in de UI.** Er is geen filter op. Zie de kleine open
+  punten in [ROADMAP.md](./ROADMAP.md).
 
 ### Net-onderscheid — opgeleverd in v0.2
 
@@ -543,17 +557,6 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
 - `src/lib/` — pure functies: haversine-afstand, net-labels, URL-state hook.
 - `src/components/` — UI-componenten, geen state-logica die ook elders nodig is.
 - Filterstatus leeft in de URL-querystring (geen router nodig, single-page app — vermijd
-## Roadmap
-
-De roadmap staat in een apart bestand: **[ROADMAP.md](./ROADMAP.md)**. Daar staat per versie
-wat er nog komt, welke bron er al geverifieerd is en welke beslissingen er onderweg genomen
-zijn. Wat er al uitgebracht is, staat in [CHANGELOG.md](./CHANGELOG.md).
-
-**Lees ROADMAP.md vóór je begint** wanneer: er een versienummer valt of een `v0.x.y`-branch,
-er gevraagd wordt wat er nu aan de beurt is of wat er nog moet komen, er een functionaliteit besproken wordt die nog niet bestaat, of er een bron/API
-onderzocht wordt voor een nieuwe functionaliteit. Bij werk aan bestaande code (bugfix, refactor,
-tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar bij, niet hier.**
-
   react-router, dat lost hier niets op en breekt deep-linking onnodig).
 - Afstand is altijd hemelsbrede afstand (haversine); benoem dat expliciet in de UI, nooit als
   "reisafstand" framen.
@@ -636,6 +639,20 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
     runtime (react-leaflet-cluster laadt de bibliotheek zelf al). `types` in `tsconfig.app.json`
     staat op `["vite/client"]`, dus @types-pakketten komen niet vanzelf mee en zonder die regel
     kent `L` het type `MarkerCluster` niet.
+  - **Een cluster is geen campus.** De campus-samenvoeging op `postcode|straat|huisnummer` is het
+    datamodel; een cluster is puur visueel en hangt van het zoomniveau af. Laat een cluster dus
+    nooit iets over "een school" zeggen, en bouw er geen filter of teller op. Het aantal boven de
+    lijst blijft het aantal campussen.
+  - **Vanaf zoom 16 staan de markers los** (`disableClusteringAtZoom`). Meerdere scholen op één
+    adres zijn al één marker met een popup eronder; een cluster die daar overheen blijft liggen
+    verbergt dat.
+  - **Waarom `react-leaflet-cluster` en niet een van de andere twee** (nagekeken in het
+    npm-register, 31/08/2026): versie 4.1.3 (31/03/2026) heeft `react-leaflet@^5`, `react@^19` en
+    `leaflet.markercluster` in z'n peers en is de enige onderhouden stabiele release die met deze
+    versies overweg kan. `react-leaflet-markercluster` 5.0.0-rc.0 kan het ook maar staat al sinds
+    januari 2025 in rc; `@changey/react-leaflet-markercluster` zit nog op react-leaflet 4 en valt
+    af. De terugvalweg (markercluster rechtstreeks op de Leaflet-instantie via `useMap()`, zoals
+    `FitBounds` doet) was niet nodig.
 - **Over deze site + disclaimer (sinds 0.8.0).** `OverPanel.tsx`, geopend vanuit de footer.
   Drie dingen die vastliggen:
   - **De korte disclaimerregel staat in de footer zelf**, niet enkel achter de link: wie nooit
@@ -665,6 +682,74 @@ tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar
   hardgecodeerde string — dan veroudert het stil bij de volgende release.
 - `proj4` is **verwijderd** als dependency: de API levert WGS84 rechtstreeks, er is geen
   Lambert72-conversie meer nodig.
+
+### Lijst pagineren (sinds 0.3.0)
+
+`ResultList.tsx` toont 25 adressen per lading met een "Toon meer"-knop. Wat daarbij vastligt:
+
+- **De kaartweergave paginéért niet mee.** Daar is het volledige beeld net het punt; markers
+  verbergen omdat ze op "pagina 2" staan maakt de kaart onbruikbaar. Alleen `ResultList` knipt.
+  Clusteren is daarom de manier waarop de kaart met veel resultaten omgaat, niet pagineren.
+- **Een "Toon meer"-knop, geen genummerde pagina's.** De lijst staat op afstand gesorteerd, dus
+  wat bovenaan staat is wat telt; iemand bladert niet doelgericht naar pagina 7. Een knop houdt
+  bovendien de scrollpositie intact, en dat is op mobiel het verschil.
+- **Het aantal getoonde items staat NIET in de URL.** De querystring beschrijft wát er gezocht
+  wordt; hoe ver iemand had gescrold hoort daar niet bij en maakt een gedeelde link alleen maar
+  vreemder. Gewone `useState` volstaat.
+- **De teller reset bij elke filterwijziging**, anders zit je na het aanvinken van één gemeente
+  nog steeds naar 60 items te kijken terwijl er 4 resultaten zijn.
+- Het resultaataantal bovenaan blijft het **totaal** tonen, niet het aantal zichtbare kaartjes.
+  Dat cijfer is de feedback op je filters.
+
+### Kleur, thema en typografie (sinds 0.2.1)
+
+- **Het palet zit als CSS-variabelen in `src/index.css`.** Geen harde Tailwind-kleuren
+  (`slate-500` en co) in componenten, maar tokens: `bg-kaart`, `text-inkt`, `text-zacht`,
+  `border-rand`, `bg-accent`. Dat werkt via `@theme inline`, dat de utility letterlijk
+  `var(--c-kaart)` laat uitschrijven. ⚠️ **Zonder `inline` vriest Tailwind de waarde in op
+  buildtijd en schakelt het thema niet mee.**
+- **Wijzig je kleuren, draai `node scripts/kleurcheck.mjs`.** Dat berekent contrast (WCAG AA) én
+  simuleert protanopie, deuteranopie en tritanopie, en meet hoe ver de kleuren binnen één
+  categorie uit elkaar liggen. Meten, niet schatten: het eerste finaliteitspalet (blauw #0b4a7d /
+  pruim #7a2665 / bruin #7d4700) haalde overal AA maar de eerste twee vielen bij protanopie
+  praktisch samen, afstand 12. Dat werd pas zichtbaar door te meten.
+- **Vorm draagt het onderscheid tussen de twee families.** Net = gevulde chip. Finaliteit =
+  gevulde chip mét rand en vormteken (▲ doorstroom, ◆ dubbel, ■ arbeidsmarkt). De tekens staan
+  `aria-hidden`, want de tekst ernaast zegt het al. Een omlijnde chip alleen bleek te weinig
+  kleuroppervlak te hebben om de families uit elkaar te houden, ook met normaal zicht.
+- **Het kleurbudget gaat naar finaliteit**, want daar wordt op gescand en gefilterd. Blauw /
+  groenblauw / oranje, minimaal 49 kleurafstand in licht en 31 in donker, over alle vier de
+  zichtsituaties.
+- **De netkleuren blijven ondersteunend.** Bij protanopie liggen GO! en Gemeentelijk dicht bij
+  elkaar (afstand 12 licht, 8 donker) en dat is aanvaard: elke net-chip draagt zijn naam voluit.
+  Zeven categorieën allemaal CVD-veilig kleuren kán niet; het beste palet voor vier netten haalde
+  maar 20. Vandaar de keuze om er niet meer kleur in te steken.
+- Let op bij het bijstellen van netkleuren: het oranje van Provinciaal ligt op afstand 4 van het
+  finaliteitsoranje van Arbeidsmarkt. Ze zijn uit elkaar te houden door rand en vormteken, maar
+  maak het verschil niet nóg kleiner.
+- Kaartmarkers zijn allemaal identiek en elke chip heeft een tekstlabel, dus kleur is nergens de
+  enige drager van informatie (WCAG 1.4.1).
+- **Themaschakelaar met drie standen**, niet twee (`ThemaToggle.tsx` + `lib/thema.ts`): geen
+  attribuut = volg het systeem. Keuze in `localStorage`, in een try/catch omdat privémodus dat
+  kan blokkeren.
+- **Anti-flits: `public/thema.js` zet het attribuut synchroon vóór React mount.** Bewust een
+  apart bestand en géén inline `<script>`, want de CSP in `netlify.toml` staat alleen
+  `script-src 'self'` toe en dat houden we zo.
+- **Bewust geen webfont.** De app gebruikt de systeemletter (Tailwinds `font-sans`): geen extra
+  download, geen layout-verschuiving bij het laden, en niets dat de CSP of de privacy raakt. Wil
+  je later meer karakter, doe dat dan met één webfont voor koppen alleen, niet voor lopende tekst.
+
+
+## Roadmap
+
+De roadmap staat in een apart bestand: **[ROADMAP.md](./ROADMAP.md)**. Daar staat per versie
+wat er nog komt, welke bron er al geverifieerd is en welke beslissingen er onderweg genomen
+zijn. Wat er al uitgebracht is, staat in [CHANGELOG.md](./CHANGELOG.md).
+
+**Lees ROADMAP.md vóór je begint** wanneer: er een versienummer valt of een `v0.x.y`-branch,
+er gevraagd wordt wat er nu aan de beurt is of wat er nog moet komen, er een functionaliteit besproken wordt die nog niet bestaat, of er een bron/API
+onderzocht wordt voor een nieuwe functionaliteit. Bij werk aan bestaande code (bugfix, refactor,
+tekstwijziging) hoeft het niet. **Wijzigt er iets aan de planning, werk dat daar bij, niet hier.**
 
 ## Licentie
 

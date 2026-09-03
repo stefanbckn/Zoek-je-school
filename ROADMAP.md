@@ -3,6 +3,16 @@
 Wat er nog komt. Wat er al is, staat in [CHANGELOG.md](./CHANGELOG.md); de projectconventies
 en de geverifieerde databronnen staan in [CLAUDE.md](./CLAUDE.md).
 
+**Wat hier hoort, en wat niet.** Dit bestand houdt de volgorde bij en het bronnenonderzoek voor
+wat er nog niet is: welke bron geverifieerd is, welke afviel en waarom, en wat er nog uitgezocht
+moet worden. Wat af is, wordt hier leeggehaald in plaats van te blijven staan. Regels die
+vastliggen en niet omgekeerd mogen worden gaan naar [CLAUDE.md](./CLAUDE.md), wat een bezoeker
+merkt gaat naar [CHANGELOG.md](./CHANGELOG.md), en wat kapot is staat als
+[GitHub Issue](https://github.com/stefanbckn/Zoek-je-school/issues). Zo staat elk stuk op één
+plaats. Bij de opruimronde van 03/09/2026 zijn de secties over 0.2.0, 0.2.1, 0.3.0, 0.11.0 en
+0.12.0 op die manier verdeeld; ze stonden hier grotendeels dubbel, en de sectie over 0.2.0
+beschreef de netfilter nog met de achterhaalde waarde "Stedelijk".
+
 **Versienummers staan hier niet bij wat er nog moet komen — bewust.** Een nummer krijgt een
 thema pas op het moment dat het af is en naar `main` gaat. Zo kan elk stuk los uitgebracht
 worden zonder dat alles eronder verschuift, en klopt SemVer vanzelf: nieuwe functionaliteit is
@@ -50,162 +60,21 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
 
-## 0.2.0 — stand van zaken
+## Kleine open punten
 
-**Datalaag opgeleverd**: `fetch-data.ts` draait volledig op de API's, met studieaanbod,
-finaliteit en soort_bestuur in de dataset. Zie de databronnen-sectie in [CLAUDE.md](./CLAUDE.md) voor de details.
+Losse wensen, te klein voor een eigen regel in de tabel hierboven. Ze zijn hier bewaard omdat ze
+anders begraven bleven in secties over versies die al uit zijn.
 
-**UI opgeleverd**: studieaanbod in `DetailPanel` (per graad gegroepeerd, met finaliteit-chips),
-finaliteit-badges en richtingaantal in `ResultCard`, en filters op finaliteit + vrije tekst op
-studierichting in `FilterPanel`. URL-state uitgebreid met `finaliteit=` en `richting=`.
-
-Twee keuzes daarin, bewust:
-- **Aanbod wordt op adresniveau samengevoegd**, niet per school — ook in de filters. Scholen die
-  een campus delen vullen elkaars aanbod aan; wie op "Latijn" zoekt wil dat adres zien, ook als
-  de richting bij de buurschool op hetzelfde adres hoort. Zie `campusAanbod()` in `src/lib/aanbod.ts`.
-- **Richtingen worden ontdubbeld tot één regel per graad.** De bron noemt elk leerjaar apart
-  ("1e leerjaar in de 2e graad Latijn ASO" én "2e leerjaar in de 2e graad Latijn ASO"); dat
-  voorvoegsel wordt weggehaald en de dubbels vallen samen. Bij Sint-Gabriëlcollege: 55 ruwe
-  richtingen over 4 scholen → 24 regels. Matcht het voorvoegselpatroon niet (eerste graad, 7e
-  leerjaar, HBO5, OKAN), dan blijft de naam onaangeroerd.
-
-**Nog te doen in de UI:**
-- `soortBestuur` in de netfilter verwerken: GO! / Provinciaal / Stedelijk / Vrij.
-  Let op: `Net` in `src/types.ts` is nog het oude 4-waarden-type dat `NET_STYLES`,
-  `NET_OPTIONS` en de URL-state gebruiken. `soortBestuur` staat er los naast, precies om die
-  UI niet te breken. Wie de filter uitbreidt, moet die drie plekken samen aanpassen.
-- Eventueel filteren op studiegebied (zit in de data, nog niet in de UI).
-
-**Infodagen: geen bron.** De volledige API-catalogus bevat geen infomomenten-product.
-onderwijskiezer.be heeft ze wel maar is juridisch uitgesloten (zie [CLAUDE.md](./CLAUDE.md)). Dit item schuift
-door tot er een bron gevonden is — niet inplannen op hoop.
-
-## 0.2.1 — UI-verbeteringen
-
-**Opgeleverd:**
-
-1. **Actieve filters onder de zoekbalk** (`ActieveFilters.tsx`), elk apart wegklikbaar, met
-   "Alles wissen" zodra er meer dan één actief is. Locatie en straal staan er bewust níét bij:
-   die zijn al zichtbaar in de zoekbalk zelf.
-2. **Kleurenpalet omgezet naar CSS-variabelen** in `src/index.css`, richting "fris & open".
-   Alle harde Tailwind-kleuren (`slate-500` en co) zijn vervangen door tokens: `bg-kaart`,
-   `text-inkt`, `text-zacht`, `border-rand`, `bg-accent`. Werkt via `@theme inline`, dat de
-   utility letterlijk `var(--c-kaart)` laat uitschrijven — **zonder `inline` vriest Tailwind de
-   waarde in op buildtijd en schakelt het thema niet mee.**
-3. **Licht/donker/systeem-schakelaar** rechtsboven (`ThemaToggle.tsx` + `lib/thema.ts`).
-   Drie standen, niet twee: geen attribuut = volg het systeem. Keuze in `localStorage`, in een
-   try/catch omdat privémodus dat kan blokkeren.
-
-**Kleurenblindheid — meten, niet schatten.** Er is een controlescript: `node scripts/kleurcheck.mjs`.
-Dat berekent contrast (WCAG AA) én simuleert protanopie, deuteranopie en tritanopie, en meet dan
-hoe ver de kleuren binnen één categorie uit elkaar liggen. **Wijzig je kleuren, draai dit script.**
-
-Waarom het bestaat: het eerste finaliteitspalet (blauw #0b4a7d / pruim #7a2665 / bruin #7d4700)
-zag er prima uit en haalde overal AA, maar de eerste twee vielen bij protanopie praktisch samen —
-afstand 12. Dat werd pas zichtbaar door te meten. De gebruiker meldde bovendien dat de drie ook
-met normaal zicht moeilijk te scheiden waren, omdat een omlijnde chip te weinig kleuroppervlak
-heeft. Beide klachten hadden dezelfde oorzaak.
-
-Het huidige systeem:
-
-- **Vorm draagt het onderscheid tussen de twee families.** Net = gevulde chip. Finaliteit =
-  gevulde chip mét rand en vormteken (▲ doorstroom, ◆ dubbel, ■ arbeidsmarkt). De tekens staan
-  `aria-hidden`, want de tekst ernaast zegt het al.
-- **Het kleurbudget gaat naar finaliteit**, want daar wordt op gescand en gefilterd. Blauw /
-  groenblauw / oranje, minimaal 49 kleurafstand in licht en 31 in donker, over alle vier de
-  zichtsituaties.
-- **De netkleuren blijven ondersteunend.** Bij protanopie liggen GO! en Gemeentelijk dicht bij
-  elkaar (afstand 12 licht, 8 donker) en dat is aanvaard: elke net-chip draagt zijn naam voluit.
-  Zeven categorieën allemaal CVD-veilig kleuren kán niet — het beste palet dat ik voor vier
-  netten vond haalde maar 20. Vandaar de keuze om er niet meer kleur in te steken.
-- Let op bij het bijstellen van netkleuren: het oranje van Provinciaal ligt op afstand 4 van het
-  finaliteitsoranje van Arbeidsmarkt. Ze zijn uit elkaar te houden door rand en vormteken, maar
-  maak het verschil niet nóg kleiner.
-- Kaartmarkers zijn allemaal identiek en elke chip heeft een tekstlabel, dus kleur is nergens de
-  enige drager van informatie (WCAG 1.4.1).
-
-**Anti-flits:** `public/thema.js` zet het attribuut synchroon vóór React mount. Bewust een
-apart bestand en géén inline `<script>` — de CSP in `netlify.toml` staat alleen `script-src
-'self'` toe, en dat houden we zo.
-
-**Twee dingen die onderweg gerepareerd zijn:**
-- `DetailPanel` sloot niet met Escape. Een modaal venster hoort dat te doen; zonder die
-  afhandeling raak je het met het toetsenbord alleen kwijt door naar de sluitknop te tabben.
-- De driestandenknop viel op 375px buiten het scherm ("Donker" was onzichtbaar). De header
-  breekt nu af (`flex-wrap`) zodat de knop op een eigen regel zakt.
-
-**Bewust uitgesteld:** de sticky filterkolom met eigen scrollgebied. Blijft op de wenslijst
-staan — zie het punt hieronder, dat is nog steeds geldig.
-
-**Nog te doen:** filterkolom sticky met één scrollgebied (desktop). Nu is het het slechtste van
-twee werelden: de `<aside>` scrollt weg bij 303 resultaten, terwijl de gemeentelijst erin wél
-een eigen scrollbalk heeft (`max-h-48 overflow-auto`, 50 gemeenten). Doe het als één
-scrollgebied: aside sticky met eigen overflow én die `max-h-48` weghalen. Enkel desktop.
-
-**Fonts:** de app gebruikt bewust de systeemletter (Tailwind's `font-sans`). Geen webfont =
-geen extra download, geen layout-verschuiving bij het laden, en niets dat de CSP of de privacy
-raakt. Wil je later meer karakter, doe dat dan met één webfont voor koppen alleen, niet voor
-lopende tekst.
-
-## 0.3.0 — lijstweergave pagineren (uitgebracht)
-
-**Uitgebracht in 0.3.0** in `ResultList.tsx`: 25 adressen per lading, "Toon meer"-knop, teller reset bij
-elke filterwijziging. De uitgangspunten hieronder zijn dus beschrijvend geworden, geen plan meer.
-
-Zonder filters staan er 303 adressen in de lijst, allemaal tegelijk in de DOM. Doorscrollen naar
-beneden duurt onnodig lang, en dat is precies het scenario van iemand die nog geen idee heeft
-waarop te filteren. Puur frontend, geen bron nodig.
-
-Uitgangspunten voor wie dit bouwt:
-
-- **De kaartweergave paginéért niet mee.** Daar is het volledige beeld net het punt; markers
-  verbergen omdat ze op "pagina 2" staan maakt de kaart onbruikbaar. Alleen `ResultList` knipt.
-- **Doe het met een "Toon meer"-knop, niet met genummerde pagina's.** De lijst staat op afstand
-  gesorteerd, dus wat bovenaan staat is wat telt; iemand bladert niet doelgericht naar pagina 7.
-  Een knop houdt bovendien de scrollpositie intact, en dat is op mobiel het verschil.
-- **Zet het aantal getoonde items NIET in de URL.** De querystring beschrijft nu wát er gezocht
-  wordt; hoe ver iemand had gescrold hoort daar niet bij en maakt een gedeelde link alleen maar
-  vreemder. Gewone `useState` volstaat.
-- **Reset de teller bij elke filterwijziging**, anders zit je na het aanvinken van één gemeente
-  nog steeds naar 60 items te kijken terwijl er 4 resultaten zijn.
-- Het resultaataantal bovenaan blijft het **totaal** tonen, niet het aantal zichtbare kaartjes.
-  Dat cijfer is de feedback op je filters.
-- Let op de samenhang met het openstaande punt uit v0.2.1 (sticky filterkolom met één
-  scrollgebied). Een kortere lijst maakt dat minder nijpend, maar lost het niet op: de
-  gemeentelijst heeft nog steeds z'n eigen scrollbalk binnen een meescrollende kolom.
-
-## Markers clusteren — opgeleverd in 0.11.0
-
-Gemeld door een gebruiker tijdens een UX-test op 31/08/2026: zonder filters stonden er 303
-adressen op de kaart, en bij het openen zoomt `FitBounds` uit naar de hele provincie. Wat je dan
-zag was een blauwe soep waarin niets meer los te onderscheiden viel.
-
-Waarom dit paste bij wat er al vastlag: de kaart mag bewust níét pagineren (zie 0.3.0 hierboven),
-want daar is het volledige beeld het punt. Clusteren haalt niets weg. Het aantal in de bol is zelf
-informatie voor een ouder ("hier zitten er elf bij elkaar"), en dat is precies het cijfer dat
-eerder onleesbaar in de overlap verdween.
-
-**De bibliotheekkeuze is uitgezocht**, dat was het enige open punt. In het npm-register staan drie
-kandidaten naast elkaar: `react-leaflet-cluster` 4.1.3 (31/03/2026) heeft `react-leaflet@^5`,
-`react@^19` en `leaflet.markercluster` in z'n peers en is dus de enige onderhouden stabiele
-release die met deze versies overweg kan. `react-leaflet-markercluster` 5.0.0-rc.0 kan het ook,
-maar staat al sinds januari 2025 in rc; `@changey/react-leaflet-markercluster` zit nog op
-react-leaflet 4 en valt af. De terugvalweg (markercluster rechtstreeks op de Leaflet-instantie
-via `useMap()`, zoals `FitBounds` doet) was niet nodig.
-
-Wat er bij het bouwen uit voortkwam, staat in [CLAUDE.md](./CLAUDE.md) onder Architectuur: de
-vaste clusterkleur, de specificiteit tegenover `.leaflet-marker-icon`, en waarom
-`MarkerCluster.Default.css` er níét bij hoort.
-
-Wat vastligt en wat je niet moet omkeren:
-
-- **Een cluster is geen campus.** De campus-samenvoeging op `postcode|straat|huisnummer` is het
-  datamodel (zie CLAUDE.md); een cluster is puur visueel en hangt van het zoomniveau af. Laat een
-  cluster dus nooit iets over "een school" zeggen, en bouw er geen filter of teller op. Het aantal
-  boven de lijst blijft het aantal campussen.
-- **Vanaf zoom 16 staan de markers los** (`disableClusteringAtZoom`). Meerdere scholen op één
-  adres zijn al één marker met een popup eronder; een cluster die daar overheen blijft liggen
-  verbergt dat.
+- **Filterkolom sticky met één scrollgebied (desktop).** Nu is het het slechtste van twee
+  werelden: de `<aside>` scrollt weg bij lange resultatenlijsten, terwijl de gemeentelijst erin
+  wél een eigen scrollbalk heeft (`max-h-48 overflow-auto`). Doe het als één scrollgebied: aside
+  sticky met eigen overflow én die `max-h-48` weghalen. Enkel desktop. Stond open sinds 0.2.1;
+  het pagineren van 0.3.0 maakte het minder nijpend maar loste het niet op.
+- **Filteren op studiegebied.** Het veld zit in de data (`administratievegroep_studiegebied`) en
+  in het model, maar er is geen filter op. Let op: het is `null` bij eerste graad, OKAN en HBO5.
+- **Naamgenoten in de naamfilter.** Sinds 0.12.0 zoekt de naamfilter in heel Vlaanderen, dus
+  dezelfde schoolnaam komt vaker meerdere keren terug. Als dat in de praktijk stoort, is de
+  oplossing de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
 
 ## Doorlichting: wel linken, nooit scoren
 
@@ -240,50 +109,6 @@ lees het verslag"). Drie redenen, alle drie door de gebruiker aangebracht of ond
 
 Niets hiervan is nagekeken — dit is een genoteerd idee, geen geverifieerde bron. Wie eraan begint,
 begint bij die drie vragen.
-
-## Heel Vlaanderen en Brussel — opgeleverd in 0.12.0
-
-Tot 0.11.0 toonde de site enkel provincie Antwerpen, terwijl `fetch-data.ts` in dezelfde call
-alle vestigingen van Vlaanderen en Brussel ophaalde en er ruim driekwart weggooide met één regel.
-Die regel is weg. De dataset telt nu 2145 vestigingen op 1075 adressen.
-
-**Eén bestand, geen splitsing per provincie.** De oorspronkelijke planning hier was één JSON per
-provincie met bijladen bij het wisselen. Dat is bij het bouwen omgedraaid nadat de cijfers
-gemeten waren in plaats van geschat: 192 KB over de lijn, en een herbezoek krijgt HTTP 304 met
-nul bytes. De volledige afweging staat in [CLAUDE.md](./CLAUDE.md) onder "Waarom één bestand voor
-heel Vlaanderen". Belangrijk gevolg: de grensgevallen waar dit punt op stukliep bestaan niet
-meer. Een straal van 15 km rond Rumst pakt gewoon mee wat er in Vlaams-Brabant ligt.
-
-**Brussel hoort erbij en vroeg geen extra werk.** De bron is de API van de Vlaamse
-onderwijsadministratie, dus er zit enkel onderwijs van de Vlaamse Gemeenschap in; de 80 Brusselse
-vestigingen zijn de Nederlandstalige scholen. In de filterkolom staat Brussel achteraan, niet
-alfabetisch: het is een gewest, geen provincie.
-
-**Wat er mee opgelost is uit de oude aandachtspunten:**
-
-- De gemeentefilter schaalde niet mee. Die heeft nu een zoekveldje, toont enkel gemeenten die na
-  de andere filters nog resultaten hebben, en zet het aantal adressen erachter. Er zijn 245
-  gemeenten met minstens één school.
-- `ANTWERPEN_CENTRUM` in `MapView.tsx` is `DATA_MIDDEN` geworden: het midden van de databounds,
-  geen gekozen stad.
-- De meta-velden `aantalVestigingenAntwerpen` en `aantalCampussenAntwerpen` heten nu
-  `aantalVestigingen` en `aantalCampussen`.
-- "provincie Antwerpen" als vaste tekst is overal "Vlaanderen en Brussel" geworden: `App.tsx`,
-  `index.html`, `OverPanel.tsx`, `HelpPanel.tsx`, `Footer.tsx`, `README.md` en `CLAUDE.md`.
-- De omvangcontrole in `fetch-data.ts` bleef zoals ze was. Ze vergelijkt met de vorige dataset en
-  groei is nooit verdacht, dus de sprong van 559 naar 2145 vestigingen ging er zonder `--force`
-  door.
-
-**Nog open, bewust niet meegenomen:** een school opzoeken levert nu resultaten in heel Vlaanderen,
-dus de naamfilter geeft vaker naamgenoten terug. Als dat in de praktijk stoort, is de oplossing
-de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
-
-**Groeperen op bestuursniveau is hier geen alternatief voor** (gevraagd 01/09/2026). Het verliest
-geen scholen, maar een bestuur kan scholen over verschillende gemeenten hebben, dus kaartjes op
-bestuursniveau zetten campussen bij elkaar die tientallen kilometers uit elkaar liggen. De
-adresgroepering bestaat net omdat scholen hetzelfde gebouw delen. Als filter of als regel in het
-detailpaneel kan bestuur wel nuttig zijn; daarvoor moet `SchoolOpCampus` het bestuursnummer en de
-naam gaan dragen, want vandaag staat er enkel `soortBestuur` (het type) in.
 
 ## Aanmelden: geen centrale bron (onderzocht 27/08/2026)
 
@@ -503,63 +328,25 @@ toenemende segregatie. ScholenKompas zelf maakt daarom géén ranglijsten en too
 van de Vlaamse toetsen niet. Dezelfde lijn als bij de GOK-cijfers hierboven: context tonen, met
 uitleg, nooit als score.
 
-## GOK-indicatoren: er is wél een downloadbaar bestand (27/08/2026, gebouwd in 0.10.0)
+## GOK-indicatoren: de xlsx-route (onderzocht 27/08/2026, gebouwd in 0.10.0)
 
-**Dit vervangt de Tableau-route hieronder als eerste keuze.** AgODi publiceert de
-leerlingenkenmerken per school als gewone xlsx op het documentenportaal. Geen Tableau, geen
-handmatige kruistabel, geen key — `fetch-data.ts` kan het rechtstreeks ophalen.
+Opgeleverd in 0.10.0. **De werking, de valkuilen en de afspraken staan in
+[CLAUDE.md](./CLAUDE.md)** onder "GOK-leerlingenkenmerken"; die zijn hier niet herhaald. Wat
+hier blijft staan, is waarom deze route gekozen is boven de Dataloep-route hieronder.
 
-Gevonden via `onderwijsstatistieken.depuydt.eu` (Dieter Depuydt), die dezelfde cijfers toont en
-in zijn FAQ schrijft dat alles uit publieke AgODi-publicaties komt. Zijn percentages zijn
-**exact gereproduceerd** uit het bestand hieronder (Sint-Jan Berchmanscollege Brussel: 14,7 /
-65,6 / 24,2 / 62,3) — dus dit is zijn bron, en onze kolominterpretatie klopt.
+**Gevonden via** `onderwijsstatistieken.depuydt.eu` (Dieter Depuydt), die dezelfde cijfers toont
+en in zijn FAQ schrijft dat alles uit publieke AgODi-publicaties komt. Zijn percentages zijn
+exact gereproduceerd uit de xlsx (Sint-Jan Berchmanscollege Brussel: 14,7 / 65,6 / 24,2 / 62,3),
+dus dat is zijn bron en onze kolominterpretatie klopt.
 
-```
-https://data-onderwijs.vlaanderen.be/documenten/bestanden/
-  Publicaties_Leerlingenkenmerken_Overzicht_2024-2025_so.xlsx
-```
+**De afweging:** automatisch en per school (de xlsx), of handwerk en per vestigingsplaats
+(Tableau/Dataloep). Het is de xlsx geworden. Per vestigingsplaats bestaat het wél, maar enkel
+handmatig; die weg staat hieronder beschreven voor als we ze ooit nodig hebben.
 
-- **Meest recente schooljaar is 2024-2025** (getest: 2025-2026 geeft 404). Eén werkblad,
-  1002 datarijen, alle Vlaamse SO-instellingen.
-- ⚠️ **De bestandsnaam is niet voorspelbaar.** 2021-2022 en 2022-2023 heten `..._so_1.xlsx`,
-  2023-2024 en 2024-2025 heten `..._so.xlsx` — en bij de pdf's is het net omgekeerd. Elk jaar
-  het patroon hardcoden en verhogen gaat dus stuk. Haal de link op van de AgODi-pagina
-  `cijfermateriaal-leerlingenkenmerken`, of controleer beide varianten met een HEAD-request.
-  (Die AgODi-pagina was op 27-28/08/2026 zelf niet bereikbaar: `www.agodi.be` geeft een DNS-fout
-  en de redirect naar `paddlecms.net` loopt in een time-out. Het documentenportaal werkt wél.)
-- **Kolommen:** Provincie · Postnr · Gemeente · Instelling (= schoolnummer) · Naam instelling ·
-  Straat · Huisnr · Teldatum · Aantal lln · en dan vier tellingen: indicator "opleiding moeder",
-  "schooltoelage", "thuistaal", "buurt".
-- **Het zijn absolute aantallen, geen percentages** — en er staan halven in (733,5), doordat
-  leerlingen in co-ouderschap half meetellen. Percentage = teller / aantal lln.
-- **Teldatum is 1 februari van het jaar ervóór** (bestand 2024-2025 telt op 01/02/2024). Het
-  bestand heet niet voor niets "voorschot werkingstoelagen": dit is de financieringsteling.
-- **OKI staat er niet als kolom in.** De definitie (som van de risicokenmerken per leerling,
-  gedeeld door het aantal leerlingen) komt neer op `(4 tellingen opgeteld) / aantal lln`.
-  ⚠️ Dat is een **afleiding, geen gepubliceerd cijfer** — vóór we het als "OKI" labelen, één
-  school naast de gepubliceerde "Gemiddelde OKI" in Dataloep leggen. Zolang dat niet gebeurd is:
-  toon de vier percentages, niet een zelfberekende OKI.
-
-**Join tegen onze dataset, geverifieerd op het bestand 2024-2025:**
-
-- Op `schoolnummer`: **266 van onze 272 scholen matchen** (bij het bouwen op 01/09/2026; de
-  eerste verkenning telde er 269, de dataset is sindsdien gegroeid). De zes die ontbreken zijn
-  Arkades (Herentals) en Safe college (Mechelen) — allebei onafhankelijk, dus zonder
-  werkingstoelagen en terecht afwezig — plus Mariagaarde secundair I en II (Westmalle) en
-  Heilig Hart - Bovenbouw 2 en Middenschool 2 (Heist-op-den-Berg), die recent zijn gesplitst en
-  nog niet in de telling van februari 2024 zaten.
-- ⚠️ **Het adres in dit bestand is dat van de instelling, niet van de vestigingsplaats.** Bij
-  86 van de 269 gematchte scholen wijkt het af van het campusadres dat wij tonen (bv. Panorama
-  staat er met Bredastraat 35, wij tonen Quellinstraat 31). **Join dus op schoolnummer, nooit op
-  adres**, en hang het cijfer aan `SchoolOpCampus`, niet aan `Campus`.
-- **Gevolg voor de UI: dit is per school, niet per campus.** Een school met drie campussen heeft
-  één cijfer voor alle drie. Dat is een wezenlijk verschil met het studieaanbod, dat we juist wél
-  per adres samenvoegen — hier mag dat niet, want optellen over scholen die een adres delen zou
-  een gemiddelde over andere leerlingenpopulaties maken. Zet het er in de UI expliciet bij.
-
-**Per vestigingsplaats bestaat het wél, maar enkel handmatig** — dat is de Dataloep-route
-hieronder. Afweging: automatisch en per school (dit bestand), of handwerk en per vestiging
-(Tableau). Voor v0.5 is dit bestand de betere ruil.
+**Zijdelings genoteerd:** de AgODi-pagina `cijfermateriaal-leerlingenkenmerken` was op
+27-28/08/2026 zelf niet bereikbaar (`www.agodi.be` geeft een DNS-fout, de redirect naar
+`paddlecms.net` loopt in een time-out). Het documentenportaal werkt wél, en dat is wat het
+script gebruikt.
 
 ## GOK-indicatoren — Dataloep-route (per vestigingsplaats, handmatig)
 
