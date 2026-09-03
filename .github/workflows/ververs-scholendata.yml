@@ -98,7 +98,20 @@ jobs:
           git checkout -b "$BRANCH"
           git add public/data
           git commit -m "Ververs scholendata ($DATUM)"
-          git push --force-with-lease origin "$BRANCH"
+          # De lease-waarde staat er expliciet bij, en dat is geen omweg. `--force-with-lease`
+          # zonder waarde impliceert sinds Git 2.30 ook `--force-if-includes`: die eist dat de
+          # huidige remote tip al in onze lokale branch zit. Deze branch wordt elke run opnieuw
+          # vanaf main opgebouwd en gooit de vorige datacommit bewust weg, dus aan die eis kan
+          # nooit voldaan zijn — de push faalde met "stale info" zodra de branch al bestond
+          # (03/09/2026). Met een expliciete waarde vervalt force-if-includes, maar blijft de
+          # bescherming: verandert de branch tussen ls-remote en push, dan wordt hij alsnog
+          # geweigerd. Allebei geverifieerd tegen een echte remote.
+          REMOTE_SHA=$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)
+          if [ -n "$REMOTE_SHA" ]; then
+            git push --force-with-lease="refs/heads/$BRANCH:$REMOTE_SHA" origin "$BRANCH"
+          else
+            git push origin "$BRANCH"
+          fi
 
           # De diff zelf is tienduizenden regels en dus onleesbaar. De cijfers uit het
           # script zijn wél te controleren — die vormen de kern van de PR-beschrijving.
