@@ -8,6 +8,27 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 0.12.1 — 3 september 2026
+
+**Opgelost**
+
+- **De kaart past nu in je scherm.** Hij was zo hoog als de filterkolom ernaast geworden: op een
+  laptop liep hij ruim 700 pixels onder de rand van het venster door, en de onderkant bereiken
+  kon niet.
+- **Scrollen boven de kaart scrolt de pagina.** Het muiswiel zoomde in en uit, waardoor je boven
+  de kaart vastzat. Inzoomen met het wiel gaat nog steeds, met ctrl of ⌘ erbij; de kaart zegt dat
+  ook kort wanneer je scrolt.
+- **Je kunt niet meer voorbij de voettekst scrollen.** Er zat ruim 2000 pixels lege ruimte onder
+  de site, veroorzaakt door de verborgen teksten voor schermlezers in de gemeentenlijst.
+
+**Wat je moet weten**
+
+- Op een telefoon houdt de kaart een minimumhoogte van 400 pixels. Op een klein of laag scherm
+  loopt hij dus nog een stuk door onder de rand: een kaartstrook van honderd pixels is
+  onbruikbaar.
+
+---
+
 ## 0.12.0 — 2 september 2026
 
 **Nieuw**
