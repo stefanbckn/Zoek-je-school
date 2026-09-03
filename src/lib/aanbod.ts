@@ -142,3 +142,41 @@ export function richtingMatcht(richting: Richting, zoekterm: string): boolean {
 export function heeftAanbod(campus: Campus): boolean {
   return campus.scholen.some((s) => s.richtingen.length > 0)
 }
+
+/**
+ * Dezelfde campus, maar zonder de scholen die geen enkele richting inrichten. Nodig omdat de
+ * filter "adressen zonder studieaanbod" op adresniveau werkt: staat er op één adres één school
+ * met aanbod, dan blijft het adres terecht staan, maar de lege buren liftten tot v0.12.2 mee.
+ * Wie zo'n rij aanklikte, las het aanbod van de buurschool (`campusAanbod` telt per adres) en
+ * vond op de officiële fiche niets terug — zie issue #23.
+ *
+ * Een verborgen rij is per definitie leeg, dus er verdwijnt geen enkele richting van het
+ * scherm. Roep dit enkel aan op een campus die zelf aanbod heeft (`heeftAanbod`), anders houd
+ * je een campus zonder scholen over.
+ */
+export function scholenMetAanbod<T extends Campus>(campus: T): T {
+  return { ...campus, scholen: campus.scholen.filter((s) => s.richtingen.length > 0) }
+}
+
+/**
+ * De verborgen aantallen als één leesbare woordgroep: "3 adressen en 12 scholen". `enkelvoud`
+ * zegt of het werkwoord erna enkelvoud moet zijn, want dat verschilt per zin ("valt nu weg",
+ * "is verborgen"). Null als er niets verborgen is.
+ *
+ * Twee getallen omdat de schakelaar twee dingen verbergt: hele adressen zonder aanbod, en losse
+ * schoolrijen zonder aanbod op een adres dat blijft staan. Alleen de adressen tellen zou een
+ * cijfer opleveren dat stil blijft staan terwijl er wél iets verdwijnt.
+ */
+export function verborgenOmschrijving(
+  adressen: number,
+  scholen: number,
+): { tekst: string; enkelvoud: boolean } | null {
+  const delen: string[] = []
+  if (adressen > 0) delen.push(`${adressen} ${adressen === 1 ? 'adres' : 'adressen'}`)
+  if (scholen > 0) delen.push(`${scholen} ${scholen === 1 ? 'school' : 'scholen'}`)
+  if (delen.length === 0) return null
+  return {
+    tekst: delen.join(' en '),
+    enkelvoud: delen.length === 1 && (adressen === 1 || scholen === 1),
+  }
+}

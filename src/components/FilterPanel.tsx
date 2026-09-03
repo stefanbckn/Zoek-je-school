@@ -4,6 +4,7 @@ import {
   FINALITEIT_STYLES,
   FINALITEIT_TEKEN,
   type FinaliteitKeuze,
+  verborgenOmschrijving,
 } from '../lib/aanbod'
 import { useMemo, useState } from 'react'
 import { NET_CHIP, NET_STYLES, NET_UITLEG } from '../lib/net'
@@ -25,6 +26,8 @@ interface FilterPanelProps {
   toonZonderAanbod: boolean
   /** Hoeveel adressen op dit moment door dit filter wegvallen. 0 = niets te melden. */
   verborgenZonderAanbod: number
+  /** Hoeveel losse schoolrijen wegvallen op adressen die wél blijven staan. */
+  verborgenLegeScholen: number
   onNettenChange: (netten: Net[]) => void
   onProvinciesChange: (provincies: Provincie[]) => void
   onGemeentenChange: (gemeenten: string[]) => void
@@ -54,6 +57,7 @@ export function FilterPanel({
   richting,
   toonZonderAanbod,
   verborgenZonderAanbod,
+  verborgenLegeScholen,
   onNettenChange,
   onProvinciesChange,
   onGemeentenChange,
@@ -68,6 +72,7 @@ export function FilterPanel({
    * wordt, staat in `gemeenten` en dus wél in de URL.
    */
   const [gemeenteZoek, setGemeenteZoek] = useState('')
+  const verborgen = verborgenOmschrijving(verborgenZonderAanbod, verborgenLegeScholen)
 
   // Aangevinkte gemeenten staan altijd bovenaan en blijven staan, ook als ze niet op de
   // zoekterm matchen. Anders typ je "Gent", verdwijnt het vinkje van Antwerpen uit beeld, en
@@ -275,10 +280,11 @@ export function FilterPanel({
       </div>
 
       {/* Standaard uit: adressen zonder aanbod zijn meestal administratief geregistreerde
-          adressen waar geen les gegeven wordt. Bewust een zichtbaar vinkje en geen stille
-          weglating — zie .claude/rules/frontend.md. */}
+          adressen waar geen les gegeven wordt. Hetzelfde geldt voor een losse school zonder
+          aanbod op een adres waar de buren wél lesgeven. Bewust een zichtbaar vinkje en geen
+          stille weglating — zie .claude/rules/frontend.md. */}
       <div>
-        <h2 className="text-sm font-medium text-inkt mb-2">Adressen zonder studieaanbod</h2>
+        <h2 className="text-sm font-medium text-inkt mb-2">Zonder studieaanbod</h2>
         <label className="flex items-start gap-2 text-sm text-zacht">
           <input
             type="checkbox"
@@ -289,8 +295,8 @@ export function FilterPanel({
           <span>
             <span className="text-inkt">Toon ze ook</span>
             <span className="block text-xs text-zacht">
-              {verborgenZonderAanbod > 0
-                ? `${verborgenZonderAanbod} ${verborgenZonderAanbod === 1 ? 'adres valt' : 'adressen vallen'} nu weg`
+              {verborgen
+                ? `${verborgen.tekst} ${verborgen.enkelvoud ? 'valt' : 'vallen'} nu weg`
                 : 'Meestal een administratief adres waar geen les gegeven wordt'}
             </span>
           </span>

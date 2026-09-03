@@ -118,8 +118,8 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
                 welke school je zoekt.
               </li>
               <li>
-                <strong className="font-medium text-inkt">Adressen zonder studieaanbod.</strong>{' '}
-                Die staan standaard uit. Vink aan als je ook de vestigingen wil zien waarvoor
+                <strong className="font-medium text-inkt">Zonder studieaanbod.</strong> Staat
+                standaard uit. Vink aan als je ook de adressen en de scholen wil zien waarvoor
                 geen aanbod bekend is.
               </li>
             </ul>

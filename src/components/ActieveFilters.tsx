@@ -90,8 +90,8 @@ export function ActieveFilters({ state, onUpdate, onWisAlles }: ActieveFiltersPr
   if (state.toonZonderAanbod) {
     chips.push({
       sleutel: 'zonder-aanbod',
-      label: 'Ook adressen zonder aanbod',
-      wisLabel: 'Adressen zonder studieaanbod weer verbergen',
+      label: 'Ook zonder aanbod',
+      wisLabel: 'Adressen en scholen zonder studieaanbod weer verbergen',
       wis: () => onUpdate({ toonZonderAanbod: false }),
     })
   }

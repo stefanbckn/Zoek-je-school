@@ -11,7 +11,12 @@ import { SearchBar } from './components/SearchBar'
 import { ThemaToggle } from './components/ThemaToggle'
 import { VergelijkBalk } from './components/VergelijkBalk'
 import { VergelijkPanel } from './components/VergelijkPanel'
-import { heeftAanbod, richtingMatcht } from './lib/aanbod'
+import {
+  heeftAanbod,
+  richtingMatcht,
+  scholenMetAanbod,
+  verborgenOmschrijving,
+} from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
 import { NET_OPTIONS } from './lib/net'
 import { PROVINCIE_OPTIONS } from './lib/provincie'
@@ -74,7 +79,8 @@ function App() {
     [state.lat, state.lon],
   )
 
-  const { zichtbareCampussen, verborgenZonderAanbod, gemeenteTellingen } = useMemo(() => {
+  const { zichtbareCampussen, verborgenZonderAanbod, verborgenLegeScholen, gemeenteTellingen } =
+    useMemo(() => {
     const tekstLower = state.tekst.trim().toLowerCase()
     const richtingTerm = state.richting.trim()
     const filtertOpAanbod = richtingTerm.length > 0 || state.finaliteiten.length > 0
@@ -150,12 +156,28 @@ function App() {
     // dat cijfer staat in de UI, dus het moet kloppen met wat de bezoeker terugkrijgt als hij
     // het vinkje aanzet. (Filtert iemand op finaliteit of richting, dan zijn lege adressen daar
     // al uit gevallen en is dit cijfer terecht 0.)
-    const zonderAanbod = naGemeente.filter((c) => !heeftAanbod(c))
+    if (state.toonZonderAanbod) {
+      return {
+        zichtbareCampussen: naGemeente,
+        verborgenZonderAanbod: 0,
+        verborgenLegeScholen: 0,
+        gemeenteTellingen,
+      }
+    }
+
+    // Twee lagen, allebei van dezelfde schakelaar. Eerst de adressen waar geen enkele school
+    // aanbod heeft, daarna binnen de overblijvende adressen de losse schoolrijen zonder
+    // richting. Zonder die tweede laag blijft een lege school meeliften op een adres dat
+    // dankzij de buren zichtbaar is, en leest de bezoeker daar het aanbod van die buren —
+    // zie issue #23.
+    const metAanbod = naGemeente.filter((c) => heeftAanbod(c))
     return {
-      zichtbareCampussen: state.toonZonderAanbod
-        ? naGemeente
-        : naGemeente.filter((c) => heeftAanbod(c)),
-      verborgenZonderAanbod: state.toonZonderAanbod ? 0 : zonderAanbod.length,
+      zichtbareCampussen: metAanbod.map(scholenMetAanbod),
+      verborgenZonderAanbod: naGemeente.length - metAanbod.length,
+      verborgenLegeScholen: metAanbod.reduce(
+        (n, c) => n + c.scholen.filter((s) => s.richtingen.length === 0).length,
+        0,
+      ),
       gemeenteTellingen,
     }
   }, [
@@ -188,15 +210,19 @@ function App() {
   /**
    * De aangevinkte campussen, afgeleid uit de vólledige dataset en niet uit `zichtbareCampussen`.
    * Dat is met opzet: wie er twee aanvinkt en daarna de gemeentefilter aanpast, mag zijn
-   * shortlist niet zien verdampen. Ook de scholen komen hier ongefilterd binnen — in de
-   * vergelijking hoort te staan wat er écht op dat adres zit, niet wat er van de netfilter
-   * overblijft.
+   * shortlist niet zien verdampen. Ook de netfilter geldt hier niet — in de vergelijking hoort
+   * te staan wat er écht op dat adres zit, niet wat er van de netfilter overblijft. De enige
+   * uitzondering is de schakelaar "zonder studieaanbod": die verbergt hier dezelfde lege
+   * schoolrijen als in de lijst, anders duikt de rij die daar net verdween hier weer op.
    */
   const vergelekenCampussen = useMemo<CampusMetAfstand[]>(() => {
     const perId = new Map(campussen.map((c) => [c.id, c]))
     return vergelijking.flatMap((id) => {
-      const campus = perId.get(id)
-      if (!campus) return []
+      const vol = perId.get(id)
+      if (!vol) return []
+      // Lege schoolrijen gaan wél weg, net als in de lijst: een rij zonder één richting zegt
+      // niets in een vergelijking en leest daar het aanbod van de buren op hetzelfde adres.
+      const campus = state.toonZonderAanbod || !heeftAanbod(vol) ? vol : scholenMetAanbod(vol)
       return [
         {
           ...campus,
@@ -207,7 +233,9 @@ function App() {
         },
       ]
     })
-  }, [campussen, vergelijking, state.lat, state.lon])
+  }, [campussen, vergelijking, state.lat, state.lon, state.toonZonderAanbod])
+
+  const verborgen = verborgenOmschrijving(verborgenZonderAanbod, verborgenLegeScholen)
 
   function selecteer(campus: CampusMetAfstand, school: SchoolOpCampus) {
     setGeselecteerd({ campus, school })
@@ -298,6 +326,7 @@ function App() {
               richting={state.richting}
               toonZonderAanbod={state.toonZonderAanbod}
               verborgenZonderAanbod={verborgenZonderAanbod}
+              verborgenLegeScholen={verborgenLegeScholen}
               onNettenChange={(netten) => update({ netten })}
               onProvinciesChange={(provincies) => update({ provincies })}
               onGemeentenChange={(gemeenten) => update({ gemeenten })}
@@ -345,15 +374,14 @@ function App() {
                   </div>
                 </div>
 
-                {/* Het aantal verborgen adressen staat hier en niet alleen in de filterkolom:
-                    op mobiel zit die kolom achter de knop "Filters", en stil weglaten mag niet.
-                    Een school waarvan het aanbod om een andere reden ontbreekt, zou anders
-                    spoorloos verdwijnen zonder dat iemand weet dat er iets weg is. */}
-                {verborgenZonderAanbod > 0 && (
+                {/* Wat er verborgen is staat hier en niet alleen in de filterkolom: op mobiel
+                    zit die kolom achter de knop "Filters", en stil weglaten mag niet. Een school
+                    waarvan het aanbod om een andere reden ontbreekt, zou anders spoorloos
+                    verdwijnen zonder dat iemand weet dat er iets weg is. */}
+                {verborgen && (
                   <p className="px-4 pt-2 text-xs text-zacht">
-                    {verborgenZonderAanbod}{' '}
-                    {verborgenZonderAanbod === 1 ? 'adres is' : 'adressen zijn'} verborgen: daar is
-                    geen studieaanbod geregistreerd.{' '}
+                    {verborgen.tekst} {verborgen.enkelvoud ? 'is' : 'zijn'} verborgen: daar is geen
+                    studieaanbod geregistreerd.{' '}
                     <button
                       type="button"
                       onClick={() => update({ toonZonderAanbod: true })}

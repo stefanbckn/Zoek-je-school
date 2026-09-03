@@ -41,6 +41,12 @@ vestiging)-paren hebben geen enkele richting. Dat is geen fout in onze data; de 
 staat standaard op "met studieaanbod" en toont zo'n adres dan niet. Zie
 [issue #23](https://github.com/stefanbckn/Zoek-je-school/issues/23).
 
+**De schakelaar "zonder studieaanbod" werkt sinds 0.12.2 op twee niveaus.** Eerst vallen de 163
+adressen weg waar geen enkele school aanbod heeft (`heeftAanbod`), daarna binnen de
+overblijvende adressen de 404 losse schoolrijen zonder richting (`scholenMetAanbod`). Dat tweede
+niveau is nodig omdat `campusAanbod` per adres samentelt: een lege rij toonde anders het aanbod
+van de buurschool. Zet de bezoeker de schakelaar aan, dan komen allebei terug.
+
 ## Wat NIET per adres samengevoegd wordt: de leerlingenkenmerken
 
 Die hangen aan `SchoolOpCampus`, niet aan `Campus`. Optellen over scholen die een campus delen
