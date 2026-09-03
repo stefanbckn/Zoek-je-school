@@ -116,8 +116,9 @@ export function VergelijkPanel({
 
         {/* Zijwaarts scrollen met de kenmerkkolom vastgezet. `min-w` per kolom, want een kolom
             die smaller wordt dan een schoolnaam maakt de tabel juist onleesbaar. Bij het
-            afdrukken vervalt het scrollgebied: papier heeft geen overflow. */}
-        <div className="mt-4 overflow-x-auto print:overflow-visible">
+            afdrukken vervalt het scrollgebied: papier heeft geen overflow. `relative` houdt de
+            absoluut gepositioneerde `sr-only` caption binnen dit gebied. */}
+        <div className="relative mt-4 overflow-x-auto print:overflow-visible">
           <table className="w-full border-collapse text-sm">
             <caption className="sr-only">
               Vergelijking van {campussen.length} adressen op ligging, scholen en studieaanbod

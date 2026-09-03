@@ -204,7 +204,10 @@ export function FilterPanel({
           placeholder="bv. Mechelen"
           className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent focus:outline-none"
         />
-        <div className="mt-2 flex flex-col gap-1.5 max-h-48 overflow-auto pr-1">
+        {/* `relative` is hier geen opsmuk: elk label bevat een `sr-only` span, en die is
+            absoluut gepositioneerd. Zonder containing block op deze scroller vallen die 236
+            spans buiten het scrollgebied en rekken ze de hele pagina met ~2000px op. */}
+        <div className="relative mt-2 flex flex-col gap-1.5 max-h-48 overflow-auto pr-1">
           {zichtbareGemeenten.map((gemeente) => (
             <label
               key={gemeente}
