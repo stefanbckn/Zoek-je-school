@@ -39,11 +39,12 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| 1 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik — zie hieronder |
-| 2 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
-| 3 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
-| 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
-| 5 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 1 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
+| 2 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik — zie hieronder |
+| 3 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
+| 4 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
+| 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
+| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -357,6 +358,62 @@ volgorde van zekerheid:
    - **Maximum 4.** Bij vijf kolommen wordt een kolom smaller dan een schoolnaam.
 4. **Link naar het doorlichtingsverslag.** Zie de sectie hierboven — vorm ligt vast, bron nog
    niet geverifieerd. Dit is het enige onderdeel dat kan afvallen.
+
+## Wat volgt er na deze richting? (nog niet onderzocht)
+
+De vraag die een ouder bij de tweede graad eigenlijk stelt, is niet "wat kan mijn kind hier
+kiezen" maar "waar loopt dat op uit". Een richting kiezen in het derde jaar is in de praktijk
+al half kiezen wat het vijfde en zesde jaar worden. De site toont dat vandaag nergens: het
+aanbod staat per graad gegroepeerd, zonder enig verband tussen die groepen.
+
+Er zitten twee dingen in, met een heel verschillende zekerheid. Niet door elkaar halen.
+
+**1. Wat loopt er door op dít adres? Feit, en nu al te bouwen.**
+
+We hebben per adres alle richtingen met `graad`, `studiegebied` en `finaliteit` (zie
+`Richting` in `src/types.ts`). Daarmee is te tonen welke richtingen van de tweede graad hier
+een voortzetting hebben in de derde, en welke niet. Dat laatste is het waardevolste stuk: kiest
+je kind hier iets waarvan de derde graad op dit adres niet bestaat, dan verandert het na twee
+jaar van school. Dat is een harde, controleerbare uitspraak over onze eigen dataset, geen
+inschatting over het onderwijssysteem.
+
+Aandachtspunten:
+
+- **Op adresniveau, net als de rest van het aanbod.** `campusAanbod()` in
+  `src/lib/aanbod.ts` voegt de scholen op één adres al samen; een buurschool op dezelfde
+  campus die de derde graad wél inricht, telt dus mee. Dat is hier terecht, maar het moet er
+  wel bij staan wanneer het om een andere school gaat.
+- **De koppeling zelf blijft een afleiding**, ook al zijn de velden een feit. Studiegebied plus
+  finaliteit zeggen dat twee richtingen bij elkaar in de buurt liggen, niet dat de ene officieel
+  op de andere volgt. Formuleer dus wat we écht weten ("in hetzelfde studiegebied biedt dit
+  adres in de derde graad ..."), nooit "dit is de logische vervolgrichting".
+- **Studiegebied is `null` bij een deel van de richtingen** (eerste graad, OKAN, HBO5). Die
+  vallen buiten deze weergave, ze horen er niet in geforceerd te worden.
+
+**2. De officiële doorstroommatrix. Bron nog niet gevonden.**
+
+Om te kunnen zeggen wat er ná een richting komt, ook buiten dit adres, is de officiële structuur
+van de matrix secundair onderwijs nodig: welke richtingen van de derde graad op welke richting
+van de tweede graad aansluiten. Wat we daarover weten:
+
+- **Het API-portaal heeft er geen veld voor.** `/administratievegroep` levert per richting
+  finaliteit, graad, leerjaar, onderwijsvorm, studiegebied, studierichting, duaal, modulair,
+  niche, stem-categorie en gemoderniseerd (opsomming in [CLAUDE.md](./CLAUDE.md)). Geen enkel
+  veld verwijst naar een voorafgaande of volgende richting. Dat is de veldenlijst van v0.2 en is
+  voor dit doel nog niet opnieuw nagekeken, maar reken er niet op dat het er stilletjes bij is
+  gekomen.
+- **onderwijskiezer.be heeft dit wél en valt af.** Daar staat per richting waar ze naartoe leidt,
+  maar hun voorwaarden verbieden kopiëren en herdistribueren. Alleen naar linken mag. Zelfde
+  verhaal als bij de infomomenten.
+- **Nog uit te zoeken, in deze volgorde:** of de matrix als bestand op het documentenportaal van
+  Onderwijs en Vorming staat (daar stond de GOK-xlsx ook, dus het is geen gek idee), en of de
+  toelatingsvoorwaarden per administratieve groep ergens machineleesbaar zijn. Niets hiervan is
+  geverifieerd. Ga niet bouwen op een gereconstrueerde matrix: fout doorverwijzen is hier erger
+  dan niets tonen.
+
+**Vorm, als stuk 1 er komt.** Een regel of blokje bij het aanbod in `DetailPanel`, niet een
+apart paneel, en zeker geen pijlendiagram: het gaat om een handvol richtingen per adres. In de
+vergelijkingstabel hoort het voorlopig niet thuis, daar staat het aanbod al per graad.
 
 ## Dropouts en doorstroom naar het hoger onderwijs: ScholenKompas (onderzocht 01/09/2026)
 
