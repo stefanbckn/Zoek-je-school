@@ -14,8 +14,8 @@
   # Sla de build over als er in een push niets anders dan documentatie veranderde.
   # Netlify draait dit commando vóór de build: exit 0 = build annuleren, exit 1 = wel bouwen.
   # `git diff --quiet` geeft 0 als er GEEN verschillen zijn — dus als er buiten de .md-bestanden
-  # niets wijzigde, wordt er niet gebouwd. CLAUDE.md, README.md en BUGS.md zitten niet in de
-  # site, dus daar valt niets te deployen.
+  # niets wijzigde, wordt er niet gebouwd. CLAUDE.md en README.md zitten niet in de site,
+  # dus daar valt niets te deployen.
   # ⚠️ Wordt een .md-bestand ooit wél een build-input (bv. content die Vite inleest), haal het
   # dan hier uit de uitsluiting — anders mist de site stilzwijgend een update.
   ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)*.md'"

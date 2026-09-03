@@ -66,7 +66,8 @@ geen coördinaten en krijgen `lat/lon = null`.
 - **Een vestigingsplaats in `instellingslocatie` heeft niet noodzakelijk studieaanbod.** Van de
   2145 (school, vestiging)-paren in onze dataset hebben er 688 geen enkele richting. De fiche op
   data-onderwijs.vlaanderen.be staat standaard op "met studieaanbod" en toont zo'n adres dan
-  niet, wat de indruk wekt dat ons adres verzonnen is. Zie de bug hierover in [BUGS.md](./BUGS.md).
+  niet, wat de indruk wekt dat ons adres verzonnen is. Zie de bug hierover in
+  [issue #23](https://github.com/stefanbckn/Zoek-je-school/issues/23).
 
 #### Wat er NIET in zit
 
@@ -779,20 +780,21 @@ automatisch → tag zetten → GitHub Release aanmaken. Twee dingen die daarbij 
 
 - **Nooit pushen zonder expliciet akkoord op dat moment.** Committen mag vrij; de gebruiker pusht
   zelf of geeft er per keer toestemming voor. Eén akkoord geldt niet voor volgende pushes.
-- **[BUGS.md](./BUGS.md) hoort op `main` te staan**, niet op een branch. Het is de lijst van wat
-  er open staat, dus hij moet kloppen voor wie ook maar naar `main` kijkt. Zou elke fix-branch
-  z'n eigen `BUGS.md` aanmaken, dan krijg je bij twee gelijktijdige bugs twee losse lijstjes en
-  een merge-conflict. `gh` is niet ingelogd, dus GitHub Issues zijn geen optie; dit bestand is
-  de lijst. De README toont daarnaast een korte opsomming met één regel per bug; **houd die
-  twee gelijk** — voeg je een bug toe of los je er een op, pas dan allebei aan. Bewust maar één
-  regel in de README: hoe minder er dubbel staat, hoe minder er uit elkaar loopt.
-- **Een bug melden gaat dus rechtstreeks naar `main`** (of via een piepkleine PR), los van de
-  oplossing. Noteer: wat er gebeurt, op welk toestel/browser, wat de oorzaak lijkt, en wat er
-  nog geverifieerd moet worden.
+- **Open bugs staan als GitHub Issues**, niet in een bestand in de repo. Tot 03/09/2026 was dat
+  `BUGS.md`, omdat `gh` toen niet ingelogd was; dat is het intussen wel (account `stefanbckn`,
+  scope `repo`), en daarmee verviel de enige reden voor dat bestand. De lijst opvragen doe je met
+  `gh issue list`. Maak `BUGS.md` niet opnieuw aan: dan staat dezelfde bug op twee plaatsen en
+  loopt er één achter.
+- **Een bug melden is `gh issue create`**, met dezelfde inhoud als vroeger: wat er gebeurt, op
+  welk toestel/browser, wat de oorzaak lijkt, en wat er nog geverifieerd moet worden. Vermeld ook
+  wat al gemeten of nagekeken is, zodat niemand dat werk overdoet. Label `bug`.
+- **De README somt de bugs niet meer op** maar linkt naar de issue-lijst. Dat was bewust: elke
+  opsomming die je met de hand gelijk moet houden, loopt uit elkaar.
 - **Een bug oplossen gaat op een `fix/`-branch**: naamgeving `fix/<kort-onderwerp>`, bijvoorbeeld
   `fix/ios-zoom-invoervelden`, afgetakt van een **verse** `main` (`git fetch` eerst — dat is hier
-  al een keer misgegaan). Die PR bevat de oplossing én haalt de regel uit `BUGS.md` weg. De
-  git-geschiedenis bewaart de bug, de lijst toont alleen wat nog open staat.
+  al een keer misgegaan). **Zet `Fixes #<nummer>` in de PR-beschrijving**, dan sluit GitHub het
+  issue bij de merge zelf. Sluit het niet handmatig vooraf: dan lijkt de bug opgelost terwijl de
+  fix nog op een branch staat.
 - **Vraag eerst of het een MAJOR, MINOR of PATCH wordt, vóór je een branch aanmaakt.** Ook bij
   een kleine vraag die niet in de roadmap staat: het versienummer bepaalt de branchnaam, en
   achteraf hernoemen is rommelig. Niet zelf inschatten — de gebruiker beslist dat.

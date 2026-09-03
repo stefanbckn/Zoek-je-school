@@ -79,11 +79,10 @@ De afspraken over nummering en releases staan in [CLAUDE.md](./CLAUDE.md).
 
 ## Bekende bugs
 
-Eén regel per open bug. De diagnose, wat al uitgezocht is en wat nog geverifieerd moet worden
-staat in **[BUGS.md](./BUGS.md)** — houd die twee gelijk als je er een toevoegt of oplost.
-
-- **De kaart is hoger dan het scherm en het muiswiel zoomt in plaats van te scrollen** (gemeld 02/09/2026).
-- **Scholen zonder studieaanbod blijven staan op een adres dat wél aanbod heeft** (gemeld 02/09/2026).
+Open bugs staan als **[GitHub Issues](https://github.com/stefanbckn/Zoek-je-school/issues)**, met
+per issue de diagnose, wat al uitgezocht is en wat nog geverifieerd moet worden. Tot 03/09/2026
+stonden ze in een `BUGS.md` in deze repo; die lijst is naar Issues verhuisd zodat een fix-PR de
+bug met `Fixes #<nummer>` bij de merge zelf afsluit.
 
 ## Sanity check
 
