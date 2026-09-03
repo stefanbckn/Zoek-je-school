@@ -22,14 +22,25 @@ const DOMEIN_LABELS: Record<string, string> = {
 }
 
 /**
- * De acht inhoudelijke domeinen, in de volgorde van de officiële matrix. Dat is de volgorde
- * van de codes zelf, geen alfabetische: zo staat de site naast het document dat een ouder van
- * de school meekrijgt.
+ * De acht inhoudelijke domeinen, **alfabetisch op hun label**.
+ *
+ * ⚠️ Niet op de domeincode sorteren, ook al ligt dat voor de hand omdat de bron ze genummerd
+ * levert. De rijvolgorde van de officiële matrixtabel is niet te verifiëren: de ene pdf geeft
+ * 403, de andere levert een tekstlaag zonder tabelstructuur (nagekeken 03/09/2026). Wat wél
+ * vaststaat, is dat twee onafhankelijke bronnen de domeinen alfabetisch opsommen: de
+ * matrixtoelichting van de vrije CLB's en de studiedomeinenpagina van data-onderwijs.
+ * Alfabetisch is bovendien het snelst af te lopen, en niemand kent die codenummers.
+ *
+ * Gesorteerd in plaats van met de hand opgesomd, zodat de volgorde niet uit elkaar kan lopen
+ * met de labels hierboven. `localeCompare('nl')` zet STEM tussen Sport en Taal en cultuur,
+ * net als de site van het ministerie.
  *
  * Code '9' (domeinoverschrijdend) en '10' (eerste graad) staan er bewust NIET in. Dat zijn
  * geen inhoudelijke domeinen; ze horen niet als negende en tiende rij naast STEM.
  */
-export const DOMEIN_VOLGORDE: readonly string[] = ['1', '2', '3', '4', '5', '6', '7', '8']
+export const DOMEIN_VOLGORDE: readonly string[] = ['1', '2', '3', '4', '5', '6', '7', '8'].sort(
+  (a, b) => DOMEIN_LABELS[a].localeCompare(DOMEIN_LABELS[b], 'nl'),
+)
 
 /** Domeinoverschrijdend: de richtingen die bij geen enkel domein horen (o.a. de ASO-richtingen). */
 export const DOMEIN_OVERSCHRIJDEND = '9'
