@@ -553,7 +553,11 @@ expliciet en stel een alternatief voor — verzin geen vervanging.
   geen algemene datacenter-blokkade, dat is getest en weerlegd). Dat probleem is met de overstap
   naar de API weg, maar de fallback-logica is blijven staan omdat ze nu de API dekt.
 - `src/types.ts` — het datamodel: `Campus` (adres, provincie, coördinaten) met `SchoolOpCampus[]` erin,
-  elk met `Richting[]` en `Leerlingenkenmerken | null`. Lege placeholders (`kostprijs`, `vervoer`) blijven staan voor v0.6/v0.7.
+  elk met `Richting[]` en `Leerlingenkenmerken | null`. Er staan twee lege placeholders op
+  `null`: `vervoer` voor het roadmapthema "Praktisch", en `kostprijs`, **dat sinds 03/09/2026
+  geen bestemming meer heeft** omdat kostprijs uit de roadmap geschrapt is (zie "Bewust
+  geschrapt" in [ROADMAP.md](./ROADMAP.md)). Weghalen kan, maar vraagt een verse dataset, want
+  het veld staat ook in `public/data/vestigingen.json`.
 - `src/lib/` — pure functies: haversine-afstand, net-labels, URL-state hook.
 - `src/components/` — UI-componenten, geen state-logica die ook elders nodig is.
 - Filterstatus leeft in de URL-querystring (geen router nodig, single-page app — vermijd

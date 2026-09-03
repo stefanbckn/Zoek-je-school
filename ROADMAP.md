@@ -51,10 +51,8 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | --- | --- | --- | --- |
 | 1 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
 | 2 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik — zie hieronder |
-| 3 | Doorlichting | Link naar het doorlichtingsverslag + datum, per school | **Bron niet geverifieerd.** Nooit als score tonen, zie hieronder. Eerst uitzoeken of de verslagen per schoolnummer op te halen zijn — kan alsnog afvallen |
-| 4 | Kostprijs | Maximumfactuur, materiaalkost bij start (boeken, laptop, kaften) | Geen centrale bron; deels handmatig per school |
-| 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
-| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 3 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie Databronnen in [CLAUDE.md](./CLAUDE.md)). Rest nog te onderzoeken |
+| 4 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -75,40 +73,6 @@ anders begraven bleven in secties over versies die al uit zijn.
 - **Naamgenoten in de naamfilter.** Sinds 0.12.0 zoekt de naamfilter in heel Vlaanderen, dus
   dezelfde schoolnaam komt vaker meerdere keren terug. Als dat in de praktijk stoort, is de
   oplossing de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
-
-## Doorlichting: wel linken, nooit scoren
-
-Tonen wat de onderwijsinspectie over een school zegt. Stond eerst helemaal buiten de planning,
-sinds 28/08/2026 staat het in de volgorde hierboven — beslist door de gebruiker.
-
-⚠️ **Het uitzoekwerk onderaan deze sectie is nog niet gedaan.** Er is geen geverifieerde bron:
-of de verslagen per `schoolnummer` op te halen zijn, is nooit nagekeken. Blijkt dat niet te
-kunnen, dan valt dit onderdeel terug op handwerk per school en gaat het uit de volgorde —
-de andere onderdelen hangen er niet van af.
-
-**De vorm ligt wél al vast, en dat is het belangrijkste deel.** Geen cijfer, geen samenvatting,
-geen ranglijst: enkel een link naar het verslag met de datum erbij ("doorgelicht in maart 2024 —
-lees het verslag"). Drie redenen, alle drie door de gebruiker aangebracht of onderschreven:
-
-- **Niet elke school heeft een verslag.** In een lijst met scores belanden die scholen onderaan
-  zonder dat er iets over hen gezegd is. Dat is de slechtst mogelijke uitkomst: afwezigheid van
-  informatie leest als een slecht rapport.
-- **Eén punt doet een school onrecht.** Zelfde bezwaar als bij OKI, dat hier ook al bewust als
-  context met uitleg staat en niet als kwaliteitsoordeel.
-- **De verslagen dateren van verschillende jaren.** Een doorlichting van vorig jaar naast een van
-  zes jaar geleden vergelijkt geen twee scholen maar twee momenten. Zet de datum er dus altijd
-  bij, ook als er ooit meer dan een link getoond zou worden.
-
-**Nog uit te zoeken, vóór dit ingepland kan worden:**
-
-- Zijn de verslagen per `schoolnummer` op te halen, of enkel via een zoekformulier? Zonder
-  koppeling op schoolnummer valt dit terug op handwerk, net als aanmelden.
-- Staat er een datum en een stabiele URL per verslag?
-- Wat zeggen de gebruiksvoorwaarden over linken en over het overnemen van tekst? Linken zal wel
-  mogen; overnemen is sowieso niet de bedoeling, zie de vorm hierboven.
-
-Niets hiervan is nagekeken — dit is een genoteerd idee, geen geverifieerde bron. Wie eraan begint,
-begint bij die drie vragen.
 
 ## Aanmelden: geen centrale bron (onderzocht 27/08/2026)
 
@@ -138,8 +102,8 @@ volgend jaar verouderde informatie die ouders een inschrijving kan kosten.
 
 Samen helpen ze een ouder kiezen tussen scholen die op afstand en aanbod al door de filter zijn
 geraakt. Ze hangen niet van elkaar af, dus elk stuk gaat als eigen MINOR naar `main` zodra het
-werkt: stuk 1 kwam uit als 0.5.0, stuk 3 als 0.6.0. Stuk 2 en 4 staan nog open. Hieronder in
-volgorde van zekerheid:
+werkt: stuk 1 kwam uit als 0.5.0, stuk 3 als 0.6.0 en stuk 2 als 0.10.0. Stuk 4 is geschrapt.
+Hieronder in volgorde van zekerheid:
 
 1. ~~**Vestigingen zonder studieaanbod wegfilteren.**~~ **Uitgebracht in 0.5.0.** Geverifieerd
    op de huidige dataset:
@@ -181,8 +145,8 @@ volgorde van zekerheid:
      vastgezette kenmerkkolom. De kolombreedtes zijn zo gezet dat de volgende kolom net
      aankijkt — dat is de aanzet om te scrollen.
    - **Maximum 4.** Bij vijf kolommen wordt een kolom smaller dan een schoolnaam.
-4. **Link naar het doorlichtingsverslag.** Zie de sectie hierboven — vorm ligt vast, bron nog
-   niet geverifieerd. Dit is het enige onderdeel dat kan afvallen.
+4. ~~**Link naar het doorlichtingsverslag.**~~ **Geschrapt op 03/09/2026**, zie "Bewust
+   geschrapt" onderaan.
 
 ## Wat volgt er na deze richting? (nog niet onderzocht)
 
@@ -496,3 +460,33 @@ npm: 1.4.2 (nagekeken 01/09/2026).
   levert hier meer op**, want het risico zit in dependencies. ⚠️ Niet geverifieerd: default setup
   zet géén workflowbestand in de repo, en de badge-URL verwijst naar een workflowbestand. Wil je
   per se een CodeQL-badge, dan moet je waarschijnlijk de advanced variant nemen.
+
+## Bewust geschrapt
+
+Ideeën die uit de volgorde gehaald zijn, met de reden erbij. Ze staan hier zodat ze niet over een
+half jaar opnieuw als goed idee binnenkomen en het uitzoekwerk overgedaan wordt.
+
+**Doorlichting** (geschrapt 03/09/2026, beslist door de gebruiker). Was: een link naar het
+doorlichtingsverslag met de datum erbij, per school. **De reden om het te laten: het staat al op
+de officiële fiche waar we per school naar doorlinken.** Twee keer naar hetzelfde verslag linken
+voegt niets toe, en het bespaart ons een bron die nooit geverifieerd is (of de verslagen per
+`schoolnummer` op te halen zijn, was nog open).
+
+Wat het waard is om te bewaren voor als er ooit iets in deze hoek terugkomt: **nooit als score
+tonen.** Niet elke school heeft een verslag, en in een lijst met cijfers belanden die scholen
+onderaan zonder dat er iets over hen gezegd is; afwezigheid van informatie leest dan als een
+slecht rapport. Eén punt doet een school bovendien onrecht, en verslagen van verschillende jaren
+naast elkaar vergelijken twee momenten in plaats van twee scholen. Dezelfde lijn als bij de
+GOK-cijfers: context met uitleg, geen kwaliteitsoordeel.
+
+**Kostprijs** (geschrapt 03/09/2026, beslist door de gebruiker). Was: maximumfactuur en
+materiaalkost bij de start (boeken, laptop, kaften). **De reden om het te laten: er is geen
+centrale bron en het is te schoolafhankelijk.** Het zou neerkomen op de informatie per school
+opzoeken en met de hand bijhouden, voor een cijfer dat per richting en per leerjaar verschilt en
+elk jaar verandert. Dat is precies het soort onderhoud dat een statische site zonder backend niet
+kan dragen.
+
+⚠️ **Gevolg in de code:** `SchoolOpCampus.kostprijs` in `src/types.ts` is een placeholder die op
+`null` staat en die nu geen bestemming meer heeft. Het veld wordt door `fetch-data.ts`
+weggeschreven en staat dus ook in `public/data/vestigingen.json`. Weghalen kan, maar vraagt een
+verse dataset; het is geen opruiming die tussendoor moet.
