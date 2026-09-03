@@ -12,7 +12,7 @@ import 'leaflet.markercluster'
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
@@ -69,6 +69,63 @@ function clusterIcon(cluster: L.MarkerCluster) {
   })
 }
 
+// Op een Mac is ⌘ de toets die hier voor de hand ligt; ctrl doet daar de systeemzoom. Elders is
+// het net ctrl. Eén keer bepalen volstaat: het toetsenbord wisselt niet tijdens een bezoek.
+const ZOOMTOETS =
+  typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.userAgent) ? '⌘' : 'ctrl'
+
+/**
+ * Het muiswiel stuurt standaard de zoom van Leaflet, en dan zit je op een laptop vast: boven de
+ * kaart scrolt de pagina niet meer verder. Dit laat het wiel met rust tenzij ctrl of ⌘ ingedrukt
+ * is, zoals de meeste kaarten in een lange pagina het doen.
+ *
+ * De listener hangt op de óuder van de kaart en niet op de kaart zelf. Leaflet luistert op zijn
+ * eigen container; een listener op datzelfde element loopt in volgorde van registratie en niet
+ * per se eerst. Vanaf de ouder is het altijd de capture-fase, en dan komt het wiel-event nooit
+ * bij Leaflet aan. `preventDefault` blijft achterwege, dus de pagina scrolt gewoon door.
+ *
+ * Met ctrl of ⌘ erbij laten we het event ongemoeid en zoomt Leaflet zoals altijd, inclusief het
+ * knijpgebaar op een trackpad — dat komt in de browser binnen als een wiel-event met ctrlKey.
+ */
+function WielAlleenMetToets({ onGeblokkeerd }: { onGeblokkeerd: () => void }) {
+  const map = useMap()
+
+  useEffect(() => {
+    const ouder = map.getContainer().parentElement
+    if (!ouder) return
+
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) return
+      e.stopPropagation()
+      onGeblokkeerd()
+    }
+
+    ouder.addEventListener('wheel', onWheel, { capture: true })
+    return () => ouder.removeEventListener('wheel', onWheel, { capture: true })
+  }, [map, onGeblokkeerd])
+
+  return null
+}
+
+/**
+ * Leaflet meet zijn container één keer bij het opzetten en daarna enkel nog bij een
+ * venster-resize. Sinds de kaarthoogte gemeten wordt (zie `useKaartHoogte`) verandert die
+ * container ook zónder resize, en dan blijft Leaflet met de oude hoogte rekenen: tegels boven
+ * een gebied dat er niet meer is, en een muispositie die niet klopt met wat je aanwijst.
+ * Nagemeten: zonder dit hield `map.getSize()` 1305px vast terwijl de kaart al 524px was.
+ */
+function VolgtGrootte() {
+  const map = useMap()
+
+  useEffect(() => {
+    const waarnemer = new ResizeObserver(() => map.invalidateSize({ animate: false }))
+    waarnemer.observe(map.getContainer())
+    return () => waarnemer.disconnect()
+  }, [map])
+
+  return null
+}
+
 function FitBounds({ campussen }: { campussen: CampusMetLocatie[] }) {
   const map = useMap()
   useMemo(() => {
@@ -89,6 +146,17 @@ export function MapView({ campussen, onSelect }: MapViewProps) {
     [campussen],
   )
 
+  // De hint verschijnt pas wanneer iemand het wiel gebruikt en er niets gebeurt. Hem permanent
+  // tonen zou een balk over de kaart leggen voor een probleem dat de meeste bezoekers niet hebben.
+  const [hint, setHint] = useState(false)
+  const hintTimer = useRef<number | undefined>(undefined)
+  const toonHint = useCallback(() => {
+    setHint(true)
+    window.clearTimeout(hintTimer.current)
+    hintTimer.current = window.setTimeout(() => setHint(false), 1500)
+  }, [])
+  useEffect(() => () => window.clearTimeout(hintTimer.current), [])
+
   return (
     <MapContainer
       center={DATA_MIDDEN}
@@ -96,6 +164,8 @@ export function MapView({ campussen, onSelect }: MapViewProps) {
       className="absolute inset-0"
       scrollWheelZoom
     >
+      <VolgtGrootte />
+      <WielAlleenMetToets onGeblokkeerd={toonHint} />
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-bijdragers'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -134,6 +204,19 @@ export function MapView({ campussen, onSelect }: MapViewProps) {
           </Marker>
         ))}
       </MarkerClusterGroup>
+      {/* Boven de kaartlagen (Leaflet gebruikt tot z-index 800) en klikdoorlatend, anders vangt
+          de hint zelf het volgende gebaar op. `aria-hidden`: wie met het toetsenbord werkt,
+          gebruikt de +- en --knoppen van Leaflet en heeft niets aan een tip over het wiel. */}
+      {hint && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[1000] flex items-center justify-center"
+        >
+          <p className="rounded-md bg-black/70 px-4 py-2 text-sm text-white">
+            Gebruik {ZOOMTOETS} + scrollen om te zoomen
+          </p>
+        </div>
+      )}
     </MapContainer>
   )
 }

@@ -15,6 +15,7 @@ import { heeftAanbod, richtingMatcht } from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
 import { NET_OPTIONS } from './lib/net'
 import { PROVINCIE_OPTIONS } from './lib/provincie'
+import { useKaartHoogte } from './lib/useKaartHoogte'
 import { useSearchState } from './lib/useSearchState'
 import { MAX_VERGELIJK, toggleVergelijking } from './lib/vergelijking'
 import { useVestigingen } from './lib/useVestigingen'
@@ -30,6 +31,7 @@ function App() {
     school: SchoolOpCampus
   } | null>(null)
   const [weergave, setWeergave] = useState<Weergave>('lijst')
+  const { ref: kaartRef, hoogte: kaartHoogte } = useKaartHoogte(weergave === 'kaart')
   const [filtersOpen, setFiltersOpen] = useState(false)
   /**
    * De shortlist: id's van campussen, in de volgorde waarin ze aangevinkt zijn.
@@ -375,7 +377,13 @@ function App() {
                     }
                   />
                 ) : (
-                  <div className="flex-1 mt-4 min-h-[400px] isolate relative">
+                  <div
+                    ref={kaartRef}
+                    className="flex-1 mt-4 min-h-[400px] isolate relative"
+                    // `flex: none` hoort bij de gemeten hoogte: zonder dat rekt `flex-1` de
+                    // kaart alsnog uit tot de hoogte van de filterkolom ernaast.
+                    style={kaartHoogte ? { height: kaartHoogte, flex: 'none' } : undefined}
+                  >
                     {/* `relative` hoort bij de `absolute inset-0` van de kaart zelf: op mobiel
                         staat deze div in een kolom-flexbox zonder vaste hoogte, en dan
                         resolveert een `h-full` op de kaart naar 0 — de kaart verdween
