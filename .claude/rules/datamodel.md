@@ -47,6 +47,27 @@ overblijvende adressen de 404 losse schoolrijen zonder richting (`scholenMetAanb
 niveau is nodig omdat `campusAanbod` per adres samentelt: een lege rij toonde anders het aanbod
 van de buurschool. Zet de bezoeker de schakelaar aan, dan komen allebei terug.
 
+## Studiedomein en studierichting: twee bestanden, twee rollen
+
+Sinds 1.0.0 draagt elke `Richting` twee extra velden uit de catalogus: **`domeinCode`** (de
+tweede as van de matrix, '1' t/m '10') en **`studierichtingCode`** (de stabiele sleutel die alle
+leerjaren van dezelfde richting delen).
+
+- **De kale naam staat NIET op de rij.** Die staat één keer in `public/data/richtingen.json`
+  (`Studierichting` in `src/types.ts`), samen met graad, finaliteit, domein, onderwijsvorm,
+  duaal, zevende leerjaar en het aantal adressen. Op 31390 rijen scheelt dat ruim een megabyte.
+  Beide bestanden worden door `fetch-data.ts` geschreven en door `useVestigingen` samen geladen.
+- **De sleutel is code + graad, nooit de code alleen.** Dezelfde studierichting bestaat in de
+  tweede én de derde graad. Filteren op enkel de code gaf bij "Onthaal en recreatie" 18
+  resultaten terwijl de matrixcel er 17 beloofde. Geldt overal: in `telPerRichting`, in de
+  filterpijplijn en in de URL (`rcode` reist samen met `rgraad`).
+- **`domeinCode` is `null` bij eerste graad A/B, OKAN en HBO5**, en code '10' is "Eerste graad",
+  géén inhoudelijk domein. De labels staan in `src/lib/domein.ts`, want de bron levert ze in
+  hoofdletters en "stem" is geen domein.
+- **`studiegebied` bestaat niet meer.** Dat veld was in de bron zo goed als leeg (8 van de 1160
+  records) en is de indeling van vóór de modernisering. Niet terugzetten; zie
+  [docs/onderzoek/matrix-studiedomein.md](../../docs/onderzoek/matrix-studiedomein.md).
+
 ## Wat NIET per adres samengevoegd wordt: de leerlingenkenmerken
 
 Die hangen aan `SchoolOpCampus`, niet aan `Campus`. Optellen over scholen die een campus delen

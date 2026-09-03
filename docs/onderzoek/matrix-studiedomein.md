@@ -1,6 +1,6 @@
 # De matrix van het secundair onderwijs: waar studiedomein vandaan komt
 
-Onderzocht op 03/09/2026, naar aanleiding van de vraag of we een matrix kunnen tonen zoals
+Opgeleverd in 1.0.0. Onderzocht op 03/09/2026, naar aanleiding van de vraag of we een matrix kunnen tonen zoals
 [die van onderwijskiezer](https://www.onderwijskiezer.be/v2/secundair/sec_matrix_so.php).
 
 **Conclusie: dat kan volledig uit onze eigen bron.** Het veld dat we misten,

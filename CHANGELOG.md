@@ -8,6 +8,39 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 1.0.0 — 3 september 2026
+
+De eerste versie met een nummer dat niet meer met een nul begint, en meteen de grootste
+toevoeging sinds de site heel Vlaanderen toont: je kan nu vertrekken van een studierichting in
+plaats van van een adres.
+
+**Nieuw**
+
+- **"Alle richtingen" bovenaan opent de matrix.** Dat is de officiële indeling van het secundair
+  onderwijs: acht studiedomeinen (STEM, sport, taal en cultuur, en zo verder) tegen drie
+  finaliteiten (doorstroom, dubbel, arbeidsmarkt), apart voor de tweede en de derde graad. Alle
+  572 studierichtingen staan erin.
+- **Achter elke richting staat op hoeveel adressen ze te vinden is**, geteld binnen de gemeente,
+  de straal of het net dat je al gekozen had. Klik erop en je krijgt precies die adressen in de
+  lijst en op de kaart.
+- **Een richting die hier nergens bestaat, verdwijnt niet maar staat op nul.** Dat is met opzet.
+  Zien dat een richting bestaat maar niet in je buurt, is even bruikbaar als zien waar ze wel is.
+- **Filteren op studiedomein**, ook rechtstreeks in de filterkolom naast finaliteit.
+- **Zevende leerjaren staan per domein in een apart uitklapbaar blok.** Ze hebben wel een domein
+  maar geen finaliteit, dus ze horen niet in een van de drie kolommen.
+
+**Wat je moet weten**
+
+- **De matrix zegt niet wat er ná een richting komt.** Welke richting van de derde graad op welke
+  van de tweede volgt, staat in geen enkele bron die wij kunnen ophalen. Wij verzinnen ze niet.
+- De indeling komt uit dezelfde officiële catalogus als het aanbod per school, niet van een
+  andere site.
+- Zeven richtingen vallen buiten de matrix omdat ze geen studiedomein hebben: het eerste leerjaar
+  A en B, het onthaaljaar voor anderstalige nieuwkomers en de HBO5-verpleegkunde. Die blijven
+  gewoon vindbaar via de zoekvelden.
+- Een gedeelde link naar een aangeklikte richting draagt nu ook de graad. Dezelfde richtingnaam
+  bestaat soms in de tweede en de derde graad, en zonder die graad kreeg je er te veel.
+
 ## 0.12.2 — 3 september 2026
 
 **Opgelost**
