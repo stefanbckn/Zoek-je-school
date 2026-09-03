@@ -19,7 +19,7 @@ export interface SearchState {
   tekst: string
   /** Leeg = alle finaliteiten. */
   finaliteiten: FinaliteitKeuze[]
-  /** Vrije tekst om op studierichting/studiegebied te zoeken. Leeg = geen filter. */
+  /** Vrije tekst om op de naam van een studierichting te zoeken. Leeg = geen filter. */
   richting: string
   /**
    * Adressen zonder enig studieaanbod meetonen. Standaard `false`: dat zijn meestal

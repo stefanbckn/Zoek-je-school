@@ -1,0 +1,7296 @@
+[
+  {
+    "code": "1",
+    "naam": "A",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": null,
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 633
+  },
+  {
+    "code": "1540",
+    "naam": "Aanloop admin.-distributie duaal (E&O)",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1535",
+    "naam": "Aanloop bouw duaal (STEM)",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1542",
+    "naam": "Aanloop horeca duaal (V&H)",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1539",
+    "naam": "Aanloop land- en tuinbouw duaal (L&TB)",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1537",
+    "naam": "Aanloop mechanica-elektriciteit DL(STEM)",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1432",
+    "naam": "Afwerking bouw",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1099",
+    "naam": "Afwerking bouw duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1433",
+    "naam": "Agrotechnieken dier",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 15
+  },
+  {
+    "code": "1434",
+    "naam": "Agrotechnieken plant",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1555",
+    "naam": "Animator",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "1",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1529",
+    "naam": "Applicatie- en databeheer (domein E&O)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 53
+  },
+  {
+    "code": "1528",
+    "naam": "Applicatie- en databeheer (domein STEM)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 34
+  },
+  {
+    "code": "1264",
+    "naam": "Architecturale en beeldende kunsten",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 28
+  },
+  {
+    "code": "1265",
+    "naam": "Architecturale en beeldende vorming",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 21
+  },
+  {
+    "code": "1435",
+    "naam": "Architecturale vorming",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 19
+  },
+  {
+    "code": "1436",
+    "naam": "Architectuur en interieur",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 23
+  },
+  {
+    "code": "1266",
+    "naam": "Artistiek-creatieve bewerkingen",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1556",
+    "naam": "Asfalt- en betonwegenbouwer",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1559",
+    "naam": "Aspirant-stuurman kustvaart& zeevisserij",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1700",
+    "naam": "Assistent (inter)nat. goederenvervoer DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1560",
+    "naam": "Assistent (inter)nation. goederenvervoer",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "OV3-130",
+    "naam": "Assistent plantaardige productie",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-125",
+    "naam": "Assistent plantaardige productie duaal",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1437",
+    "naam": "Assistentie in wonen, zorg en welzijn",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 55
+  },
+  {
+    "code": "1421",
+    "naam": "Assistentie in wonen, zorg en welzijn DL",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 21
+  },
+  {
+    "code": "1438",
+    "naam": "Audiovisuele vorming",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1561",
+    "naam": "Autobus- en autocarchauffeur",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1439",
+    "naam": "Autotechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 42
+  },
+  {
+    "code": "2",
+    "naam": "B",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": null,
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 405
+  },
+  {
+    "code": "1267",
+    "naam": "Bakkerij",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 15
+  },
+  {
+    "code": "1268",
+    "naam": "Bakkerijtechnieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1268",
+    "naam": "Bakkerijtechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1269",
+    "naam": "Ballet",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1269",
+    "naam": "Ballet",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "OV3-131",
+    "naam": "Bandenmonteur",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-177",
+    "naam": "Bandenmonteur duaal",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1356",
+    "naam": "Bandenmonteur duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1562",
+    "naam": "Barman",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "OV3-132",
+    "naam": "Basis bakkerij",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-133",
+    "naam": "Basis bouw",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-134",
+    "naam": "Basis confectie en textielverzorging",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-135",
+    "naam": "Basis groenvoorziening en -decoratie",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-136",
+    "naam": "Basis haarverzorging",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-137",
+    "naam": "Basis horeca",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-138",
+    "naam": "Basis hout",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-139",
+    "naam": "Basis logistiek onderhoud",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-187",
+    "naam": "Basis metaal",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-186",
+    "naam": "Basis mobiliteit",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-140",
+    "naam": "Basis organisatie en logistiek",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-141",
+    "naam": "Basis schilderen en behangen",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1534",
+    "naam": "Basisverpleegkunde HBO",
+    "graad": "Hoger beroepsonderwijs",
+    "finaliteit": null,
+    "domeinCode": null,
+    "onderwijsvormen": [
+      "HBO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 40
+  },
+  {
+    "code": "1440",
+    "naam": "Basiszorg en ondersteuning",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 198
+  },
+  {
+    "code": "1694",
+    "naam": "Basiszorg en ondersteuning duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 29
+  },
+  {
+    "code": "1270",
+    "naam": "Bedrijf en organisatie",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 240
+  },
+  {
+    "code": "1527",
+    "naam": "Bedrijfsondersteunende informaticawet.",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 38
+  },
+  {
+    "code": "1441",
+    "naam": "Bedrijfsorganisatie",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 196
+  },
+  {
+    "code": "1271",
+    "naam": "Bedrijfswetenschappen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 142
+  },
+  {
+    "code": "1271",
+    "naam": "Bedrijfswetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 157
+  },
+  {
+    "code": "1375",
+    "naam": "Beeldende en audiovisuele kunsten",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 22
+  },
+  {
+    "code": "1272",
+    "naam": "Beeldende en audiovisuele vorming",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1442",
+    "naam": "Beeldende kunst",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 36
+  },
+  {
+    "code": "1443",
+    "naam": "Beeldende vorming",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 21
+  },
+  {
+    "code": "OV3-144",
+    "naam": "Bestuurder interne transportmiddelen",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1380",
+    "naam": "Bestuurder interne transportmiddelen DL",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1565",
+    "naam": "Beveiligingstechnicus",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1702",
+    "naam": "Beveiligingstechnicus duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1273",
+    "naam": "Beweging en sport",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 25
+  },
+  {
+    "code": "1273",
+    "naam": "Beweging en sport",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 23
+  },
+  {
+    "code": "1569",
+    "naam": "Bijzond. vorming woordkunst-drama na OK4",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1566",
+    "naam": "Bijzondere beeldende vorming na OK4",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1567",
+    "naam": "Bijzondere muzikale vorming na OK4",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1568",
+    "naam": "Bijzondere vorming dans na OK4",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1570",
+    "naam": "Bijzondere wetenschappel. vorming na OK4",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 15
+  },
+  {
+    "code": "1444",
+    "naam": "Binnen- en buitenschrijnwerk",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 35
+  },
+  {
+    "code": "1381",
+    "naam": "Binnen- en buitenschrijnwerk duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 17
+  },
+  {
+    "code": "1445",
+    "naam": "Binnenschrijnwerk en interieur",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 81
+  },
+  {
+    "code": "1382",
+    "naam": "Binnenschrijnwerk en interieur duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 17
+  },
+  {
+    "code": "1446",
+    "naam": "Binnenvaart en beperkte kustvaart",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1275",
+    "naam": "Binnenvaarttechnieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1275",
+    "naam": "Binnenvaarttechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1276",
+    "naam": "Biotechnieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 85
+  },
+  {
+    "code": "1525",
+    "naam": "Biotechnol.& chemische wet. (domein L&T)",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 24
+  },
+  {
+    "code": "1526",
+    "naam": "Biotechnol.& chemische wet. (domein V&H)",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1447",
+    "naam": "Biotechnologische & chem. STEM-wetensch.",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 97
+  },
+  {
+    "code": "1448",
+    "naam": "Biotechnologische & chemische technieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 86
+  },
+  {
+    "code": "1278",
+    "naam": "Biotechnologische STEM-wetenschappen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 95
+  },
+  {
+    "code": "1277",
+    "naam": "Biotechnologische wetensch. (domein L&T)",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 24
+  },
+  {
+    "code": "1279",
+    "naam": "Biotechnologische wetensch. (domein V&H)",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1571",
+    "naam": "Bosbouwer",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1280",
+    "naam": "Bouw",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 35
+  },
+  {
+    "code": "1449",
+    "naam": "Bouw- en houtwetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 21
+  },
+  {
+    "code": "1450",
+    "naam": "Bouwplaatsmachinist",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1281",
+    "naam": "Bouwtechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 21
+  },
+  {
+    "code": "1281",
+    "naam": "Bouwtechnieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 19
+  },
+  {
+    "code": "1282",
+    "naam": "Bouwwetenschappen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 18
+  },
+  {
+    "code": "1573",
+    "naam": "Brandertechnicus gas/stookolie",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1704",
+    "naam": "Brandertechnicus gas/stookolie duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1451",
+    "naam": "Brom- en motorfietsinstallaties",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1422",
+    "naam": "Brom- en motorfietsinstallaties duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1452",
+    "naam": "Brood- en banketbakkerij",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 15
+  },
+  {
+    "code": "1100",
+    "naam": "Brood- en banketbakkerij duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1575",
+    "naam": "Buitenschrijnwerker hout",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1706",
+    "naam": "Buitenschrijnwerker hout duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1707",
+    "naam": "Buitenschrijnwerker kunststoffen/PVC DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "OV3-172",
+    "naam": "Cementgebonden voeger",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1577",
+    "naam": "Chef de partie desserten, gebak en brood",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1581",
+    "naam": "Chemische procestechnieken",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1708",
+    "naam": "Chemische procestechnieken duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1582",
+    "naam": "Chocolatier",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1709",
+    "naam": "Chocolatier duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1583",
+    "naam": "Commercieel assistent",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 27
+  },
+  {
+    "code": "1710",
+    "naam": "Commercieel assistent duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 14
+  },
+  {
+    "code": "1453",
+    "naam": "Commerciële organisatie",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 81
+  },
+  {
+    "code": "1343",
+    "naam": "Commerciële organisatie duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "809",
+    "naam": "Complementair jaar (BuSO fr)",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": null,
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1283",
+    "naam": "Creatie en mode (domein Kunst & creatie)",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1284",
+    "naam": "Creatie en mode (domein M&W)",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 11
+  },
+  {
+    "code": "1454",
+    "naam": "Crossmedia (domein Kunst en creatie)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1455",
+    "naam": "Crossmedia (domein STEM)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 13
+  },
+  {
+    "code": "1584",
+    "naam": "Crossmedia ass. interactieve prod.(K&C)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1586",
+    "naam": "Culinair slager",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1711",
+    "naam": "Culinair slager duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1587",
+    "naam": "Daktimmerman",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1712",
+    "naam": "Daktimmerman duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1588",
+    "naam": "Dakwerker",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1713",
+    "naam": "Dakwerker duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1285",
+    "naam": "Dans",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1285",
+    "naam": "Dans",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1533",
+    "naam": "Datacommunicatie- en netwerkinstall. DL",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1530",
+    "naam": "Datacommunicatie- en netwerkinstallaties",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 19
+  },
+  {
+    "code": "1286",
+    "naam": "Decor en etalage",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 31
+  },
+  {
+    "code": "1589",
+    "naam": "Decor- en standenbouwer",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1456",
+    "naam": "Decor, etalage en publiciteit",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 31
+  },
+  {
+    "code": "1457",
+    "naam": "Decoratie en schilderwerken",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 25
+  },
+  {
+    "code": "1104",
+    "naam": "Decoratie en schilderwerken duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1353",
+    "naam": "Defensie en veiligheid",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 16
+  },
+  {
+    "code": "1590",
+    "naam": "Dentaaltechnicus",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1715",
+    "naam": "Dentaaltechnicus duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1458",
+    "naam": "Dentaaltechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1598",
+    "naam": "Diamantbewerker fantasieslijpen",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1780",
+    "naam": "Diamantbewerking",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1780",
+    "naam": "Diamantbewerking",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1459",
+    "naam": "Dier en milieu",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 14
+  },
+  {
+    "code": "1113",
+    "naam": "Dier en milieu duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1524",
+    "naam": "Dierenverzorgingstechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1460",
+    "naam": "Dierenzorg",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1390",
+    "naam": "Dierenzorg duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1163",
+    "naam": "Ec.-org. -Maatsch.-welzijn -Voed.-horeca",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1172",
+    "naam": "Eco.-org. - Stem-tech. - Voeding-horeca",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1154",
+    "naam": "Eco.-org. -Kunst-creatie -Maatsch.-welz.",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1162",
+    "naam": "Econ.-org. -Maatsch.-welzijn -Stem-tech.",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 11
+  },
+  {
+    "code": "1157",
+    "naam": "Econ.-organ. -Kunst-creatie -Stem-tech.",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1160",
+    "naam": "Econ.-organ. -Maatsch.-welzijn -Opstroom",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1142",
+    "naam": "Economie en organisatie",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 363
+  },
+  {
+    "code": "1153",
+    "naam": "Economie en organisatie - Kunst-creatie",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 18
+  },
+  {
+    "code": "1164",
+    "naam": "Economie en organisatie - Opstroomoptie",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1168",
+    "naam": "Economie en organisatie - Sport",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 11
+  },
+  {
+    "code": "1173",
+    "naam": "Economie en organisatie - Voeding-horeca",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1171",
+    "naam": "Economie en organisatie -Stem-technieken",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 29
+  },
+  {
+    "code": "1461",
+    "naam": "Economie-Moderne talen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 306
+  },
+  {
+    "code": "1159",
+    "naam": "Economie-organis. - Maatschappij-welzijn",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 185
+  },
+  {
+    "code": "1169",
+    "naam": "Economie-organisatie - Sport -Stem-tech.",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1462",
+    "naam": "Economie-Wiskunde",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 305
+  },
+  {
+    "code": "1287",
+    "naam": "Economische wetenschappen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 349
+  },
+  {
+    "code": "1288",
+    "naam": "Elektriciteit",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 133
+  },
+  {
+    "code": "1463",
+    "naam": "Elektrische installaties",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 112
+  },
+  {
+    "code": "1096",
+    "naam": "Elektrische installaties duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 35
+  },
+  {
+    "code": "1591",
+    "naam": "Elektromecanicien",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1716",
+    "naam": "Elektromecanicien duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1289",
+    "naam": "Elektromechanische technieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 108
+  },
+  {
+    "code": "1289",
+    "naam": "Elektromechanische technieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 93
+  },
+  {
+    "code": "1095",
+    "naam": "Elektromechanische technieken duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1592",
+    "naam": "Elektrotechnicus",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1717",
+    "naam": "Elektrotechnicus duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 26
+  },
+  {
+    "code": "1290",
+    "naam": "Elektrotechnieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 75
+  },
+  {
+    "code": "1290",
+    "naam": "Elektrotechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 77
+  },
+  {
+    "code": "1593",
+    "naam": "Farmaceutisch technisch assistent",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "OV3-145",
+    "naam": "Fietshersteller",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1391",
+    "naam": "Fietshersteller duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "OV3-189",
+    "naam": "Fietshersteller duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1465",
+    "naam": "Fietsinstallaties",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1392",
+    "naam": "Fietsinstallaties duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 14
+  },
+  {
+    "code": "1594",
+    "naam": "Fijnschilder",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1718",
+    "naam": "Fijnschilder duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1595",
+    "naam": "Fitnessbegeleider",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1719",
+    "naam": "Fitnessbegeleider duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1720",
+    "naam": "Flexodrukker duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1597",
+    "naam": "Florist",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1721",
+    "naam": "Florist duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1291",
+    "naam": "Fotografie",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1291",
+    "naam": "Fotografie",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1234",
+    "naam": "Freinetpedagogie",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1292",
+    "naam": "Freinetpedagogie",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1292",
+    "naam": "Freinetpedagogie",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1723",
+    "naam": "Gespecialiseerd verkoper slagerij duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1466",
+    "naam": "Gezondheidszorg",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 162
+  },
+  {
+    "code": "1467",
+    "naam": "Goud en juwelen",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1601",
+    "naam": "Grafimed.voorber.-ass.vormg.printm.-STEM",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1600",
+    "naam": "Grafimed.voorber.-ass.vormg.printm.(K&C)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1468",
+    "naam": "Grafimedia (domein Kunst en creatie)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1469",
+    "naam": "Grafimedia (domein STEM)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 16
+  },
+  {
+    "code": "1293",
+    "naam": "Grafische technieken (domein K&C)",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 11
+  },
+  {
+    "code": "1294",
+    "naam": "Grafische technieken (domein STEM)",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 21
+  },
+  {
+    "code": "1295",
+    "naam": "Grieks-Latijn",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 112
+  },
+  {
+    "code": "1295",
+    "naam": "Grieks-Latijn",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 86
+  },
+  {
+    "code": "1470",
+    "naam": "Grieks-Wiskunde",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 76
+  },
+  {
+    "code": "1606",
+    "naam": "Grimeur",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1471",
+    "naam": "Groenaanleg en -beheer",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 20
+  },
+  {
+    "code": "1114",
+    "naam": "Groenaanleg en -beheer duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 16
+  },
+  {
+    "code": "1472",
+    "naam": "Groendecoratie",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1133",
+    "naam": "Groendecoratie duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1473",
+    "naam": "Grootkeuken en catering",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 14
+  },
+  {
+    "code": "1115",
+    "naam": "Grootkeuken en catering duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1607",
+    "naam": "Grootkeukenkok",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1724",
+    "naam": "Grootkeukenkok duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1296",
+    "naam": "Haar- en schoonheidsverzorging",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 75
+  },
+  {
+    "code": "1474",
+    "naam": "Haarverzorging",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 72
+  },
+  {
+    "code": "1097",
+    "naam": "Haarverzorging duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 21
+  },
+  {
+    "code": "1243",
+    "naam": "Hippisch assistent duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-146",
+    "naam": "Hoeknaadlasser",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1394",
+    "naam": "Hoeknaadlasser duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 17
+  },
+  {
+    "code": "OV3-196",
+    "naam": "Hoeknaadlasser duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1297",
+    "naam": "Horeca",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 23
+  },
+  {
+    "code": "1297",
+    "naam": "Horeca",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 22
+  },
+  {
+    "code": "1608",
+    "naam": "Host",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "1",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1609",
+    "naam": "Hotelreceptionist",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1726",
+    "naam": "Hotelreceptionist duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1298",
+    "naam": "Hout",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 107
+  },
+  {
+    "code": "1299",
+    "naam": "Houttechnieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 53
+  },
+  {
+    "code": "1299",
+    "naam": "Houttechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 53
+  },
+  {
+    "code": "OV3-147",
+    "naam": "Huishoudhulp zorg",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1357",
+    "naam": "Hulpkelner duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1300",
+    "naam": "Humane wetenschappen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 321
+  },
+  {
+    "code": "1300",
+    "naam": "Humane wetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 305
+  },
+  {
+    "code": "1727",
+    "naam": "IJzervlechter&bekister-betonneerder DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1475",
+    "naam": "Industriële ICT",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 33
+  },
+  {
+    "code": "1476",
+    "naam": "Informatica- & communicatiewetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 62
+  },
+  {
+    "code": "1395",
+    "naam": "Installateur elektrotechn. basiscomp. DL",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "OV3-148",
+    "naam": "Insteller plaatbewerking",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1617",
+    "naam": "Integrale veiligheid",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 16
+  },
+  {
+    "code": "1618",
+    "naam": "Interieurbouwer",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1730",
+    "naam": "Interieurbouwer duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 21
+  },
+  {
+    "code": "1477",
+    "naam": "Internationale handel en logistiek",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 21
+  },
+  {
+    "code": "1619",
+    "naam": "Juweelontwerper-goudsmid",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1620",
+    "naam": "Kapper-stylist",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 42
+  },
+  {
+    "code": "1731",
+    "naam": "Kapper-stylist duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 23
+  },
+  {
+    "code": "OV3-83",
+    "naam": "Keukenmedewerker",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1360",
+    "naam": "Keukenmedewerker duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 25
+  },
+  {
+    "code": "OV3-180",
+    "naam": "Keukenmedewerker duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1621",
+    "naam": "Kinderbegeleider",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 99
+  },
+  {
+    "code": "1732",
+    "naam": "Kinderbegeleider duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 33
+  },
+  {
+    "code": "1622",
+    "naam": "Klantcontactmedewerker",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1733",
+    "naam": "Klantcontactmedewerker duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1144",
+    "naam": "Klassieke talen (Grieks en Latijn)",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 352
+  },
+  {
+    "code": "1478",
+    "naam": "Koel- en warmtetechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1479",
+    "naam": "Koelinstallaties",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1238",
+    "naam": "Koelinstallaties duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1480",
+    "naam": "Koetswerk",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 24
+  },
+  {
+    "code": "1116",
+    "naam": "Koetswerk duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 11
+  },
+  {
+    "code": "1623",
+    "naam": "Kok",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 20
+  },
+  {
+    "code": "1734",
+    "naam": "Kok duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1143",
+    "naam": "Kunst en creatie",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 64
+  },
+  {
+    "code": "1174",
+    "naam": "Kunst en creatie - Maatschappij-welzijn",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 25
+  },
+  {
+    "code": "1186",
+    "naam": "Kunst en creatie - Stem-technieken",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1188",
+    "naam": "Kunst en creatie - Voeding en horeca",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1177",
+    "naam": "Kunst-creatie - Maatsch.-welzijn -Stemt.",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1677",
+    "naam": "Kwal. en procesverantw. (banket)bakkerij",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1481",
+    "naam": "Lassen-constructie",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 72
+  },
+  {
+    "code": "1103",
+    "naam": "Lassen-constructie duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 24
+  },
+  {
+    "code": "1624",
+    "naam": "Lasser-monteerder",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 23
+  },
+  {
+    "code": "1735",
+    "naam": "Lasser-monteerder duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 25
+  },
+  {
+    "code": "1301",
+    "naam": "Latijn",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 315
+  },
+  {
+    "code": "1482",
+    "naam": "Latijn-Moderne talen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 266
+  },
+  {
+    "code": "1483",
+    "naam": "Latijn-Wetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 190
+  },
+  {
+    "code": "1484",
+    "naam": "Latijn-Wiskunde",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 260
+  },
+  {
+    "code": "1485",
+    "naam": "Logistiek",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 34
+  },
+  {
+    "code": "OV3-149",
+    "naam": "Logistiek assistent in de zorg",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1625",
+    "naam": "Logistiek assistent magazijn",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1736",
+    "naam": "Logistiek assistent magazijn duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1134",
+    "naam": "Logistiek duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 28
+  },
+  {
+    "code": "1145",
+    "naam": "Maatschappij en welzijn",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 371
+  },
+  {
+    "code": "1302",
+    "naam": "Maatschappij en welzijn",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 240
+  },
+  {
+    "code": "1189",
+    "naam": "Maatschappij en welzijn - Opstroomoptie",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1193",
+    "naam": "Maatschappij en welzijn - Sport",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1198",
+    "naam": "Maatschappij en welzijn - Voeding-horeca",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1196",
+    "naam": "Maatschappij en welzijn -Stem-technieken",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 24
+  },
+  {
+    "code": "1303",
+    "naam": "Maatschappij- en welzijnswetenschappen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 154
+  },
+  {
+    "code": "OV3-91",
+    "naam": "Machinaal houtbewerker",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1361",
+    "naam": "Machinaal houtbewerker duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "OV3-181",
+    "naam": "Machinaal houtbewerker duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-31",
+    "naam": "Magazijnmedewerker",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1362",
+    "naam": "Magazijnmedewerker duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 15
+  },
+  {
+    "code": "OV3-182",
+    "naam": "Magazijnmedewerker duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1304",
+    "naam": "Maritieme technieken dek",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1304",
+    "naam": "Maritieme technieken dek",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1305",
+    "naam": "Maritieme technieken motoren",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1305",
+    "naam": "Maritieme technieken motoren",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1396",
+    "naam": "Matroos zeevisserij duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1531",
+    "naam": "Mecanicien tuin-,park-& bosmach.DL (L&T)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1626",
+    "naam": "Mecanicien tuin-,park-&bosmachines(L&TB)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1627",
+    "naam": "Mecanicien tuin-,park-&bosmachines(STEM)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1306",
+    "naam": "Mechanica",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 112
+  },
+  {
+    "code": "1307",
+    "naam": "Mechanische technieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 43
+  },
+  {
+    "code": "1486",
+    "naam": "Mechanische vormgeving",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 33
+  },
+  {
+    "code": "1117",
+    "naam": "Mechanische vormgeving duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1487",
+    "naam": "Mechanische vormgevingstechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 51
+  },
+  {
+    "code": "1139",
+    "naam": "Mechanische vormgevingstechnieken duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1488",
+    "naam": "Mechatronica",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 64
+  },
+  {
+    "code": "1253",
+    "naam": "Medew. prod.lijn kl.-conf.-meubelstof.DL",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-156",
+    "naam": "Medew. prod.lijn kl., conf.&meubelstoff.",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-150",
+    "naam": "Medewerker (banket)bakkerij",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-126",
+    "naam": "Medewerker (banket)bakkerij duaal",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1211",
+    "naam": "Medewerker (banket)bakkerij duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "OV3-151",
+    "naam": "Medewerker fastfood",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-124",
+    "naam": "Medewerker fastfood duaal",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1363",
+    "naam": "Medewerker fastfood duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 14
+  },
+  {
+    "code": "OV3-152",
+    "naam": "Medewerker florist",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1245",
+    "naam": "Medewerker florist duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1364",
+    "naam": "Medewerker groen- en tuinaanleg duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "OV3-153",
+    "naam": "Medewerker groen- en tuinbeheer",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-123",
+    "naam": "Medewerker groen- en tuinbeheer duaal",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1365",
+    "naam": "Medewerker groen- en tuinbeheer duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "OV3-168",
+    "naam": "Medewerker hout",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1366",
+    "naam": "Medewerker hout duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "OV3-184",
+    "naam": "Medewerker hout duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-154",
+    "naam": "Medewerker kamerdienst",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-206",
+    "naam": "Medewerker kamerdienst DL OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1397",
+    "naam": "Medewerker kamerdienst duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "OV3-155",
+    "naam": "Medewerker kapper",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-157",
+    "naam": "Medewerker ruwbouw",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1367",
+    "naam": "Medewerker ruwbouw duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 14
+  },
+  {
+    "code": "OV3-190",
+    "naam": "Medewerker ruwbouw duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-204",
+    "naam": "Medewerker schilder- en behangwerken",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1398",
+    "naam": "Medewerker schilder- en behangwerken DL",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "OV3-185",
+    "naam": "Medewerker schilder-&behangwerken DL OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1230",
+    "naam": "Medewerker slagerij duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-159",
+    "naam": "Medewerker spoelkeuken",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-198",
+    "naam": "Medewerker spoelkeuken duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1399",
+    "naam": "Medewerker tegelzetwerken &dekvloeren DL",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "OV3-203",
+    "naam": "Medewerker tegelzetwerken en dekvloeren",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-160",
+    "naam": "Medewerker textielverzorging",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-128",
+    "naam": "Medewerker textielverzorging duaal",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1628",
+    "naam": "Medisch administratief assistent (E&O)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1629",
+    "naam": "Medisch administratief assistent (M&W)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1632",
+    "naam": "Meubelstoffeerder",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1489",
+    "naam": "Mode (domein Kunst en creatie)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1490",
+    "naam": "Mode (domein Maatschappij en welzijn)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1491",
+    "naam": "Moderealisatie",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 30
+  },
+  {
+    "code": "1220",
+    "naam": "Moderealisatie duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1308",
+    "naam": "Moderealisatie en textielverzorging",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 29
+  },
+  {
+    "code": "1309",
+    "naam": "Moderne talen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 246
+  },
+  {
+    "code": "1309",
+    "naam": "Moderne talen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 218
+  },
+  {
+    "code": "1146",
+    "naam": "Moderne talen en wetenschappen",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 403
+  },
+  {
+    "code": "1492",
+    "naam": "Moderne talen-Wetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 236
+  },
+  {
+    "code": "OV3-191",
+    "naam": "Monteur sanit. & verwarmingsinst. DL OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1402",
+    "naam": "Monteur sanitaire & verwarmingsinst. DL",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "OV3-161",
+    "naam": "Monteur sanitaire en verwarmingsinstall.",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1310",
+    "naam": "Muziek",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1310",
+    "naam": "Muziek",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1493",
+    "naam": "Muziekinstrumentenbouw",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1634",
+    "naam": "Muziekinstrumentenbouwer hist.muziekins.",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1494",
+    "naam": "Natuur- en groentechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1635",
+    "naam": "Natuurbeheerder",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1740",
+    "naam": "Natuurbeheerder duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1741",
+    "naam": "Natuursteenbewerker duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1311",
+    "naam": "Natuurwetenschappen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 381
+  },
+  {
+    "code": "1743",
+    "naam": "Omsteller verspaning/monteerder-afreg.DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1638",
+    "naam": "Omsteller verspaning&Monteerder-afregel.",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1744",
+    "naam": "Onderh.mec.zware bedrijfsvoert.DL (L&TB)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1745",
+    "naam": "Onderh.mec.zware bedrijfsvoert.DL (STEM)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1639",
+    "naam": "Onderhoudsmec.zware bedrijfsvoert.(L&TB)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1640",
+    "naam": "Onderhoudsmec.zware bedrijfsvoert.(STEM)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1495",
+    "naam": "Onderhoudsmechanica auto",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 55
+  },
+  {
+    "code": "1112",
+    "naam": "Onderhoudsmechanica auto duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 22
+  },
+  {
+    "code": "1403",
+    "naam": "Onderhoudsmedewerker duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1312",
+    "naam": "Onthaal en recreatie",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "1",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 17
+  },
+  {
+    "code": "1312",
+    "naam": "Onthaal en recreatie",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "1",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 14
+  },
+  {
+    "code": "1496",
+    "naam": "Onthaal, organisatie en sales",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 187
+  },
+  {
+    "code": "1404",
+    "naam": "Onthaal, organisatie en sales duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 37
+  },
+  {
+    "code": "1081",
+    "naam": "Onthaaljaar anderstalige nieuwkomer",
+    "graad": "Onthaalklas anderstalige nieuwkomers",
+    "finaliteit": null,
+    "domeinCode": null,
+    "onderwijsvormen": [
+      "OKAN"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 138
+  },
+  {
+    "code": "1641",
+    "naam": "Ontwikkelaar patronen kl.&conf.art.(K&C)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1642",
+    "naam": "Ontwikkelaar patronen kl.&conf.art.(M&W)",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1643",
+    "naam": "Ontwikkelaar prototypes mode",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1747",
+    "naam": "Ontwikkelaar prototypes mode duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1749",
+    "naam": "Op. dig. drukken printm./p.&kart.verw.DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1748",
+    "naam": "Operator CNC-gest. houtbew.machines DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 16
+  },
+  {
+    "code": "1644",
+    "naam": "Operator CNC-gestuurde houtbew.machines",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 20
+  },
+  {
+    "code": "313",
+    "naam": "Opleidingsvorm 4 - type 5",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": null,
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1151",
+    "naam": "Opstroomoptie",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 60
+  },
+  {
+    "code": "1202",
+    "naam": "Opstroomoptie - Stem-technieken",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1648",
+    "naam": "Opticien",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1497",
+    "naam": "Optiektechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1498",
+    "naam": "Opvoeding en begeleiding",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 187
+  },
+  {
+    "code": "1313",
+    "naam": "Organisatie en logistiek",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 198
+  },
+  {
+    "code": "1499",
+    "naam": "Orthopedietechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1649",
+    "naam": "Paardenhouder",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1752",
+    "naam": "Paardenhouder duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1314",
+    "naam": "Paardenhouderij",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1314",
+    "naam": "Paardenhouderij",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1347",
+    "naam": "Paardenhouderij duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "OV3-194",
+    "naam": "Paletten- en krattenmaker",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1650",
+    "naam": "Persoonsbegeleider",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 15
+  },
+  {
+    "code": "1696",
+    "naam": "Persoonsbegeleider duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1651",
+    "naam": "Pijpfitter-fabriceur",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 13
+  },
+  {
+    "code": "1753",
+    "naam": "Pijpfitter-fabriceur duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "OV3-163",
+    "naam": "Plaatser binnenschrijnwerk",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1370",
+    "naam": "Plaatser boven&ondergrondse leidingen DL",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "OV3-164",
+    "naam": "Plaatser buitenschrijnwerk",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-165",
+    "naam": "Plaatser interieurprojecten",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1500",
+    "naam": "Plant en milieu",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1118",
+    "naam": "Plant en milieu duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1316",
+    "naam": "Plant-, dier- en milieutechnieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 23
+  },
+  {
+    "code": "1315",
+    "naam": "Plant, dier en milieu",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 23
+  },
+  {
+    "code": "1501",
+    "naam": "Podiuminstallaties",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1409",
+    "naam": "Podiuminstallaties duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1755",
+    "naam": "Podiumtechnicus duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1502",
+    "naam": "Podiumtechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1756",
+    "naam": "Pol. mec. pers.w. & lichte bedrijfsv. DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 23
+  },
+  {
+    "code": "1655",
+    "naam": "Polyv. mecanicien zware bedrijfsvoert.",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1654",
+    "naam": "Polyv.mec. pers.w.&lichte bedrijfsvoert.",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 22
+  },
+  {
+    "code": "OV3-202",
+    "naam": "Polyvalent administr.ondersteuner DL OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1371",
+    "naam": "Polyvalent administrat. ondersteuner DL",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "OV3-162",
+    "naam": "Polyvalent administratief ondersteuner",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1757",
+    "naam": "Polyvalent mec. zware bedrijfsvoert. DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1503",
+    "naam": "Preventief onderhoud machines & install.",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 25
+  },
+  {
+    "code": "1224",
+    "naam": "Preventief onderhoud machines&install.DL",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1657",
+    "naam": "Print en Sign Operator",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1759",
+    "naam": "Print en Sign Operator duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1317",
+    "naam": "Printmedia",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1317",
+    "naam": "Printmedia",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1349",
+    "naam": "Printmedia duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1251",
+    "naam": "Productie-industrie duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1659",
+    "naam": "Productiemedewerker dier",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1760",
+    "naam": "Productiemedewerker dier duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "OV3-195",
+    "naam": "Productiemedewerker industrie",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1372",
+    "naam": "Productiemedewerker industrie duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "OV3-193",
+    "naam": "Productiemedewerker industrie duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1660",
+    "naam": "Productiemedewerker plant",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1761",
+    "naam": "Productiemedewerker plant duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1782",
+    "naam": "Renovatievakman ruwbouw",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1783",
+    "naam": "Renovatievakman ruwbouw duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1318",
+    "naam": "Restaurant en keuken",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 32
+  },
+  {
+    "code": "1318",
+    "naam": "Restaurant en keuken",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 26
+  },
+  {
+    "code": "1259",
+    "naam": "Restaurant en keuken duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 24
+  },
+  {
+    "code": "1663",
+    "naam": "Restaurateur muziekinstrumenten",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1665",
+    "naam": "Restauratievakman metselwerk",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1666",
+    "naam": "Restauratievakman meubel",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1668",
+    "naam": "Restauratievakman schilder&decoratiewerk",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1670",
+    "naam": "Rotatiedrukker",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1766",
+    "naam": "Rotatiedrukker duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1260",
+    "naam": "Rudolf Steinerpedagogie",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1319",
+    "naam": "Rudolf Steinerpedagogie",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1319",
+    "naam": "Rudolf Steinerpedagogie",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1505",
+    "naam": "Ruwbouw",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 32
+  },
+  {
+    "code": "1098",
+    "naam": "Ruwbouw duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 20
+  },
+  {
+    "code": "OV3-169",
+    "naam": "Samensteller",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1506",
+    "naam": "Sanitaire en verwarmingsinstallaties",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 39
+  },
+  {
+    "code": "1239",
+    "naam": "Sanitaire en verwarmingsinstallaties DL",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1320",
+    "naam": "Schilderen en decoratie",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 24
+  },
+  {
+    "code": "1671",
+    "naam": "Schoonheidsspecialist-adviseur",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 28
+  },
+  {
+    "code": "1507",
+    "naam": "Schoonheidsverzorging",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 50
+  },
+  {
+    "code": "OV3-170",
+    "naam": "Schoonmaker",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1373",
+    "naam": "Schoonmaker duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1672",
+    "naam": "Schrijnwerker houtbouw",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1767",
+    "naam": "Schrijnwerker houtbouw duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1673",
+    "naam": "Slager-charcutier",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1768",
+    "naam": "Slager-charcutier duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1321",
+    "naam": "Slagerij",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1321",
+    "naam": "Slagerij",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1101",
+    "naam": "Slagerij duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1508",
+    "naam": "Slagerij-Traiteurtechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1322",
+    "naam": "Slagerijtechnieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1674",
+    "naam": "Sommelier",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1147",
+    "naam": "Sport",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 103
+  },
+  {
+    "code": "1323",
+    "naam": "Sport",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 77
+  },
+  {
+    "code": "1205",
+    "naam": "Sport - Stem-technieken",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 8
+  },
+  {
+    "code": "1207",
+    "naam": "Sport - Voeding en horeca",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1509",
+    "naam": "Sportbegeleiding",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 76
+  },
+  {
+    "code": "1324",
+    "naam": "Sportwetenschappen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 105
+  },
+  {
+    "code": "1324",
+    "naam": "Sportwetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 97
+  },
+  {
+    "code": "1675",
+    "naam": "Spuiter carrosserie",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 10
+  },
+  {
+    "code": "1769",
+    "naam": "Spuiter carrosserie duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 11
+  },
+  {
+    "code": "1152",
+    "naam": "Stem-technieken",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 191
+  },
+  {
+    "code": "1208",
+    "naam": "Stem-technieken - Voeding en horeca",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1148",
+    "naam": "Stem-technieken (toepassingsgericht)",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 204
+  },
+  {
+    "code": "1149",
+    "naam": "Stem-wetenschappen (meer conceptueel)",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 358
+  },
+  {
+    "code": "1676",
+    "naam": "Stukadoor",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1325",
+    "naam": "Taal en communicatie",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "1",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 85
+  },
+  {
+    "code": "1325",
+    "naam": "Taal en communicatie",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "1",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 76
+  },
+  {
+    "code": "1510",
+    "naam": "Taal en communicatiewetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "1",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 24
+  },
+  {
+    "code": "1678",
+    "naam": "Tandartsassistent",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1771",
+    "naam": "Tandartsassistent duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1728",
+    "naam": "Techn. gebouwenautom. en energieman. DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 16
+  },
+  {
+    "code": "1615",
+    "naam": "Techn. gebouwenautom. en energiemanagem.",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1793",
+    "naam": "Technicus datacommunic. en netwerken DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1794",
+    "naam": "Technicus elektrische voertuigen",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1795",
+    "naam": "Technicus elektrische voertuigen duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1772",
+    "naam": "Technicus hernieuwbare energietechn. DL",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 5
+  },
+  {
+    "code": "1679",
+    "naam": "Technicus hernieuwbare energietechnieken",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1680",
+    "naam": "Technicus industriële elektriciteit",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 34
+  },
+  {
+    "code": "1681",
+    "naam": "Technicus installatietechnieken",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1773",
+    "naam": "Technicus installatietechnieken duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1682",
+    "naam": "Technicus koelinstallaties",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1774",
+    "naam": "Technicus koelinstallaties duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1683",
+    "naam": "Technieker industr. procesautomatisatie",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1511",
+    "naam": "Technologische wetensch. en engineering",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 98
+  },
+  {
+    "code": "1326",
+    "naam": "Technologische wetenschappen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 126
+  },
+  {
+    "code": "1327",
+    "naam": "Textiel",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1327",
+    "naam": "Textiel",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1232",
+    "naam": "Textiel duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1328",
+    "naam": "Textielontwerp en prototyping",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1328",
+    "naam": "Textielontwerp en prototyping",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1329",
+    "naam": "Textielproductietechnieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1329",
+    "naam": "Textielproductietechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1512",
+    "naam": "Textielverzorging",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1330",
+    "naam": "Toerisme (domein Economie & organisatie)",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1330",
+    "naam": "Toerisme (domein Economie & organisatie)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1331",
+    "naam": "Toerisme (domein Taal en cultuur)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "1",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 24
+  },
+  {
+    "code": "1331",
+    "naam": "Toerisme (domein Taal en cultuur)",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "1",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 20
+  },
+  {
+    "code": "1332",
+    "naam": "Toerisme (domein Voeding en horeca)",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1332",
+    "naam": "Toerisme (domein Voeding en horeca)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "8",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 6
+  },
+  {
+    "code": "1262",
+    "naam": "Topsport",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1334",
+    "naam": "Topsport (dubbele finaliteit)",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1334",
+    "naam": "Topsport (dubbele finaliteit)",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1333",
+    "naam": "Topsport (finaliteit arbeidsmarkt)",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1333",
+    "naam": "Topsport (finaliteit arbeidsmarkt)",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1513",
+    "naam": "Topsport-Bedrijfswetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "7",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1335",
+    "naam": "Topsport-Economie",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1335",
+    "naam": "Topsport-Economie",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1336",
+    "naam": "Topsport-Natuurwetenschappen",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1514",
+    "naam": "Topsport-Wetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 7
+  },
+  {
+    "code": "1685",
+    "naam": "Trappenmaker",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1776",
+    "naam": "Trappenmaker duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1515",
+    "naam": "Tuinaanleg en -beheer",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 17
+  },
+  {
+    "code": "1686",
+    "naam": "Tuinaanlegger-groenbeheerder",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 13
+  },
+  {
+    "code": "1777",
+    "naam": "Tuinaanlegger-groenbeheerder duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "4",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1687",
+    "naam": "Uurwerkhersteller-specialist",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1516",
+    "naam": "Uurwerkmaken",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "OV3-171",
+    "naam": "Verpakker",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1374",
+    "naam": "Verpakker duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "OV3-197",
+    "naam": "Verpakker duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1080",
+    "naam": "Verpleegkunde HBO",
+    "graad": "Hoger beroepsonderwijs",
+    "finaliteit": null,
+    "domeinCode": null,
+    "onderwijsvormen": [
+      "HBO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 33
+  },
+  {
+    "code": "1688",
+    "naam": "Verzorgende/Zorgkundige",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 129
+  },
+  {
+    "code": "1778",
+    "naam": "Verzorgende/Zorgkundige duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 50
+  },
+  {
+    "code": "1517",
+    "naam": "Vliegtuigtechnieken",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1689",
+    "naam": "Vliegtuigtechnieker B1",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1691",
+    "naam": "Vloerder-tegelzetter",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 3
+  },
+  {
+    "code": "1779",
+    "naam": "Vloerder-tegelzetter duaal",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 2
+  },
+  {
+    "code": "1150",
+    "naam": "Voeding en horeca",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 36
+  },
+  {
+    "code": "1337",
+    "naam": "Voertuigtechnieken",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 23
+  },
+  {
+    "code": "1692",
+    "naam": "Voorber. jaar op hoger onderwijs na OK3",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 94
+  },
+  {
+    "code": "OV3-173",
+    "naam": "Voorbewerker carrosserie",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "OV3-178",
+    "naam": "Voorbewerker carrosserie duaal",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1418",
+    "naam": "Voorbewerker carrosserie duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1518",
+    "naam": "Vrachtwagenchauffeur",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 9
+  },
+  {
+    "code": "1338",
+    "naam": "Wellness en lifestyle",
+    "graad": "Tweede graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 44
+  },
+  {
+    "code": "1519",
+    "naam": "Wellness en schoonheid",
+    "graad": "Derde graad",
+    "finaliteit": "Dubbel",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 45
+  },
+  {
+    "code": "1520",
+    "naam": "Welzijnswetenschappen",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "TSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 159
+  },
+  {
+    "code": "1521",
+    "naam": "Wetenschappen-Wiskunde",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 362
+  },
+  {
+    "code": "OV3-179",
+    "naam": "Winkelmedewerker",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1419",
+    "naam": "Winkelmedewerker duaal",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 30
+  },
+  {
+    "code": "OV3-199",
+    "naam": "Winkelmedewerker duaal OV3",
+    "graad": null,
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "5",
+    "onderwijsvormen": [],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
+    "code": "1339",
+    "naam": "Woordkunst-drama",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1339",
+    "naam": "Woordkunst-drama",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "3",
+    "onderwijsvormen": [
+      "KSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 12
+  },
+  {
+    "code": "1261",
+    "naam": "Yeshiva",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": "10",
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1340",
+    "naam": "Yeshiva",
+    "graad": "Tweede graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1340",
+    "naam": "Yeshiva",
+    "graad": "Derde graad",
+    "finaliteit": "Doorstroom",
+    "domeinCode": "9",
+    "onderwijsvormen": [
+      "ASO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 4
+  },
+  {
+    "code": "1522",
+    "naam": "Zeevaart",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1341",
+    "naam": "Zeevaart en zeevisserij",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1431",
+    "naam": "Zeevisserij duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
+  },
+  {
+    "code": "1342",
+    "naam": "Zorg en welzijn",
+    "graad": "Tweede graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "6",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 216
+  }
+]

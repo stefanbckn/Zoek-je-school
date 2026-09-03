@@ -1,5 +1,5 @@
 {
-  "opgehaaldOp": "2026-09-02T18:53:08.829Z",
+  "opgehaaldOp": "2026-09-03T19:26:37.593Z",
   "bron": [
     "https://onderwijs-api-portaal.vlaanderen.be/documentatie/instellingsgegevens",
     "https://onderwijs.api.vlaanderen.be/instellingsgegevens/instellingslocatie/v1/instellingslocatie",
@@ -11,7 +11,8 @@
   "aantalVestigingenTotaal": 2151,
   "aantalVestigingen": 2145,
   "aantalCampussen": 1075,
-  "aantalRichtingen": 31380,
+  "aantalRichtingen": 31390,
+  "aantalStudierichtingen": 572,
   "leerlingenkenmerken": {
     "schooljaar": "2024-2025",
     "teldatum": "2024-02-01",
