@@ -14,7 +14,7 @@ De praktische valkuilen bij het ophalen (paginatie, filters, auth) staan **niet 
 | Instellingslocatie v1 | `.../instellingsgegevens/instellingslocatie/v1/instellingslocatie` | Adres + WGS84-coördinaten per vestigingsplaats. Basis van de dataset. |
 | Instellingen v2 | `.../instellingsgegevens/instelling/v2/instelling` | Naam, net, levensbeschouwing, contact, erkenning, scholengemeenschap, bestuur per school. |
 | Onderwijsaanbod SO v2 | `.../onderwijsaanbod_so/v2/ingerichteadministratievegroep` | Koppeling school+vestiging aan richting. Bevat géén inhoudelijke velden. |
-| Onderwijsaanbod SO v2 | `.../onderwijsaanbod_so/v2/administratievegroep` | Catalogus van richtingen: finaliteit, graad, onderwijsvorm, studiegebied, duaal. |
+| Onderwijsaanbod SO v2 | `.../onderwijsaanbod_so/v2/administratievegroep` | Catalogus van richtingen: finaliteit, graad, onderwijsvorm, studiedomein, studierichting, duaal. |
 | Codelijst v1 | `.../codelijst/v1/codelijst/{lijst}` | Decodeert codes (o.a. `soort_bestuur`, `net`). Eenmalig geraadpleegd, niet in het script. |
 
 ## Scope: heel Vlaanderen en Brussel
@@ -45,6 +45,16 @@ terecht leeg.
 `/ingerichteadministratievegroep` zit. **Dat klopt niet**: dat endpoint heeft 11 velden en geen
 enkel inhoudelijk veld. Wie enkel daar kijkt, concludeert ten onrechte dat finaliteit niet
 bestaat in de API.
+
+## Studiedomein wel, studiegebied niet
+
+`administratievegroep_domein` geeft de acht studiedomeinen van de matrix, plus
+domeinoverschrijdend. Live geverifieerd op 03/09/2026: 998 van de 1010 richtingcodes in onze
+dataset hebben er een.
+
+`administratievegroep_studiegebied` is de indeling van vóór de modernisering en is in de bron
+zo goed als leeg (8 van de 1160 records voor hoofdstructuur 311). Reken er niet op, en bouw er
+geen filter op. Beide staan uitgewerkt in [matrix-studiedomein.md](./matrix-studiedomein.md).
 
 ## Wat er NIET in zit
 

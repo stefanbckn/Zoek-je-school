@@ -16,6 +16,7 @@ te halen; wat niet geverifieerd is, staat er met zoveel woorden bij.
 | [fietsroute.md](./fietsroute.md) | Je raakt de fietsroute, de ORS-key of de Netlify-proxy |
 | [scholenkompas.md](./scholenkompas.md) | Je zoekt dropouts, doorstroom naar het hoger onderwijs of andere schoolcijfers |
 | [aanmelden.md](./aanmelden.md) | Je wil aanmeldsystemen tonen of linken |
+| [matrix-studiedomein.md](./matrix-studiedomein.md) | Je werkt aan de matrix, of je zoekt het studiedomein van een richting |
 | [kleur-en-kaart.md](./kleur-en-kaart.md) | Je wijzigt het palet, of je raakt de clustering op de kaart |
 
 Wat er nog moet komen staat in [ROADMAP.md](../../ROADMAP.md), wat een bezoeker gemerkt heeft

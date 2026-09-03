@@ -59,10 +59,11 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| 1 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
-| 2 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
-| 3 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
-| 4 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 1 | De matrix | Het studieaanbod van heel Vlaanderen als matrix van studiedomein × finaliteit per graad, in een apart paneel (`?matrix=1`) dat doorklikt naar de bestaande zoekfilters | **Klaar om te bouwen, bron gevonden en live geverifieerd.** `administratievegroep_domein` zit in de API die we al gebruiken, met dekking op 998 van onze 1010 richtingcodes. Vraagt wel een dataverversing en een domeinfilter. Zie [docs/onderzoek/matrix-studiedomein.md](./docs/onderzoek/matrix-studiedomein.md) |
+| 2 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
+| 3 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
+| 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
+| 5 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie [docs/onderzoek/aanmelden.md](./docs/onderzoek/aanmelden.md) |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -78,8 +79,9 @@ anders begraven bleven in secties over versies die al uit zijn.
   wél een eigen scrollbalk heeft (`max-h-48 overflow-auto`). Doe het als één scrollgebied: aside
   sticky met eigen overflow én die `max-h-48` weghalen. Enkel desktop. Stond open sinds 0.2.1;
   het pagineren van 0.3.0 maakte het minder nijpend maar loste het niet op.
-- **Filteren op studiegebied.** Het veld zit in de data (`administratievegroep_studiegebied`) en
-  in het model, maar er is geen filter op. Let op: het is `null` bij eerste graad, OKAN en HBO5.
+- ~~**Filteren op studiegebied.**~~ Geschrapt op 03/09/2026. Het veld bestaat, maar is in de
+  bron zelf zo goed als leeg (8 van de 1160 records). De bruikbare indeling is `domein`, niet
+  `studiegebied`; zie [docs/onderzoek/matrix-studiedomein.md](./docs/onderzoek/matrix-studiedomein.md).
 - **Naamgenoten in de naamfilter.** Sinds 0.12.0 zoekt de naamfilter in heel Vlaanderen, dus
   dezelfde schoolnaam komt vaker meerdere keren terug. Als dat in de praktijk stoort, is de
   oplossing de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
@@ -112,8 +114,10 @@ Aandachtspunten:
   finaliteit zeggen dat twee richtingen bij elkaar in de buurt liggen, niet dat de ene officieel
   op de andere volgt. Formuleer dus wat we écht weten ("in hetzelfde studiegebied biedt dit
   adres in de derde graad ..."), nooit "dit is de logische vervolgrichting".
-- **Studiegebied is `null` bij een deel van de richtingen** (eerste graad, OKAN, HBO5). Die
-  vallen buiten deze weergave, ze horen er niet in geforceerd te worden.
+- **Groepeer op `domein`, niet op studiegebied.** Studiegebied is in de bron zo goed als leeg;
+  domein zit er wel op, behalve bij eerste graad, OKAN en HBO5. Die vallen buiten deze
+  weergave, ze horen er niet in geforceerd te worden. Zie
+  [docs/onderzoek/matrix-studiedomein.md](./docs/onderzoek/matrix-studiedomein.md).
 
 **2. De officiële doorstroommatrix. Bron nog niet gevonden.**
 
@@ -125,9 +129,13 @@ van de tweede graad aansluiten. Wat we daarover weten:
   finaliteit, graad, leerjaar, onderwijsvorm, studiegebied, studierichting, duaal, modulair,
   niche, stem-categorie en gemoderniseerd (opsomming in
   [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md)). Geen enkel
-  veld verwijst naar een voorafgaande of volgende richting. Dat is de veldenlijst van v0.2 en is
-  voor dit doel nog niet opnieuw nagekeken, maar reken er niet op dat het er stilletjes bij is
-  gekomen.
+  veld verwijst naar een voorafgaande of volgende richting. **Opnieuw nagekeken op een live
+  respons op 03/09/2026** (bij het onderzoek naar studiedomein): nog steeds geen doorstroomveld.
+- **Eén nieuw spoor, niet geverifieerd:** elk catalogusrecord draagt een
+  `structuuronderdeel.structuuronderdeel_nummer`, en het API design document verwijst voor de
+  details naar een aparte **Structuuronderdelen API**. Of die op ons portaal beschikbaar is en of
+  ze toelatingsvoorwaarden of doorstroom bevat, is niet nagekeken. Dat is het eerste wat je moet
+  proberen als je hier terugkomt.
 - **onderwijskiezer.be heeft dit wél en valt af.** Daar staat per richting waar ze naartoe leidt,
   maar hun voorwaarden verbieden kopiëren en herdistribueren. Alleen naar linken mag. Zelfde
   verhaal als bij de infomomenten.
