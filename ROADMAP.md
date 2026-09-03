@@ -17,7 +17,8 @@ beschreef de netfilter nog met de achterhaalde waarde "Stedelijk".
 thema pas op het moment dat het af is en naar `main` gaat. Zo kan elk stuk los uitgebracht
 worden zonder dat alles eronder verschuift, en klopt SemVer vanzelf: nieuwe functionaliteit is
 een MINOR, ook als het maar één filter is. Deze tabel houdt dus de **volgorde** bij, niet de
-nummering. Zie [Versienummering in CLAUDE.md](./CLAUDE.md#versienummering-semver).
+nummering. De regels voor het nummeren zelf staan in de skill `release`
+(`.claude/skills/release/SKILL.md`).
 
 (Deze nummering verving eerder al de oorspronkelijke backlog-nummering uit de opzet; de oude
 v0.2 "Reizen" is deels opgeleverd als 0.1.1. Dat vooraf nummeren is nu helemaal losgelaten.)
@@ -410,6 +411,46 @@ npm: 1.4.2 (nagekeken 01/09/2026).
   levert hier meer op**, want het risico zit in dependencies. ⚠️ Niet geverifieerd: default setup
   zet géén workflowbestand in de repo, en de badge-URL verwijst naar een workflowbestand. Wil je
   per se een CodeQL-badge, dan moet je waarschijnlijk de advanced variant nemen.
+
+## De Lijn-API (onderzocht 27/08/2026, niet in gebruik)
+
+*Verplaatst uit CLAUDE.md op 03/09/2026: dit is bronnenonderzoek naar iets dat niet gebouwd is,
+en het hoefde niet elke sessie meegeladen te worden. De reistijd in de app komt van Transitous;
+dát staat wel in CLAUDE.md.*
+
+Portaal: `https://data.delijn.be` (Azure API Management). Account aanmaken → op een product
+intekenen → key. **Geen goedkeuring nodig** (`approvalRequired: false`, uitgelezen via hun eigen
+`/developer/products`-endpoint). Licentie: **Gratis Open Data Licentie Vlaanderen v1.0** —
+hergebruik mag, ook commercieel, mits bronvermelding. Limieten: 864.000 calls/dag en
+6.000/minuut per product.
+
+Alle endpoints hieronder zijn geverifieerd door ze effectief aan te roepen zonder key:
+**401 = bestaat en vraagt een key, 404 = bestaat niet.**
+
+| Product | Basis-URL | Inhoud |
+| --- | --- | --- |
+| Open Data V1 Core | `https://api.delijn.be/DLKernOpenData/api/v1/...` | 47 operaties: haltes, lijnen, dienstregelingen, real-time doorkomsten, omleidingen, storingen |
+| Open Data V1 Search | `https://api.delijn.be/DLZoekOpenData/v1/zoek/{haltes,lijnrichtingen}/{term}` | 2 operaties |
+| GTFS Static | `https://api.delijn.be/gtfs/static/v3/gtfs_transit.zip` | volledige dienstregeling, dagelijks ververst |
+| GTFS Realtime | `https://api.delijn.be/gtfs/v3/realtime` | protobuf, elke minuut |
+| NeTEx / BLTAC | `https://api.delijn.be/netex/v1/file` · `https://api.delijn.be/bltac/v1/file` | dezelfde dienstregeling, andere formaten |
+
+⚠️ **Let op de versie in het pad — die staat per API ergens anders.** GTFS Static is
+`/gtfs/static/v3/...` maar GTFS Realtime is `/gtfs/v3/realtime`. Beide andere volgordes geven 404.
+
+- **Er is GEEN routeplanner-API (meer).** Er bestond een `/routeplan/{van}/{naar}` in v1 — oude
+  blogposts, de Apiary-docs en zelfs zoekresultaten verwijzen er nog naar. Die operatie staat
+  **niet** meer in de API: de volledige operatielijst telt 47 items zonder routeplan, en elke
+  padvariant geeft 404 terwijl `/haltes` op dezelfde basis netjes 401 geeft. Niet opnieuw gaan
+  zoeken, en niet gokken dat het "vast wel ergens" zit.
+- **Wél nuttig voor v0.7:** `GET /haltes/indebuurt/{lat,lng}` geeft haltes in de buurt van
+  coördinaten, van álle vervoersmaatschappijen. Dat dekt "afstand tot halte" zonder dat we zelf
+  GTFS moeten verwerken.
+- De GTFS-feeds lopen ook via de Belgische NAP-proxy
+  (`api-management-opendata-production.azure-api.net/api/gtfs/feed/delijn/...`, header
+  `bmc-partner-key`). Die route is CC-BY-4.0. Voor ons geen voordeel — gebruik gewoon
+  `api.delijn.be` met een eigen key.
+
 
 ## Bewust geschrapt
 

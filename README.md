@@ -75,7 +75,7 @@ Wat er per versie veranderde, staat in **[CHANGELOG.md](./CHANGELOG.md)** — ge
 een bezoeker merkt. Elke uitgebrachte versie draagt op `main` de tag `v<versie>`; welke de
 laatste is, staat bovenaan de changelog. Hier stond dat nummer eerst voluit, maar het bleef bij
 `v0.6.0` hangen terwijl er al drie versies verder waren, dus het staat nog op één plaats.
-De afspraken over nummering en releases staan in [CLAUDE.md](./CLAUDE.md).
+De afspraken over nummering en releases staan in `.claude/skills/release/SKILL.md`.
 
 ## Bekende bugs
 
