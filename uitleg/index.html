@@ -27,14 +27,18 @@
     <link rel="stylesheet" href="../src/index.css" />
   </head>
   <body>
-    <div class="mx-auto max-w-2xl px-4 py-10">
+    <!-- Zelfde vorm als een resultaatkaartje in de lijst (zie ResultCard.tsx): rounded-lg,
+         border-rand en bg-kaart op de grond eronder. De terugweg en de footer staan er
+         bewust buiten, net zoals de footer van de app buiten de kaartjes valt. -->
+    <div class="mx-auto max-w-3xl px-4 py-10">
       <p class="text-sm">
         <a href="../" class="text-accent underline underline-offset-2">
           &larr; Terug naar de zoeker
         </a>
       </p>
 
-      <h1 class="mt-6 text-2xl font-semibold text-inkt">Het secundair onderwijs uitgelegd</h1>
+      <article class="mt-4 rounded-lg border border-rand bg-kaart p-5 sm:p-8">
+      <h1 class="text-2xl font-semibold text-inkt">Het secundair onderwijs uitgelegd</h1>
       <p class="mt-3 text-zacht">
         Na het tweede jaar secundair moet je kiezen: de eerste graad loopt tot dan, en vanaf
         het derde jaar begint de tweede graad. De woordenschat voor die keuze is sinds de
@@ -103,6 +107,21 @@
         rij, tegen drie finaliteiten. Elke studierichting van de tweede en de derde graad heeft
         daarin één plaats.
       </p>
+      <!-- De officiële bron, en dezelfde die in src/lib/domein.ts als verificatie van de
+           domeinvolgorde staat. Nagekeken op 04/09/2026: de pagina bestaat en is per finaliteit
+           opgebouwd. Overheidspagina's verhuizen; werkt deze link niet meer, zoek dan op
+           "studiedomeinen secundair onderwijs" bij Onderwijs en Vorming en vervang hem hier. -->
+      <p class="mt-3 text-zacht">
+        De officiële indeling, met per domein alle studierichtingen, staat bij Onderwijs en
+        Vorming:
+        <a
+          href="https://data-onderwijs.vlaanderen.be/onderwijsaanbod/so/structuur/studiedomeinen"
+          target="_blank"
+          rel="noreferrer"
+          class="text-accent underline underline-offset-2"
+          >Studiedomeinen in het secundair onderwijs</a
+        >. Dat is de bron; wat hierboven staat, is onze samenvatting ervan.
+      </p>
 
       <h2 class="mt-8 text-lg font-semibold text-inkt">Duale richtingen</h2>
       <p class="mt-2 text-zacht">
@@ -127,7 +146,9 @@
         beslis je zelf, het best door zelf te gaan kijken.
       </p>
 
-      <p class="mt-8 text-sm">
+      </article>
+
+      <p class="mt-6 text-sm">
         <a href="../" class="text-accent underline underline-offset-2">
           Zoek een school in je buurt &rarr;
         </a>
@@ -141,7 +162,7 @@
           Geen officiële bron: de fiche van Onderwijs en Vorming gaat altijd voor. Gegevens over
           scholen en studieaanbod komen van
           <a
-            href="https://onderwijs.vlaanderen.be/"
+            href="https://www.vlaanderen.be/onderwijs-en-vorming"
             target="_blank"
             rel="noreferrer"
             class="underline"
