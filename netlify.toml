@@ -31,6 +31,18 @@
 # Geen SPA-redirect nodig: de app gebruikt enkel querystring-state (?lat=..&straal=..),
 # geen path-based routing. Alles wordt vanaf / geserveerd.
 
+# Netlify blijft de site ook op de standaard *.netlify.app-URL serveren. Twee adressen met
+# dezelfde inhoud is slecht voor zoekmachines en verwarrend om te delen, dus sturen we alles
+# permanent door naar het echte domein. De /* en :splat houden pad en querystring intact
+# (?lat=..&straal=..), force = true zorgt dat de regel wint van het bestaande bestand.
+# Deploy previews (deploy-preview-123--zoekjeschool.netlify.app) hebben een andere host en
+# blijven dus gewoon werken.
+[[redirects]]
+  from = "https://zoekjeschool.netlify.app/*"
+  to = "https://zoekjeschool.be/:splat"
+  status = 301
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
