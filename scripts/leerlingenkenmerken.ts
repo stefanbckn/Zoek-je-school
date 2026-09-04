@@ -143,14 +143,33 @@ export async function haalLeerlingenkenmerken(): Promise<KenmerkenDataset | null
   const nu = new Date()
   const lopendJaar = nu.getUTCMonth() >= 8 ? nu.getUTCFullYear() : nu.getUTCFullYear() - 1
 
+  // Bijhouden of we ooit een HTTP-antwoord kregen. "Overal 404" betekent dat de publicatie er
+  // niet staat; "nergens een verbinding" betekent dat wíj er niet bij konden, en dat is een heel
+  // ander probleem met een heel andere oplossing. Zonder dit onderscheid zegt de waarschuwing
+  // onderaan in beide gevallen hetzelfde, en dan zoekt de volgende lezer in de verkeerde hoek.
+  let ooitEenAntwoord = false
+  const fouten: string[] = []
+
   for (const url of kandidaatUrls(lopendJaar, 4)) {
     let res: Response
     try {
-      res = await fetch(url)
+      // Een eigen User-Agent met contactadres. Node stuurt er standaard bijna geen, en een
+      // overheidsportaal achter een WAF is daar soms kieskeurig over. Zelfde adres als in de
+      // footer van de site, zodat wie ons in zijn logs ziet, weet wie er klopt.
+      res = await fetch(url, {
+        headers: { 'user-agent': 'zoekjeschool-fetchdata/1 (+https://zoekjeschool.be; info@bckn.be)' },
+      })
     } catch (err) {
-      console.warn(`  ${url} niet bereikbaar: ${err instanceof Error ? err.message : err}`)
+      // `fetch failed` is de buitenkant; de echte reden (ECONNRESET, ENOTFOUND, een TLS-fout)
+      // zit in `cause`. Zonder die regel stond er in de Action-log van 03/09/2026 acht keer
+      // "fetch failed" en viel er niets uit af te leiden.
+      const oorzaak = err instanceof Error && err.cause instanceof Error ? ` (${err.cause.message})` : ''
+      const melding = `${err instanceof Error ? err.message : err}${oorzaak}`
+      console.warn(`  ${url} niet bereikbaar: ${melding}`)
+      fouten.push(melding)
       continue
     }
+    ooitEenAntwoord = true
     if (!res.ok) continue
     const dataset = verwerkWerkboek(Buffer.from(await res.arrayBuffer()), url)
     console.log(
@@ -160,6 +179,13 @@ export async function haalLeerlingenkenmerken(): Promise<KenmerkenDataset | null
     return dataset
   }
 
-  console.warn('  leerlingenkenmerken: geen publicatie gevonden op het documentenportaal.')
+  if (!ooitEenAntwoord) {
+    console.warn(
+      `  leerlingenkenmerken: geen enkele kandidaat was bereikbaar (${fouten.length} pogingen). ` +
+        'Het documentenportaal antwoordde niet; dat zegt niets over of de publicatie er nog staat.',
+    )
+  } else {
+    console.warn('  leerlingenkenmerken: geen publicatie gevonden op het documentenportaal.')
+  }
   return null
 }
