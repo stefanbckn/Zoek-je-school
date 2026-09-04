@@ -11,7 +11,7 @@ import type {
   SoortBestuur,
   Studierichting,
 } from '../src/types.ts'
-import { haalLeerlingenkenmerken } from './leerlingenkenmerken.ts'
+import { haalLeerlingenkenmerken, type KenmerkenDataset } from './leerlingenkenmerken.ts'
 
 // Laad .env.local (voorrang) en .env. Node 21+ heeft loadEnvFile ingebouwd — geen dotenv nodig.
 for (const bestand of ['.env', '.env.local']) {
@@ -227,6 +227,49 @@ async function bestaandeDataset(): Promise<Campus[] | null> {
   }
 }
 
+/** De eerder weggeschreven meta, of null. */
+async function bestaandeMeta(): Promise<DatasetMeta | null> {
+  try {
+    return JSON.parse(await readFile(path.join(OUTPUT_DIR, 'meta.json'), 'utf-8')) as DatasetMeta
+  } catch {
+    return null
+  }
+}
+
+/**
+ * De leerlingenkenmerken uit de vórige dataset, zodat een mislukte ophaling ze niet wist.
+ *
+ * Waarom dit bestaat: op 03/09/2026 kon de GitHub Action het documentenportaal niet bereiken.
+ * Acht kandidaat-URL's, acht keer een verbindingsfout, en het script schreef braaf
+ * `leerlingenkenmerken: null` weg. Die PR is gemerged en daarmee verdween het blok van de
+ * live site, terwijl er niets mis was met de cijfers: dezelfde URL werkte een uur later gewoon.
+ *
+ * Oude cijfers behouden is hier duidelijk beter dan geen cijfers. Het gaat om één publicatie
+ * per schooljaar met een teldatum van februari daarvóór, dus "verouderd" betekent hooguit dat
+ * je een jaar achterloopt op iets dat sowieso een jaar oud is. De site toont het schooljaar
+ * erbij, dus niemand wordt om de tuin geleid. Verdwijnt de publicatie écht, dan blijft de
+ * waarschuwing elke run terugkomen en valt dat vanzelf op.
+ */
+async function kenmerkenUitVorigeDataset(): Promise<KenmerkenDataset | null> {
+  const [oud, meta] = await Promise.all([bestaandeDataset(), bestaandeMeta()])
+  if (!oud || !meta?.leerlingenkenmerken) return null
+
+  const perSchoolnummer = new Map<string, NonNullable<SchoolOpCampus['leerlingenkenmerken']>>()
+  for (const campus of oud) {
+    for (const school of campus.scholen) {
+      if (school.leerlingenkenmerken) perSchoolnummer.set(school.schoolnummer, school.leerlingenkenmerken)
+    }
+  }
+  if (perSchoolnummer.size === 0) return null
+
+  return {
+    schooljaar: meta.leerlingenkenmerken.schooljaar,
+    teldatum: meta.leerlingenkenmerken.teldatum,
+    bron: meta.leerlingenkenmerken.bron,
+    perSchoolnummer,
+  }
+}
+
 /**
  * Vangnet tegen stilzwijgend databederf. Dit script draait ook ongesuperviseerd (GitHub
  * Action), en een API die plots de helft minder teruggeeft — gewijzigde filterparam,
@@ -265,7 +308,7 @@ async function controleerOmvang(nieuweCampussen: Campus[]): Promise<void> {
 async function bouwDataset() {
   console.log('Ophalen via de API van Onderwijs en Vorming...')
 
-  const [locaties, instellingen, besturen, ingericht, catalogus, kenmerken] = await Promise.all([
+  let [locaties, instellingen, besturen, ingericht, catalogus, kenmerken] = await Promise.all([
     haalAlles<any>('vestigingsplaatsen (311)', EP.locaties, {
       filter_instellingslocatie_hoofdstructuur: HOOFDSTRUCTUUR_VOLTIJDS_SO,
     }),
@@ -275,6 +318,16 @@ async function bouwDataset() {
     haalAlles<any>('richtingencatalogus', EP.catalogus),
     haalLeerlingenkenmerken(),
   ])
+
+  if (!kenmerken) {
+    kenmerken = await kenmerkenUitVorigeDataset()
+    if (kenmerken) {
+      console.warn(
+        `Let op: leerlingenkenmerken niet opgehaald — de cijfers uit de vorige dataset ` +
+          `(${kenmerken.schooljaar}) blijven staan. Kijk de reden hierboven na.`,
+      )
+    }
+  }
 
   const instellingPerNr = new Map<number, any>(instellingen.map((i) => [i.instelling_nummer, i]))
   const bestuurPerNr = new Map<number, any>(besturen.map((b) => [b.instelling_nummer, b]))
@@ -454,7 +507,9 @@ async function bouwDataset() {
   } else {
     // Geen harde fout: de cijfers zijn een aanvulling. Wel luid, want stil verdwijnen is
     // precies wat je bij een ongesuperviseerde run niet wil.
-    console.warn('Let op: geen leerlingenkenmerken in deze dataset — het blok valt weg in de app.')
+    console.warn(
+      'Let op: geen leerlingenkenmerken in deze dataset, ook niet uit de vorige — het blok valt weg in de app.',
+    )
   }
 
   // Op hoeveel adressen elke studierichting aangeboden wordt. Per adres, niet per school:

@@ -84,9 +84,19 @@ veld. `onderwijsvorm` bewaren we apart omdat ouders die termen nog kennen.
   koppen zijn de bron van waarheid.
 - **Join op `schoolnummer`, nooit op adres.** Het adres in dit bestand is dat van de instelling
   en wijkt bij een deel van de scholen af van het campusadres dat wij tonen.
-- **Faalt het ophalen, dan is dat geen harde fout**: de dataset komt er zonder kenmerken uit
-  (luide waarschuwing) en het blok valt weg in de app. Faalt het *lezen* van een gevonden
-  bestand, dan stopt het script wél: dan is er iets aan de publicatie veranderd.
+- **Faalt het ophalen, dan blijven de kenmerken uit de vórige dataset staan**, met een luide
+  waarschuwing. Alleen als er ook geen vorige zijn, valt het blok weg in de app. Dat vangnet
+  is er sinds 04/09/2026: de Action van 03/09 kon het documentenportaal niet bereiken, schreef
+  `leerlingenkenmerken: null` weg, die PR werd gemerged en het blok verdween van de live site,
+  terwijl dezelfde URL een uur later gewoon 200 gaf. Oude cijfers zijn hier duidelijk beter dan
+  geen cijfers: het gaat om één publicatie per schooljaar en de site toont het schooljaar erbij.
+- **De log zegt wát er misging.** Node's `fetch failed` verbergt de echte reden in `err.cause`;
+  die wordt nu meegelogd, en de slotwaarschuwing maakt onderscheid tussen "overal 404" (de
+  publicatie staat er niet) en "nergens een verbinding" (wij konden er niet bij). Dat zijn twee
+  problemen met twee verschillende oplossingen. Het script stuurt ook een eigen User-Agent met
+  contactadres mee.
+- Faalt het *lezen* van een gevonden bestand, dan stopt het script wél: dan is er iets aan de
+  publicatie veranderd.
 - **`scripts/xlsx.ts` is bewust een eigen mini-lezer** (zip + sharedStrings + één werkblad, geen
   dependency). Wat er niet in zit: formules, datumopmaak, meerdere werkbladen, zip64. Heb je dat
   nodig, neem dan een echte bibliotheek. Niet dit uitbreiden.
