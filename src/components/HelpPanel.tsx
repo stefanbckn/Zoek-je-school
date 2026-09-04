@@ -210,6 +210,10 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
               <button type="button" onClick={onOverOpen} className="underline">
                 Over deze site
               </button>
+              . Wat de termen zelf betekenen, staat op{' '}
+              <a href="/uitleg/" className="underline">
+                Het secundair onderwijs uitgelegd
+              </a>
               .
             </p>
           </section>
