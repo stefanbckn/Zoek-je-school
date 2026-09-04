@@ -518,8 +518,8 @@ function Kenmerkbalk({
 }
 
 /**
- * Toont een website als kaal domein ("sintjozef.be" in plaats van
- * "https://www.sintjozef.be/secundair/"). Valt terug op de ruwe waarde als het geen geldige URL
+ * Toont een website als kaal domein ("example.com" in plaats van
+ * "https://www.example.com/secundair/"). Valt terug op de ruwe waarde als het geen geldige URL
  * is — de brondata bevat af en toe een adres zonder protocol.
  */
 function toonUrl(url: string): string {
