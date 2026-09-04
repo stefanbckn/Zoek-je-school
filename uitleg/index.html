@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Het secundair onderwijs uitgelegd | Zoek je school</title>
+    <meta
+      name="description"
+      content="Wat betekenen doorstroom, dubbel en arbeidsmarkt? Welke acht studiedomeinen zijn er? Uitleg bij de woordenschat van het secundair onderwijs in Vlaanderen en Brussel."
+    />
+    <link rel="canonical" href="https://zoekjeschool.be/uitleg/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://zoekjeschool.be/uitleg/" />
+    <meta property="og:site_name" content="Zoek je school" />
+    <meta property="og:locale" content="nl_BE" />
+    <meta property="og:title" content="Het secundair onderwijs uitgelegd" />
+    <meta
+      property="og:description"
+      content="Wat betekenen doorstroom, dubbel en arbeidsmarkt? Welke acht studiedomeinen zijn er? Uitleg bij de woordenschat van het secundair onderwijs in Vlaanderen en Brussel."
+    />
+    <!-- Zelfde themascript als de zoeker, zodat licht/donker niet opflitst bij het laden.
+         Relatief pad: deze pagina staat een map dieper. -->
+    <script src="/thema.js"></script>
+    <!-- Vite bundelt deze stylesheet mee als tweede entry point, zodat de pagina dezelfde
+         themavariabelen en Tailwind-klassen gebruikt als de app. Geen tweede palet dus. -->
+    <link rel="stylesheet" href="../src/index.css" />
+  </head>
+  <body>
+    <!-- Zelfde vorm als een resultaatkaartje in de lijst (zie ResultCard.tsx): rounded-lg,
+         border-rand en bg-kaart op de grond eronder. De terugweg en de footer staan er
+         bewust buiten, net zoals de footer van de app buiten de kaartjes valt. -->
+    <div class="mx-auto max-w-3xl px-4 py-10">
+      <p class="text-sm">
+        <a href="../" class="text-accent underline underline-offset-2">
+          &larr; Terug naar de zoeker
+        </a>
+      </p>
+
+      <article class="mt-4 rounded-lg border border-rand bg-kaart p-5 sm:p-8">
+      <h1 class="text-2xl font-semibold text-inkt">Het secundair onderwijs uitgelegd</h1>
+      <p class="mt-3 text-zacht">
+        Na het tweede jaar secundair moet je kiezen: de eerste graad loopt tot dan, en vanaf
+        het derde jaar begint de tweede graad. De woordenschat voor die keuze is sinds de
+        modernisering veranderd. ASO, TSO en BSO bestaan niet meer als labels. In de plaats
+        staat een matrix van finaliteiten en studiedomeinen. Hieronder staat wat die termen
+        betekenen, zodat de filters op deze site ergens op slaan.
+      </p>
+
+      <h2 class="mt-8 text-lg font-semibold text-inkt">De graden</h2>
+      <p class="mt-2 text-zacht">
+        Het secundair is opgedeeld in drie graden. In de eerste graad kies je nog geen
+        studiedomein en nog geen finaliteit: daar is het aanbod voor iedereen ongeveer
+        hetzelfde, met wat ruimte om dingen uit te proberen. De echte keuze begint in de tweede
+        graad, en wordt in de derde graad smaller.
+      </p>
+
+      <h2 class="mt-8 text-lg font-semibold text-inkt">
+        Finaliteit: doorstroom, dubbel of arbeidsmarkt
+      </h2>
+      <p class="mt-2 text-zacht">
+        De finaliteit zegt waar een richting je op voorbereidt. Er zijn er drie.
+      </p>
+      <ul class="mt-3 list-disc space-y-2 pl-5 text-zacht">
+        <li>
+          <strong class="font-medium text-inkt">Doorstroom</strong> mikt op verder studeren na
+          het secundair, aan een hogeschool of universiteit.
+        </li>
+        <li>
+          <strong class="font-medium text-inkt">Arbeidsmarkt</strong> bereidt voor op meteen aan
+          het werk gaan, met een beroep in handen.
+        </li>
+        <li>
+          <strong class="font-medium text-inkt">Dubbel</strong> houdt allebei open: verder
+          studeren kan, gaan werken ook.
+        </li>
+      </ul>
+      <p class="mt-3 text-zacht">
+        Dit is de opvolger van ASO, TSO en BSO, maar het is geen simpele hernoeming. De oude
+        labels zeiden vooral iets over het soort school; de finaliteit zegt iets over waar de
+        richting zelf op uitkomt.
+      </p>
+
+      <h2 class="mt-8 text-lg font-semibold text-inkt">Studiedomein: waarover de richting gaat</h2>
+      <p class="mt-2 text-zacht">
+        Naast de finaliteit staat het studiedomein, en dat zegt over welk vakgebied een richting
+        gaat. Er zijn er acht:
+      </p>
+      <ul class="mt-3 grid list-disc gap-1 pl-5 text-zacht sm:grid-cols-2">
+        <li>Economie en organisatie</li>
+        <li>Kunst en creatie</li>
+        <li>Land- en tuinbouw</li>
+        <li>Maatschappij en welzijn</li>
+        <li>Sport</li>
+        <li>STEM</li>
+        <li>Taal en cultuur</li>
+        <li>Voeding en horeca</li>
+      </ul>
+      <p class="mt-3 text-zacht">
+        Daarnaast bestaan de <strong class="font-medium text-inkt">domeinoverschrijdende</strong>
+        richtingen, die bij geen enkel domein horen omdat ze te breed zijn. Daar zitten onder
+        meer de vroegere ASO-richtingen in, zoals de klassieke talen en de
+        wetenschappen-wiskunderichtingen.
+      </p>
+      <p class="mt-3 text-zacht">
+        Domein en finaliteit samen vormen de matrix: acht domeinen plus de domeinoverschrijdende
+        rij, tegen drie finaliteiten. Elke studierichting van de tweede en de derde graad heeft
+        daarin één plaats.
+      </p>
+      <!-- De officiële bron, en dezelfde die in src/lib/domein.ts als verificatie van de
+           domeinvolgorde staat. Nagekeken op 04/09/2026: de pagina bestaat en is per finaliteit
+           opgebouwd. Overheidspagina's verhuizen; werkt deze link niet meer, zoek dan op
+           "studiedomeinen secundair onderwijs" bij Onderwijs en Vorming en vervang hem hier. -->
+      <p class="mt-3 text-zacht">
+        De officiële indeling, met per domein alle studierichtingen, staat bij Onderwijs en
+        Vorming:
+        <a
+          href="https://data-onderwijs.vlaanderen.be/onderwijsaanbod/so/structuur/studiedomeinen"
+          target="_blank"
+          rel="noreferrer"
+          class="text-accent underline underline-offset-2"
+          >Studiedomeinen in het secundair onderwijs</a
+        >. Dat is de bron; wat hierboven staat, is onze samenvatting ervan.
+      </p>
+
+      <h2 class="mt-8 text-lg font-semibold text-inkt">Duale richtingen</h2>
+      <p class="mt-2 text-zacht">
+        Sommige richtingen zijn duaal: je leert deels op school en deels op een werkplek, met
+        een overeenkomst bij een werkgever. Het diploma is hetzelfde als bij de niet-duale
+        variant.
+      </p>
+
+      <h2 class="mt-8 text-lg font-semibold text-inkt">Het net: wie de school inricht</h2>
+      <p class="mt-2 text-zacht">
+        Het net zegt wie de school organiseert: het GO! (het onderwijs van de Vlaamse
+        Gemeenschap), een provincie, een stad of gemeente, of een vrije inrichtende macht,
+        meestal katholiek of methodeonderwijs. Dat bepaalt onder meer het levensbeschouwelijk
+        vak en het schoolreglement. Het zegt niets over de kwaliteit van de school.
+      </p>
+
+      <h2 class="mt-8 text-lg font-semibold text-inkt">Wat je op deze site niet vindt</h2>
+      <p class="mt-2 text-zacht">
+        Geen ranglijst, geen sterren, geen oordeel over welke school beter is. Deze site zegt
+        welke scholen bestaan, waar ze liggen en wat ze aanbieden. Infodagen, aanmelden en
+        inschrijven lopen via de school zelf of via het aanmeldsysteem van je gemeente. De rest
+        beslis je zelf, het best door zelf te gaan kijken.
+      </p>
+
+      </article>
+
+      <p class="mt-6 text-sm">
+        <a href="../" class="text-accent underline underline-offset-2">
+          Zoek een school in je buurt &rarr;
+        </a>
+      </p>
+
+      <!-- Beknopte footer. De broncodelink is de "way to get the source" die artikel 13 van de
+           AGPL vraagt en het contactadres is de voorwaarde van Transitous; die twee horen op
+           elke pagina van de site, niet enkel op de zoeker. Zie CLAUDE.md. -->
+      <footer class="mt-10 border-t border-rand pt-4 text-xs text-zacht">
+        <p>
+          Geen officiële bron: de fiche van Onderwijs en Vorming gaat altijd voor. Gegevens over
+          scholen en studieaanbod komen van
+          <a
+            href="https://www.vlaanderen.be/onderwijs-en-vorming"
+            target="_blank"
+            rel="noreferrer"
+            class="underline"
+            >Onderwijs en Vorming</a
+          >.
+        </p>
+        <p class="mt-1">
+          Vragen of een fout gezien?
+          <a href="mailto:info@bckn.be" class="underline">info@bckn.be</a> ·
+          <a
+            href="https://github.com/stefanbckn/Zoek-je-school"
+            target="_blank"
+            rel="noreferrer"
+            class="underline"
+            >Broncode</a
+          >
+          onder AGPL-3.0 · © 2026 Stefan Bocken
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

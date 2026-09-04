@@ -8,6 +8,36 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 1.1.0 — 4 september 2026
+
+Een tweede pagina, en een reeks kleinere ingrepen zodat zoekmachines de site kunnen vinden. Aan
+de zoeker zelf verandert niets.
+
+**Nieuw**
+
+- **Een pagina met uitleg bij het secundair onderwijs**, te vinden via "Wat betekenen de
+  termen?" bovenaan, via de footer en onderaan "Hoe werkt deze site?". Wat de drie finaliteiten betekenen, welke acht studiedomeinen er zijn,
+  wat duaal leren is en wat een net is. Die uitleg zat tot nu verspreid over het helppaneel en de
+  filters; nu staat ze op één plaats, met een eigen adres waar je naartoe kan linken.
+- Het helppaneel blijft wat het was: dat gaat over hoe je de zoeker gebruikt, en dat lees je
+  liever zonder de zoeker te verlaten.
+
+**Verbeterd**
+
+- De site heeft een eigen adres: **zoekjeschool.be**. De oude netlify.app-URL blijft werken.
+- De paginatitel zegt nu waar de site over gaat in plaats van enkel "Zoek je school", en een
+  gedeelde link toont een deftig voorbeeld in chat-apps en op Mastodon of Bluesky.
+- Een `robots.txt` en een `sitemap.xml` wijzen zoekmachines naar de juiste adressen, zodat elke
+  gedeelde zoeklink niet als een aparte pagina in de resultaten belandt.
+
+**Nog niet**
+
+- Bij een gedeelde link ontbreekt voorlopig het voorbeeldbeeld: dat moet nog getekend worden.
+- Hoger in de zoekresultaten komen duurt sowieso maanden. Een nieuw adres moet eerst opgepikt
+  worden, en daar helpt geen enkele instelling aan.
+
+---
+
 ## 1.0.0 — 3 september 2026
 
 De eerste versie met een nummer dat niet meer met een nul begint, en meteen de grootste

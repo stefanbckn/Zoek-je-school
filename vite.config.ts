@@ -2,10 +2,14 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 import { createRequire } from 'node:module'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { haalFietsroute, parsePunt } from './shared/ors.js'
 
 // package.json is de enige plek waar de versie staat; de footer toont ze via __APP_VERSION__.
 // createRequire in plaats van een gewone import, zodat we geen resolveJsonModule nodig hebben.
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
 const { version } = createRequire(import.meta.url)('./package.json') as { version: string }
 
 /**
@@ -53,6 +57,19 @@ export default defineConfig(({ mode }) => {
       __APP_VERSION__: JSON.stringify(version),
     },
     base: './',
+    build: {
+      rollupOptions: {
+        // Twee entry points. `uitleg/index.html` is een echte tweede pagina en geen route in
+        // de app: de zoeker heeft geen path-based routing (zie netlify.toml), en de uitleg
+        // moet leesbaar en indexeerbaar zijn zonder dat er JavaScript aan te pas komt.
+        // De map in het pad blijft behouden in dist/, dus de pagina komt op /uitleg/ te staan
+        // zonder dat er een redirect of hostinstelling voor nodig is.
+        input: {
+          main: resolve(__dirname, 'index.html'),
+          uitleg: resolve(__dirname, 'uitleg/index.html'),
+        },
+      },
+    },
     server: {
       port: process.env.PORT ? Number(process.env.PORT) : 5173,
     },

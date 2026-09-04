@@ -24,7 +24,14 @@ export function Footer({
         Geen officiële bron: de fiche van Onderwijs en Vorming gaat altijd voor.{' '}
         <button type="button" onClick={onOverOpen} className="underline underline-offset-2">
           Over deze site
-        </button>
+        </button>{' '}
+        ·{' '}
+        {/* Een gewone link en geen paneel: dit is naslag met een eigen URL, zodat ernaar
+            gelinkt kan worden en zoekmachines ze kunnen vinden. Het helppaneel blijft een
+            overlay, want dat lees je terwijl je de zoeker gebruikt. */}
+        <a href="/uitleg/" className="underline underline-offset-2">
+          Het secundair onderwijs uitgelegd
+        </a>
       </p>
       {meta && (
         <p className="mt-1">
