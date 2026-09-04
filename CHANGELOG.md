@@ -8,6 +8,20 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 1.1.1 — 4 september 2026
+
+**Opgelost**
+
+- **De cijfers over de leerlingen waren bij een deel van de scholen verdwenen.** Dat lag niet
+  aan die scholen en niet aan de cijfers zelf: bij de automatische dataverversing kon de server
+  de publicatie van Onderwijs en Vorming even niet bereiken, en dan viel het hele blok weg. De
+  cijfers staan terug, voor 983 scholen, met hetzelfde schooljaar en dezelfde teldatum als
+  voorheen.
+- Een mislukte ophaling wist die cijfers voortaan niet meer: dan blijven de vorige staan tot ze
+  wél opgehaald raken.
+
+---
+
 ## 1.1.0 — 4 september 2026
 
 Een tweede pagina, en een reeks kleinere ingrepen zodat zoekmachines de site kunnen vinden. Aan
