@@ -2,7 +2,11 @@
 <html lang="nl">
   <head>
     <meta charset="UTF-8" />
+    <!-- Zelfde iconenset als de zoeker; zie index.html voor waarom er twee PNG's naast staan. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Het secundair onderwijs uitgelegd | Zoek je school</title>
     <meta
@@ -19,6 +23,14 @@
       property="og:description"
       content="Wat betekenen doorstroom, dubbel en arbeidsmarkt? Welke acht studiedomeinen zijn er? Uitleg bij de woordenschat van het secundair onderwijs in Vlaanderen en Brussel."
     />
+    <!-- Dezelfde afbeelding als de zoeker: er is geen aparte voor deze pagina, en een link
+         zonder voorbeeld ziet er in chat-apps kaler uit dan een generieke. -->
+    <meta property="og:image" content="https://zoekjeschool.be/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="zoekjeschool.be: welke scholen liggen bij jou in de buurt?" />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <!-- Zelfde themascript als de zoeker, zodat licht/donker niet opflitst bij het laden.
          Relatief pad: deze pagina staat een map dieper. -->
     <script src="/thema.js"></script>

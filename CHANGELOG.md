@@ -8,6 +8,24 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 1.1.2 — 4 september 2026
+
+**Nieuw**
+
+- **De site heeft een eigen gezicht.** In je browsertab staat nu het logo van zoekjeschool.be:
+  twee haltes met een gestippelde route ertussen. Daar stond tot nu een paars icoon dat van een
+  ander project kwam en hier per ongeluk was blijven staan.
+- **Deel je een link naar de site in WhatsApp, Signal, Slack, Mastodon of Bluesky, dan zie je nu
+  een voorbeeldafbeelding** in plaats van een kale link. Zet je de site op je beginscherm op een
+  iPhone of iPad, dan krijgt het icoontje daar ook het logo.
+
+**Nog niet**
+
+- De rest van de site draagt de nieuwe huisstijl nog niet. De kleuren op het scherm blijven
+  voorlopig zoals ze waren; het logo staat nog niet bovenaan de pagina.
+
+---
+
 ## 1.1.1 — 4 september 2026
 
 **Opgelost**

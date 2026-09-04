@@ -2,7 +2,13 @@
 <html lang="nl">
   <head>
     <meta charset="UTF-8" />
+    <!-- De SVG wint in elke browser die hem ondersteunt; de twee PNG's zijn de terugval.
+         Het merkteken heeft twee tekeningen: op 16 pixels blijven alleen de twee bollen over,
+         want de gestippelde route valt daar uit elkaar. Die kleine versie zit in favicon-16.png. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zoek je school | middelbare scholen in Vlaanderen en Brussel</title>
     <!-- Deze tekst toont Google onder de titel in de zoekresultaten. Houd hem onder de
@@ -19,8 +25,15 @@
     <meta property="og:locale" content="nl_BE" />
     <meta property="og:title" content="Zoek je school | middelbare scholen in Vlaanderen en Brussel" />
     <meta property="og:description" content="Vind middelbare scholen in Vlaanderen en Brussel. Filter op afstand, provincie, gemeente, net en studierichting, en vergelijk tot vier campussen naast elkaar." />
-    <!-- Nog te maken: 1200x630 PNG. SVG werkt niet in chat-apps.
-         <meta property="og:image" content="https://zoekjeschool.be/og.png" /> -->
+    <!-- Absolute URL, geen pad: chat-apps en crawlers halen dit los van de pagina op.
+         Bewust een PNG en geen SVG, die tonen ze niet. -->
+    <meta property="og:image" content="https://zoekjeschool.be/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="zoekjeschool.be: welke scholen liggen bij jou in de buurt?" />
+    <!-- Zonder deze regel toont X/Twitter een klein vierkant miniatuurtje in plaats van de
+         volle breedte. De rest leest het uit de og-tags hierboven. -->
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Synchroon, vóór de app laadt: voorkomt dat het verkeerde thema kort opflitst.
          Apart bestand omdat de CSP geen inline scripts toestaat, zie netlify.toml. -->
