@@ -157,7 +157,7 @@ export async function haalLeerlingenkenmerken(): Promise<KenmerkenDataset | null
       // overheidsportaal achter een WAF is daar soms kieskeurig over. Zelfde adres als in de
       // footer van de site, zodat wie ons in zijn logs ziet, weet wie er klopt.
       res = await fetch(url, {
-        headers: { 'user-agent': 'zoekjeschool-fetchdata/1 (+https://zoekjeschool.be; info@bckn.be)' },
+        headers: { 'user-agent': 'zoekjeschool-fetchdata/1 (+https://zoekjeschool.be; info@zoekjeschool.be)' },
       })
     } catch (err) {
       // `fetch failed` is de buitenkant; de echte reden (ECONNRESET, ENOTFOUND, een TLS-fout)

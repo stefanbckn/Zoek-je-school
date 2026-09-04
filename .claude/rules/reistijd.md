@@ -89,7 +89,7 @@ een van hun voorwaarden.
   én in `DetailPanel.tsx` (dat paneel ligt als modaal venster over de footer).
 - Transitous: zichtbare link naar `https://transitous.org/sources/` in de footer, plus de
   OpenStreetMap-attributie.
-- De contactregel `info@bckn.be` in de footer is een **Transitous-vereiste**, geen opsmuk.
+- De contactregel `info@zoekjeschool.be` in de footer is een **Transitous-vereiste**, geen opsmuk.
 
 Weghalen mag niet, ook niet "even voor de opmaak".
 

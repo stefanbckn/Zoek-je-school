@@ -92,7 +92,8 @@ zich aan het gebruiksbeleid houdt.
    ⚠️ **Dat kan hier niet**: een browser laat `User-Agent` niet overschrijven, en `fetch`
    weigert die header stil. Transitous voorziet dat expliciet: draait de app in de browser, dan
    volstaat de `Referer`-header, **op voorwaarde dat er contactgegevens op de site staan.**
-   ✅ Sinds v0.3 staat `info@bckn.be` in de footer. Die regel is dus een voorwaarde, geen opsmuk.
+   ✅ Sinds v0.3 staat er een contactadres in de footer (tot v1.1.2 `info@bckn.be`,
+   sindsdien `info@zoekjeschool.be`). Die regel is dus een voorwaarde, geen opsmuk.
    Onze `Referrer-Policy: strict-origin-when-cross-origin` stuurt bij een cross-origin call
    enkel de origin mee, genoeg om de site te identificeren; dat hoeft niet losser gezet te
    worden.

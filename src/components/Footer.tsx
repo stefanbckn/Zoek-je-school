@@ -86,8 +86,8 @@ export function Footer({
           niet weghalen. Zie CLAUDE.md. */}
       <p className="mt-1">
         Vragen of een fout gezien?{' '}
-        <a href="mailto:info@bckn.be" className="underline">
-          info@bckn.be
+        <a href="mailto:info@zoekjeschool.be" className="underline">
+          info@zoekjeschool.be
         </a>{' '}
         ·{' '}
         <a

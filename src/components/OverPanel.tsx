@@ -244,8 +244,8 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
             <h3 className="font-semibold">Contact en broncode</h3>
             <p className="mt-1 text-zacht">
               Vragen, fouten of suggesties:{' '}
-              <a href="mailto:info@bckn.be" className="underline">
-                info@bckn.be
+              <a href="mailto:info@zoekjeschool.be" className="underline">
+                info@zoekjeschool.be
               </a>
               . De volledige broncode staat onder AGPL-3.0 op{' '}
               <a

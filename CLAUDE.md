@@ -18,7 +18,7 @@ Deze liggen vast. Keer ze niet om zonder de gebruiker.
 - **Geen advertenties en geen betaalmuur.** Een donatieknop kan; commercieel worden kost ons de
   toegang tot Transitous.
 - De code staat onder **AGPL-3.0**. Twee dingen in de footer zijn daarom geen opsmuk maar een
-  verplichting: de **broncodelink** (AGPL artikel 13) en de **contactregel `info@bckn.be`**
+  verplichting: de **broncodelink** (AGPL artikel 13) en de **contactregel `info@zoekjeschool.be`**
   (voorwaarde van Transitous). Ook de attributie van openrouteservice en Transitous moet
   zichtbaar blijven.
 - De data in `public/data/` valt **niet** onder de AGPL: die blijft van Onderwijs en Vorming.

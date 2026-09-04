@@ -90,7 +90,7 @@ const API_ENDPOINTS = [
 // Puur ASCII, en dat is geen stijlkwestie: een HTTP-header is een ByteString, dus een teken
 // boven 255 (een kastlijntje bijvoorbeeld) laat fetch struikelen nog voor er een verbinding is.
 // Elke controle faalt dan met een netwerkfout die op een dode link lijkt. Zelf ingelopen.
-const UA = 'zoekjeschool-linkcheck/1 (+https://zoekjeschool.be; info@bckn.be)'
+const UA = 'zoekjeschool-linkcheck/1 (+https://zoekjeschool.be; info@zoekjeschool.be)'
 
 const TIMEOUT_MS = 20000
 const GELIJKTIJDIG = 6
