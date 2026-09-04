@@ -1,0 +1,135 @@
+# Twee controles die niet vanzelf gebeuren, in één bestand maar bewust op een ander ritme.
+#
+# Waarom niet allebei per kwartaal: ze verouderen op een tegenovergestelde manier.
+#
+#   kleurcheck  is deterministisch. De uitslag verandert alleen als het palet in src/index.css
+#               verandert. Vier keer per jaar draaien geeft vier keer hetzelfde antwoord en
+#               betrapt je nooit op het moment dat het telt. Hoort dus bij de pull request die
+#               aan de kleuren komt, en faalt daar gewoon zichtbaar.
+#   linkcheck   is het omgekeerde: de code blijft gelijk, de wereld verandert. Externe pagina's
+#               verhuizen zonder dat iemand hier iets doet, dus dit hoort op de klok.
+#
+# Tot 04/09/2026 draaide kleurcheck nergens automatisch: CLAUDE.md zei enkel dat je hem zelf
+# moest draaien na een kleurwijziging. Dat is precies het soort afspraak dat een keer vergeten
+# wordt.
+name: Controles
+
+on:
+  schedule:
+    # Per kwartaal, om 05:00 UTC. Twee uur na de dataverversing, zodat de twee workflows niet
+    # tegelijk vertrekken en de logs uit elkaar te houden zijn.
+    - cron: '0 5 1 1,4,7,10 *'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'src/index.css'
+      - 'scripts/kleurcheck.mjs'
+
+# contents lezen is genoeg om te checkouten; issues schrijven is nodig voor het rapport van de
+# linkcheck. Geen write op contents: deze workflow past nooit iets aan in de repo.
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: controles-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  kleuren:
+    # Op een schedule heeft dit geen zin (zie de uitleg bovenaan), dus enkel bij een PR die aan
+    # de kleuren komt, of wanneer iemand de workflow met de hand start.
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      # Geen npm ci: het script heeft geen enkele dependency, dat is met opzet zo gebouwd.
+      - name: Contrast en kleurenblindheid
+        run: node scripts/kleurcheck.mjs
+
+  links:
+    # Bij een pull request slaan we dit over: de links zijn dan zelden gewijzigd, en de check
+    # duurt lang genoeg en belast vreemde servers genoeg om er geen review mee op te houden.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Links controleren
+        id: check
+        run: |
+          # Geen `set -e` op de exitcode van het script zelf: 2 betekent bevindingen en dat is
+          # een geldige uitkomst waar hieronder een issue van gemaakt wordt. Alleen 0 en 2 zijn
+          # verwacht; alles daarbuiten is een stukgelopen script en moet de run rood maken.
+          set +e
+          node scripts/linkcheck.mjs | tee /tmp/linkcheck.log
+          code=${PIPESTATUS[0]}
+          set -e
+          if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then
+            echo "::error::linkcheck.mjs stopte met exitcode $code. Dat is geen bevinding maar een fout in het script zelf."
+            exit "$code"
+          fi
+          echo "bevindingen=$([ "$code" -eq 2 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Issue openen of bijwerken
+        if: steps.check.outputs.bevindingen == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # --force maakt het label aan als het nog niet bestaat en laat het anders ongemoeid.
+          gh label create links --color 0e8a16 --description "Automatische linkcontrole" --force
+
+          {
+            echo "De periodieke linkcontrole vond adressen die nakijken vragen."
+            echo
+            echo "**Niet blind vervangen.** Een adres dat 200 teruggeeft is niet automatisch de"
+            echo "juiste pagina: een dode link die 301't naar een algemene landingspagina is"
+            echo "technisch in orde en inhoudelijk waardeloos. Zoek de pagina die er hoort te"
+            echo "staan, of haal de link weg."
+            echo
+            echo '```'
+            sed -n '/^DOOD/,$p' /tmp/linkcheck.log
+            echo '```'
+            echo
+            echo "Volledige uitvoer: [run ${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          } > /tmp/issue.md
+
+          # Eén lopend issue, geen nieuw exemplaar per kwartaal. Bestaat er al een open issue met
+          # het label, dan komt de nieuwe uitslag er als reactie bij; zo blijft de geschiedenis
+          # van wat er wanneer stukging op één plaats staan.
+          BESTAAND=$(gh issue list --label links --state open --limit 1 --json number --jq '.[0].number // empty')
+          if [ -n "$BESTAAND" ]; then
+            gh issue comment "$BESTAAND" --body-file /tmp/issue.md
+            echo "Issue #$BESTAAND bijgewerkt."
+          else
+            gh issue create \
+              --title "Linkcontrole: adressen om na te kijken" \
+              --label links \
+              --body-file /tmp/issue.md
+          fi
+
+      - name: Issue sluiten als alles weer werkt
+        if: steps.check.outputs.bevindingen == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Sluit alleen wat deze workflow zelf geopend heeft, herkenbaar aan het label. Zonder
+          # dit blijft er een issue openstaan dat allang opgelost is, en dan gelooft niemand de
+          # lijst nog.
+          for n in $(gh issue list --label links --state open --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "Alle adressen antwoorden weer. Automatisch gesloten door de linkcontrole."
+          done

@@ -40,9 +40,16 @@ npm run build        # tsc -b && vite build — moet slagen na elke afgeronde st
 npm run lint         # oxlint
 npm run fetch-data   # data verversen; vraagt een API-key, hoort NIET bij elke build
 node scripts/kleurcheck.mjs   # contrast + kleurenblindheid; draai dit na elke kleurwijziging
+node scripts/linkcheck.mjs    # controleert of alle externe links nog werken; past niets aan
+                              # exitcode 2 = bevindingen, 1 = script stukgelopen
 ```
 
 Netlify bouwt elke push op `main` en deployt vanaf daar. Feature branches gaan via een PR.
+
+De workflow `controles` draait de kleurcheck bij elke PR die aan `src/index.css` komt, en de
+linkcheck per kwartaal. Vindt de linkcheck iets, dan opent hij één issue met het label `links`
+en werkt dat bij in plaats van er elk kwartaal een nieuw te maken. **Vervang een gemelde link
+nooit blind:** een adres dat 200 teruggeeft is niet automatisch de juiste pagina.
 
 ## Valkuilen van deze machine
 
