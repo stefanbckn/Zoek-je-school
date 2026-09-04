@@ -15,8 +15,8 @@ de zoeker zelf verandert niets.
 
 **Nieuw**
 
-- **Een pagina met uitleg bij het secundair onderwijs**, te vinden via de footer en onderaan
-  "Hoe werkt deze site?". Wat de drie finaliteiten betekenen, welke acht studiedomeinen er zijn,
+- **Een pagina met uitleg bij het secundair onderwijs**, te vinden via "Wat betekenen de
+  termen?" bovenaan, via de footer en onderaan "Hoe werkt deze site?". Wat de drie finaliteiten betekenen, welke acht studiedomeinen er zijn,
   wat duaal leren is en wat een net is. Die uitleg zat tot nu verspreid over het helppaneel en de
   filters; nu staat ze op één plaats, met een eigen adres waar je naartoe kan linken.
 - Het helppaneel blijft wat het was: dat gaat over hoe je de zoeker gebruikt, en dat lees je

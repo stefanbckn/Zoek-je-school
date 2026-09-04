@@ -354,6 +354,16 @@ function App() {
             >
               Hoe werkt deze site?
             </button>
+            {/* Een link en geen knop, want dit is het enige item hier dat de pagina verlaat in
+                plaats van een paneel te openen. Het pijltje maakt dat verschil zichtbaar vóór
+                de klik. Bewust géén target="_blank": de browserknop terug brengt de bezoeker
+                op zijn zoekopdracht terug, want die staat volledig in de querystring. */}
+            <a
+              href="/uitleg/"
+              className="rounded-lg border border-rand px-2.5 py-1.5 text-xs text-zacht transition-colors hover:bg-hover hover:text-inkt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              Wat betekenen de termen? <span aria-hidden="true">&#8599;</span>
+            </a>
             <button
               type="button"
               onClick={() => update({ over: true })}
