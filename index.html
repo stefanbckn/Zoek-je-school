@@ -4,13 +4,24 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zoek je school</title>
+    <title>Zoek je school | middelbare scholen in Vlaanderen en Brussel</title>
     <!-- Deze tekst toont Google onder de titel in de zoekresultaten. Houd hem onder de
-         160 tekens: langer wordt afgekapt. -->
+         160 tekens: langer wordt afgekapt. og:description hieronder vervangt hem niet,
+         die dient enkel voor de linkvoorbeelden in chat-apps en op Mastodon/Bluesky. -->
     <meta
       name="description"
       content="Vind middelbare scholen in Vlaanderen en Brussel. Filter op afstand, provincie, gemeente, net en studierichting, en vergelijk tot vier campussen naast elkaar."
     />
+    <link rel="canonical" href="https://zoekjeschool.be/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://zoekjeschool.be/" />
+    <meta property="og:site_name" content="Zoek je school" />
+    <meta property="og:locale" content="nl_BE" />
+    <meta property="og:title" content="Zoek je school | middelbare scholen in Vlaanderen en Brussel" />
+    <meta property="og:description" content="Vind middelbare scholen in Vlaanderen en Brussel. Filter op afstand, provincie, gemeente, net en studierichting, en vergelijk tot vier campussen naast elkaar." />
+    <!-- Nog te maken: 1200x630 PNG. SVG werkt niet in chat-apps.
+         <meta property="og:image" content="https://zoekjeschool.be/og.png" /> -->
+
     <!-- Synchroon, vóór de app laadt: voorkomt dat het verkeerde thema kort opflitst.
          Apart bestand omdat de CSP geen inline scripts toestaat, zie netlify.toml. -->
     <script src="/thema.js"></script>

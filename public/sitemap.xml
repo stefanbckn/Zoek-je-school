@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Eén URL, want de app heeft er maar één: alle state zit in de querystring en die hoort
+     niet in een sitemap (zie de canonical in index.html).
+     Bewust zonder <lastmod>: dat zou een handmatig bij te houden datum zijn die na de eerste
+     deploy meteen liegt, en een foute lastmod is voor crawlers slechter dan geen. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://zoekjeschool.be/</loc>
+  </url>
+</urlset>

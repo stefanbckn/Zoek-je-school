@@ -1,0 +1,5 @@
+# Alles mag gecrawld worden: de site heeft één publieke pagina en niets te verbergen.
+User-agent: *
+Allow: /
+
+Sitemap: https://zoekjeschool.be/sitemap.xml

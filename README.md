@@ -3,7 +3,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a71213ec-47f4-42c4-bbd5-a252e68f2d2e/deploy-status)](https://app.netlify.com/projects/zoekjeschool/deploys)
 
 Zoeker voor middelbare scholen (voltijds gewoon secundair onderwijs) in Vlaanderen en Brussel.
-Live op [zoekjeschool.netlify.app](https://zoekjeschool.netlify.app/).
+Live op [zoekjeschool.be](https://zoekjeschool.be/).
 
 Zie [CLAUDE.md](./CLAUDE.md) voor de projectconventies, `.claude/rules/` voor de afspraken per
 gebied, en [docs/onderzoek/](./docs/onderzoek/) voor de bronbeschrijving en de datamodel-keuzes.
