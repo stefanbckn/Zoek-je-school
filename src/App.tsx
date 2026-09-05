@@ -397,9 +397,23 @@ function App() {
           <details className="relative md:hidden">
             <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-lg border border-kop-inkt/30 [&::-webkit-details-marker]:hidden">
               <span className="sr-only">Menu</span>
-              <span aria-hidden="true" className="text-lg leading-none">
-                &#9776;
-              </span>
+              {/* Drie getekende lijnen en niet het teken ☰ (U+2630): dat zit niet in het
+                  Latijnse subset dat we van Plus Jakarta Sans laden, dus tekende het toestel
+                  het in een systeemletter — andere dikte, andere hoogte, scheef in het kader.
+                  Getekend staat het overal gelijk en schaalt het mee met de knop. */}
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                width="18"
+                height="14"
+                viewBox="0 0 18 14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
+                <path d="M1 1h16M1 7h16M1 13h16" />
+              </svg>
             </summary>
             <div className="absolute right-0 z-30 mt-2 flex w-64 flex-col items-stretch gap-2 rounded-xl border border-kop-inkt/25 bg-kop p-3 shadow-lg">
               {kopIngangen}
