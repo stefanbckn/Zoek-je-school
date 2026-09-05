@@ -41,8 +41,11 @@
    * 12 px is de bodem en is er alleen voor voetnoten en bronvermelding. Alles wat een bezoeker
    * echt leest, begint bij 14.
    */
-  --text-xs: 0.75rem;          /* 12 — voetnoot, bronvermelding */
-  --text-xs--line-height: 1.7;
+  --text-xs: 0.75rem;          /* 12 — chip, badge, voetnoot */
+  /* Bewust NIET de 1,7 uit de gids. Die geldt daar voor een voetnoot, dus voor lopende tekst;
+     op text-xs zit ook elke chip en badge, en die werden er een halve regel hoger van. De 1,7
+     staat nu in .voetnoot, waar hij hoort. */
+  --text-xs--line-height: 1.35;
   --text-sm: 0.875rem;         /* 14 — adres, afstand, aantal richtingen */
   --text-sm--line-height: 1.5;
   --text-base: 1rem;           /* 16 — invoerveld en lopende tekst */
@@ -253,9 +256,6 @@ body,
 body {
   margin: 0;
   font-family: var(--font-sans);
-  /* Voorkomt een laatste regel met één woord erop. `pretty` kost de browser wat rekenwerk
-     per alinea, dus alleen op lopende tekst; koppen krijgen `balance` hieronder. */
-  text-wrap: pretty;
 
   /* Expliciet: zonder achtergrond op body schemert de grond van de browser door bij
      het omschakelen, wat een flits geeft. */
@@ -347,6 +347,13 @@ body {
  * voetnoten. In hoofdletters staat het niet: "GO!" en "Zonder studieaanbod" lezen dan als
  * geschreeuw, en schermlezers spellen sommige woorden letter voor letter.
  */
+/* Voetnoot en bronvermelding: 12 px met een ruime regelhoogte, want dit zijn de enige plaatsen
+   waar zo klein nog een hele alinea lang doorloopt. */
+.voetnoot {
+  font-size: var(--text-xs);
+  line-height: 1.7;
+}
+
 .sectiekop {
   font-size: var(--text-xs);
   line-height: 1;
@@ -360,6 +367,13 @@ h1,
 h2,
 h3 {
   text-wrap: balance;
+}
+
+/* `pretty` voorkomt een laatste regel met één woord erop, maar alleen op lopende tekst.
+   Op body gezet raakte het ook de korte labels in de aanbodlijst, en daar bepaalt het mee
+   wanneer een richtingnaam naar een tweede regel gaat — precies wat daar niet moet. */
+p {
+  text-wrap: pretty;
 }
 
 /* Leaflet maakt de bol focusbaar met Tab; zonder dit is er geen zichtbare focus. */

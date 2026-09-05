@@ -30,7 +30,7 @@ export const NET_STYLES: Record<Net, string> = {
 }
 
 /** Gedeelde vormgeving van een net-chip. Rondingen bewust tussen strak en pilvormig in. */
-export const NET_CHIP = 'chip shrink-0 rounded-lg px-2 py-0.5 text-xs font-medium'
+export const NET_CHIP = 'chip shrink-0 rounded-md px-2 py-0.5 text-xs font-medium'
 
 /** Korte uitleg bij de netten die verwarring geven. Niet elk net heeft er een nodig. */
 export const NET_UITLEG: Partial<Record<Net, string>> = {
