@@ -192,7 +192,7 @@ export function MatrixPanel({
                       <button
                         type="button"
                         onClick={() => onKiesCel(rij.domeinCode, cel.finaliteit)}
-                        className="mt-1 w-full rounded-md px-2 py-1 text-left text-xs text-accent underline underline-offset-2 hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        className="mt-1 w-full rounded-md px-2 py-1 text-left text-xs text-accent underline underline-offset-2 hover:bg-hover"
                       >
                         {/* Het domeinlabel blijft zoals het is: STEM in kleine letters is
                             geen domein meer. */}
@@ -270,7 +270,7 @@ function RichtingKnop({
             // scripts/kleurcheck.mjs), en een halfdoorzichtige variant daarvan is dat niet.
             // Dat deze richting hier niet bestaat, staat al in het cijfer en in het aria-label.
             ? 'cursor-default text-zacht'
-            : 'text-inkt hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+            : 'text-inkt hover:bg-hover'
         }`}
       >
         <span>

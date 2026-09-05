@@ -141,7 +141,7 @@ export function FilterPanel({
           value={tekst}
           onChange={(e) => onTekstChange(e.target.value)}
           placeholder="bv. Atheneum"
-          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent focus:outline-none"
+          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
         />
       </div>
 
@@ -155,7 +155,7 @@ export function FilterPanel({
           value={richting}
           onChange={(e) => onRichtingChange(e.target.value)}
           placeholder="bv. Latijn, verzorging, STEM"
-          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent focus:outline-none"
+          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
         />
         <p className="mt-1 text-xs text-zacht">
           Toont scholen waar minstens één richting hierop matcht.
@@ -222,7 +222,7 @@ export function FilterPanel({
           value={gemeenteZoek}
           onChange={(e) => setGemeenteZoek(e.target.value)}
           placeholder="bv. Mechelen"
-          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent focus:outline-none"
+          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
         />
         {/* `relative` is hier geen opsmuk: elk label bevat een `sr-only` span, en die is
             absoluut gepositioneerd. Zonder containing block op deze scroller vallen die 236

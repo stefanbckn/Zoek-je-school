@@ -296,9 +296,24 @@ body {
   font-size: 0.9375rem;
 }
 
+/**
+ * Eén focusring voor de hele site: 3 px geel met 2 px afstand. De designgids zet die kleur vast
+ * omdat ze als enige op elk vlak van het palet opvalt — op de teal kopbalk, op wit, en op de
+ * donkere grond. Teal viel op de kopbalk zelf weg.
+ *
+ * Hier centraal en niet als utility-klasse op elke knop: die stonden op tien plaatsen met drie
+ * verschillende waarden, en een vergeten knop had dan stil geen zichtbare focus. `:where()`
+ * geeft de regel specificiteit nul, dus een component die het bewust anders wil, wint nog
+ * steeds zonder !important.
+ */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--c-signaal);
+  outline-offset: 2px;
+}
+
 /* Leaflet maakt de bol focusbaar met Tab; zonder dit is er geen zichtbare focus. */
 .cluster-bol:focus-visible {
-  outline: 3px solid var(--c-inkt);
+  outline: 3px solid var(--c-signaal);
   outline-offset: 3px;
 }
 

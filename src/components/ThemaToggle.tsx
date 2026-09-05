@@ -28,7 +28,7 @@ export function ThemaToggle() {
             aria-checked={actief}
             title={optie.titel}
             onClick={() => setThema(optie.waarde)}
-            className={`rounded-full px-2.5 py-1 transition-colors focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-signaal ${
+            className={`rounded-full px-2.5 py-1 transition-colors ${
               actief
                 ? 'bg-kop-inkt text-kop font-semibold'
                 : 'text-kop-inkt/80 hover:bg-kop-inkt/15 hover:text-kop-inkt'

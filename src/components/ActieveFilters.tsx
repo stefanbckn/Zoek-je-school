@@ -140,7 +140,7 @@ export function ActieveFilters({
               type="button"
               onClick={chip.wis}
               aria-label={chip.wisLabel}
-              className="group inline-flex items-center gap-1.5 rounded-lg border border-rand bg-kaart py-1 pr-1.5 pl-2.5 text-xs text-inkt transition-colors hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="group inline-flex items-center gap-1.5 rounded-lg border border-rand bg-kaart py-1 pr-1.5 pl-2.5 text-xs text-inkt transition-colors hover:bg-hover"
             >
               {chip.label}
               <span
@@ -158,7 +158,7 @@ export function ActieveFilters({
         <button
           type="button"
           onClick={onWisAlles}
-          className="ml-auto rounded-lg px-2 py-1 text-xs font-medium text-accent underline underline-offset-2 hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="ml-auto rounded-lg px-2 py-1 text-xs font-medium text-accent underline underline-offset-2 hover:bg-hover"
         >
           Alles wissen
         </button>
