@@ -364,9 +364,25 @@ function App() {
               logo-lockup-be-teal.svg voor. */}
           <a href="/" className="flex items-center gap-3 rounded-lg">
             <Beeldmerk grootte={34} />
-            <h1 className="text-xl font-extrabold tracking-tight">
-              zoekjeschool<span className="text-signaal">.be</span>
-            </h1>
+            <span className="flex min-w-0 flex-col">
+              <h1 className="text-xl font-extrabold leading-tight tracking-tight">
+                zoekjeschool<span className="text-signaal">.be</span>
+              </h1>
+              {/* Wat de site doet, in gewone woorden. Dit hoort hier en niet in het logo: een
+                  woordmerk met een zin erin valt weg op een favicon van 16 pixels en op je
+                  beginscherm, en deze regel is inhoud die nog kan veranderen.
+
+                  Onder het woordmerk en niet ernaast, want naast elkaar duwt hij de knoppen
+                  op een scherm van 1280 naar een tweede rij. Gestapeld blijft de balk één rij.
+
+                  Op een telefoon valt hij weg: daar staat de zoekbalk meteen onder de kop, en
+                  die zegt met "Typ je gemeente of adres" hetzelfde in minder ruimte. Doorgemeten
+                  dat hij de knoppen nergens naar een tweede rij duwt: op 1024 px stond de balk
+                  ook zonder deze regel al op twee rijen, en op 1280 blijft ze op één. */}
+              <span className="hidden text-sm text-kop-inkt/90 sm:block">
+                Middelbare scholen in Vlaanderen en Brussel
+              </span>
+            </span>
           </a>
 
           {/* Vanaf een tablet staan de vier ingangen gewoon naast elkaar. */}
