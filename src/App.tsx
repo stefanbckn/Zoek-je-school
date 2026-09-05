@@ -313,6 +313,36 @@ function App() {
     setGeselecteerd({ campus, school })
   }
 
+  // De vier ingangen van de kopbalk staan hier één keer: ze verschijnen zowel in de rij op
+  // een breed scherm als in het uitklapmenu op een telefoon, en die twee mogen niet uit
+  // elkaar lopen. Slechts één van de twee staat ooit in de DOM-boom die zichtbaar is, dus
+  // schermlezers krijgen ze niet dubbel te horen.
+  const kopIngangen = (
+    <>
+      {/* De matrix staat vooraan: het is de enige knop hier die iets aan de resultaten doet
+          in plaats van uit te leggen. */}
+      <button type="button" onClick={() => update({ matrix: true })} className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15">
+        Alle richtingen
+      </button>
+      {/* De uitleg staat vóór "Over deze site": wie hier klikt zit meestal vast in het zoeken
+          zelf, niet in de vraag waar de gegevens vandaan komen. */}
+      <button type="button" onClick={() => update({ help: true })} className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15">
+        Hoe werkt deze site?
+      </button>
+      {/* Een link en geen knop, want dit is het enige item hier dat de pagina verlaat in
+          plaats van een paneel te openen. Het pijltje maakt dat verschil zichtbaar vóór de
+          klik. Bewust géén target="_blank": de browserknop terug brengt de bezoeker op zijn
+          zoekopdracht terug, want die staat volledig in de querystring. */}
+      <a href="/uitleg/" className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15">
+        Wat betekenen de termen? <span aria-hidden="true">&#8599;</span>
+      </a>
+      <button type="button" onClick={() => update({ over: true })} className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15">
+        Over deze site
+      </button>
+      <ThemaToggle />
+    </>
+  )
+
   return (
     <>
       {/* Bij het afdrukken van een vergelijking hoort enkel die tabel op papier. Het venster
@@ -321,7 +351,7 @@ function App() {
       <div className={`min-h-full flex flex-col ${vergelijkOpen ? 'print:hidden' : ''}`}>
         {/* flex-wrap is nodig: op 375px past de knoppenrij niet naast de titel en viel
             "Donker" buiten het scherm. Bij weinig ruimte zakt ze naar een eigen regel. */}
-        <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 bg-kop px-4 py-3.5 text-kop-inkt sm:px-7">
+        <header className="flex items-center justify-between gap-4 bg-kop px-4 py-3 text-kop-inkt sm:px-7 sm:py-3.5">
           {/* Het woordmerk is echte tekst en geen afbeelding. Het logopakket levert het als
               vectorpaden, maar sinds Plus Jakarta Sans zelf op de site staat tekent de browser
               exact dezelfde letters — en dan blijft het selecteerbaar, schaalt het mee met de
@@ -329,62 +359,36 @@ function App() {
               met een verborgen kop ernaast.
 
               De ".be" is geel en decoratief; de betekenis zit in het woord ervoor. Op deze
-              balk haalt dat geel 4,9:1, ruim boven de grens, dus het mag hier wél gewoon als
-              tekst meetellen. Op een lichte grond zou dat niet lukken — daar bestaat
+              balk haalt dat geel 4,95:1, ruim boven de grens, dus het mag hier wél als tekst
+              meetellen. Op een lichte grond zou dat niet lukken — daar bestaat
               logo-lockup-be-teal.svg voor. */}
-          <a
-            href="/"
-            className="flex items-center gap-3 rounded-lg"
-          >
+          <a href="/" className="flex items-center gap-3 rounded-lg">
             <Beeldmerk grootte={34} />
             <h1 className="text-xl font-extrabold tracking-tight">
               zoekjeschool<span className="text-signaal">.be</span>
             </h1>
           </a>
-          {/* Geen `shrink-0` hier, en dat is geen detail: met shrink-0 krimpt deze rij nooit
-              onder haar max-content-breedte, dus perkte de header ze nooit in en had het
-              `flex-wrap` erop niets om op te reageren. De knoppen wrapten dan nooit en de
-              themaschakelaar stak op een smalle telefoon buiten het scherm, wat de hele pagina
-              horizontaal scrollbaar maakte. `min-w-0` erbij omdat de standaard `min-width: auto`
-              van een flex-item anders alsnog op de inhoud terugvalt. */}
-          <div className="flex min-w-0 flex-wrap items-center justify-end gap-3">
-            {/* De matrix staat vooraan: het is de enige knop hier die iets aan de resultaten
-                doet in plaats van uit te leggen. */}
-            <button
-              type="button"
-              onClick={() => update({ matrix: true })}
-              className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15"
-            >
-              Alle richtingen
-            </button>
-            {/* De uitleg staat vóór "Over deze site": wie hier klikt zit meestal vast in het
-                zoeken zelf, niet in de vraag waar de gegevens vandaan komen. */}
-            <button
-              type="button"
-              onClick={() => update({ help: true })}
-              className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15"
-            >
-              Hoe werkt deze site?
-            </button>
-            {/* Een link en geen knop, want dit is het enige item hier dat de pagina verlaat in
-                plaats van een paneel te openen. Het pijltje maakt dat verschil zichtbaar vóór
-                de klik. Bewust géén target="_blank": de browserknop terug brengt de bezoeker
-                op zijn zoekopdracht terug, want die staat volledig in de querystring. */}
-            <a
-              href="/uitleg/"
-              className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15"
-            >
-              Wat betekenen de termen? <span aria-hidden="true">&#8599;</span>
-            </a>
-            <button
-              type="button"
-              onClick={() => update({ over: true })}
-              className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15"
-            >
-              Over deze site
-            </button>
-            <ThemaToggle />
+
+          {/* Vanaf een tablet staan de vier ingangen gewoon naast elkaar. */}
+          <div className="hidden min-w-0 flex-wrap items-center justify-end gap-3 md:flex">
+            {kopIngangen}
           </div>
+
+          {/* Daaronder passen ze niet: op een telefoon zakten ze naar vier rijen en werd de
+              balk een blok van 400 px. Ze gaan dan in een uitklapmenu. Bewust <details> en
+              geen eigen toestand: het openen en sluiten, de rol voor schermlezers en de
+              bediening met toetsenbord zitten al in het element zelf. */}
+          <details className="relative md:hidden">
+            <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-lg border border-kop-inkt/30 [&::-webkit-details-marker]:hidden">
+              <span className="sr-only">Menu</span>
+              <span aria-hidden="true" className="text-lg leading-none">
+                &#9776;
+              </span>
+            </summary>
+            <div className="absolute right-0 z-30 mt-2 flex w-64 flex-col items-stretch gap-2 rounded-xl border border-kop-inkt/25 bg-kop p-3 shadow-lg">
+              {kopIngangen}
+            </div>
+          </details>
         </header>
 
         <SearchBar
@@ -465,7 +469,7 @@ function App() {
                       {filtersOpen ? ' ▲' : ' ▼'}
                     </button>
                   </div>
-                  <div className="flex rounded-md border border-rand text-sm overflow-hidden">
+                  <div className="flex overflow-hidden rounded-full border border-rand text-sm">
                     <button
                       type="button"
                       onClick={() => setWeergave('lijst')}

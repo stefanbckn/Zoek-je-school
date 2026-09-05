@@ -132,7 +132,7 @@ export function FilterPanel({
   return (
     <aside className="w-full md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-rand p-4 flex flex-col gap-6">
       <div>
-        <label htmlFor="tekst" className="block text-sm font-medium text-inkt mb-1">
+        <label htmlFor="tekst" className="sectiekop mb-2 block">
           Zoek op schoolnaam
         </label>
         <input
@@ -141,12 +141,12 @@ export function FilterPanel({
           value={tekst}
           onChange={(e) => onTekstChange(e.target.value)}
           placeholder="bv. Atheneum"
-          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
+          className="w-full rounded-lg border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
         />
       </div>
 
       <div>
-        <label htmlFor="richting" className="block text-sm font-medium text-inkt mb-1">
+        <label htmlFor="richting" className="sectiekop mb-2 block">
           Zoek op studierichting
         </label>
         <input
@@ -155,7 +155,7 @@ export function FilterPanel({
           value={richting}
           onChange={(e) => onRichtingChange(e.target.value)}
           placeholder="bv. Latijn, verzorging, STEM"
-          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
+          className="w-full rounded-lg border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
         />
         <p className="mt-1 text-xs text-zacht">
           Toont scholen waar minstens één richting hierop matcht.
@@ -163,7 +163,7 @@ export function FilterPanel({
       </div>
 
       <div>
-        <h2 className="text-sm font-medium text-inkt mb-2">Net</h2>
+        <h2 className="sectiekop mb-2">Net</h2>
         <div className="flex flex-col gap-2">
           {netOpties.map((net) => (
             <label key={net} className="flex items-start gap-2 text-sm text-zacht">
@@ -187,7 +187,7 @@ export function FilterPanel({
       </div>
 
       <div>
-        <h2 className="text-sm font-medium text-inkt mb-2">Provincie</h2>
+        <h2 className="sectiekop mb-2">Provincie</h2>
         <div className="flex flex-col gap-2">
           {provincieOpties.map((provincie) => (
             <label key={provincie} className="flex items-start gap-2 text-sm text-zacht">
@@ -209,7 +209,7 @@ export function FilterPanel({
       </div>
 
       <div>
-        <label htmlFor="gemeentezoek" className="block text-sm font-medium text-inkt mb-1">
+        <label htmlFor="gemeentezoek" className="sectiekop mb-2 block">
           Gemeente
         </label>
         {/* Een zoekveldje is hier geen luxe: heel Vlaanderen en Brussel telt 245 gemeenten met
@@ -222,7 +222,7 @@ export function FilterPanel({
           value={gemeenteZoek}
           onChange={(e) => setGemeenteZoek(e.target.value)}
           placeholder="bv. Mechelen"
-          className="w-full rounded-md border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
+          className="w-full rounded-lg border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
         />
         {/* `relative` is hier geen opsmuk: elk label bevat een `sr-only` span, en die is
             absoluut gepositioneerd. Zonder containing block op deze scroller vallen die 236
@@ -263,7 +263,7 @@ export function FilterPanel({
       </div>
 
       <div>
-        <h2 className="text-sm font-medium text-inkt mb-2">Finaliteit</h2>
+        <h2 className="sectiekop mb-2">Finaliteit</h2>
         <div className="flex flex-col gap-2">
           {FINALITEIT_OPTIONS.map((finaliteit) => (
             <label key={finaliteit} className="flex items-start gap-2 text-sm text-zacht">
@@ -295,7 +295,7 @@ export function FilterPanel({
       </div>
 
       <div>
-        <h2 className="text-sm font-medium text-inkt mb-2">Studiedomein</h2>
+        <h2 className="sectiekop mb-2">Studiedomein</h2>
         <div className="flex flex-col gap-1.5">
           {DOMEIN_RIJEN.map((domein) => (
             <label key={domein} className="flex items-center gap-2 text-sm text-zacht">
@@ -327,7 +327,7 @@ export function FilterPanel({
           aanbod op een adres waar de buren wél lesgeven. Bewust een zichtbaar vinkje en geen
           stille weglating — zie .claude/rules/frontend.md. */}
       <div>
-        <h2 className="text-sm font-medium text-inkt mb-2">Zonder studieaanbod</h2>
+        <h2 className="sectiekop mb-2">Zonder studieaanbod</h2>
         <label className="flex items-start gap-2 text-sm text-zacht">
           <input
             type="checkbox"

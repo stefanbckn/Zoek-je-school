@@ -33,6 +33,33 @@
  * met `:not([data-theme="light"])`, anders wint een donker systeem van een bewuste lichte keuze.
  */
 @theme inline {
+  /**
+   * De typeschaal uit de designgids, gezet op de tokens die Tailwind zelf al gebruikt. Zo blijft
+   * `text-sm` overal `text-sm` heten en verandert alleen wat het betekent — dat scheelt zestig
+   * losse klassewijzigingen en houdt de schaal op één plaats.
+   *
+   * 12 px is de bodem en is er alleen voor voetnoten en bronvermelding. Alles wat een bezoeker
+   * echt leest, begint bij 14.
+   */
+  --text-xs: 0.75rem;          /* 12 — voetnoot, bronvermelding */
+  --text-xs--line-height: 1.7;
+  --text-sm: 0.875rem;         /* 14 — adres, afstand, aantal richtingen */
+  --text-sm--line-height: 1.5;
+  --text-base: 1rem;           /* 16 — invoerveld en lopende tekst */
+  --text-base--line-height: 1.5;
+  --text-lg: 1.1875rem;        /* 19 — schoolnaam in een kaart */
+  --text-lg--line-height: 1.3;
+  --text-2xl: 2.125rem;        /* 34 — paneeltitel */
+  --text-2xl--line-height: 1.15;
+
+  /* Chip 6, knop en veld 10, kaart en paneel 12, badge en schakelaar 999. `md` en `xl` staan
+     bij Tailwind al op 6 en 12; alleen `lg` moet van 8 naar 10. */
+  --radius-lg: 0.625rem;
+
+  /* Eén schaduw, en alleen voor wat boven de pagina zweeft: het suggestielijstje en de
+     vergelijkbalk. Kaarten in de lijst krijgen een rand, geen schaduw. */
+  --shadow-lg: 0 8px 24px rgba(10, 26, 31, 0.12);
+
   /* De fallback is de systeemletter van het toestel: die staat er al terwijl het woff2
      onderweg is, en blijft staan als het bestand niet aankomt. */
   --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -226,6 +253,9 @@ body,
 body {
   margin: 0;
   font-family: var(--font-sans);
+  /* Voorkomt een laatste regel met één woord erop. `pretty` kost de browser wat rekenwerk
+     per alinea, dus alleen op lopende tekst; koppen krijgen `balance` hieronder. */
+  text-wrap: pretty;
 
   /* Expliciet: zonder achtergrond op body schemert de grond van de browser door bij
      het omschakelen, wat een flits geeft. */
@@ -309,6 +339,27 @@ body {
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline: 3px solid var(--c-signaal);
   outline-offset: 2px;
+}
+
+/**
+ * Sectiekop in de filterkolom: 12 px, vet, met wat letterafstand. Klein mag hier omdat het
+ * geen leestekst is maar een etiket boven een groep — de gids houdt 12 px verder alleen voor
+ * voetnoten. In hoofdletters staat het niet: "GO!" en "Zonder studieaanbod" lezen dan als
+ * geschreeuw, en schermlezers spellen sommige woorden letter voor letter.
+ */
+.sectiekop {
+  font-size: var(--text-xs);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--c-zacht);
+}
+
+/* Koppen breken in even lange regels in plaats van een korte staart. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
 }
 
 /* Leaflet maakt de bol focusbaar met Tab; zonder dit is er geen zichtbare focus. */
