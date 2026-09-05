@@ -8,6 +8,45 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.0.0 — 5 september 2026
+
+De site draagt vanaf nu overal dezelfde huisstijl. Er is niets bij gekomen dat je kan
+aanklikken: alles wat je kon doen, doe je nog altijd op dezelfde manier.
+
+**Nieuw**
+
+- **Bovenaan staat een gekleurde balk met het logo:** een schoolgebouw met een gele klok, en
+  daarnaast de naam zoekjeschool.be. Het icoon in je browsertab is mee veranderd. Wie de site
+  op zijn beginscherm heeft gezet, ziet daar het nieuwe icoon pas na een keer opnieuw
+  toevoegen — dat is iets wat je toestel bewaart, niet wij.
+- **Je kan de site nu als app op je beginscherm zetten**, op iPhone en Android. Ze opent dan
+  zonder browserbalk, met het eigen icoon. Er wordt niets geïnstalleerd zolang je daar zelf
+  niet voor kiest, en er verandert niets aan wat de site over je bijhoudt: nog altijd niets.
+- **De site heeft een eigen letter**, Plus Jakarta Sans. Die staat op onze eigen server, dus je
+  browser haalt daarvoor niets op bij Google of iemand anders.
+- **Schoolnamen in de lijst zijn groter en zwaarder**, zodat je sneller langs de resultaten kan
+  scannen. Adres en afstand blijven waar ze stonden.
+- **De focusrand is nu overal een gele lijn van 3 pixels.** Wie met de tabtoets door de site
+  gaat, ziet altijd waar hij staat, ook op de gekleurde balk en in donkere modus.
+- **Op een telefoon zitten de vier knoppen bovenaan achter één menuknop.** Ze namen daar
+  anders vier rijen in beslag.
+
+**Veranderd**
+
+- Het logo van versie 1.1.2 — twee haltes met een gestippelde route — is vervangen. Dat was
+  een tussenoplossing.
+- De voorbeeldafbeelding die je ziet als je een link deelt in WhatsApp, Signal, Slack, Mastodon
+  of Bluesky is nieuw. Heb je eerder al eens een link gedeeld, dan kan het zijn dat die apps
+  nog een tijd de oude afbeelding tonen: ze bewaren die zelf.
+
+**Nog niet**
+
+- Op een breed scherm staan de lijst en de kaart nog altijd achter een schakelaar en niet naast
+  elkaar. Dat staat wel in de nieuwe opzet en volgt in een aparte versie.
+- Je eigen adres staat nog niet als geel punt op de kaart.
+
+---
+
 ## 1.1.2 — 4 september 2026
 
 **Nieuw**
