@@ -6,6 +6,7 @@ import { Footer } from './components/Footer'
 import { HelpPanel } from './components/HelpPanel'
 import { MatrixPanel } from './components/MatrixPanel'
 import { OverPanel } from './components/OverPanel'
+import { Beeldmerk } from './components/Beeldmerk'
 import { MapView } from './components/MapView'
 import { ResultList } from './components/ResultList'
 import { SearchBar } from './components/SearchBar'
@@ -320,15 +321,26 @@ function App() {
       <div className={`min-h-full flex flex-col ${vergelijkOpen ? 'print:hidden' : ''}`}>
         {/* flex-wrap is nodig: op 375px past de knoppenrij niet naast de titel en viel
             "Donker" buiten het scherm. Bij weinig ruimte zakt ze naar een eigen regel. */}
-        <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-rand px-4 py-4">
-          <div>
-            <h1 className="text-xl font-semibold text-inkt">Zoek je school</h1>
-            <p className="text-sm text-zacht">Middelbare scholen in Vlaanderen en Brussel</p>
-          </div>
-          {/* "Over deze site" staat ook hier en niet enkel in de footer: onderaan moet je
-              eerst voorbij 300 resultaten scrollen om te vinden waar de gegevens vandaan
-              komen. In de header is het altijd zichtbaar, zonder ruimte te kosten in de
-              zoekopdracht zelf. */}
+        <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 bg-kop px-4 py-3.5 text-kop-inkt sm:px-7">
+          {/* Het woordmerk is echte tekst en geen afbeelding. Het logopakket levert het als
+              vectorpaden, maar sinds Plus Jakarta Sans zelf op de site staat tekent de browser
+              exact dezelfde letters — en dan blijft het selecteerbaar, schaalt het mee met de
+              lettergrootte van de bezoeker, en is het meteen de h1 in plaats van een plaatje
+              met een verborgen kop ernaast.
+
+              De ".be" is geel en decoratief; de betekenis zit in het woord ervoor. Op deze
+              balk haalt dat geel 4,9:1, ruim boven de grens, dus het mag hier wél gewoon als
+              tekst meetellen. Op een lichte grond zou dat niet lukken — daar bestaat
+              logo-lockup-be-teal.svg voor. */}
+          <a
+            href="/"
+            className="flex items-center gap-3 rounded-lg focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-signaal"
+          >
+            <Beeldmerk grootte={34} />
+            <h1 className="text-xl font-extrabold tracking-tight">
+              zoekjeschool<span className="text-signaal">.be</span>
+            </h1>
+          </a>
           {/* Geen `shrink-0` hier, en dat is geen detail: met shrink-0 krimpt deze rij nooit
               onder haar max-content-breedte, dus perkte de header ze nooit in en had het
               `flex-wrap` erop niets om op te reageren. De knoppen wrapten dan nooit en de
@@ -341,7 +353,7 @@ function App() {
             <button
               type="button"
               onClick={() => update({ matrix: true })}
-              className="rounded-lg border border-rand px-2.5 py-1.5 text-xs text-zacht transition-colors hover:bg-hover hover:text-inkt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-signaal"
             >
               Alle richtingen
             </button>
@@ -350,7 +362,7 @@ function App() {
             <button
               type="button"
               onClick={() => update({ help: true })}
-              className="rounded-lg border border-rand px-2.5 py-1.5 text-xs text-zacht transition-colors hover:bg-hover hover:text-inkt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-signaal"
             >
               Hoe werkt deze site?
             </button>
@@ -360,14 +372,14 @@ function App() {
                 op zijn zoekopdracht terug, want die staat volledig in de querystring. */}
             <a
               href="/uitleg/"
-              className="rounded-lg border border-rand px-2.5 py-1.5 text-xs text-zacht transition-colors hover:bg-hover hover:text-inkt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-signaal"
             >
               Wat betekenen de termen? <span aria-hidden="true">&#8599;</span>
             </a>
             <button
               type="button"
               onClick={() => update({ over: true })}
-              className="rounded-lg border border-rand px-2.5 py-1.5 text-xs text-zacht transition-colors hover:bg-hover hover:text-inkt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-signaal"
             >
               Over deze site
             </button>

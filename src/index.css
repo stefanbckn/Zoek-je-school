@@ -46,6 +46,9 @@
   --color-accent: var(--c-accent);
   --color-accent-inkt: var(--c-accent-inkt);
   --color-hover: var(--c-hover);
+  --color-kop: var(--c-kop);
+  --color-kop-inkt: var(--c-kop-inkt);
+  --color-signaal: var(--c-signaal);
 
   --color-net-go-bg: var(--c-net-go-bg);
   --color-net-go-inkt: var(--c-net-go-inkt);
@@ -98,6 +101,17 @@
   --c-accent-inkt: #ffffff;
   --c-hover: #eef5f7;
 
+  /* De balk bovenaan is een eigen paar en niet gewoon `accent`, omdat hij in het donker een
+     andere kant op gaat dan de knoppen: die worden lichter, de balk juist niet. Een balk over
+     de volle breedte in #6fc7d8 zou op een donker scherm als een lichtbak werken. */
+  --c-kop: #0b5c6e;
+  --c-kop-inkt: #ffffff;
+
+  /* Het geel houdt in elk thema dezelfde waarde: het is een signaal, geen themakleur.
+     Voorbehouden aan de klok in het logo en aan jouw eigen adres op de kaart, nooit aan een
+     school — anders leest het als een uitgelicht resultaat. */
+  --c-signaal: #ffc94a;
+
   --c-net-go-bg: #d5e7f8;
   --c-net-go-inkt: #0b4a7d;
   --c-net-prov-bg: #fde5c8;
@@ -130,6 +144,9 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --c-grond: #071216;
+    --c-kop: #0e1e24;
+    --c-kop-inkt: #e4f0f3;
+    --c-signaal: #ffc94a;
     --c-kaart: #0e1e24;
     --c-rand: #213d46;
     --c-inkt: #e4f0f3;
@@ -165,6 +182,9 @@
 
 :root[data-theme="dark"] {
   --c-grond: #071216;
+  --c-kop: #0e1e24;
+  --c-kop-inkt: #e4f0f3;
+  --c-signaal: #ffc94a;
   --c-kaart: #0e1e24;
   --c-rand: #213d46;
   --c-inkt: #e4f0f3;
@@ -341,6 +361,9 @@ button:not(:disabled) {
     --c-accent: #0b5c6e;
     --c-accent-inkt: #ffffff;
     --c-hover: #ffffff;
+    --c-kop: #0b5c6e;
+    --c-kop-inkt: #ffffff;
+    --c-signaal: #ffc94a;
 
     --c-net-go-bg: #d5e7f8;
     --c-net-go-inkt: #0b4a7d;

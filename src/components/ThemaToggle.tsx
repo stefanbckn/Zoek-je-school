@@ -10,10 +10,13 @@ export function ThemaToggle() {
   const { thema, setThema } = useThema()
 
   return (
+    // Staat alleen op de kopbalk, dus de kleuren komen uit het koppaar en niet uit
+    // rand/zacht: die zijn op teal onleesbaar. Een pil met een halfdoorzichtige goot,
+    // waarin de gekozen stand als volle knop staat.
     <div
       role="radiogroup"
       aria-label="Weergave"
-      className="flex shrink-0 overflow-hidden rounded-lg border border-rand text-xs"
+      className="flex shrink-0 items-center gap-0.5 rounded-full border border-kop-inkt/25 bg-kop-inkt/10 p-[3px] text-xs"
     >
       {OPTIES.map((optie) => {
         const actief = thema === optie.waarde
@@ -25,8 +28,10 @@ export function ThemaToggle() {
             aria-checked={actief}
             title={optie.titel}
             onClick={() => setThema(optie.waarde)}
-            className={`px-2.5 py-1.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
-              actief ? 'bg-accent text-accent-inkt font-medium' : 'text-zacht hover:bg-hover'
+            className={`rounded-full px-2.5 py-1 transition-colors focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-signaal ${
+              actief
+                ? 'bg-kop-inkt text-kop font-semibold'
+                : 'text-kop-inkt/80 hover:bg-kop-inkt/15 hover:text-kop-inkt'
             }`}
           >
             {optie.label}
