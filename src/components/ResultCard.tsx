@@ -91,14 +91,14 @@ export function ResultCard({
 
   if (enkeleSchool) {
     return (
-      <div className="w-full rounded-lg border border-rand bg-kaart p-4">
+      <div className="w-full rounded-xl border border-rand bg-kaart p-4">
         <button
           type="button"
           onClick={() => onSelect(campus, enkeleSchool)}
           className="-m-2 block w-full rounded-md p-2 text-left hover:bg-hover"
         >
           <div className="flex items-start justify-between gap-2">
-            <h3 className="font-medium text-inkt">{enkeleSchool.naam}</h3>
+            <h3 className="text-lg font-bold text-inkt">{enkeleSchool.naam}</h3>
             <span
               className={`${NET_CHIP} ${NET_STYLES[enkeleSchool.net]}`}
             >
@@ -115,7 +115,7 @@ export function ResultCard({
   }
 
   return (
-    <div className="w-full rounded-lg border border-rand bg-kaart p-4">
+    <div className="w-full rounded-xl border border-rand bg-kaart p-4">
       <p className="text-xs font-medium text-zacht uppercase tracking-wide">
         {campus.scholen.length} scholen op dit adres
       </p>

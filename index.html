@@ -3,12 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <!-- De SVG wint in elke browser die hem ondersteunt; de twee PNG's zijn de terugval.
-         Het merkteken heeft twee tekeningen: op 16 pixels blijven alleen de twee bollen over,
-         want de gestippelde route valt daar uit elkaar. Die kleine versie zit in favicon-16.png. -->
+         Het beeldmerk heeft drie detailniveaus: vier ramen vanaf 48 pixels, twee ramen op 32,
+         en op 16 blijven alleen de klok, het blok en de deur over. Kleiner tekenen laat de
+         ramen in elkaar lopen tot een grijze vlek. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Maakt "Zet op beginscherm" mogelijk op iOS en Android: de site opent dan zonder
+         browserbalk, met het eigen icoon. Installeert niets zonder dat de bezoeker er zelf
+         voor kiest, en verzamelt niets. -->
+    <link rel="manifest" href="/site.webmanifest" />
+    <!-- Kleurt de statusbalk van de telefoon in de accentkleur, zodat hij aansluit op de
+         balk bovenaan de pagina. Eén vaste waarde: de lichte accentkleur haalt ook op een
+         donker toestel voldoende contrast met het wit erop. -->
+    <meta name="theme-color" content="#0B5C6E" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zoek je school | middelbare scholen in Vlaanderen en Brussel</title>
     <!-- Deze tekst toont Google onder de titel in de zoekresultaten. Houd hem onder de
@@ -27,11 +36,14 @@
     <meta property="og:title" content="Zoek je school | middelbare scholen in Vlaanderen en Brussel" />
     <meta property="og:description" content="Vind middelbare scholen in Vlaanderen en Brussel. Filter op afstand, provincie, gemeente, net en studierichting, en vergelijk tot vier campussen naast elkaar." />
     <!-- Absolute URL, geen pad: chat-apps en crawlers halen dit los van de pagina op.
-         Bewust een PNG en geen SVG, die tonen ze niet. -->
-    <meta property="og:image" content="https://zoekjeschool.be/og.png" />
+         Bewust een PNG en geen SVG, die tonen ze niet. De bestandsnaam veranderde mee met de
+         nieuwe afbeelding, en dat is geen kwestie van smaak: Facebook, LinkedIn en WhatsApp
+         cachen per URL en blijven maandenlang de oude tonen als je het bestand op dezelfde
+         naam overschrijft. Een nieuwe naam dwingt ze een verse op te halen. -->
+    <meta property="og:image" content="https://zoekjeschool.be/og-image-1200x630.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="zoekjeschool.be: welke scholen liggen bij jou in de buurt?" />
+    <meta property="og:image:alt" content="zoekjeschool.be — middelbare scholen in Vlaanderen en Brussel opzoeken op adres" />
     <!-- Zonder deze regel toont X/Twitter een klein vierkant miniatuurtje in plaats van de
          volle breedte. De rest leest het uit de og-tags hierboven. -->
     <meta name="twitter:card" content="summary_large_image" />

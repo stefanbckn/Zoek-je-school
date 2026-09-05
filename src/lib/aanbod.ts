@@ -25,7 +25,7 @@ export const FINALITEIT_TEKEN: Record<FinaliteitKeuze, string> = {
 
 /** Gedeelde vormgeving van een finaliteit-chip: omlijnd, in de kleur van de finaliteit. */
 export const FINALITEIT_CHIP =
-  'chip inline-flex items-center gap-1 rounded-lg border-[1.5px] border-current px-1.5 py-0.5 text-xs font-medium'
+  'chip inline-flex items-center gap-1 rounded-md border-[1.5px] border-current px-1.5 py-0.5 text-xs font-medium'
 
 /** Volgorde waarin graden getoond worden. Wat hier niet in staat, komt achteraan. */
 const GRAAD_VOLGORDE = [

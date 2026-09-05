@@ -1,6 +1,28 @@
 @import "tailwindcss";
 
 /**
+ * Plus Jakarta Sans, zelf gehost. Eén variabel bestand draagt alle diktes van 400 tot 800,
+ * dus geen aparte download per gewicht. Bewust niet bij Google Fonts ingeladen: dat zou elke
+ * bezoeker een verbinding met een derde partij kosten, en de site belooft dat ze niets over
+ * wie er langskomt doorgeeft.
+ *
+ * Alleen het Latijnse subset (U+0000-00FF en wat leestekens). Nagekeken op de volledige
+ * dataset in public/data/: nul tekens vallen daarbuiten, dus latin-ext zou 21 kB kosten voor
+ * niets. De vormtekens ▲ ◆ ■ bij de finaliteit zitten er evenmin in en komen uit de
+ * systeemletter — dat is de bedoeling, ze horen bij geen enkele tekstletter.
+ *
+ * `font-display: swap` toont de tekst meteen in de systeemletter en wisselt zodra het bestand
+ * binnen is. De pagina staat dus nooit leeg te wachten op 27 kB.
+ */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/plus-jakarta-sans-latin.woff2") format("woff2");
+}
+
+/**
  * Kleuren lopen via CSS-variabelen in plaats van vaste Tailwind-kleuren (slate-500 en co).
  * `@theme inline` zorgt dat een utility als `bg-kaart` letterlijk `var(--c-kaart)` uitschrijft,
  * zodat één set klassen automatisch meeschakelt met licht/donker. Zonder `inline` zou Tailwind
@@ -11,6 +33,41 @@
  * met `:not([data-theme="light"])`, anders wint een donker systeem van een bewuste lichte keuze.
  */
 @theme inline {
+  /**
+   * De typeschaal uit de designgids, gezet op de tokens die Tailwind zelf al gebruikt. Zo blijft
+   * `text-sm` overal `text-sm` heten en verandert alleen wat het betekent — dat scheelt zestig
+   * losse klassewijzigingen en houdt de schaal op één plaats.
+   *
+   * 12 px is de bodem en is er alleen voor voetnoten en bronvermelding. Alles wat een bezoeker
+   * echt leest, begint bij 14.
+   */
+  --text-xs: 0.75rem;          /* 12 — chip, badge, voetnoot */
+  /* Bewust NIET de 1,7 uit de gids. Die geldt daar voor een voetnoot, dus voor lopende tekst;
+     op text-xs zit ook elke chip en badge, en die werden er een halve regel hoger van. De 1,7
+     staat nu in .voetnoot, waar hij hoort. */
+  --text-xs--line-height: 1.35;
+  --text-sm: 0.875rem;         /* 14 — adres, afstand, aantal richtingen */
+  --text-sm--line-height: 1.5;
+  --text-base: 1rem;           /* 16 — invoerveld en lopende tekst */
+  --text-base--line-height: 1.5;
+  --text-lg: 1.1875rem;        /* 19 — schoolnaam in een kaart */
+  --text-lg--line-height: 1.3;
+  --text-2xl: 2.125rem;        /* 34 — paneeltitel */
+  --text-2xl--line-height: 1.15;
+
+  /* Chip 6, knop en veld 10, kaart en paneel 12, badge en schakelaar 999. `md` en `xl` staan
+     bij Tailwind al op 6 en 12; alleen `lg` moet van 8 naar 10. */
+  --radius-lg: 0.625rem;
+
+  /* Eén schaduw, en alleen voor wat boven de pagina zweeft: het suggestielijstje en de
+     vergelijkbalk. Kaarten in de lijst krijgen een rand, geen schaduw. */
+  --shadow-lg: 0 8px 24px rgba(10, 26, 31, 0.12);
+
+  /* De fallback is de systeemletter van het toestel: die staat er al terwijl het woff2
+     onderweg is, en blijft staan als het bestand niet aankomt. */
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
   --color-grond: var(--c-grond);
   --color-kaart: var(--c-kaart);
   --color-rand: var(--c-rand);
@@ -19,6 +76,9 @@
   --color-accent: var(--c-accent);
   --color-accent-inkt: var(--c-accent-inkt);
   --color-hover: var(--c-hover);
+  --color-kop: var(--c-kop);
+  --color-kop-inkt: var(--c-kop-inkt);
+  --color-signaal: var(--c-signaal);
 
   --color-net-go-bg: var(--c-net-go-bg);
   --color-net-go-inkt: var(--c-net-go-inkt);
@@ -71,6 +131,17 @@
   --c-accent-inkt: #ffffff;
   --c-hover: #eef5f7;
 
+  /* De balk bovenaan is een eigen paar en niet gewoon `accent`, omdat hij in het donker een
+     andere kant op gaat dan de knoppen: die worden lichter, de balk juist niet. Een balk over
+     de volle breedte in #6fc7d8 zou op een donker scherm als een lichtbak werken. */
+  --c-kop: #0b5c6e;
+  --c-kop-inkt: #ffffff;
+
+  /* Het geel houdt in elk thema dezelfde waarde: het is een signaal, geen themakleur.
+     Voorbehouden aan de klok in het logo en aan jouw eigen adres op de kaart, nooit aan een
+     school — anders leest het als een uitgelicht resultaat. */
+  --c-signaal: #ffc94a;
+
   --c-net-go-bg: #d5e7f8;
   --c-net-go-inkt: #0b4a7d;
   --c-net-prov-bg: #fde5c8;
@@ -103,6 +174,9 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --c-grond: #071216;
+    --c-kop: #0e1e24;
+    --c-kop-inkt: #e4f0f3;
+    --c-signaal: #ffc94a;
     --c-kaart: #0e1e24;
     --c-rand: #213d46;
     --c-inkt: #e4f0f3;
@@ -138,6 +212,9 @@
 
 :root[data-theme="dark"] {
   --c-grond: #071216;
+  --c-kop: #0e1e24;
+  --c-kop-inkt: #e4f0f3;
+  --c-signaal: #ffc94a;
   --c-kaart: #0e1e24;
   --c-rand: #213d46;
   --c-inkt: #e4f0f3;
@@ -178,6 +255,8 @@ body,
 
 body {
   margin: 0;
+  font-family: var(--font-sans);
+
   /* Expliciet: zonder achtergrond op body schemert de grond van de browser door bij
      het omschakelen, wat een flits geeft. */
   background-color: var(--c-grond);
@@ -247,9 +326,59 @@ body {
   font-size: 0.9375rem;
 }
 
+/**
+ * Eén focusring voor de hele site: 3 px geel met 2 px afstand. De designgids zet die kleur vast
+ * omdat ze als enige op elk vlak van het palet opvalt — op de teal kopbalk, op wit, en op de
+ * donkere grond. Teal viel op de kopbalk zelf weg.
+ *
+ * Hier centraal en niet als utility-klasse op elke knop: die stonden op tien plaatsen met drie
+ * verschillende waarden, en een vergeten knop had dan stil geen zichtbare focus. `:where()`
+ * geeft de regel specificiteit nul, dus een component die het bewust anders wil, wint nog
+ * steeds zonder !important.
+ */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--c-signaal);
+  outline-offset: 2px;
+}
+
+/**
+ * Sectiekop in de filterkolom: 12 px, vet, met wat letterafstand. Klein mag hier omdat het
+ * geen leestekst is maar een etiket boven een groep — de gids houdt 12 px verder alleen voor
+ * voetnoten. In hoofdletters staat het niet: "GO!" en "Zonder studieaanbod" lezen dan als
+ * geschreeuw, en schermlezers spellen sommige woorden letter voor letter.
+ */
+/* Voetnoot en bronvermelding: 12 px met een ruime regelhoogte, want dit zijn de enige plaatsen
+   waar zo klein nog een hele alinea lang doorloopt. */
+.voetnoot {
+  font-size: var(--text-xs);
+  line-height: 1.7;
+}
+
+.sectiekop {
+  font-size: var(--text-xs);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--c-zacht);
+}
+
+/* Koppen breken in even lange regels in plaats van een korte staart. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* `pretty` voorkomt een laatste regel met één woord erop, maar alleen op lopende tekst.
+   Op body gezet raakte het ook de korte labels in de aanbodlijst, en daar bepaalt het mee
+   wanneer een richtingnaam naar een tweede regel gaat — precies wat daar niet moet. */
+p {
+  text-wrap: pretty;
+}
+
 /* Leaflet maakt de bol focusbaar met Tab; zonder dit is er geen zichtbare focus. */
 .cluster-bol:focus-visible {
-  outline: 3px solid var(--c-inkt);
+  outline: 3px solid var(--c-signaal);
   outline-offset: 3px;
 }
 
@@ -312,6 +441,9 @@ button:not(:disabled) {
     --c-accent: #0b5c6e;
     --c-accent-inkt: #ffffff;
     --c-hover: #ffffff;
+    --c-kop: #0b5c6e;
+    --c-kop-inkt: #ffffff;
+    --c-signaal: #ffc94a;
 
     --c-net-go-bg: #d5e7f8;
     --c-net-go-inkt: #0b4a7d;

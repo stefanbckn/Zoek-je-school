@@ -94,6 +94,18 @@ const PALETTEN = {
     Gemeentelijk: ['#efaad3', '#481d38'],
     Vrij: ['#83d6b6', '#0c3629'],
   },
+  // De kopbalk staat er sinds het geel als tekst meedoet. Op een lichte grond haalt #ffc94a
+  // geen 4,5:1 — daar is het decoratief en bestaat logo-lockup-be-teal.svg voor — maar op de
+  // balk zelf is het gewone tekst, en dan moet het de grens halen. Deze twee groepen bewaken
+  // dat, zodat een latere wijziging aan --c-kop niet stilletjes de .be onleesbaar maakt.
+  'kopbalk licht': {
+    Woordmerk: ['#ffffff', '#0b5c6e'],
+    '.be': ['#ffc94a', '#0b5c6e'],
+  },
+  'kopbalk donker': {
+    Woordmerk: ['#e4f0f3', '#0e1e24'],
+    '.be': ['#ffc94a', '#0e1e24'],
+  },
 }
 
 let problemen = 0
@@ -106,6 +118,9 @@ for (const [naam, palet] of Object.entries(PALETTEN)) {
     if (!ok) problemen++
     console.log(`  ${label.padEnd(13)} ${voor} op ${achter}  ${c.toFixed(2)}:1  ${ok ? 'AA' : 'TE LAAG'}`)
   }
+  // Bij de kopbalk gaat het om leesbaarheid op één ondergrond, niet om twee dingen uit
+  // elkaar houden. De afstandscontrole slaat daar dus over.
+  if (naam.startsWith('kopbalk')) continue
   const labels = Object.keys(palet)
   for (const type of Object.keys(MATRIX)) {
     let kleinste = Infinity
