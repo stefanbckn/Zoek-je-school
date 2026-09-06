@@ -1,4 +1,5 @@
 import type { DatasetMeta } from '../types'
+import { SteunKnop } from './SteunKnop'
 
 export function Footer({
   meta,
@@ -113,6 +114,10 @@ export function Footer({
           Wat er veranderde
         </a>
       </p>
+      {/* De steunknop staat helemaal onderaan, ná het versienummer: tussen de bronvermeldingen
+          onderbreekt een gekleurd blok een voettekst die verder uit fijne regels bestaat, en dat
+          leest als een banner. Achteraan sluit hij de pagina af. */}
+      <SteunKnop className="mt-4" />
     </footer>
   )
 }
