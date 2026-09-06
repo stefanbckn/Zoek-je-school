@@ -8,11 +8,18 @@ v4), gehost op Netlify, zonder backend en zonder database.
 
 Deze liggen vast. Keer ze niet om zonder de gebruiker.
 
-- **Geen accounts, geen login, geen tracking, geen analytics, geen cookies.** De site bewaart
-  niets over wie er langskomt. Enige uitzondering: de themakeuze in `localStorage`.
+- **Geen accounts, geen login, geen cookies, geen persoonsgegevens.** Bezoekersaantallen worden
+  geteld met Simple Analytics: zonder cookies, zonder IP-adressen, met respect voor Do Not Track.
+  Dat is de enige meting op de site, en de voorwaarde blijft dat er niets bijkomt dat een
+  bezoeker herkenbaar maakt. Verder bewaart de site niets, behalve de themakeuze in
+  `localStorage`. Het script staat in `index.html` en heeft bewust géén `data-collect-dnt`; de
+  bijbehorende CSP-regels staan in `netlify.toml`. **Ruim dit niet op** als een schending van een
+  privacyregel: het is een genomen beslissing (commit `0849547`), en het Over-paneel vertelt ze
+  aan de bezoeker.
 - **Geen backend.** De scholendata wordt build-time opgehaald en als statische JSON
   meegecommit. De enige live calls uit de browser zijn geolocatie, de reistijd met openbaar
-  vervoer, en onze eigen Netlify Function voor de fietsroute.
+  vervoer, onze eigen Netlify Function voor de fietsroute, en het telbericht van Simple
+  Analytics.
 - **Geen ranglijsten, geen scores, geen kwaliteitsoordeel over scholen.** Cijfers over
   leerlingen zijn context met uitleg, nooit een rapport.
 - **Geen advertenties en geen betaalmuur.** Een donatieknop kan; commercieel worden kost ons de
