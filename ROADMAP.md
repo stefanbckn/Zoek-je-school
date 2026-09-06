@@ -60,10 +60,11 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
 | 1 | Lijst en kaart naast elkaar | Op desktop vanaf 1280 px drie kolommen: filters 268 vast, lijst flexibel, kaart 470 vast en sticky. Lijst en kaart delen dezelfde hover-toestand, zodat een speld en zijn resultaatkaart samen oplichten. De Lijst/Kaart-schakelaar blijft alleen onder 900 px, waar de kaartkolom wegvalt | **Klaar om te bouwen, geen bron nodig.** Beschreven in de designgids bij de visuele identiteit, maar bewust apart gehouden: dit is gedrag, geen opmaak. Vandaag is `weergave` in `src/App.tsx` een strikte keuze tussen lijst en kaart op elke breedte; er komt gedeelde hover-state bij, de schakelaar wordt afhankelijk van de breedte, en de kaart laadt op desktop altijd mee |
-| 2 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
-| 3 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
-| 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
-| 5 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 2 | Weet je het nog niet? | Voor ouders die nog geen richting in gedachten hebben: uitleg bij wat 1A is (basisvorming plus keuzegedeelte), hoe inschrijven in het 1e jaar verloopt, en links naar de interesse- en studievaardigheidstests van Onderwijskiezer | **Deels klaar om te bouwen, deels bron nodig.** De drie links zijn nagekeken op 06/09/2026 en werken. Eigen tekst over 1A op de site kan pas als de officiële bron gevonden is, zie hieronder |
+| 3 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
+| 4 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
+| 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
+| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie [docs/onderzoek/aanmelden.md](./docs/onderzoek/aanmelden.md) |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -85,6 +86,68 @@ anders begraven bleven in secties over versies die al uit zijn.
 - **Naamgenoten in de naamfilter.** Sinds 0.12.0 zoekt de naamfilter in heel Vlaanderen, dus
   dezelfde schoolnaam komt vaker meerdere keren terug. Als dat in de praktijk stoort, is de
   oplossing de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
+
+## Weet je het nog niet? (links nagekeken 06/09/2026)
+
+Niet elke ouder komt hier met een richting in gedachten. Wie dat wel heeft, bedienen we al; wie
+nog niets weet, krijgt vandaag niets. Twee stukken, met een verschillende zekerheid.
+
+**1. Links naar Onderwijskiezer. Nagekeken, meteen te zetten.**
+
+- **I-Like Basic**, <https://www.onderwijskiezer.be/ilike_basic/> Interessetest voor het zesde
+  leerjaar: 54 activiteiten scoren van 1 tot 7, met foto's erbij, resultaat als grafiek over acht
+  interessegebieden.
+- **I-Study Basic**, <https://www.onderwijskiezer.be/istudy_basic/> Vragenlijst over motivatie en
+  studiemethode, ook voor het zesde leerjaar.
+- **De eerste graad**, <https://www.onderwijskiezer.be/v2/secundair/sec_1graad.php> Hier staat de
+  verdeling letterlijk: basisvorming van minstens 27 uur en een keuzegedeelte van 5 uur. Bewust
+  deze overzichtspagina en niet de detailpagina van 1A
+  (`sec_detail_1graad.php?detail=10003`): daar staat die verdeling niet bij, alleen "minimaal 32
+  lesuren per week".
+- **Inschrijven in het 1e jaar**,
+  <https://www.onderwijskiezer.be/v2/download/Inschrijven-in-het-1e-jaar-secundair-onderwijs.pdf>
+  Eén blad dat de procedure uittekent: 1A of 1B naargelang het getuigschrift basisonderwijs,
+  aanmelden, scholen in voorkeursvolgorde zetten, en dan een plaats of een wachtlijst. Gemaakt in
+  Canva op 31/03/2026 door Pascale Van Camp. Let op: dit is de algemene procedure, **geen bron per
+  school**, dus het verandert niets aan de rij "Aanmelden" hieronder.
+
+⚠️ **Enkel linken, niets overnemen.** Onderwijskiezer verbiedt kopiëren en herdistribueren.
+Dezelfde reden waarom de doorstroommatrix hieronder afvalt. Schrijf er dus een eigen zin bij die
+zegt waarom je erheen stuurt, en neem geen tekst, vraagpakket of blad over.
+
+**Waar de grens ligt, als we het inschrijvingsblad ooit zelf namaken** (besproken 06/09/2026).
+Beschermd is hun uitwerking: de tekst zoals zij ze schreven, de volgorde en groepering van de
+blokjes, het ontwerp. Niet beschermd is het feit eronder, en dat 1A hoort bij een getuigschrift
+basisonderwijs staat gewoon in de regelgeving. Een eigen versie mag dus, op twee voorwaarden:
+
+- **Vertrek van de officiële inschrijvingsregels, niet van hun blad.** Herschrijven wat je van
+  hen aan het overtypen bent, blijft een bewerking van hun werk. Het blad is hoogstens het bewijs
+  dat ouders met die vraag zitten.
+- **Bronvermelding lost niets op.** Attributie maakt een kopie niet legaal. Linken mag altijd,
+  kopiëren nooit, ook niet met een naamsvermelding erbij.
+
+**2. Eigen uitleg over 1A op de site. Bron nog niet gevonden.**
+
+Beter dan doorlinken is het in één alinea zelf zeggen: in 1A ligt het grootste stuk van de week
+vast en kiest de school de rest in. Dat verklaart meteen waarom twee scholen met "1A" in het
+aanbod toch niet hetzelfde aanbieden, en dat is precies de verwarring waar een ouder mee zit.
+
+Wat we daarover nagekeken hebben op 06/09/2026:
+
+- **De pagina's van Onderwijs Vlaanderen die dit zeiden, bestaan niet meer.** Zowel het
+  persbericht "Van 29 studiegebieden naar 8 studiedomeinen" als "Krachtlijnen van modernisering
+  secundair onderwijs" geven een 301 naar de portaalhomepage van vlaanderen.be. De inhoud is
+  daar niet teruggevonden.
+- **`data-onderwijs.vlaanderen.be/onderwijsaanbod/so/structuur/1stegraad` heeft het niet.** Dat is
+  een lijst met links naar studierichtingen, zonder uitleg over de urenverdeling.
+- **Nog uit te zoeken, in deze volgorde:** de Codex Secundair Onderwijs en de omzendbrieven op
+  `data-onderwijs.vlaanderen.be/edulex`. Daar hoort de urenverdeling in te staan en die tekst is
+  wettelijk materiaal, dus zonder de beperking van Onderwijskiezer. **Niet geverifieerd.** Ga
+  niet schrijven op basis van wat er hierboven staat: dat is uit Onderwijskiezer gelezen en dus
+  precies de bron die we niet mogen overnemen.
+
+**Vorm, als dit er komt.** Hoort in het bestaande helppaneel `?help=1`, niet in een nieuw paneel.
+Daar staat al wat de site niet toont; dit is het spiegelbeeld daarvan.
 
 ## Wat volgt er na deze richting? (nog niet onderzocht)
 
