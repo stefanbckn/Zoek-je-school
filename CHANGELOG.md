@@ -8,6 +8,27 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.1.0 — 6 september 2026
+
+Onderaan de site staat vanaf nu een knop om de site te steunen, en ook onderaan het paneel
+"Over deze site". Verder verandert er niets aan wat je kan doen of zien.
+
+**Nieuw**
+
+- **De knop "Steun deze site op Ko-fi", onderaan de voettekst.** De site is gratis en
+  advertentievrij, en een bijdrage betaalt de hosting. Klikken brengt je naar onze
+  Ko-fi-pagina; een account heb je daarvoor niet nodig. Dezelfde knop staat onderaan het
+  paneel "Over deze site", naast Sluiten.
+
+**Wat je niet merkt, maar wel telt**
+
+- **De knop is een gewone link, geen ingebouwde Ko-fi-widget.** Die widget zou bij elke
+  paginaweergave contact opnemen met Ko-fi en dus je IP-adres doorgeven, ook als je nooit klikt.
+  Zolang je niet zelf op de knop duwt, weet Ko-fi niet dat je hier was.
+- Het Ko-fi-kopje op de knop staat op onze eigen server, niet op die van Ko-fi.
+
+---
+
 ## 2.0.0 — 5 september 2026
 
 De site draagt vanaf nu overal dezelfde huisstijl. Er is niets bij gekomen dat je kan

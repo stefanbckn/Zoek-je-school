@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import type { DatasetMeta } from '../types'
+import { SteunKnop } from './SteunKnop'
 
 interface OverPanelProps {
   open: boolean
@@ -270,13 +271,19 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
           </section>
         </div>
 
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-6 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-inkt hover:opacity-90"
-        >
-          Sluiten
-        </button>
+        {/* Sluiten links, steunen rechts. De steunknop staat hier en niet hogerop: wie dit
+            paneel uitleest, weet nu waar de data vandaan komt en wat de site wel en niet doet.
+            Dat is het moment waarop een vraag om steun iets betekent. */}
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-inkt hover:opacity-90"
+          >
+            Sluiten
+          </button>
+          <SteunKnop />
+        </div>
       </div>
     </div>
   )
