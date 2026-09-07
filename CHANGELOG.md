@@ -8,6 +8,19 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.3.2 — 7 september 2026
+
+Onderhoud aan een controle die achter de schermen draait. Aan de site zelf verandert er niets.
+
+**Opgelost**
+
+- **De kwartaalcontrole op dode links noemde een redirect ten onrechte dood.** In `netlify.toml`
+  staat een adres met een plaatshouder erin die Netlify pas bij het serveren invult; het script
+  las dat als een gewone link. Daardoor opende de controle elk kwartaal een melding over iets
+  dat werkt, en dat is precies hoe zo'n rapport ophoudt gelezen te worden.
+
+---
+
 ## 2.3.1 — 7 september 2026
 
 **Opgelost**
