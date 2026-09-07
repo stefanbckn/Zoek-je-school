@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ActieveFilters } from './components/ActieveFilters'
 import { DetailPanel } from './components/DetailPanel'
 import { FilterPanel } from './components/FilterPanel'
@@ -310,6 +310,16 @@ function App() {
 
   const verborgen = verborgenOmschrijving(verborgenZonderAanbod, verborgenLegeScholen)
 
+  // Zelfde afspraak als bij de panelen: wat het scherm overneemt, sluit met Escape.
+  useEffect(() => {
+    if (!filtersOpen) return
+    function opToets(e: KeyboardEvent) {
+      if (e.key === 'Escape') setFiltersOpen(false)
+    }
+    document.addEventListener('keydown', opToets)
+    return () => document.removeEventListener('keydown', opToets)
+  }, [filtersOpen])
+
   function selecteer(campus: CampusMetAfstand, school: SchoolOpCampus) {
     setGeselecteerd({ campus, school })
   }
@@ -469,7 +479,32 @@ function App() {
         />
 
         <div className="flex-1 flex flex-col md:flex-row">
-          <div className={`${filtersOpen ? 'block' : 'hidden'} md:block`}>
+          {/* Op een telefoon is dit een overlay, op een breed scherm gewoon de kolom links.
+              Ingeklapt in de pagina zelf werkte niet: het paneel is 1589 px hoog, staat in de
+              DOM vóór <main>, en duwde de resultatenkop daarmee van y=300 naar y=1869. Je zag
+              het aantal resultaten dus niet meebewegen terwijl je vinkte — net de terugkoppeling
+              die een filter bruikbaar maakt — en de knop om weer dicht te klappen zat onder die
+              1589 px. */}
+          <div
+            className={`${
+              filtersOpen ? 'fixed inset-0 z-40 flex flex-col bg-grond' : 'hidden'
+            } md:static md:z-auto md:block md:bg-transparent`}
+          >
+            {/* Kop en voet bestaan alleen op de telefoon: op een breed scherm staat het paneel
+                gewoon naast de lijst en valt er niets te sluiten. */}
+            <div className="flex min-h-[var(--h-resultatenbalk)] shrink-0 items-center justify-between gap-2 border-b border-rand px-4 md:hidden">
+              <h2 className="text-sm font-semibold text-inkt">Filters</h2>
+              <button
+                type="button"
+                onClick={() => setFiltersOpen(false)}
+                aria-label="Filters sluiten"
+                className="-mr-2 grid size-11 place-items-center text-zacht hover:text-inkt"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain md:overflow-visible">
             <FilterPanel
               netOpties={netOpties}
               provincieOpties={provincieOpties}
@@ -495,6 +530,19 @@ function App() {
               onRichtingChange={(richting) => update({ richting })}
               onToonZonderAanbodChange={(toonZonderAanbod) => update({ toonZonderAanbod })}
             />
+            </div>
+
+            {/* Het aantal staat op de knop zelf: terwijl je vinkt zie je de lijst eronder niet,
+                dus dit is op een telefoon de enige plaats waar het meebeweegt. */}
+            <div className="shrink-0 border-t border-rand bg-grond p-3 md:hidden">
+              <button
+                type="button"
+                onClick={() => setFiltersOpen(false)}
+                className="flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-4 text-sm font-medium text-accent-inkt"
+              >
+                Toon {zichtbareCampussen.length} resultaten
+              </button>
+            </div>
           </div>
 
           <main className="flex-1 flex flex-col min-h-[60vh]">
