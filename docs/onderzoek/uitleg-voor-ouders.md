@@ -10,12 +10,12 @@ arbeidsmarktfinaliteit niet uit terwijl de B-stroom doorstroom niet uitsluit (ar
 van het besluit over de organisatie van het secundair onderwijs, `codex.vlaanderen.be`,
 id 1037607, nagelezen op 07/09/2026).
 
-Niet elke ouder komt hier met een richting in gedachten. Wie dat wel heeft, bedienen we al; wie
-nog niets weet, krijgt vandaag niets. Drie stukken. Sinds 07/09/2026 heeft elk ervan een
-bron; er is niets meer dat dit tegenhoudt.
+De aanleiding: niet elke ouder komt op de site met een richting in gedachten. Wie dat wel heeft
+werd al bediend, wie nog niets wist kreeg niets. Drie stukken, alle drie intussen gebouwd.
 
-**1. Links naar Onderwijskiezer. Nagekeken, meteen te zetten.** Enkel de twee tests zijn nog
-onmisbaar; voor de uitleg zelf hebben we sinds 07/09/2026 een eigen bron.
+**1. Links naar Onderwijskiezer. Uitgebracht in 2.3.0.** Enkel de twee tests staan op de site,
+op `/uitleg/inschrijven/`. De andere twee links hieronder zijn niet gebruikt: voor de uitleg
+zelf hebben we een eigen bron.
 
 - **I-Like Basic**, <https://www.onderwijskiezer.be/ilike_basic/> Interessetest voor het zesde
   leerjaar: 54 activiteiten scoren van 1 tot 7, met foto's erbij, resultaat als grafiek over acht
@@ -59,7 +59,7 @@ staan en die je niet moet terugdraaien: de officiële term is "differentiatie" e
 "keuzegedeelte" (dat laatste komt uit Onderwijskiezer), en de 27 plus 5 uur staat er als het
 eerste leerjaar, niet als 1A alleen, want zo staat het in de bron.
 
-**3. Hoe aanmelden en inschrijven verloopt. Bron gevonden op 07/09/2026.**
+**3. Hoe aanmelden en inschrijven verloopt. Uitgebracht in 2.3.0 op 07/09/2026.**
 
 Dit is het stuk waarvoor eerder naar het pdf-blad van Onderwijskiezer gekeken werd. Dat is niet
 langer nodig: dezelfde procedure staat op vlaanderen.be, vrij na te vertellen in eigen woorden en
@@ -96,7 +96,7 @@ Dit verandert niets aan de rij "Aanmelden" in de tabel hierboven. Welk systeem e
 gebruikt, staat nergens centraal, en de aanmeldpagina zegt dat zelf: scholen mogen kiezen of en
 met wie ze samenwerken.
 
-## Vorm: waar deze drie stukken landen (beslist 07/09/2026)
+## Vorm: waar deze drie stukken geland zijn (beslist en gebouwd 07/09/2026)
 
 De oudere notitie zei "hoort in het helppaneel `?help=1`". **Dat is achterhaald.** Het helppaneel
 gaat over de bediening van de zoeker, en deze uitleg gaat over het onderwijs zelf en over een
