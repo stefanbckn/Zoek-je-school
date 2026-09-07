@@ -67,6 +67,7 @@ export default defineConfig(({ mode }) => {
         input: {
           main: resolve(__dirname, 'index.html'),
           uitleg: resolve(__dirname, 'uitleg/index.html'),
+          inschrijven: resolve(__dirname, 'uitleg/inschrijven/index.html'),
         },
       },
     },

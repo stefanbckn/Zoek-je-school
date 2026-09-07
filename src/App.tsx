@@ -334,7 +334,7 @@ function App() {
           klik. Bewust géén target="_blank": de browserknop terug brengt de bezoeker op zijn
           zoekopdracht terug, want die staat volledig in de querystring. */}
       <a href="/uitleg/" className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15">
-        Wat betekenen de termen? <span aria-hidden="true">&#8599;</span>
+        Uitleg voor ouders <span aria-hidden="true">&#8599;</span>
       </a>
       <button type="button" onClick={() => update({ over: true })} className="rounded-lg border border-kop-inkt/30 px-2.5 py-1.5 text-xs font-semibold text-kop-inkt transition-colors hover:bg-kop-inkt/15">
         Over deze site

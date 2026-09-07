@@ -51,6 +51,24 @@
         </a>
       </p>
 
+      <!-- De schakelaar tussen de twee uitlegpagina's. Bewust twee links en geen JavaScript:
+           elke helft houdt zo een eigen adres, titel en socialkaart, en ze werkt zonder script.
+           Géén role="tablist": die rol belooft aan een schermlezer dat er panelen wisselen
+           zonder navigatie, en dat klopt hier niet. aria-current markeert de actieve pagina. -->
+      <nav class="mt-4 inline-flex rounded-lg border border-rand bg-kaart p-1 text-sm" aria-label="Uitleg voor ouders">
+        <a
+          href="./"
+          aria-current="page"
+          class="rounded-md bg-accent px-3 py-1.5 font-medium text-accent-inkt"
+          >De terminologie</a
+        >
+        <a
+          href="inschrijven/"
+          class="rounded-md px-3 py-1.5 font-medium text-zacht transition-colors hover:text-inkt"
+          >Aanmelden en inschrijven</a
+        >
+      </nav>
+
       <article class="mt-4 rounded-lg border border-rand bg-kaart p-5 sm:p-8">
       <h1 class="text-2xl font-semibold text-inkt">Het secundair onderwijs uitgelegd</h1>
       <p class="mt-3 text-zacht">
@@ -217,8 +235,10 @@
       <h2 class="mt-8 text-lg font-semibold text-inkt">Wat je op deze site niet vindt</h2>
       <p class="mt-2 text-zacht">
         Geen ranglijst, geen sterren, geen oordeel over welke school beter is. Deze site zegt
-        welke scholen bestaan, waar ze liggen en wat ze aanbieden. Infodagen, aanmelden en
-        inschrijven lopen via de school zelf of via het aanmeldsysteem van je gemeente. De rest
+        welke scholen bestaan, waar ze liggen en wat ze aanbieden. Infodagen lopen via de school
+        zelf; hoe
+        <a href="inschrijven/" class="underline">aanmelden en inschrijven</a> verloopt, staat op
+        de andere helft van deze uitleg. De rest
         beslis je zelf, het best door zelf te gaan kijken.
       </p>
 

@@ -20,7 +20,9 @@ Zo staat elk stuk op één plaats. Bij de opruimronde van 03/09/2026 zijn de sec
 0.2.1, 0.3.0, 0.11.0 en 0.12.0 op die manier verdeeld; ze stonden hier grotendeels dubbel, en de
 sectie over 0.2.0 beschreef de netfilter nog met de achterhaalde waarde "Stedelijk". Later die
 dag zijn ook het afgeronde onderzoek naar aanmelden, ScholenKompas, de GOK-routes en de
-De Lijn-API naar `docs/onderzoek/` verhuisd.
+De Lijn-API naar `docs/onderzoek/` verhuisd. Op 07/09/2026 volgde het onderzoek naar de uitleg
+voor ouders diezelfde weg, na 2.2.0 en 2.3.0:
+[docs/onderzoek/uitleg-voor-ouders.md](./docs/onderzoek/uitleg-voor-ouders.md).
 
 **Versienummers staan hier niet bij wat er nog moet komen — bewust.** Een nummer krijgt een
 thema pas op het moment dat het af is en naar `main` gaat. Zo kan elk stuk los uitgebracht
@@ -53,6 +55,7 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **0.11.0** | Markers clusteren | Nabije adressen op de kaart samengevoegd tot één bol met het aantal erin, die bij klikken en inzoomen uit elkaar valt · vanaf zoom 16 staan alle markers los |
 | **0.12.0** | Heel Vlaanderen en Brussel | Alle 2145 vestigingen op 1075 adressen in één keer geladen in plaats van enkel provincie Antwerpen · filter op provincie · gemeentefilter met zoekveld, resultaataantallen en enkel gemeenten die nog resultaten hebben |
 | **1.0.0** | De matrix | Alle 572 studierichtingen als raster van studiedomein × finaliteit per graad, in een paneel achter "Alle richtingen" (`?matrix=1`) · teller per richting binnen de gekozen gemeente of straal, ook wanneer die nul is · klikken filtert de lijst op die richting en graad · filter op studiedomein in de filterkolom || **2.2.0** | De eerste graad uitgelegd | 1A, 1B, 2A en 2B op `/uitleg/`, met per leerjaar de uren basisvorming, differentiatie en basisoptie en de bron erbij · steunknop ook onderaan die pagina |
+| **2.3.0** | Aanmelden en inschrijven | Nieuwe pagina `/uitleg/inschrijven/` met de procedure voor het 1ste jaar, de twee tests van Onderwijskiezer, voorrang en ordening, en een link naar de officiële data · schakelaar tussen de twee uitlegpagina's · knop in de kop heet nu "Uitleg voor ouders" |
 
 ## Nog te doen
 
@@ -61,11 +64,10 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
 | 1 | Lijst en kaart naast elkaar | Op desktop vanaf 1280 px drie kolommen: filters 268 vast, lijst flexibel, kaart 470 vast en sticky. Lijst en kaart delen dezelfde hover-toestand, zodat een speld en zijn resultaatkaart samen oplichten. De Lijst/Kaart-schakelaar blijft alleen onder 900 px, waar de kaartkolom wegvalt | **Klaar om te bouwen, geen bron nodig.** Beschreven in de designgids bij de visuele identiteit, maar bewust apart gehouden: dit is gedrag, geen opmaak. Vandaag is `weergave` in `src/App.tsx` een strikte keuze tussen lijst en kaart op elke breedte; er komt gedeelde hover-state bij, de schakelaar wordt afhankelijk van de breedte, en de kaart laadt op desktop altijd mee |
-| 2 | Weet je het nog niet? | Wat er nog rest: de pagina `/uitleg/inschrijven/` met hoe aanmelden en inschrijven in het 1e jaar verloopt, de twee tests van Onderwijskiezer erbij, en de schakelaar tussen de twee uitlegpagina's | **Klaar om te bouwen, geen bron meer nodig.** De uitleg over 1A, 1B, 2A en 2B is uitgebracht in 2.2.0; de procedurepagina staat nog open. Bronnen nagelezen op 07/09/2026, zie hieronder |
-| 3 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
-| 4 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
-| 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
-| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 2 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
+| 3 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
+| 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
+| 5 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie [docs/onderzoek/aanmelden.md](./docs/onderzoek/aanmelden.md) |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -87,147 +89,6 @@ anders begraven bleven in secties over versies die al uit zijn.
 - **Naamgenoten in de naamfilter.** Sinds 0.12.0 zoekt de naamfilter in heel Vlaanderen, dus
   dezelfde schoolnaam komt vaker meerdere keren terug. Als dat in de praktijk stoort, is de
   oplossing de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
-
-## Weet je het nog niet? (bronnen nagekeken 07/09/2026)
-
-Niet elke ouder komt hier met een richting in gedachten. Wie dat wel heeft, bedienen we al; wie
-nog niets weet, krijgt vandaag niets. Drie stukken. Sinds 07/09/2026 heeft elk ervan een
-bron; er is niets meer dat dit tegenhoudt.
-
-**1. Links naar Onderwijskiezer. Nagekeken, meteen te zetten.** Enkel de twee tests zijn nog
-onmisbaar; voor de uitleg zelf hebben we sinds 07/09/2026 een eigen bron.
-
-- **I-Like Basic**, <https://www.onderwijskiezer.be/ilike_basic/> Interessetest voor het zesde
-  leerjaar: 54 activiteiten scoren van 1 tot 7, met foto's erbij, resultaat als grafiek over acht
-  interessegebieden.
-- **I-Study Basic**, <https://www.onderwijskiezer.be/istudy_basic/> Vragenlijst over motivatie en
-  studiemethode, ook voor het zesde leerjaar.
-- **De eerste graad**, <https://www.onderwijskiezer.be/v2/secundair/sec_1graad.php> Hier staat de
-  verdeling letterlijk: basisvorming van minstens 27 uur en een keuzegedeelte van 5 uur. Bewust
-  deze overzichtspagina en niet de detailpagina van 1A
-  (`sec_detail_1graad.php?detail=10003`): daar staat die verdeling niet bij, alleen "minimaal 32
-  lesuren per week".
-- **Inschrijven in het 1e jaar**,
-  <https://www.onderwijskiezer.be/v2/download/Inschrijven-in-het-1e-jaar-secundair-onderwijs.pdf>
-  Eén blad dat de procedure uittekent: 1A of 1B naargelang het getuigschrift basisonderwijs,
-  aanmelden, scholen in voorkeursvolgorde zetten, en dan een plaats of een wachtlijst. Gemaakt in
-  Canva op 31/03/2026 door Pascale Van Camp. Let op: dit is de algemene procedure, **geen bron per
-  school**, dus het verandert niets aan de rij "Aanmelden" hieronder. **Als bron vervallen op
-  07/09/2026:** dezelfde procedure staat op vlaanderen.be en die mogen we wél navertellen, zie
-  stuk 3 hieronder. Linken naar dit blad mag nog, nodig is het niet meer.
-
-⚠️ **Enkel linken, niets overnemen.** Onderwijskiezer verbiedt kopiëren en herdistribueren.
-Dezelfde reden waarom de doorstroommatrix hieronder afvalt. Schrijf er dus een eigen zin bij die
-zegt waarom je erheen stuurt, en neem geen tekst, vraagpakket of blad over.
-
-**Waar de grens ligt, als we het inschrijvingsblad ooit zelf namaken** (besproken 06/09/2026).
-Beschermd is hun uitwerking: de tekst zoals zij ze schreven, de volgorde en groepering van de
-blokjes, het ontwerp. Niet beschermd is het feit eronder, en dat 1A hoort bij een getuigschrift
-basisonderwijs staat gewoon in de regelgeving. Een eigen versie mag dus, op twee voorwaarden:
-
-- **Vertrek van de officiële inschrijvingsregels, niet van hun blad.** Herschrijven wat je van
-  hen aan het overtypen bent, blijft een bewerking van hun werk. Het blad is hoogstens het bewijs
-  dat ouders met die vraag zitten.
-- **Bronvermelding lost niets op.** Attributie maakt een kopie niet legaal. Linken mag altijd,
-  kopiëren nooit, ook niet met een naamsvermelding erbij.
-
-**2. Eigen uitleg over 1A op de site. Uitgebracht in 2.2.0 op 07/09/2026.**
-
-Staat op `/uitleg/` onder "De eerste graad: 1A, 1B, 2A en 2B", met de uren per leerjaar en een
-link naar de structuurpagina van Onderwijs en Vorming als bron. Twee dingen die daar bewust zo
-staan en die je niet moet terugdraaien: de officiële term is "differentiatie" en niet
-"keuzegedeelte" (dat laatste komt uit Onderwijskiezer), en de 27 plus 5 uur staat er als het
-eerste leerjaar, niet als 1A alleen, want zo staat het in de bron.
-
-**3. Hoe aanmelden en inschrijven verloopt. Bron gevonden op 07/09/2026.**
-
-Dit is het stuk waarvoor eerder naar het pdf-blad van Onderwijskiezer gekeken werd. Dat is niet
-langer nodig: dezelfde procedure staat op vlaanderen.be, vrij na te vertellen in eigen woorden en
-vrij te linken. Drie pagina's, alle drie opgehaald op 07/09/2026:
-
-- **Aanmelden**,
-  <https://www.vlaanderen.be/onderwijs-en-vorming/inschrijving-en-toelating-in-onderwijs/basis-en-secundair-onderwijs/gewoon-onderwijs/aanmelden>
-  Niet elke school werkt met aanmelden, en scholen kiezen zelf of en met wie ze daarvoor
-  samenwerken. Ouders zetten hun scholen in voorkeursvolgorde. Bij toewijzing volgt een ticket,
-  bij weigering een weigeringsdocument met de plaats op de wachtlijst, en die wachtlijstorde
-  respecteert de school tot de 5de schooldag van oktober. Vanaf het 2de jaar secundair moet je
-  nooit aanmelden.
-- **Voorrang en ordening**,
-  <https://www.vlaanderen.be/onderwijs-en-vorming/inschrijving-en-toelating-in-onderwijs/basis-en-secundair-onderwijs/gewoon-onderwijs/voorrang-en-ordening>
-  Hoe scholen rangschikken. Enkel als link vastgesteld, de inhoud is nog niet nagelezen.
-- **Wanneer inschrijven**,
-  <https://www.vlaanderen.be/onderwijs-en-vorming/inschrijving-en-toelating-in-onderwijs/basis-en-secundair-onderwijs/gewoon-onderwijs/wanneer-inschrijven>
-  De periodes per schooljaar. Voor 2027-2028: aanmelden van 23/03/2027 tot en met 16/04/2027,
-  resultaat uiterlijk 11/05/2027, inschrijven met ticket van 12/05 tot 01/06/2027 en zonder ticket
-  vanaf 12/05/2027. Scholen zonder aanmelding starten op diezelfde 12/05/2027 en weigeren voor
-  1A/1B niemand wegens plaatsgebrek. De data voor 2028-2029 staan er ook al bij.
-
-⚠️ **Zet die data niet op de site.** Ze verschuiven elk schooljaar, en dan staat er stil iets
-fout op een site zonder backend. Beschrijf de volgorde van de stappen en link voor de data door
-naar "Wanneer inschrijven". Om dezelfde reden maken we het blad van Onderwijskiezer ook visueel
-niet na.
-
-⚠️ **De hergebruikvoorwaarden van vlaanderen.be zijn niet geverifieerd.** Op geen van de vier
-opgehaalde pagina's stond een licentie- of copyrightnotitie. Voor dit plan maakt dat niet uit: we
-schrijven de feiten in eigen woorden en linken naar de bron, zoals bij de GOK-cijfers. Wil je
-letterlijk citeren, zoek het dan eerst uit.
-
-Dit verandert niets aan de rij "Aanmelden" in de tabel hierboven. Welk systeem een concrete school
-gebruikt, staat nergens centraal, en de aanmeldpagina zegt dat zelf: scholen mogen kiezen of en
-met wie ze samenwerken.
-
-## Vorm: waar deze drie stukken landen (beslist 07/09/2026)
-
-De oudere notitie zei "hoort in het helppaneel `?help=1`". **Dat is achterhaald.** Het helppaneel
-gaat over de bediening van de zoeker, en deze uitleg gaat over het onderwijs zelf en over een
-procedure. Verdeel niet op onderwerp maar op de vraag die de ouder stelt:
-
-| Waar | De vraag van de ouder | Kenmerk |
-| --- | --- | --- |
-| `/uitleg/` | "Wat betekent dat woord?" | Tijdloos, geen data, gaat over het systeem |
-| `?help=1` | "Hoe gebruik ik deze zoeker?" | Gaat over ons product |
-| `?over=1` | "Waar komt dit vandaan?" | Herkomst, privacy, disclaimer |
-| `/uitleg/inschrijven/` (nieuw) | "Wat moet ik doen, en wanneer?" | Procedure, tijdgebonden, verwijst door |
-
-**1A, 1B, 2A en 2B gaan naar `/uitleg/`**, in de bestaande sectie "De graden". Die zegt vandaag
-over de eerste graad zo goed als niets, terwijl "1A" letterlijk op de resultaatkaartjes staat.
-Zet het vóór de sectie over finaliteit: eerst waar je nu staat, dan pas de keuze.
-
-**Aanmelden en inschrijven krijgt een eigen pagina** en gaat er niet bij op `/uitleg/`. De
-premisse daar is woordenschat zodat de filters ergens op slaan, en een procedure met jaarlijkse
-data breekt dat. `/uitleg/` heeft vandaag nul onderhoud en dat moet zo blijven.
-
-**De twee tests van Onderwijskiezer horen bij de procedurepagina**, niet bij de termen. I-Like en
-I-Study zijn voor het zesde leerjaar, hetzelfde moment als aanmelden, en het is geen
-woordverklaring. Bovenaan die pagina als blokje "nog geen idee?", vóór de stappen.
-
-**De schakelaar tussen de twee: twee links die eruitzien als knoppen, geen JavaScript.** Beide
-pagina's krijgen bovenaan dezelfde schakelaar, met de actieve knop opgevuld, zoals de
-Lijst/Kaart-schakelaar in de zoeker. Voor de bezoeker is dat niet te onderscheiden van een echte
-toggle: het zijn statische bestanden met een stylesheet die al in de cache zit.
-
-- Met JS zou het in een apart bestand naast `thema.js` moeten, want de CSP staat enkel
-  `script-src 'self'` toe. Werkbaar, maar het is onderhoud voor iets dat een link gratis doet.
-- Elke helft krijgt zo een eigen `title`, `description`, canonical en socialkaart. Bij één pagina
-  moet je twee onderwerpen in één omschrijving persen.
-- Een ouder kan de inschrijvingshelft rechtstreeks doorsturen, en die landt meteen goed, ook
-  zonder JS.
-- `/uitleg/` blijft bestaan als adres. Het staat al in het helppaneel en is mogelijk geïndexeerd.
-- De prijs is een kop en een footer in twee bestanden. Dat is vandaag al zo tussen `index.html`
-  en `uitleg/index.html`, dus het is geen nieuw soort onderhoud.
-
-⚠️ **Maak er een `<nav>` van met `aria-current="page"` op de actieve knop, en gebruik géén
-`role="tablist"`.** Die rol belooft aan een schermlezer dat er panelen wisselen zonder navigatie,
-en dat klopt hier niet.
-
-**Labels.** De knop in de kop wordt `Uitleg voor ouders ↗` in plaats van
-`Wat betekenen de termen?`, want hij dekt nu twee dingen. De schakelaar krijgt `De termen` en
-`Aanmelden en inschrijven`. De `h1` per pagina blijft "Het secundair onderwijs uitgelegd" en
-wordt "Aanmelden en inschrijven". De bullet "Aanmelden en inschrijven" in het helppaneel loopt
-vandaag dood en wordt een link naar de nieuwe pagina.
-
-**Twee losse MINOR's.** De termen op `/uitleg/` en de inschrijvingspagina zijn apart uit te
-brengen; de schakelaar komt er pas bij als de tweede pagina bestaat.
 
 ## Wat volgt er na deze richting? (nog niet onderzocht)
 

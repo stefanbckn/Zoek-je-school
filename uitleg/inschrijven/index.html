@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Zelfde iconenset als de zoeker; zie index.html voor waarom er twee PNG's naast staan. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0B5C6E" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aanmelden en inschrijven | Zoek je school</title>
+    <meta
+      name="description"
+      content="Hoe verloopt aanmelden en inschrijven voor het 1ste jaar secundair? De volgorde van de stappen, wat een ticket of een wachtlijst betekent, en waar de officiële data staan."
+    />
+    <link rel="canonical" href="https://zoekjeschool.be/uitleg/inschrijven/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://zoekjeschool.be/uitleg/inschrijven/" />
+    <meta property="og:site_name" content="Zoek je school" />
+    <meta property="og:locale" content="nl_BE" />
+    <meta property="og:title" content="Aanmelden en inschrijven" />
+    <meta
+      property="og:description"
+      content="Hoe verloopt aanmelden en inschrijven voor het 1ste jaar secundair? De volgorde van de stappen, wat een ticket of een wachtlijst betekent, en waar de officiële data staan."
+    />
+    <!-- Dezelfde afbeelding als de zoeker: er is geen aparte voor deze pagina, en een link
+         zonder voorbeeld ziet er in chat-apps kaler uit dan een generieke. -->
+    <meta property="og:image" content="https://zoekjeschool.be/og-image-1200x630.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="zoekjeschool.be: welke scholen liggen bij jou in de buurt?" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Zelfde themascript als de zoeker, zodat licht/donker niet opflitst bij het laden. -->
+    <script src="/thema.js"></script>
+    <!-- Vite bundelt deze stylesheet mee als derde entry point; deze pagina staat twee mappen
+         diep, vandaar het dubbele ../. -->
+    <link rel="stylesheet" href="../../src/index.css" />
+  </head>
+  <body>
+    <div class="mx-auto max-w-3xl px-4 py-10">
+      <p class="text-sm">
+        <a href="../../" class="text-accent underline underline-offset-2">
+          &larr; Terug naar de zoeker
+        </a>
+      </p>
+
+      <!-- De schakelaar tussen de twee uitlegpagina's. Bewust twee links en geen JavaScript:
+           elke helft houdt zo een eigen adres, titel en socialkaart, en ze werkt zonder script.
+           Géén role="tablist": die rol belooft aan een schermlezer dat er panelen wisselen
+           zonder navigatie, en dat klopt hier niet. aria-current markeert de actieve pagina. -->
+      <nav class="mt-4 inline-flex rounded-lg border border-rand bg-kaart p-1 text-sm" aria-label="Uitleg voor ouders">
+        <a
+          href="../"
+          class="rounded-md px-3 py-1.5 font-medium text-zacht transition-colors hover:text-inkt"
+          >De terminologie</a
+        >
+        <a
+          href="./"
+          aria-current="page"
+          class="rounded-md bg-accent px-3 py-1.5 font-medium text-accent-inkt"
+          >Aanmelden en inschrijven</a
+        >
+      </nav>
+
+      <article class="mt-4 rounded-lg border border-rand bg-kaart p-5 sm:p-8">
+        <h1 class="text-2xl font-semibold text-inkt">Aanmelden en inschrijven</h1>
+        <p class="mt-3 text-zacht">
+          Een school kiezen is één ding, er een plaats krijgen is een ander. Voor het eerste jaar
+          secundair loopt dat bij veel scholen via een aanmeldingssysteem, bij andere niet.
+          Hieronder staat de volgorde van de stappen. Welke school met welk systeem werkt, weten
+          wij niet: dat staat nergens centraal, en je leest het op de website van de school of van
+          je gemeente.
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold text-inkt">Nog geen idee wat je kind wil?</h2>
+        <p class="mt-2 text-zacht">
+          Dat hoeft ook niet voor het eerste jaar: in 1A en 1B ligt het grootste deel van de week
+          voor iedereen vast, en de echte keuze komt pas na het tweede jaar. Wat er dan te kiezen
+          valt, staat op
+          <a href="../" class="underline">de pagina met de terminologie</a>, en welke richtingen er in
+          jouw buurt bestaan, zie je in
+          <a href="../../?matrix=1" class="underline">het overzicht van alle richtingen</a>.
+        </p>
+        <p class="mt-3 text-zacht">
+          Wil je kind zelf eens nadenken over wat het graag doet, dan zijn de twee tests van
+          Onderwijskiezer een goed startpunt. Ze zijn gratis, gemaakt voor het zesde leerjaar, en
+          wij hebben er niets mee te maken: je vult ze op hun site in.
+        </p>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-zacht">
+          <li>
+            <a
+              href="https://www.onderwijskiezer.be/ilike_basic/"
+              target="_blank"
+              rel="noreferrer"
+              class="underline"
+              >I-Like Basic</a
+            >
+            laat je 54 activiteiten scoren, met foto's erbij, en zet het resultaat uit over acht
+            interessegebieden.
+          </li>
+          <li>
+            <a
+              href="https://www.onderwijskiezer.be/istudy_basic/"
+              target="_blank"
+              rel="noreferrer"
+              class="underline"
+              >I-Study Basic</a
+            >
+            gaat niet over interesses maar over motivatie en studiemethode.
+          </li>
+        </ul>
+
+        <h2 class="mt-8 text-lg font-semibold text-inkt">Eerst 1A of 1B</h2>
+        <p class="mt-2 text-zacht">
+          Wie het getuigschrift basisonderwijs haalt, start in 1A. Wie dat niet haalt, start in 1B.
+          Dat bepaalt niet welke school je kiest, wel met welk pakket je kind er begint. Wat het
+          verschil precies inhoudt, staat bij
+          <a href="../" class="underline">de terminologie</a>.
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold text-inkt">Aanmelden: niet overal, niet altijd</h2>
+        <p class="mt-2 text-zacht">
+          Sommige scholen vragen je eerst aan te melden voor je kan inschrijven. Scholen kiezen
+          zelf of ze dat doen en met wie ze daarvoor samenwerken, dus in de ene gemeente meld je
+          je voor alle scholen tegelijk aan en in de andere helemaal niet. Vanaf het tweede jaar
+          secundair hoef je nooit aan te melden. Verandert je kind later van school, dan regel je
+          dat dus rechtstreeks met de nieuwe school.
+        </p>
+        <p class="mt-3 text-zacht">Werkt je school met aanmelden, dan gaat het zo:</p>
+        <ol class="mt-3 list-decimal space-y-2 pl-5 text-zacht">
+          <li>
+            Je meldt je kind aan tijdens de aanmeldingsperiode en zet daarbij de scholen in de
+            volgorde van jullie voorkeur. Je hebt de hele periode de tijd: het uur waarop je
+            aanmeldt staat niet bij de criteria waarmee scholen ordenen.
+          </li>
+          <li>
+            Na de periode hoor je of er een plaats is. Is die er, dan krijg je een ticket.
+            Daarop staat tegen wanneer je moet inschrijven, en hoe.
+          </li>
+          <li>
+            Is er geen plaats, dan krijg je een weigeringsdocument met de plaats van je kind op de
+            wachtlijst. Je kan intussen inschrijven bij een school waar nog plaats is; de
+            wachtlijst blijft gelden tot de vijfde schooldag van oktober.
+          </li>
+        </ol>
+        <p class="mt-3 text-zacht">
+          Een ticket is nog geen inschrijving. Die doe je daarna zelf bij de school, binnen de
+          periode die op je ticket staat. Wacht je te lang, dan ben je de plaats kwijt.
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold text-inkt">Wie krijgt voorrang?</h2>
+        <p class="mt-2 text-zacht">
+          Broers en zussen, ook stief- en halfbroers en -zussen, van een leerling die al op de
+          school zit krijgen altijd voorrang, net als kinderen van personeelsleden. In Brussel
+          geldt daarnaast een voorrang voor leerlingen van wie een ouder voldoende Nederlands
+          kent.
+        </p>
+        <p class="mt-3 text-zacht">
+          Daarna ordent de school de andere aanmeldingen. Ze kiest daarvoor uit toeval en uit de
+          plaats die de school op jouw voorkeurslijst kreeg. Afstand telt enkel in het
+          basisonderwijs mee, dus voor het secundair niet.
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold text-inkt">Wanneer moet dit gebeuren?</h2>
+        <p class="mt-2 text-zacht">
+          De aanmeldingsperiode valt in het voorjaar, en het inschrijven volgt in mei. De precieze
+          data verschillen per schooljaar, en daarom zetten we ze hier niet: een verkeerde datum
+          is erger dan geen datum. Ze staan bij Onderwijs en Vorming onder
+          <a
+            href="https://www.vlaanderen.be/onderwijs-en-vorming/inschrijving-en-toelating-in-onderwijs/basis-en-secundair-onderwijs/gewoon-onderwijs/wanneer-inschrijven"
+            target="_blank"
+            rel="noreferrer"
+            class="underline"
+            >wanneer inschrijven</a
+          >, telkens voor de eerstvolgende schooljaren. Scholen zonder aanmelding starten met
+          inschrijven op dezelfde dag als de scholen met een ticket.
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold text-inkt">Wat wij niet kunnen tonen</h2>
+        <p class="mt-2 text-zacht">
+          Bij welke school je moet aanmelden en via welk systeem, staat in geen enkele databron
+          die wij mogen ophalen. Wij tonen dus geen aanmeldknop per school. Kijk op de website van
+          de school zelf of van je gemeente, of bel gewoon: het secretariaat weet dit meteen.
+        </p>
+        <p class="mt-3 text-zacht">
+          De volledige officiële uitleg staat bij Onderwijs en Vorming, onder
+          <a
+            href="https://www.vlaanderen.be/onderwijs-en-vorming/inschrijving-en-toelating-in-onderwijs/basis-en-secundair-onderwijs/gewoon-onderwijs/aanmelden"
+            target="_blank"
+            rel="noreferrer"
+            class="underline"
+            >aanmelden</a
+          >
+          en
+          <a
+            href="https://www.vlaanderen.be/onderwijs-en-vorming/inschrijving-en-toelating-in-onderwijs/basis-en-secundair-onderwijs/gewoon-onderwijs/voorrang-en-ordening"
+            target="_blank"
+            rel="noreferrer"
+            class="underline"
+            >voorrang en ordening</a
+          >.
+        </p>
+      </article>
+
+      <p class="mt-6 text-sm">
+        <a href="../../" class="text-accent underline underline-offset-2">
+          Zoek een school in je buurt &rarr;
+        </a>
+      </p>
+
+      <!-- Beknopte footer, identiek aan die van de termenpagina. De broncodelink is de "way to
+           get the source" die artikel 13 van de AGPL vraagt en het contactadres is de voorwaarde
+           van Transitous; die twee horen op elke pagina van de site. Zie CLAUDE.md. -->
+      <footer class="mt-10 border-t border-rand pt-4 text-xs text-zacht">
+        <p>
+          Geen officiële bron: de fiche van Onderwijs en Vorming gaat altijd voor. Gegevens over
+          scholen en studieaanbod komen van
+          <a
+            href="https://www.vlaanderen.be/onderwijs-en-vorming"
+            target="_blank"
+            rel="noreferrer"
+            class="underline"
+            >Onderwijs en Vorming</a
+          >.
+        </p>
+        <p class="mt-1">
+          Vragen of een fout gezien?
+          <a href="mailto:info@zoekjeschool.be" class="underline">info@zoekjeschool.be</a> ·
+          <a
+            href="https://github.com/stefanbckn/Zoek-je-school"
+            target="_blank"
+            rel="noreferrer"
+            class="underline"
+            >Broncode</a
+          >
+          onder AGPL-3.0 · © 2026 Stefan Bocken
+        </p>
+        <!-- Handgeschreven kopie van SteunKnop.tsx: een statische pagina kan die component niet
+             gebruiken. Die docstring is de waarheid; wijzigt daar de tekst, de link of het
+             kopje, pas het hier dan mee aan. -->
+        <p class="mt-4">
+          <a
+            href="https://ko-fi.com/n7b826hces"
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-inkt hover:opacity-90"
+          >
+            <img src="/kofi-symbool.svg" alt="" aria-hidden="true" class="h-4 w-auto" />
+            Steun deze site op Ko-fi
+          </a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
