@@ -141,7 +141,7 @@ toggle: het zijn statische bestanden met een stylesheet die al in de cache zit.
 en dat klopt hier niet.
 
 **Labels.** De knop in de kop wordt `Uitleg voor ouders ↗` in plaats van
-`Wat betekenen de termen?`, want hij dekt nu twee dingen. De schakelaar krijgt `De termen` en
+`Wat betekenen de termen?`, want hij dekt nu twee dingen. De schakelaar krijgt `De terminologie` en
 `Aanmelden en inschrijven`. De `h1` per pagina blijft "Het secundair onderwijs uitgelegd" en
 wordt "Aanmelden en inschrijven". De bullet "Aanmelden en inschrijven" in het helppaneel loopt
 vandaag dood en wordt een link naar de nieuwe pagina.

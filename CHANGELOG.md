@@ -24,8 +24,8 @@ eerste jaar secundair verloopt. Bovenaan allebei staat een schakelaar om te wiss
   op jouw voorkeurslijst kreeg. Het uur waarop je aanmeldt staat niet bij die criteria.
 - **De twee tests van Onderwijskiezer**, I-Like Basic en I-Study Basic, als startpunt voor wie nog
   geen idee heeft. Ze zijn gratis en je vult ze op hun site in.
-- **Een schakelaar bovenaan beide uitlegpagina's.** Eén klik tussen "De termen" en "Aanmelden en
-  inschrijven". De knop in de kop van de zoeker heet daarom nu "Uitleg voor ouders".
+- **Een schakelaar bovenaan beide uitlegpagina's.** Eén klik tussen "De terminologie" en
+  "Aanmelden en inschrijven". De knop in de kop van de zoeker heet daarom nu "Uitleg voor ouders".
 
 **Wat er bewust niet in staat**
 
