@@ -60,7 +60,7 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
 | 1 | Lijst en kaart naast elkaar | Op desktop vanaf 1280 px drie kolommen: filters 268 vast, lijst flexibel, kaart 470 vast en sticky. Lijst en kaart delen dezelfde hover-toestand, zodat een speld en zijn resultaatkaart samen oplichten. De Lijst/Kaart-schakelaar blijft alleen onder 900 px, waar de kaartkolom wegvalt | **Klaar om te bouwen, geen bron nodig.** Beschreven in de designgids bij de visuele identiteit, maar bewust apart gehouden: dit is gedrag, geen opmaak. Vandaag is `weergave` in `src/App.tsx` een strikte keuze tussen lijst en kaart op elke breedte; er komt gedeelde hover-state bij, de schakelaar wordt afhankelijk van de breedte, en de kaart laadt op desktop altijd mee |
-| 2 | Weet je het nog niet? | Voor ouders die nog geen richting in gedachten hebben: uitleg bij wat 1A is (basisvorming plus keuzegedeelte), hoe inschrijven in het 1e jaar verloopt, en links naar de interesse- en studievaardigheidstests van Onderwijskiezer | **Deels klaar om te bouwen, deels bron nodig.** De drie links zijn nagekeken op 06/09/2026 en werken. Eigen tekst over 1A op de site kan pas als de officiële bron gevonden is, zie hieronder |
+| 2 | Weet je het nog niet? | Voor ouders die nog geen richting in gedachten hebben: uitleg bij wat 1A is (basisvorming plus differentiatie), hoe aanmelden en inschrijven in het 1e jaar verloopt, en links naar de interesse- en studievaardigheidstests van Onderwijskiezer | **Klaar om te bouwen, geen bron meer nodig.** De officiële uitleg over de eerste graad én over aanmelden en inschrijven staat op vlaanderen.be, opgehaald en nagelezen op 07/09/2026. Onderwijskiezer blijft enkel nog nodig voor de twee tests, zie hieronder |
 | 3 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
 | 4 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
@@ -87,12 +87,14 @@ anders begraven bleven in secties over versies die al uit zijn.
   dezelfde schoolnaam komt vaker meerdere keren terug. Als dat in de praktijk stoort, is de
   oplossing de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
 
-## Weet je het nog niet? (links nagekeken 06/09/2026)
+## Weet je het nog niet? (bronnen nagekeken 07/09/2026)
 
 Niet elke ouder komt hier met een richting in gedachten. Wie dat wel heeft, bedienen we al; wie
-nog niets weet, krijgt vandaag niets. Twee stukken, met een verschillende zekerheid.
+nog niets weet, krijgt vandaag niets. Drie stukken. Sinds 07/09/2026 heeft elk ervan een
+bron; er is niets meer dat dit tegenhoudt.
 
-**1. Links naar Onderwijskiezer. Nagekeken, meteen te zetten.**
+**1. Links naar Onderwijskiezer. Nagekeken, meteen te zetten.** Enkel de twee tests zijn nog
+onmisbaar; voor de uitleg zelf hebben we sinds 07/09/2026 een eigen bron.
 
 - **I-Like Basic**, <https://www.onderwijskiezer.be/ilike_basic/> Interessetest voor het zesde
   leerjaar: 54 activiteiten scoren van 1 tot 7, met foto's erbij, resultaat als grafiek over acht
@@ -109,7 +111,9 @@ nog niets weet, krijgt vandaag niets. Twee stukken, met een verschillende zekerh
   Eén blad dat de procedure uittekent: 1A of 1B naargelang het getuigschrift basisonderwijs,
   aanmelden, scholen in voorkeursvolgorde zetten, en dan een plaats of een wachtlijst. Gemaakt in
   Canva op 31/03/2026 door Pascale Van Camp. Let op: dit is de algemene procedure, **geen bron per
-  school**, dus het verandert niets aan de rij "Aanmelden" hieronder.
+  school**, dus het verandert niets aan de rij "Aanmelden" hieronder. **Als bron vervallen op
+  07/09/2026:** dezelfde procedure staat op vlaanderen.be en die mogen we wél navertellen, zie
+  stuk 3 hieronder. Linken naar dit blad mag nog, nodig is het niet meer.
 
 ⚠️ **Enkel linken, niets overnemen.** Onderwijskiezer verbiedt kopiëren en herdistribueren.
 Dezelfde reden waarom de doorstroommatrix hieronder afvalt. Schrijf er dus een eigen zin bij die
@@ -126,25 +130,71 @@ basisonderwijs staat gewoon in de regelgeving. Een eigen versie mag dus, op twee
 - **Bronvermelding lost niets op.** Attributie maakt een kopie niet legaal. Linken mag altijd,
   kopiëren nooit, ook niet met een naamsvermelding erbij.
 
-**2. Eigen uitleg over 1A op de site. Bron nog niet gevonden.**
+**2. Eigen uitleg over 1A op de site. Bron gevonden op 07/09/2026.**
 
 Beter dan doorlinken is het in één alinea zelf zeggen: in 1A ligt het grootste stuk van de week
 vast en kiest de school de rest in. Dat verklaart meteen waarom twee scholen met "1A" in het
 aanbod toch niet hetzelfde aanbieden, en dat is precies de verwarring waar een ouder mee zit.
 
-Wat we daarover nagekeken hebben op 06/09/2026:
+De bron is de structuurpagina van Onderwijs en Vorming, opgehaald en nagelezen op 07/09/2026:
+<https://www.vlaanderen.be/onderwijs-en-vorming/wegwijs-in-de-onderwijsniveaus/wegwijs-in-het-gewoon-secundair-onderwijs/structuur-van-het-voltijds-gewoon-secundair-onderwijs>
 
-- **De pagina's van Onderwijs Vlaanderen die dit zeiden, bestaan niet meer.** Zowel het
-  persbericht "Van 29 studiegebieden naar 8 studiedomeinen" als "Krachtlijnen van modernisering
-  secundair onderwijs" geven een 301 naar de portaalhomepage van vlaanderen.be. De inhoud is
-  daar niet teruggevonden.
-- **`data-onderwijs.vlaanderen.be/onderwijsaanbod/so/structuur/1stegraad` heeft het niet.** Dat is
-  een lijst met links naar studierichtingen, zonder uitleg over de urenverdeling.
-- **Nog uit te zoeken, in deze volgorde:** de Codex Secundair Onderwijs en de omzendbrieven op
-  `data-onderwijs.vlaanderen.be/edulex`. Daar hoort de urenverdeling in te staan en die tekst is
-  wettelijk materiaal, dus zonder de beperking van Onderwijskiezer. **Niet geverifieerd.** Ga
-  niet schrijven op basis van wat er hierboven staat: dat is uit Onderwijskiezer gelezen en dus
-  precies de bron die we niet mogen overnemen.
+Wat er letterlijk staat: eerste leerjaar minstens 27 uur basisvorming (de eindtermen) en minstens
+5 uur differentiatie, met 1A voor wie het getuigschrift basisonderwijs heeft en 1B voor wie het
+niet heeft; tweede leerjaar A minstens 25 uur basisvorming, 2 uur differentiatie en 5 uur
+basisoptie; tweede leerjaar B minstens 20 uur basisvorming, 2 uur remediëring en verdieping en
+10 uur basisoptie, met maximaal 3 te combineren basisopties. Ook de drie finaliteiten en de acht
+studiedomeinen staan er.
+
+Twee dingen die bij het schrijven niet mogen verwateren:
+
+- **De officiële term is "differentiatie", niet "keuzegedeelte".** Dat laatste komt uit
+  Onderwijskiezer en is dus precies de bron die we niet overnemen. Gebruik de woorden van
+  vlaanderen.be.
+- **De pagina zet die 27 plus 5 onder "1ste leerjaar", niet onder 1A alleen.** Schrijf wat er
+  staat en denk 1B er niet stilzwijgend uit.
+
+Hiermee vervalt het oude spoor naar de Codex Secundair Onderwijs en de omzendbrieven op `edulex`:
+niet meer nodig. De twee pagina's die dit vroeger zeiden ("Van 29 studiegebieden naar 8
+studiedomeinen" en "Krachtlijnen van modernisering secundair onderwijs") geven nog steeds een 301
+naar de portaalhomepage; daar niet opnieuw naar zoeken.
+
+**3. Hoe aanmelden en inschrijven verloopt. Bron gevonden op 07/09/2026.**
+
+Dit is het stuk waarvoor eerder naar het pdf-blad van Onderwijskiezer gekeken werd. Dat is niet
+langer nodig: dezelfde procedure staat op vlaanderen.be, vrij na te vertellen in eigen woorden en
+vrij te linken. Drie pagina's, alle drie opgehaald op 07/09/2026:
+
+- **Aanmelden**,
+  <https://www.vlaanderen.be/onderwijs-en-vorming/inschrijving-en-toelating-in-onderwijs/basis-en-secundair-onderwijs/gewoon-onderwijs/aanmelden>
+  Niet elke school werkt met aanmelden, en scholen kiezen zelf of en met wie ze daarvoor
+  samenwerken. Ouders zetten hun scholen in voorkeursvolgorde. Bij toewijzing volgt een ticket,
+  bij weigering een weigeringsdocument met de plaats op de wachtlijst, en die wachtlijstorde
+  respecteert de school tot de 5de schooldag van oktober. Vanaf het 2de jaar secundair moet je
+  nooit aanmelden.
+- **Voorrang en ordening**,
+  <https://www.vlaanderen.be/onderwijs-en-vorming/inschrijving-en-toelating-in-onderwijs/basis-en-secundair-onderwijs/gewoon-onderwijs/voorrang-en-ordening>
+  Hoe scholen rangschikken. Enkel als link vastgesteld, de inhoud is nog niet nagelezen.
+- **Wanneer inschrijven**,
+  <https://www.vlaanderen.be/onderwijs-en-vorming/inschrijving-en-toelating-in-onderwijs/basis-en-secundair-onderwijs/gewoon-onderwijs/wanneer-inschrijven>
+  De periodes per schooljaar. Voor 2027-2028: aanmelden van 23/03/2027 tot en met 16/04/2027,
+  resultaat uiterlijk 11/05/2027, inschrijven met ticket van 12/05 tot 01/06/2027 en zonder ticket
+  vanaf 12/05/2027. Scholen zonder aanmelding starten op diezelfde 12/05/2027 en weigeren voor
+  1A/1B niemand wegens plaatsgebrek. De data voor 2028-2029 staan er ook al bij.
+
+⚠️ **Zet die data niet op de site.** Ze verschuiven elk schooljaar, en dan staat er stil iets
+fout op een site zonder backend. Beschrijf de volgorde van de stappen en link voor de data door
+naar "Wanneer inschrijven". Om dezelfde reden maken we het blad van Onderwijskiezer ook visueel
+niet na.
+
+⚠️ **De hergebruikvoorwaarden van vlaanderen.be zijn niet geverifieerd.** Op geen van de vier
+opgehaalde pagina's stond een licentie- of copyrightnotitie. Voor dit plan maakt dat niet uit: we
+schrijven de feiten in eigen woorden en linken naar de bron, zoals bij de GOK-cijfers. Wil je
+letterlijk citeren, zoek het dan eerst uit.
+
+Dit verandert niets aan de rij "Aanmelden" in de tabel hierboven. Welk systeem een concrete school
+gebruikt, staat nergens centraal, en de aanmeldpagina zegt dat zelf: scholen mogen kiezen of en
+met wie ze samenwerken.
 
 **Vorm, als dit er komt.** Hoort in het bestaande helppaneel `?help=1`, niet in een nieuw paneel.
 Daar staat al wat de site niet toont; dit is het spiegelbeeld daarvan.
