@@ -127,6 +127,14 @@ function urlsUit(tekst) {
     // ingevuld wordt (`https://${host}/...`, waar de regex hierboven afkapt op de accolade), of
     // een jokerteken zoals de `https://*.tile.openstreetmap.org` uit de CSP in netlify.toml.
     if (/[${*]/.test(url) || url.includes('{{')) continue
+    // Een Netlify-plaatshouder in een redirect: `to = "https://zoekjeschool.be/:splat"` wordt
+    // pas bij het serveren ingevuld met het aangevraagde pad. Zonder deze regel meldt het
+    // script dat adres elk kwartaal als dood, want het bestaat letterlijk niet, en dan opent de
+    // Action een issue over een redirect die gewoon werkt. Het dubbele punt moet meteen na een
+    // schuine streep staan, anders zou dit ook een adres met een poortnummer erin wegfilteren.
+    // Schrijf hier geen voorbeeldadres uit: dit script leest zijn eigen commentaar mee, en zo'n
+    // voorbeeld belandt meteen in het rapport. Zelf ingelopen bij het schrijven van deze regel.
+    if (/\/:[a-z]/i.test(url)) continue
     if (NEGEREN.some((r) => r.test(url))) continue
     if (API_ENDPOINTS.some((r) => r.test(url))) continue
     gevonden.add(url)
