@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { ActieveFilters } from './components/ActieveFilters'
 import { DetailPanel } from './components/DetailPanel'
 import { FilterPanel } from './components/FilterPanel'
@@ -38,6 +38,7 @@ function App() {
   } | null>(null)
   const [weergave, setWeergave] = useState<Weergave>('lijst')
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const balkRef = useRef<HTMLDivElement>(null)
   /**
    * De shortlist: id's van campussen, in de volgorde waarin ze aangevinkt zijn.
    *
@@ -313,6 +314,22 @@ function App() {
     setGeselecteerd({ campus, school })
   }
 
+  /**
+   * Naar de kaart schakelen én de resultatenbalk bovenaan het scherm zetten.
+   *
+   * Op een telefoon begon de kaartcontainer op y=371, onder de kop, het zoekveld en de tip:
+   * van de 796 px kaart was er 441 px zichtbaar, en het midden waar de markers samenkomen viel
+   * op de onderrand. De kaart is nu precies zo hoog als wat er onder de balk overblijft, dus
+   * zodra die balk bovenaan staat, vult ze het scherm exact. Zie issue #43.
+   *
+   * `requestAnimationFrame`: de kaart bestaat nog niet op het moment van de klik, dus scrollen
+   * we pas nadat React de nieuwe weergave getekend heeft.
+   */
+  function toonKaart() {
+    setWeergave('kaart')
+    requestAnimationFrame(() => balkRef.current?.scrollIntoView({ block: 'start' }))
+  }
+
   // De vier ingangen van de kopbalk staan hier één keer: ze verschijnen zowel in de rij op
   // een breed scherm als in het uitklapmenu op een telefoon, en die twee mogen niet uit
   // elkaar lopen. Slechts één van de twee staat ooit in de DOM-boom die zichtbaar is, dus
@@ -485,32 +502,41 @@ function App() {
             {error && <p className="p-4 text-sm text-fout">{error}</p>}
             {!loading && !error && (
               <>
-                <div className="flex items-center justify-between px-4 pt-4 gap-2">
+                {/* De balk plakt bovenaan. Zonder dat zit je na 25 kaarten zo'n 4000 px van
+                    het zoekveld, de filterknop en de schakelaar tussen lijst en kaart: elke
+                    aanpassing aan de zoekopdracht kostte dan een volledige terugreis naar boven.
+                    De hoogte staat als `--h-resultatenbalk` in index.css, want de kaart hieronder
+                    rekent ermee. `bg-grond` is nodig: een doorzichtige balk laat de kaartjes
+                    eronder doorschijnen. */}
+                <div
+                  ref={balkRef}
+                  className="sticky top-0 z-20 flex min-h-[var(--h-resultatenbalk)] items-center justify-between gap-2 border-b border-rand bg-grond px-4 py-2"
+                >
                   <div className="flex items-center gap-3">
                     <p className="text-sm text-zacht shrink-0">
                       {zichtbareCampussen.length} resultaten
                     </p>
                     <button
                       type="button"
-                      onClick={() => setFiltersOpen((open) => !open)}
-                      className="md:hidden text-sm rounded-md border border-rand px-3 py-1"
+                      onClick={() => setFiltersOpen(true)}
+                      aria-expanded={filtersOpen}
+                      className="md:hidden flex min-h-11 items-center rounded-md border border-rand px-3 text-sm"
                     >
                       Filters{actieveFilters > 0 ? ` (${actieveFilters})` : ''}
-                      {filtersOpen ? ' ▲' : ' ▼'}
                     </button>
                   </div>
                   <div className="flex overflow-hidden rounded-full border border-rand text-sm">
                     <button
                       type="button"
                       onClick={() => setWeergave('lijst')}
-                      className={`px-3 py-1 ${weergave === 'lijst' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
+                      className={`flex min-h-11 items-center px-4 md:min-h-0 md:py-1 ${weergave === 'lijst' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
                     >
                       Lijst
                     </button>
                     <button
                       type="button"
-                      onClick={() => setWeergave('kaart')}
-                      className={`px-3 py-1 ${weergave === 'kaart' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
+                      onClick={() => toonKaart()}
+                      className={`flex min-h-11 items-center px-4 md:min-h-0 md:py-1 ${weergave === 'kaart' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
                     >
                       Kaart
                     </button>
@@ -546,13 +572,19 @@ function App() {
                     }
                   />
                 ) : (
-                  <div className="mt-4 h-[calc(100dvh-1rem)] min-h-[400px] isolate relative">
+                  <div className="h-[calc(100dvh-var(--h-resultatenbalk))] min-h-[400px] isolate relative md:mt-4 md:h-[calc(100dvh-1rem)]">
                     {/* De kaart is zo hoog als het venster, niet zo hoog als de filterkolom
                         ernaast. Die kolom groeit met elke filter erbij, en als flex-item nam de
                         kaart die hoogte over: op 1440 x 800 werd hij 1305px en liep hij 765px
                         onder de vouw door, met een muiswiel dat de pagina niet verder liet
                         scrollen. Sinds het wiel dat wél doet (zie MapView) mag de kaart weer
                         groter zijn dan wat er onder de kop overblijft.
+
+                        Op een telefoon geldt die redenering niet: daar staat er geen kolom
+                        naast, en een volle vensterhoogte begint pas ónder de kop en de
+                        resultatenbalk, dus viel de onderste helft buiten beeld. Daar is de kaart
+                        daarom net zo hoog als wat er onder de balk overblijft, en zet
+                        `toonKaart()` die balk bovenaan.
 
                         `dvh` en niet `vh`, want op een telefoon verandert de zichtbare hoogte
                         mee met de adresbalk. `min-h` blijft nodig voor een laag venster, en de
