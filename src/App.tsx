@@ -340,9 +340,13 @@ function App() {
    * Bewust een effect en geen scroll in de klik zelf: op het moment van de klik staat de kaart
    * nog niet in de DOM. Doorgemeten in de preview — met een `requestAnimationFrame` in de knop
    * bleef de pagina op scrollY 0 staan.
+   *
+   * Alleen onder md. Daarboven staat de balk niet vast en is de kaart al bijna een volledige
+   * vensterhoogte: dan is een pagina die uit zichzelf wegspringt bij een klik enkel verrassend.
    */
   useEffect(() => {
     if (weergave !== 'kaart') return
+    if (!window.matchMedia('(max-width: 767px)').matches) return
     kaartRef.current?.scrollIntoView({ block: 'start' })
   }, [weergave])
 
@@ -561,15 +565,19 @@ function App() {
             {error && <p className="p-4 text-sm text-fout">{error}</p>}
             {!loading && !error && (
               <>
-                {/* De balk plakt bovenaan. Zonder dat zit je na 25 kaarten zo'n 4000 px van
-                    het zoekveld, de filterknop en de schakelaar tussen lijst en kaart: elke
-                    aanpassing aan de zoekopdracht kostte dan een volledige terugreis naar boven.
+                {/* Op een telefoon plakt de balk bovenaan. Zonder dat zit je na 25 kaarten zo'n
+                    4000 px van het zoekveld, de filterknop en de schakelaar tussen lijst en
+                    kaart: elke aanpassing aan de zoekopdracht kostte dan een volledige terugreis
+                    naar boven. Vanaf md scrollt ze gewoon mee met de pagina — daar is de lijst
+                    korter in beeld en is een balk die over de resultaten blijft hangen meer in
+                    de weg dan behulpzaam. Zo gekozen door de gebruiker.
+
                     De hoogte staat als `--h-resultatenbalk` in index.css, want de kaart hieronder
-                    rekent ermee. `bg-grond` is nodig: een doorzichtige balk laat de kaartjes
-                    eronder doorschijnen. */}
+                    rekent ermee. `bg-grond` is nodig zolang ze plakt: een doorzichtige balk laat
+                    de kaartjes eronder doorschijnen. */}
                 <div
                   ref={balkRef}
-                  className="sticky top-0 z-20 flex h-[var(--h-resultatenbalk)] items-center justify-between gap-2 border-b border-rand bg-grond px-4"
+                  className="sticky top-0 z-20 flex h-[var(--h-resultatenbalk)] items-center justify-between gap-2 border-b border-rand bg-grond px-4 md:static md:z-auto md:border-b-0"
                 >
                   <div className="flex items-center gap-3">
                     <p className="text-sm text-zacht shrink-0">

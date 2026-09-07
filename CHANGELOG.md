@@ -15,9 +15,10 @@ was op een scherm van 375 px vooral scrollen. Op een laptop verandert er zo goed
 
 **Nieuw**
 
-- **De balk met het aantal resultaten blijft bovenaan staan.** Daarop staan ook de filterknop en
-  de schakelaar tussen lijst en kaart. Vroeger zat je na een stuk of vijfentwintig scholen zo'n
-  4000 px van je zoekopdracht af, en kostte elke aanpassing een reis terug naar boven.
+- **Op een telefoon blijft de balk met het aantal resultaten bovenaan staan.** Daarop staan ook
+  de filterknop en de schakelaar tussen lijst en kaart. Vroeger zat je na een stuk of
+  vijfentwintig scholen zo'n 4000 px van je zoekopdracht af, en kostte elke aanpassing een reis
+  terug naar boven. Op een laptop scrollt die balk gewoon mee, zoals je gewend bent.
 - **De filters openen als een eigen scherm.** Ze schoven eerder tussen je zoekveld en je
   resultaten in, ruim anderhalf scherm hoog, met de knop om ze weer te sluiten helemaal
   onderaan. Nu is er een kruisje bovenaan en onderaan een knop "Toon 912 resultaten" die het
