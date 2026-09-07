@@ -133,7 +133,7 @@ export function DetailPanel({
           <button
             type="button"
             onClick={onClose}
-            className="shrink-0 text-zacht hover:text-inkt"
+            className="-mt-2 -mr-2 grid size-11 shrink-0 place-items-center text-zacht hover:text-inkt"
             aria-label="Sluiten"
           >
             ✕
