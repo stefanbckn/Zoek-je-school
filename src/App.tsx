@@ -39,6 +39,7 @@ function App() {
   const [weergave, setWeergave] = useState<Weergave>('lijst')
   const [filtersOpen, setFiltersOpen] = useState(false)
   const balkRef = useRef<HTMLDivElement>(null)
+  const kaartRef = useRef<HTMLDivElement>(null)
   /**
    * De shortlist: id's van campussen, in de volgorde waarin ze aangevinkt zijn.
    *
@@ -325,20 +326,25 @@ function App() {
   }
 
   /**
-   * Naar de kaart schakelen én de resultatenbalk bovenaan het scherm zetten.
+   * Bij het openen van de kaart schuift de resultatenbalk naar de bovenrand van het scherm.
    *
-   * Op een telefoon begon de kaartcontainer op y=371, onder de kop, het zoekveld en de tip:
-   * van de 796 px kaart was er 441 px zichtbaar, en het midden waar de markers samenkomen viel
-   * op de onderrand. De kaart is nu precies zo hoog als wat er onder de balk overblijft, dus
-   * zodra die balk bovenaan staat, vult ze het scherm exact. Zie issue #43.
+   * Op een telefoon begon de kaartcontainer op y=371, onder de kop, het zoekveld en de tip: van
+   * de 796 px kaart was er 441 px zichtbaar, en het midden waar de markers samenkomen viel op de
+   * onderrand. De kaart is nu precies zo hoog als wat er onder de balk overblijft, dus zodra die
+   * balk bovenaan staat, vult ze het scherm exact. Zie issue #43.
    *
-   * `requestAnimationFrame`: de kaart bestaat nog niet op het moment van de klik, dus scrollen
-   * we pas nadat React de nieuwe weergave getekend heeft.
+   * We scrollen naar de kaart en niet naar de balk: tussen die twee staat soms nog de melding
+   * over verborgen adressen, en die 40 px duwden de onderrand van de kaart weer onder de vouw.
+   * De `scroll-mt` op de container houdt precies de balk vrij, die er sticky bovenop blijft.
+   *
+   * Bewust een effect en geen scroll in de klik zelf: op het moment van de klik staat de kaart
+   * nog niet in de DOM. Doorgemeten in de preview — met een `requestAnimationFrame` in de knop
+   * bleef de pagina op scrollY 0 staan.
    */
-  function toonKaart() {
-    setWeergave('kaart')
-    requestAnimationFrame(() => balkRef.current?.scrollIntoView({ block: 'start' }))
-  }
+  useEffect(() => {
+    if (weergave !== 'kaart') return
+    kaartRef.current?.scrollIntoView({ block: 'start' })
+  }, [weergave])
 
   // De vier ingangen van de kopbalk staan hier één keer: ze verschijnen zowel in de rij op
   // een breed scherm als in het uitklapmenu op een telefoon, en die twee mogen niet uit
@@ -533,11 +539,16 @@ function App() {
             </div>
 
             {/* Het aantal staat op de knop zelf: terwijl je vinkt zie je de lijst eronder niet,
-                dus dit is op een telefoon de enige plaats waar het meebeweegt. */}
+                dus dit is op een telefoon de enige plaats waar het meebeweegt. Sluiten zet de
+                balk bovenaan: wie diep in de vorige lijst zat, staat anders midden in een lijst
+                die intussen een andere is. */}
             <div className="shrink-0 border-t border-rand bg-grond p-3 md:hidden">
               <button
                 type="button"
-                onClick={() => setFiltersOpen(false)}
+                onClick={() => {
+                  setFiltersOpen(false)
+                  requestAnimationFrame(() => balkRef.current?.scrollIntoView({ block: 'start' }))
+                }}
                 className="flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-4 text-sm font-medium text-accent-inkt"
               >
                 Toon {zichtbareCampussen.length} resultaten
@@ -558,7 +569,7 @@ function App() {
                     eronder doorschijnen. */}
                 <div
                   ref={balkRef}
-                  className="sticky top-0 z-20 flex min-h-[var(--h-resultatenbalk)] items-center justify-between gap-2 border-b border-rand bg-grond px-4 py-2"
+                  className="sticky top-0 z-20 flex h-[var(--h-resultatenbalk)] items-center justify-between gap-2 border-b border-rand bg-grond px-4"
                 >
                   <div className="flex items-center gap-3">
                     <p className="text-sm text-zacht shrink-0">
@@ -583,7 +594,7 @@ function App() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => toonKaart()}
+                      onClick={() => setWeergave('kaart')}
                       className={`flex min-h-11 items-center px-4 md:min-h-0 md:py-1 ${weergave === 'kaart' ? 'bg-accent text-accent-inkt' : 'bg-kaart text-inkt'}`}
                     >
                       Kaart
@@ -620,7 +631,10 @@ function App() {
                     }
                   />
                 ) : (
-                  <div className="h-[calc(100dvh-var(--h-resultatenbalk))] min-h-[400px] isolate relative md:mt-4 md:h-[calc(100dvh-1rem)]">
+                  <div
+                    ref={kaartRef}
+                    className="h-[calc(100dvh-var(--h-resultatenbalk))] min-h-[400px] scroll-mt-[var(--h-resultatenbalk)] isolate relative md:mt-4 md:h-[calc(100dvh-1rem)]"
+                  >
                     {/* De kaart is zo hoog als het venster, niet zo hoog als de filterkolom
                         ernaast. Die kolom groeit met elke filter erbij, en als flex-item nam de
                         kaart die hoogte over: op 1440 x 800 werd hij 1305px en liep hij 765px

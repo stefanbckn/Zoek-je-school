@@ -269,7 +269,7 @@ body {
    van de kaart weer buiten beeld — dat is precies wat issue #43 beschreef. Gemeten in de
    preview op 375 px, niet geschat. */
 :root {
-  --h-resultatenbalk: 3.5rem;
+  --h-resultatenbalk: 4rem;
 }
 
 /* De kaart van Leaflet heeft in donkere modus een felwitte tegellaag. Iets dempen zodat
