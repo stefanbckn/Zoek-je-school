@@ -8,6 +8,37 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.2.0 — 7 september 2026
+
+Op de pagina "Het secundair onderwijs uitgelegd" staat nu ook wat 1A, 1B, 2A en 2B betekenen.
+Dat zijn de labels die je bij het aanbod van een school ziet staan voor de eerste twee jaren,
+en tot nu legde de site ze nergens uit.
+
+**Nieuw**
+
+- **Een stuk over de eerste graad, met de uren erbij.** Wie het getuigschrift basisonderwijs
+  haalt, start in 1A; wie dat niet haalt, in 1B. Per leerjaar staat er hoeveel uur vastligt als
+  basisvorming en hoeveel uur de school zelf invult: 27 plus 5 in het eerste jaar, 25 plus 2 plus
+  5 uur basisoptie in 2A, en 20 plus 2 plus 10 in 2B. Daarmee is meteen duidelijk waarom twee
+  scholen allebei "1A" aanbieden en er toch anders uitzien.
+- **Wat A-stroom en B-stroom echt betekenen.** Er wordt vaak verteld dat de B-stroom alleen
+  naar de arbeidsmarkt leidt. Dat klopt niet: na 2B kan je naar de tweede graad met doorstroom-
+  of dubbele finaliteit, via de opstroomoptie of met een gunstige beslissing van de klassenraad,
+  en na 2A kan je evengoed naar de arbeidsmarktfinaliteit. Met de verwijzing naar het artikel
+  waarin dat staat.
+- **Uitleg bij de basisoptie.** Ze is nog geen studierichting, maar een eerste kennismaking met
+  een vakgebied. Welke basisopties een school inricht, staat op de website van die school; die
+  gegevens zitten niet in onze bron.
+- **De knop "Steun deze site op Ko-fi" staat nu ook onderaan de uitlegpagina.** Tot nu stond ze
+  alleen op de zoeker zelf.
+
+**Wat er niet in staat**
+
+- Aanmelden en inschrijven. Dat is een procedure met data die elk schooljaar verschuiven, en
+  die krijgt een eigen pagina in een volgende versie.
+
+---
+
 ## 2.1.0 — 6 september 2026
 
 Onderaan de site staat vanaf nu een knop om de site te steunen, en ook onderaan het paneel

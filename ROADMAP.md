@@ -52,7 +52,8 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **0.9.0** | Uitleg- en helppaneel | Paneel "Hoe werkt deze site?" in de kop met uitleg bij zoeken, filteren, één adres bekijken en vergelijken, plus een blok over wat de site niet toont (deelbaar via `?help=1`) |
 | **0.11.0** | Markers clusteren | Nabije adressen op de kaart samengevoegd tot één bol met het aantal erin, die bij klikken en inzoomen uit elkaar valt · vanaf zoom 16 staan alle markers los |
 | **0.12.0** | Heel Vlaanderen en Brussel | Alle 2145 vestigingen op 1075 adressen in één keer geladen in plaats van enkel provincie Antwerpen · filter op provincie · gemeentefilter met zoekveld, resultaataantallen en enkel gemeenten die nog resultaten hebben |
-| **1.0.0** | De matrix | Alle 572 studierichtingen als raster van studiedomein × finaliteit per graad, in een paneel achter "Alle richtingen" (`?matrix=1`) · teller per richting binnen de gekozen gemeente of straal, ook wanneer die nul is · klikken filtert de lijst op die richting en graad · filter op studiedomein in de filterkolom |
+| **1.0.0** | De matrix | Alle 572 studierichtingen als raster van studiedomein × finaliteit per graad, in een paneel achter "Alle richtingen" (`?matrix=1`) · teller per richting binnen de gekozen gemeente of straal, ook wanneer die nul is · klikken filtert de lijst op die richting en graad · filter op studiedomein in de filterkolom || **2.2.0** | De eerste graad uitgelegd | 1A, 1B, 2A en 2B op `/uitleg/`, met per leerjaar de uren basisvorming, differentiatie en basisoptie en de bron erbij · steunknop ook onderaan die pagina |
+
 ## Nog te doen
 
 In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge toegekend.
@@ -60,7 +61,7 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
 | 1 | Lijst en kaart naast elkaar | Op desktop vanaf 1280 px drie kolommen: filters 268 vast, lijst flexibel, kaart 470 vast en sticky. Lijst en kaart delen dezelfde hover-toestand, zodat een speld en zijn resultaatkaart samen oplichten. De Lijst/Kaart-schakelaar blijft alleen onder 900 px, waar de kaartkolom wegvalt | **Klaar om te bouwen, geen bron nodig.** Beschreven in de designgids bij de visuele identiteit, maar bewust apart gehouden: dit is gedrag, geen opmaak. Vandaag is `weergave` in `src/App.tsx` een strikte keuze tussen lijst en kaart op elke breedte; er komt gedeelde hover-state bij, de schakelaar wordt afhankelijk van de breedte, en de kaart laadt op desktop altijd mee |
-| 2 | Weet je het nog niet? | Voor ouders die nog geen richting in gedachten hebben: uitleg bij wat 1A is (basisvorming plus differentiatie), hoe aanmelden en inschrijven in het 1e jaar verloopt, en links naar de interesse- en studievaardigheidstests van Onderwijskiezer | **Klaar om te bouwen, geen bron meer nodig.** De officiële uitleg over de eerste graad én over aanmelden en inschrijven staat op vlaanderen.be, opgehaald en nagelezen op 07/09/2026. Onderwijskiezer blijft enkel nog nodig voor de twee tests, zie hieronder |
+| 2 | Weet je het nog niet? | Wat er nog rest: de pagina `/uitleg/inschrijven/` met hoe aanmelden en inschrijven in het 1e jaar verloopt, de twee tests van Onderwijskiezer erbij, en de schakelaar tussen de twee uitlegpagina's | **Klaar om te bouwen, geen bron meer nodig.** De uitleg over 1A, 1B, 2A en 2B is uitgebracht in 2.2.0; de procedurepagina staat nog open. Bronnen nagelezen op 07/09/2026, zie hieronder |
 | 3 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
 | 4 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
@@ -130,34 +131,13 @@ basisonderwijs staat gewoon in de regelgeving. Een eigen versie mag dus, op twee
 - **Bronvermelding lost niets op.** Attributie maakt een kopie niet legaal. Linken mag altijd,
   kopiëren nooit, ook niet met een naamsvermelding erbij.
 
-**2. Eigen uitleg over 1A op de site. Bron gevonden op 07/09/2026.**
+**2. Eigen uitleg over 1A op de site. Uitgebracht in 2.2.0 op 07/09/2026.**
 
-Beter dan doorlinken is het in één alinea zelf zeggen: in 1A ligt het grootste stuk van de week
-vast en kiest de school de rest in. Dat verklaart meteen waarom twee scholen met "1A" in het
-aanbod toch niet hetzelfde aanbieden, en dat is precies de verwarring waar een ouder mee zit.
-
-De bron is de structuurpagina van Onderwijs en Vorming, opgehaald en nagelezen op 07/09/2026:
-<https://www.vlaanderen.be/onderwijs-en-vorming/wegwijs-in-de-onderwijsniveaus/wegwijs-in-het-gewoon-secundair-onderwijs/structuur-van-het-voltijds-gewoon-secundair-onderwijs>
-
-Wat er letterlijk staat: eerste leerjaar minstens 27 uur basisvorming (de eindtermen) en minstens
-5 uur differentiatie, met 1A voor wie het getuigschrift basisonderwijs heeft en 1B voor wie het
-niet heeft; tweede leerjaar A minstens 25 uur basisvorming, 2 uur differentiatie en 5 uur
-basisoptie; tweede leerjaar B minstens 20 uur basisvorming, 2 uur remediëring en verdieping en
-10 uur basisoptie, met maximaal 3 te combineren basisopties. Ook de drie finaliteiten en de acht
-studiedomeinen staan er.
-
-Twee dingen die bij het schrijven niet mogen verwateren:
-
-- **De officiële term is "differentiatie", niet "keuzegedeelte".** Dat laatste komt uit
-  Onderwijskiezer en is dus precies de bron die we niet overnemen. Gebruik de woorden van
-  vlaanderen.be.
-- **De pagina zet die 27 plus 5 onder "1ste leerjaar", niet onder 1A alleen.** Schrijf wat er
-  staat en denk 1B er niet stilzwijgend uit.
-
-Hiermee vervalt het oude spoor naar de Codex Secundair Onderwijs en de omzendbrieven op `edulex`:
-niet meer nodig. De twee pagina's die dit vroeger zeiden ("Van 29 studiegebieden naar 8
-studiedomeinen" en "Krachtlijnen van modernisering secundair onderwijs") geven nog steeds een 301
-naar de portaalhomepage; daar niet opnieuw naar zoeken.
+Staat op `/uitleg/` onder "De eerste graad: 1A, 1B, 2A en 2B", met de uren per leerjaar en een
+link naar de structuurpagina van Onderwijs en Vorming als bron. Twee dingen die daar bewust zo
+staan en die je niet moet terugdraaien: de officiële term is "differentiatie" en niet
+"keuzegedeelte" (dat laatste komt uit Onderwijskiezer), en de 27 plus 5 uur staat er als het
+eerste leerjaar, niet als 1A alleen, want zo staat het in de bron.
 
 **3. Hoe aanmelden en inschrijven verloopt. Bron gevonden op 07/09/2026.**
 
