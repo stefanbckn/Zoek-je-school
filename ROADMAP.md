@@ -196,8 +196,58 @@ Dit verandert niets aan de rij "Aanmelden" in de tabel hierboven. Welk systeem e
 gebruikt, staat nergens centraal, en de aanmeldpagina zegt dat zelf: scholen mogen kiezen of en
 met wie ze samenwerken.
 
-**Vorm, als dit er komt.** Hoort in het bestaande helppaneel `?help=1`, niet in een nieuw paneel.
-Daar staat al wat de site niet toont; dit is het spiegelbeeld daarvan.
+## Vorm: waar deze drie stukken landen (beslist 07/09/2026)
+
+De oudere notitie zei "hoort in het helppaneel `?help=1`". **Dat is achterhaald.** Het helppaneel
+gaat over de bediening van de zoeker, en deze uitleg gaat over het onderwijs zelf en over een
+procedure. Verdeel niet op onderwerp maar op de vraag die de ouder stelt:
+
+| Waar | De vraag van de ouder | Kenmerk |
+| --- | --- | --- |
+| `/uitleg/` | "Wat betekent dat woord?" | Tijdloos, geen data, gaat over het systeem |
+| `?help=1` | "Hoe gebruik ik deze zoeker?" | Gaat over ons product |
+| `?over=1` | "Waar komt dit vandaan?" | Herkomst, privacy, disclaimer |
+| `/uitleg/inschrijven/` (nieuw) | "Wat moet ik doen, en wanneer?" | Procedure, tijdgebonden, verwijst door |
+
+**1A, 1B, 2A en 2B gaan naar `/uitleg/`**, in de bestaande sectie "De graden". Die zegt vandaag
+over de eerste graad zo goed als niets, terwijl "1A" letterlijk op de resultaatkaartjes staat.
+Zet het vóór de sectie over finaliteit: eerst waar je nu staat, dan pas de keuze.
+
+**Aanmelden en inschrijven krijgt een eigen pagina** en gaat er niet bij op `/uitleg/`. De
+premisse daar is woordenschat zodat de filters ergens op slaan, en een procedure met jaarlijkse
+data breekt dat. `/uitleg/` heeft vandaag nul onderhoud en dat moet zo blijven.
+
+**De twee tests van Onderwijskiezer horen bij de procedurepagina**, niet bij de termen. I-Like en
+I-Study zijn voor het zesde leerjaar, hetzelfde moment als aanmelden, en het is geen
+woordverklaring. Bovenaan die pagina als blokje "nog geen idee?", vóór de stappen.
+
+**De schakelaar tussen de twee: twee links die eruitzien als knoppen, geen JavaScript.** Beide
+pagina's krijgen bovenaan dezelfde schakelaar, met de actieve knop opgevuld, zoals de
+Lijst/Kaart-schakelaar in de zoeker. Voor de bezoeker is dat niet te onderscheiden van een echte
+toggle: het zijn statische bestanden met een stylesheet die al in de cache zit.
+
+- Met JS zou het in een apart bestand naast `thema.js` moeten, want de CSP staat enkel
+  `script-src 'self'` toe. Werkbaar, maar het is onderhoud voor iets dat een link gratis doet.
+- Elke helft krijgt zo een eigen `title`, `description`, canonical en socialkaart. Bij één pagina
+  moet je twee onderwerpen in één omschrijving persen.
+- Een ouder kan de inschrijvingshelft rechtstreeks doorsturen, en die landt meteen goed, ook
+  zonder JS.
+- `/uitleg/` blijft bestaan als adres. Het staat al in het helppaneel en is mogelijk geïndexeerd.
+- De prijs is een kop en een footer in twee bestanden. Dat is vandaag al zo tussen `index.html`
+  en `uitleg/index.html`, dus het is geen nieuw soort onderhoud.
+
+⚠️ **Maak er een `<nav>` van met `aria-current="page"` op de actieve knop, en gebruik géén
+`role="tablist"`.** Die rol belooft aan een schermlezer dat er panelen wisselen zonder navigatie,
+en dat klopt hier niet.
+
+**Labels.** De knop in de kop wordt `Uitleg voor ouders ↗` in plaats van
+`Wat betekenen de termen?`, want hij dekt nu twee dingen. De schakelaar krijgt `De termen` en
+`Aanmelden en inschrijven`. De `h1` per pagina blijft "Het secundair onderwijs uitgelegd" en
+wordt "Aanmelden en inschrijven". De bullet "Aanmelden en inschrijven" in het helppaneel loopt
+vandaag dood en wordt een link naar de nieuwe pagina.
+
+**Twee losse MINOR's.** De termen op `/uitleg/` en de inschrijvingspagina zijn apart uit te
+brengen; de schakelaar komt er pas bij als de tweede pagina bestaat.
 
 ## Wat volgt er na deze richting? (nog niet onderzocht)
 
