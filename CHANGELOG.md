@@ -42,6 +42,10 @@ een tikdoel minstens 24 bij 24 pixels vraagt.
   aantikte terwijl je Antwerpen bedoelde. De vakjes zijn nu 20 px en de rijen staan ruimer.
 - **"Terug naar de zoeker" en "Zoek een school in je buurt"** op de uitlegpagina's waren 18 px
   hoog. Nu 44.
+- **De kaart opende te ver uitgezoomd, op een landelijk stuk Schelde in plaats van op je
+  resultaten.** Er stond geen enkele school in beeld terwijl de spelden er wel degelijk waren:
+  ze lagen buiten het venster. Nu past de kaart zich meteen op je resultaten. Zonder zoekopdracht
+  zie je heel Vlaanderen en Brussel; met een adres en een straal van 5 km zie je die buurt.
 
 **Kleiner**
 
@@ -50,9 +54,6 @@ een tikdoel minstens 24 bij 24 pixels vraagt.
 
 **Wat er niet in zit**
 
-- **De kaart opent nog altijd te ver uitgezoomd**, op een stuk Schelde in plaats van op je
-  resultaten. Dat is een aparte fout die niets met de hoogte te maken heeft; nu de kaart je hele
-  scherm vult, valt ze wel meer op.
 - **De balk met aangevinkte adressen blijft op een telefoon een vijfde van het scherm innemen.**
   Die hoort bij een ander openstaand punt over diezelfde balk.
 
