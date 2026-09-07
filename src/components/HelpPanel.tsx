@@ -193,8 +193,13 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
               </li>
               <li>
                 <strong className="font-medium text-inkt">Aanmelden en inschrijven.</strong> Dat
-                loopt via de school of het aanmeldsysteem van je gemeente. Vanuit elke school
-                link je door naar de officiële fiche van Onderwijs en Vorming.
+                loopt via de school of het aanmeldsysteem van je gemeente. Hoe die procedure
+                verloopt, staat op{' '}
+                <a href="/uitleg/inschrijven/" className="underline">
+                  Aanmelden en inschrijven
+                </a>
+                . Vanuit elke school link je door naar de officiële fiche van Onderwijs en
+                Vorming.
               </li>
               <li>
                 <strong className="font-medium text-inkt">Een oordeel over kwaliteit.</strong>{' '}
