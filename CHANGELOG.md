@@ -21,6 +21,11 @@ en tot nu legde de site ze nergens uit.
   basisvorming en hoeveel uur de school zelf invult: 27 plus 5 in het eerste jaar, 25 plus 2 plus
   5 uur basisoptie in 2A, en 20 plus 2 plus 10 in 2B. Daarmee is meteen duidelijk waarom twee
   scholen allebei "1A" aanbieden en er toch anders uitzien.
+- **Wat A-stroom en B-stroom echt betekenen.** Er wordt vaak verteld dat de B-stroom alleen
+  naar de arbeidsmarkt leidt. Dat klopt niet: na 2B kan je naar de tweede graad met doorstroom-
+  of dubbele finaliteit, via de opstroomoptie of met een gunstige beslissing van de klassenraad,
+  en na 2A kan je evengoed naar de arbeidsmarktfinaliteit. Met de verwijzing naar het artikel
+  waarin dat staat.
 - **Uitleg bij de basisoptie.** Ze is nog geen studierichting, maar een eerste kennismaking met
   een vakgebied. Welke basisopties een school inricht, staat op de website van die school; die
   gegevens zitten niet in onze bron.
