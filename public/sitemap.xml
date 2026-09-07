@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Twee URL's: de zoeker en de uitlegpagina. De zoeker staat er maar één keer in, want
+<!-- Drie URL's: de zoeker en de twee uitlegpagina's. De zoeker staat er maar één keer in, want
      alle state zit in de querystring en die hoort niet in een sitemap (zie de canonical in
      index.html).
      Bewust zonder <lastmod>: dat zou een handmatig bij te houden datum zijn die na de eerste
@@ -10,5 +10,8 @@
   </url>
   <url>
     <loc>https://zoekjeschool.be/uitleg/</loc>
+  </url>
+  <url>
+    <loc>https://zoekjeschool.be/uitleg/inschrijven/</loc>
   </url>
 </urlset>

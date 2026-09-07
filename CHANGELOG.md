@@ -8,6 +8,15 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.3.1 — 7 september 2026
+
+**Opgelost**
+
+- **De pagina "Aanmelden en inschrijven" stond niet in de sitemap.** Zoekmachines vonden ze
+  daardoor alleen via de links op de site zelf. Voor jou verandert er niets aan wat je ziet.
+
+---
+
 ## 2.3.0 — 7 september 2026
 
 Naast de pagina met de termen staat er nu een tweede: hoe aanmelden en inschrijven voor het
