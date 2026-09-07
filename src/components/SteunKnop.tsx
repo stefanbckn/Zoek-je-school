@@ -2,6 +2,10 @@
  * De steunknop staat op twee plaatsen (de footer en onderaan "Over deze site") en dus hier, in
  * één component. Anders lopen de twee kopieën uit elkaar zodra de tekst of de link wijzigt.
  *
+ * Let op: `uitleg/index.html` draagt dezelfde knop als handgeschreven HTML, want een statische
+ * pagina kan deze component niet gebruiken. Dit bestand is de waarheid; wijzigt hier de tekst,
+ * de link of het kopje, pas die kopie dan mee aan.
+ *
  * Bewust een gewone link en géén Ko-fi-widget: dat script van storage.ko-fi.com zou bij elke
  * paginaweergave een externe call doen en dus het IP van elke bezoeker naar Ko-fi sturen, ook
  * bij wie nooit klikt. Dat botst met de privacyregel in CLAUDE.md, en de CSP
