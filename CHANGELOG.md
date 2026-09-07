@@ -8,6 +8,34 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.3.0 — 7 september 2026
+
+Naast de pagina met de termen staat er nu een tweede: hoe aanmelden en inschrijven voor het
+eerste jaar secundair verloopt. Bovenaan allebei staat een schakelaar om te wisselen.
+
+**Nieuw**
+
+- **De pagina "Aanmelden en inschrijven".** Wat aanmelden is, waarom het niet overal gebeurt, en
+  de stappen op een rij: je scholen in voorkeursvolgorde zetten, een ticket krijgen of een plaats
+  op de wachtlijst, en dan zelf gaan inschrijven. Met de nuchtere waarschuwing dat een ticket nog
+  geen inschrijving is.
+- **Wie voorrang krijgt.** Broers en zussen en kinderen van personeel gaan altijd voor, en in
+  Brussel geldt er een extra voorrang. Daarna ordent de school met toeval en met de plaats die ze
+  op jouw voorkeurslijst kreeg. Het uur waarop je aanmeldt staat niet bij die criteria.
+- **De twee tests van Onderwijskiezer**, I-Like Basic en I-Study Basic, als startpunt voor wie nog
+  geen idee heeft. Ze zijn gratis en je vult ze op hun site in.
+- **Een schakelaar bovenaan beide uitlegpagina's.** Eén klik tussen "De termen" en "Aanmelden en
+  inschrijven". De knop in de kop van de zoeker heet daarom nu "Uitleg voor ouders".
+
+**Wat er bewust niet in staat**
+
+- **De data.** Die verschuiven elk schooljaar, dus de pagina verwijst naar het officiële
+  overzicht in plaats van ze te herhalen. Een verkeerde datum is erger dan geen datum.
+- **Welke school met welk aanmeldsysteem werkt.** Dat staat in geen enkele databron die wij mogen
+  ophalen, dus je vindt hier geen aanmeldknop per school.
+
+---
+
 ## 2.2.0 — 7 september 2026
 
 Op de pagina "Het secundair onderwijs uitgelegd" staat nu ook wat 1A, 1B, 2A en 2B betekenen.
