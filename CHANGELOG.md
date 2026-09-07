@@ -8,6 +8,60 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.4.0 — 7 september 2026
+
+Meer dan de helft van de bezoekers komt met een telefoon. Deze versie is voor hen: de zoeker
+was op een scherm van 375 px vooral scrollen. Op een laptop verandert er zo goed als niets.
+
+**Nieuw**
+
+- **Op een telefoon blijft de balk met het aantal resultaten bovenaan staan.** Daarop staan ook
+  de filterknop en de schakelaar tussen lijst en kaart. Vroeger zat je na een stuk of
+  vijfentwintig scholen zo'n 4000 px van je zoekopdracht af, en kostte elke aanpassing een reis
+  terug naar boven. Op een laptop scrollt die balk gewoon mee, zoals je gewend bent.
+- **De filters openen als een eigen scherm.** Ze schoven eerder tussen je zoekveld en je
+  resultaten in, ruim anderhalf scherm hoog, met de knop om ze weer te sluiten helemaal
+  onderaan. Nu is er een kruisje bovenaan en onderaan een knop "Toon 912 resultaten" die het
+  aantal meetelt terwijl je aanvinkt.
+- **De kaart vult je scherm.** Je zag er ongeveer de helft van: bovenaan leeg grijs, onderaan
+  half afgesneden bollen. Wie op "Kaart" tikt, krijgt nu meteen de volledige kaart in beeld.
+- **Twee scholen vergelijken gaat onder elkaar in plaats van in een tabel.** De tabel was ruim
+  twee keer zo breed als een telefoonscherm, dus je zag één adres tegelijk en bladerde heen en
+  weer. Elk adres staat nu op zichzelf, met dezelfde rijen in dezelfde volgorde. Op een laptop
+  en op papier blijft het de tabel.
+
+**Opgelost**
+
+Drie dingen waren geen kwestie van comfort maar tekortkomingen tegenover WCAG 2.2 AA, dat voor
+een tikdoel minstens 24 bij 24 pixels vraagt.
+
+- **Het kruisje om een venster te sluiten was 12 px breed.** Op een telefoon is dat de enige
+  zichtbare manier om een venster te sluiten. Alle vijf de vensters hebben nu een tikvlak van
+  44 bij 44.
+- **De filtervinkjes waren 13 px en stonden 8 px uit elkaar**, waardoor je makkelijk Limburg
+  aantikte terwijl je Antwerpen bedoelde. De vakjes zijn nu 20 px en de rijen staan ruimer.
+- **"Terug naar de zoeker" en "Zoek een school in je buurt"** op de uitlegpagina's waren 18 px
+  hoog. Nu 44.
+- **De kaart opende te ver uitgezoomd, op een landelijk stuk Schelde in plaats van op je
+  resultaten.** Er stond geen enkele school in beeld terwijl de spelden er wel degelijk waren:
+  ze lagen buiten het venster. Nu past de kaart zich meteen op je resultaten. Zonder zoekopdracht
+  zie je heel Vlaanderen en Brussel; met een adres en een straal van 5 km zie je die buurt.
+
+**Kleiner**
+
+- **Een label als "Vrij gesubsidieerd" breekt niet meer over twee regels.** In de vergelijking op
+  een telefoon viel het woord uit elkaar met de gekleurde vulling erdoorheen. Het label schuift nu
+  in z'n geheel naar de volgende regel.
+- **De tip over deelgemeenten verschijnt pas zodra je typt.** Hij nam vier regels boven je eerste
+  resultaat in, terwijl je hem pas nodig hebt wanneer je een gemeente intikt.
+
+**Wat er niet in zit**
+
+- **De balk met aangevinkte adressen blijft op een telefoon een vijfde van het scherm innemen.**
+  Die hoort bij een ander openstaand punt over diezelfde balk.
+
+---
+
 ## 2.3.2 — 7 september 2026
 
 Onderhoud aan een controle die achter de schermen draait. Aan de site zelf verandert er niets.

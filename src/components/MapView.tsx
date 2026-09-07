@@ -126,14 +126,27 @@ function VolgtGrootte() {
   return null
 }
 
+/**
+ * Past het beeld op de resultaten in.
+ *
+ * **Bewust een `useEffect` en geen `useMemo`.** Die laatste draait tijdens het renderen, dus
+ * vóór de browser de container heeft opgemeten: Leaflet kende op dat moment nog geen afmetingen,
+ * elke begrenzing past in nul bij nul pixels, en de berekende zoom liep dan tegen de `maxZoom`
+ * hieronder aan. Je kreeg een kaart op zoom 14 met het juiste middelpunt en geen enkele school
+ * in beeld — issue #36. De `ResizeObserver` in VolgtGrootte repareerde dat niet: `invalidateSize`
+ * behoudt middelpunt en zoom, het past de begrenzing niet opnieuw in.
+ *
+ * De afhankelijkheid is de array-referentie en niet de inhoud. Dat is precies de bedoeling:
+ * `metLocatie` in MapView is gememoized, zodat het openen van het detailpaneel — dat elke render
+ * een nieuwe array oplevert — de kaart niet terugzoomt.
+ */
 function FitBounds({ campussen }: { campussen: CampusMetLocatie[] }) {
   const map = useMap()
-  useMemo(() => {
+  useEffect(() => {
     if (campussen.length === 0) return
     const bounds = L.latLngBounds(campussen.map((c) => [c.lat, c.lon]))
     map.fitBounds(bounds, { padding: [24, 24], maxZoom: 14 })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campussen])
+  }, [campussen, map])
   return null
 }
 

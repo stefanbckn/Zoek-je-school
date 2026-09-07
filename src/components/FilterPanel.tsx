@@ -130,7 +130,7 @@ export function FilterPanel({
   }
 
   return (
-    <aside className="w-full md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-rand p-4 flex flex-col gap-6">
+    <aside className="w-full md:w-64 shrink-0 md:border-r border-rand p-4 flex flex-col gap-6">
       <div>
         <label htmlFor="tekst" className="sectiekop mb-2 block">
           Zoek op schoolnaam
@@ -171,7 +171,7 @@ export function FilterPanel({
                 type="checkbox"
                 checked={netten.includes(net)}
                 onChange={() => toggleNet(net)}
-                className="mt-1 rounded border-rand"
+                className="mt-0.5 size-5 shrink-0 rounded border-rand"
               />
               <span>
                 <span className={`${NET_CHIP} ${NET_STYLES[net]}`}>
@@ -190,12 +190,12 @@ export function FilterPanel({
         <h2 className="sectiekop mb-2">Provincie</h2>
         <div className="flex flex-col gap-2">
           {provincieOpties.map((provincie) => (
-            <label key={provincie} className="flex items-start gap-2 text-sm text-zacht">
+            <label key={provincie} className="flex items-start gap-2 py-1 text-sm text-zacht">
               <input
                 type="checkbox"
                 checked={provincies.includes(provincie)}
                 onChange={() => toggleProvincie(provincie)}
-                className="mt-1 rounded border-rand"
+                className="mt-0.5 size-5 shrink-0 rounded border-rand"
               />
               <span>
                 <span className="text-inkt">{provincie}</span>
@@ -227,18 +227,18 @@ export function FilterPanel({
         {/* `relative` is hier geen opsmuk: elk label bevat een `sr-only` span, en die is
             absoluut gepositioneerd. Zonder containing block op deze scroller vallen die 236
             spans buiten het scrollgebied en rekken ze de hele pagina met ~2000px op. */}
-        <div className="relative mt-2 flex flex-col gap-1.5 max-h-48 overflow-auto pr-1">
+        <div className="relative mt-2 flex flex-col max-h-72 overflow-auto overscroll-contain pr-1 md:max-h-64">
           {zichtbareGemeenten.map((gemeente) => (
             <label
               key={gemeente}
-              className="flex items-center justify-between gap-2 text-sm text-zacht"
+              className="flex items-center justify-between gap-2 py-2 text-sm text-zacht"
             >
               <span className="flex items-center gap-2 min-w-0">
                 <input
                   type="checkbox"
                   checked={gemeenten.includes(gemeente)}
                   onChange={() => toggleGemeente(gemeente)}
-                  className="rounded border-rand shrink-0"
+                  className="size-5 shrink-0 rounded border-rand"
                 />
                 <span className="truncate">{gemeente}</span>
               </span>
@@ -271,7 +271,7 @@ export function FilterPanel({
                 type="checkbox"
                 checked={finaliteiten.includes(finaliteit)}
                 onChange={() => toggleFinaliteit(finaliteit)}
-                className="mt-1 rounded border-rand"
+                className="mt-0.5 size-5 shrink-0 rounded border-rand"
               />
               <span>
                 <span
@@ -298,12 +298,12 @@ export function FilterPanel({
         <h2 className="sectiekop mb-2">Studiedomein</h2>
         <div className="flex flex-col gap-1.5">
           {DOMEIN_RIJEN.map((domein) => (
-            <label key={domein} className="flex items-center gap-2 text-sm text-zacht">
+            <label key={domein} className="flex items-center gap-2 py-2 text-sm text-zacht">
               <input
                 type="checkbox"
                 checked={domeinen.includes(domein)}
                 onChange={() => toggleDomein(domein)}
-                className="rounded border-rand"
+                className="size-5 shrink-0 rounded border-rand"
               />
               <span>{domeinLabel(domein)}</span>
             </label>
@@ -333,7 +333,7 @@ export function FilterPanel({
             type="checkbox"
             checked={toonZonderAanbod}
             onChange={(e) => onToonZonderAanbodChange(e.target.checked)}
-            className="mt-1 rounded border-rand"
+            className="mt-0.5 size-5 shrink-0 rounded border-rand"
           />
           <span>
             <span className="text-inkt">Toon ze ook</span>

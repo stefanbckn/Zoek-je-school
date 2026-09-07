@@ -263,6 +263,15 @@ body {
   color: var(--c-inkt);
 }
 
+/* Hoogte van de sticky resultatenbalk boven de lijst. Ze staat hier als variabele omdat twee
+   plaatsen ze nodig hebben: de balk zelf zet ze als hoogte, en de kaart trekt ze op een telefoon
+   van de vensterhoogte af (zie App.tsx). Raken die twee los van elkaar, dan valt de onderrand
+   van de kaart weer buiten beeld — dat is precies wat issue #43 beschreef. Gemeten in de
+   preview op 375 px, niet geschat. */
+:root {
+  --h-resultatenbalk: 3.5rem;
+}
+
 /* De kaart van Leaflet heeft in donkere modus een felwitte tegellaag. Iets dempen zodat
    hij niet uit het scherm knalt; volledig inverteren maakt het water roze. */
 :root[data-theme="dark"] .leaflet-tile-pane,
