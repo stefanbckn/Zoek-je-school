@@ -49,6 +49,9 @@ een tikdoel minstens 24 bij 24 pixels vraagt.
 
 **Kleiner**
 
+- **Een label als "Vrij gesubsidieerd" breekt niet meer over twee regels.** In de vergelijking op
+  een telefoon viel het woord uit elkaar met de gekleurde vulling erdoorheen. Het label schuift nu
+  in z'n geheel naar de volgende regel.
 - **De tip over deelgemeenten verschijnt pas zodra je typt.** Hij nam vier regels boven je eerste
   resultaat in, terwijl je hem pas nodig hebt wanneer je een gemeente intikt.
 

@@ -29,8 +29,17 @@ export const NET_STYLES: Record<Net, string> = {
   Onafhankelijk: 'bg-net-onaf-bg text-net-onaf-inkt',
 }
 
-/** Gedeelde vormgeving van een net-chip. Rondingen bewust tussen strak en pilvormig in. */
-export const NET_CHIP = 'chip shrink-0 rounded-md px-2 py-0.5 text-xs font-medium'
+/**
+ * Gedeelde vormgeving van een net-chip. Rondingen bewust tussen strak en pilvormig in.
+ *
+ * `inline-block whitespace-nowrap`: de chip staat meestal achter een schoolnaam in lopende
+ * tekst, en zonder dat brak "Vrij gesubsidieerd" over twee regels met de vulling erdoorheen —
+ * gezien op een telefoon in de vergelijking. Nu schuift de chip in haar geheel naar de volgende
+ * regel. Dezelfde redenering als bij de afdrukregel voor `.chip` in index.css, en de
+ * finaliteit-chip lost het al op met `inline-flex`.
+ */
+export const NET_CHIP =
+  'chip inline-block shrink-0 whitespace-nowrap rounded-md px-2 py-0.5 text-xs font-medium'
 
 /** Korte uitleg bij de netten die verwarring geven. Niet elk net heeft er een nodig. */
 export const NET_UITLEG: Partial<Record<Net, string>> = {
