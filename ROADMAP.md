@@ -64,11 +64,10 @@ In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge to
 
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| 1 | Lijst en kaart naast elkaar | Op desktop vanaf 1280 px drie kolommen: filters 268 vast, lijst flexibel, kaart 470 vast en sticky. Lijst en kaart delen dezelfde hover-toestand, zodat een speld en zijn resultaatkaart samen oplichten. De Lijst/Kaart-schakelaar blijft alleen onder 900 px, waar de kaartkolom wegvalt | **Klaar om te bouwen, geen bron nodig.** Beschreven in de designgids bij de visuele identiteit, maar bewust apart gehouden: dit is gedrag, geen opmaak. Vandaag is `weergave` in `src/App.tsx` een strikte keuze tussen lijst en kaart op elke breedte; er komt gedeelde hover-state bij, de schakelaar wordt afhankelijk van de breedte, en de kaart laadt op desktop altijd mee |
-| 2 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
-| 3 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
-| 4 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
-| 5 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 1 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
+| 2 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
+| 3 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
+| 4 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 | — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie [docs/onderzoek/aanmelden.md](./docs/onderzoek/aanmelden.md) |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
@@ -286,6 +285,25 @@ onderaan zonder dat er iets over hen gezegd is; afwezigheid van informatie leest
 slecht rapport. Eén punt doet een school bovendien onrecht, en verslagen van verschillende jaren
 naast elkaar vergelijken twee momenten in plaats van twee scholen. Dezelfde lijn als bij de
 GOK-cijfers: context met uitleg, geen kwaliteitsoordeel.
+
+**Lijst en kaart naast elkaar** (geschrapt 09/09/2026, beslist door de gebruiker na het te
+hebben gebouwd en bekeken). Was: op een breed scherm drie kolommen, met de kaart vast naast de
+lijst en één gedeelde hover-toestand, zodat een speld en zijn resultaatkaart samen oplichten.
+
+**De reden om het te laten: het oplichten werkt niet waar het het meest nodig is.** De kaart
+clustert nabije adressen tot één bol, en in een stad zit het merendeel van de resultaten in zo'n
+bol. Wijs je dan een kaartje in de lijst aan, dan is er geen speld om te laten oplichten en
+gebeurt er zichtbaar niets. Net in de gevallen met veel scholen dicht bij elkaar — precies waar
+"waar ligt dit ten opzichte van dat?" een echte vraag is — geeft de koppeling dus geen antwoord.
+Zonder die koppeling blijft er een kaart over die de lijst van 1170 naar 660 px knijpt in ruil
+voor niets dat de bezoeker nog niet kon.
+
+Wat het waard is om te bewaren: **een oplossing hiervoor moet bij het cluster beginnen, niet bij
+de speld.** Denkbaar is een bol die zelf oplicht en zegt dat het aangewezen adres erin zit, of
+inzoomen bij het aanwijzen. Dat eerste botst op de regel dat een cluster nooit iets over één
+school mag zeggen; het tweede laat de kaart bewegen bij elke muisbeweging over de lijst. Beide
+zijn dus een eigen ontwerpvraag en geen detail bij deze indeling. De bouw zelf was klein (twee
+commits, branch `v2.5.0-kolommen`, verwijderd) — het probleem zit in het idee, niet in het werk.
 
 **Kostprijs** (geschrapt 03/09/2026, beslist door de gebruiker). Was: maximumfactuur en
 materiaalkost bij de start (boeken, laptop, kaften). **De reden om het te laten: er is geen
