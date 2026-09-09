@@ -40,6 +40,10 @@ function App() {
   const [filtersOpen, setFiltersOpen] = useState(false)
   const balkRef = useRef<HTMLDivElement>(null)
   const kaartRef = useRef<HTMLDivElement>(null)
+  // Het uitklapmenu op een telefoon sluit zichzelf niet: <details> blijft openstaan zodra een
+  // knop erin een paneel opent, en na het kiezen van een richting stond het menu nog over de
+  // resultaten. Daarom houden we het element vast om het bij een klik dicht te zetten.
+  const menuRef = useRef<HTMLDetailsElement>(null)
   /**
    * De shortlist: id's van campussen, in de volgorde waarin ze aangevinkt zijn.
    *
@@ -431,7 +435,7 @@ function App() {
               balk een blok van 400 px. Ze gaan dan in een uitklapmenu. Bewust <details> en
               geen eigen toestand: het openen en sluiten, de rol voor schermlezers en de
               bediening met toetsenbord zitten al in het element zelf. */}
-          <details className="relative md:hidden">
+          <details ref={menuRef} className="relative md:hidden">
             <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-lg border border-kop-inkt/30 [&::-webkit-details-marker]:hidden">
               <span className="sr-only">Menu</span>
               {/* Drie getekende lijnen en niet het teken ☰ (U+2630): dat zit niet in het
@@ -452,7 +456,16 @@ function App() {
                 <path d="M1 1h16M1 7h16M1 13h16" />
               </svg>
             </summary>
-            <div className="absolute right-0 z-30 mt-2 flex w-64 flex-col items-stretch gap-2 rounded-xl border border-kop-inkt/25 bg-kop p-3 shadow-lg">
+            {/* De klik vangen we hier op en niet in elke knop apart: kopIngangen is gedeeld
+                met de rij op een breed scherm, waar geen menu te sluiten valt. Alles wat in
+                het menu staat sluit het, ook de themaknop — een menu dat open blijft staan
+                over het paneel dat je net opende, is nooit wat je bedoelde. */}
+            <div
+              onClick={() => {
+                if (menuRef.current) menuRef.current.open = false
+              }}
+              className="absolute right-0 z-30 mt-2 flex w-64 flex-col items-stretch gap-2 rounded-xl border border-kop-inkt/25 bg-kop p-3 shadow-lg"
+            >
               {kopIngangen}
             </div>
           </details>
