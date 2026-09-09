@@ -62,13 +62,20 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 
 In volgorde. Het bovenste is het eerstvolgende; het nummer wordt bij de merge toegekend.
 
+**Stand op 09/09/2026, van de gebruiker.** De site doet wat ze moet doen. Van wat hier nog staat
+hoort er één ding echt bij, **aanmelden**, en is de rest nice to have: leuk als het lukt, geen
+reden om er iets voor uit te stellen. Dat verandert de volgorde hieronder, niet de
+inhoud: aanmelden stond bewust buiten de rij omdat er geen bron voor is, en staat nu bovenaan
+mét die beperking erbij.
+
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| 1 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
-| 2 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
-| 3 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
-| 4 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
-| — | Aanmelden | Aanmeldsysteem per school tonen en linken | **Bewust zonder plaats in de volgorde.** Er is geen centrale bron; dit wordt handmatige curatie per regio, zie [docs/onderzoek/aanmelden.md](./docs/onderzoek/aanmelden.md) |
+| 1 | Aanmelden | Aanmeldsysteem per school tonen en linken | **Geen bron, wel te bouwen.** Er is geen register dat scholen aan een aanmeldsysteem koppelt: dit wordt een klein gecommit bestand per gemeente of regio dat `fetch-data.ts` erbij joint, en géén scraping van de deelnemerslijsten. Toon nooit een datum zonder jaartal erbij, want aanmeldperiodes zijn kort en jaargebonden. Zie [docs/onderzoek/aanmelden.md](./docs/onderzoek/aanmelden.md) |
+| 2 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | *Nice to have.* **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
+| 3 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | *Nice to have.* **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
+| 4 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Staat hier enkel omdat de gebruiker het als wens genoemd heeft; zonder bron valt er niets te bouwen |
+| 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
+| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -293,8 +300,8 @@ lijst en één gedeelde hover-toestand, zodat een speld en zijn resultaatkaart s
 **De reden om het te laten: het oplichten werkt niet waar het het meest nodig is.** De kaart
 clustert nabije adressen tot één bol, en in een stad zit het merendeel van de resultaten in zo'n
 bol. Wijs je dan een kaartje in de lijst aan, dan is er geen speld om te laten oplichten en
-gebeurt er zichtbaar niets. Net in de gevallen met veel scholen dicht bij elkaar — precies waar
-"waar ligt dit ten opzichte van dat?" een echte vraag is — geeft de koppeling dus geen antwoord.
+gebeurt er zichtbaar niets. Net in de gevallen met veel scholen dicht bij elkaar, precies waar
+"waar ligt dit ten opzichte van dat?" een echte vraag is, geeft de koppeling dus geen antwoord.
 Zonder die koppeling blijft er een kaart over die de lijst van 1170 naar 660 px knijpt in ruil
 voor niets dat de bezoeker nog niet kon.
 
@@ -303,7 +310,7 @@ de speld.** Denkbaar is een bol die zelf oplicht en zegt dat het aangewezen adre
 inzoomen bij het aanwijzen. Dat eerste botst op de regel dat een cluster nooit iets over één
 school mag zeggen; het tweede laat de kaart bewegen bij elke muisbeweging over de lijst. Beide
 zijn dus een eigen ontwerpvraag en geen detail bij deze indeling. De bouw zelf was klein (twee
-commits, branch `v2.5.0-kolommen`, verwijderd) — het probleem zit in het idee, niet in het werk.
+commits, branch `v2.5.0-kolommen`, verwijderd): het probleem zit in het idee, niet in het werk.
 
 **Kostprijs** (geschrapt 03/09/2026, beslist door de gebruiker). Was: maximumfactuur en
 materiaalkost bij de start (boeken, laptop, kaften). **De reden om het te laten: er is geen

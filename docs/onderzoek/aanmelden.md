@@ -1,6 +1,9 @@
 # Aanmelden — geen centrale bron
 
-Onderzocht 27/08/2026. **Niet gebouwd, en bewust zonder plaats in de volgorde.**
+Onderzocht 27/08/2026. Nog niet gebouwd. **Stond bewust buiten de volgorde omdat er geen bron
+is; sinds 09/09/2026 staat het bovenaan in [ROADMAP.md](../../ROADMAP.md), als het enige punt dat
+de gebruiker er nog echt bij wil.** Dat verandert niets aan wat hieronder staat: er is nog altijd
+geen register, en de aanpak blijft handmatige curatie.
 
 Er is **geen register, dataset of API** die scholen aan een aanmeldsysteem koppelt. Nagekeken:
 de API-catalogus van het onderwijsportaal bevat geen aanmelden-product (zie
