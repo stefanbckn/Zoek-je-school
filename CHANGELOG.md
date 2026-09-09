@@ -8,6 +8,15 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.4.1 — 9 september 2026
+
+**Opgelost**
+
+- **Het menu op een telefoon sluit nu zichzelf.** Opende je het menu rechtsboven en koos je
+  daar "Alle richtingen", dan bleef het menu openstaan bovenop het paneel dat je net had
+  geopend — ook nadat je een studierichting had gekozen en weer bij de resultaten stond. Elke
+  keuze in dat menu klapt het nu dicht.
+
 ## 2.4.0 — 7 september 2026
 
 Meer dan de helft van de bezoekers komt met een telefoon. Deze versie is voor hen: de zoeker
