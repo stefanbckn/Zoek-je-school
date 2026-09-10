@@ -8,6 +8,18 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.4.2 — 10 september 2026
+
+**Opgelost**
+
+- **De zevende jaren staan nu onderaan de derde graad in plaats van bovenaan.** Bij een school
+  met bijvoorbeeld "7e leerjaar Verzorgende/Zorgkundige" kwam dat jaar vóór de gewone
+  richtingen van de derde graad te staan, terwijl je er pas na het zesde jaar aan begint. Je
+  ziet nu eerst de richtingen van de derde graad en daarna pas de zevende jaren, zowel in het
+  detail van een school als in de vergelijking. Wat de site niet toont, blijft hetzelfde: de
+  brondata zegt niet welke richting van de derde graad op welke van de tweede volgt, en binnen
+  een graad blijft de rest alfabetisch.
+
 ## 2.4.1 — 9 september 2026
 
 **Opgelost**
