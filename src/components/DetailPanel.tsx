@@ -29,6 +29,8 @@ interface DetailPanelProps {
   schooljaarAanbod: number | null
   /** Schooljaar en teldatum van de leerlingenkenmerken. Null = geen publicatie, blok valt weg. */
   kenmerkenMeta: DatasetMeta['leerlingenkenmerken']
+  /** Codes van de zevende leerjaren, zodat die achteraan de derde graad komen. */
+  zevendeCodes: Set<string>
   onClose: () => void
 }
 
@@ -39,6 +41,7 @@ export function DetailPanel({
   zoeklocatieLabel,
   schooljaarAanbod,
   kenmerkenMeta,
+  zevendeCodes,
   onClose,
 }: DetailPanelProps) {
   const [fietsroute, setFietsroute] = useState<FietsrouteResultaat | 'laden' | null>(null)
@@ -97,7 +100,7 @@ export function DetailPanel({
   // Aanbod van het hele adres, niet enkel van de geselecteerde school: scholen die een campus
   // delen vullen elkaars aanbod aan. Zo afgesproken, zie .claude/rules/datamodel.md.
   const aanbod = campusAanbod(campus)
-  const perGraad = groepeerPerGraad(aanbod)
+  const perGraad = groepeerPerGraad(aanbod, zevendeCodes)
 
   // Dieplink naar de webplanner van Transitous, met van/naar en de aankomsttijd al ingevuld.
   // Alleen zinvol als we allebei de punten kennen — zonder eigen adres is er niets te plannen.

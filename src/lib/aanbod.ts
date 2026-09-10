@@ -1,4 +1,4 @@
-import type { Campus, Finaliteit, Richting } from '../types'
+import type { Campus, Finaliteit, Richting, Studierichting } from '../types'
 
 /** De finaliteiten waarop gefilterd kan worden. `null` (eerste graad, 7e leerjaar, HBO5,
  *  OKAN) is geen keuze — dat is "niet van toepassing", geen categorie. */
@@ -82,7 +82,37 @@ export interface GraadGroep {
   richtingen: Richting[]
 }
 
-export function groepeerPerGraad(richtingen: Richting[]): GraadGroep[] {
+/**
+ * De codes van de zevende leerjaren, uit de catalogus van `richtingen.json`.
+ *
+ * De richtingen op campusniveau dragen die vlag zelf niet, enkel een `studierichtingCode`;
+ * deze set is de brug daartussen. De code alleen volstaat als sleutel, ook al is de catalogus
+ * op code + graad gesleuteld: geverifieerd tegen de dataset dat geen enkele code in de ene
+ * graad wél en in de andere niet als zevende leerjaar geldt (alle 161 gevlagde richtingen
+ * staan in de derde graad).
+ *
+ * Bewust niet op de naam herkennen. "7e leerjaar Integrale veiligheid" is een omschrijving uit
+ * de bron, geen categorie: het patroon "Ne leerjaar" matcht ook 46 namen van de eerste graad
+ * ("1ste leerjaar A"), en een andere schrijfwijze bij een volgende dataverversing zou de
+ * volgorde stil laten terugvallen. De vlag komt uit finaliteitscode `7E` van de bron zelf.
+ */
+export function zevendeLeerjaarCodes(studierichtingen: Studierichting[]): Set<string> {
+  return new Set(studierichtingen.filter((s) => s.zevendeLeerjaar).map((s) => s.code))
+}
+
+/**
+ * Groepeert het aanbod per graad, in de volgorde van `GRAAD_VOLGORDE`.
+ *
+ * Binnen een graad komen de zevende leerjaren achteraan: een zevende jaar volgt op het zesde,
+ * dus het hoort onderaan de derde graad en niet erbovenaan. Alfabetisch belandden ze daar wél,
+ * omdat hun naam met een cijfer begint. De rest blijft onderling alfabetisch zoals
+ * `campusAanbod` ze aanlevert — de brondata zegt niet welk leerjaar een gewone richting is,
+ * enkel welke een zevende jaar is.
+ */
+export function groepeerPerGraad(
+  richtingen: Richting[],
+  zevendeCodes: Set<string>,
+): GraadGroep[] {
   const perGraad = new Map<string, Richting[]>()
   for (const r of richtingen) {
     const graad = r.graad ?? 'Overige'
@@ -90,8 +120,13 @@ export function groepeerPerGraad(richtingen: Richting[]): GraadGroep[] {
     lijst.push(r)
     perGraad.set(graad, lijst)
   }
+  const isZevende = (r: Richting) =>
+    r.studierichtingCode !== null && zevendeCodes.has(r.studierichtingCode)
   return [...perGraad.entries()]
-    .map(([graad, lijst]) => ({ graad, richtingen: lijst }))
+    .map(([graad, lijst]) => ({
+      graad,
+      richtingen: [...lijst.filter((r) => !isZevende(r)), ...lijst.filter(isZevende)],
+    }))
     .sort((a, b) => {
       const ia = GRAAD_VOLGORDE.indexOf(a.graad)
       const ib = GRAAD_VOLGORDE.indexOf(b.graad)

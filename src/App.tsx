@@ -18,6 +18,7 @@ import {
   richtingMatcht,
   scholenMetAanbod,
   verborgenOmschrijving,
+  zevendeLeerjaarCodes,
 } from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
 import { NET_OPTIONS } from './lib/net'
@@ -296,6 +297,13 @@ function App() {
     () => new Map(studierichtingen.map((s) => [s.code, s.naam])),
     [studierichtingen],
   )
+
+  /**
+   * De codes van de zevende leerjaren, voor de volgorde binnen de derde graad. Eén keer uit de
+   * catalogus gehaald in plaats van per paneel: het detail- en het vergelijkpaneel gebruiken
+   * dezelfde set.
+   */
+  const zevendeCodes = useMemo(() => zevendeLeerjaarCodes(studierichtingen), [studierichtingen])
 
   /**
    * Waar de matrix haar aantallen op telt, in woorden. Volgt dezelfde volgorde als de
@@ -697,6 +705,7 @@ function App() {
         zoeklocatieLabel={state.label}
         schooljaarAanbod={meta?.schooljaarAanbod ?? null}
         kenmerkenMeta={meta?.leerlingenkenmerken ?? null}
+        zevendeCodes={zevendeCodes}
         onClose={() => setGeselecteerd(null)}
       />
 
@@ -707,6 +716,7 @@ function App() {
         campussen={vergelijkOpen ? vergelekenCampussen : []}
         schooljaarAanbod={meta?.schooljaarAanbod ?? null}
         kenmerkenMeta={meta?.leerlingenkenmerken ?? null}
+        zevendeCodes={zevendeCodes}
         onClose={() => setVergelijkOpen(false)}
       />
 

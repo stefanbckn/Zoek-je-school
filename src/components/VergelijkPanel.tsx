@@ -27,6 +27,8 @@ interface VergelijkPanelProps {
   schooljaarAanbod: number | null
   /** Schooljaar en teldatum van de leerlingenkenmerken. Null = geen publicatie, rijen vallen weg. */
   kenmerkenMeta: DatasetMeta['leerlingenkenmerken']
+  /** Codes van de zevende leerjaren, zodat die achteraan de derde graad komen. */
+  zevendeCodes: Set<string>
   onClose: () => void
 }
 
@@ -49,6 +51,7 @@ export function VergelijkPanel({
   campussen,
   schooljaarAanbod,
   kenmerkenMeta,
+  zevendeCodes,
   onClose,
 }: VergelijkPanelProps) {
   const open = campussen.length > 0
@@ -68,7 +71,9 @@ export function VergelijkPanel({
   // Eén keer per campus berekenen, niet per tabelrij: de graadrijen hieronder lopen er
   // allemaal doorheen.
   const aanbodPerCampus = campussen.map((c) => campusAanbod(c))
-  const graadGroepenPerCampus = aanbodPerCampus.map((aanbod) => groepeerPerGraad(aanbod))
+  const graadGroepenPerCampus = aanbodPerCampus.map((aanbod) =>
+    groepeerPerGraad(aanbod, zevendeCodes),
+  )
   const heeftAfstand = campussen.some((campus) => campus.afstandKm !== null)
   const graden = sorteerGraden(
     aanbodPerCampus.flatMap((aanbod) => aanbod.map((r) => r.graad ?? 'Overige')),
