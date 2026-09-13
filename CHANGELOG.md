@@ -8,6 +8,21 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.4.3 — 13 september 2026
+
+**Verbeterd**
+
+- **Google toont de site nu met haar naam.** In de zoekresultaten stond tot nu toe enkel
+  "zoekjeschool.be" boven de link. De startpagina vertelt Google nu dat de site "Zoek je school"
+  heet, en de twee uitlegpagina's geven hun plaats in de site mee, zodat je boven zo'n resultaat
+  "Zoek je school › Het secundair onderwijs uitgelegd" ziet in plaats van een adres. Op de site
+  zelf verandert niets. Google beslist zelf wanneer het dit overneemt, en dat kan enkele weken
+  duren; een betere positie in de resultaten levert het niet op.
+- **De hoofdtitel van de startpagina zegt nu waarover de site gaat.** Voor een zoekmachine was
+  die kop enkel "zoekjeschool.be". De regel eronder, "Middelbare scholen in Vlaanderen en
+  Brussel", hoort er nu bij. Wie een schermlezer gebruikt, hoort de volledige zin. Op het scherm
+  ziet de kop er exact hetzelfde uit.
+
 ## 2.4.2 — 10 september 2026
 
 **Opgelost**

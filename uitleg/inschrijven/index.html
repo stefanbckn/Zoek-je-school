@@ -32,6 +32,19 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="zoekjeschool.be: welke scholen liggen bij jou in de buurt?" />
     <meta name="twitter:card" content="summary_large_image" />
+    <!-- Broodkruimels voor Google, zie uitleg/index.html. De tussenstap volgt de mappen en
+         niet de navigatie: deze pagina hangt onder /uitleg/. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Zoek je school", "item": "https://zoekjeschool.be/" },
+          { "@type": "ListItem", "position": 2, "name": "Het secundair onderwijs uitgelegd", "item": "https://zoekjeschool.be/uitleg/" },
+          { "@type": "ListItem", "position": 3, "name": "Aanmelden en inschrijven", "item": "https://zoekjeschool.be/uitleg/inschrijven/" }
+        ]
+      }
+    </script>
 
     <!-- Zelfde themascript als de zoeker, zodat licht/donker niet opflitst bij het laden. -->
     <script src="/thema.js"></script>

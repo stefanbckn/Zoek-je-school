@@ -32,6 +32,19 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="zoekjeschool.be: welke scholen liggen bij jou in de buurt?" />
     <meta name="twitter:card" content="summary_large_image" />
+    <!-- Broodkruimels voor Google: toont "Zoek je school › Het secundair onderwijs uitgelegd"
+         boven het resultaat in plaats van de URL. Absolute URL's, want Google leest dit los
+         van de pagina. De sitenaam zelf staat in index.html. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Zoek je school", "item": "https://zoekjeschool.be/" },
+          { "@type": "ListItem", "position": 2, "name": "Het secundair onderwijs uitgelegd", "item": "https://zoekjeschool.be/uitleg/" }
+        ]
+      }
+    </script>
 
     <!-- Zelfde themascript als de zoeker, zodat licht/donker niet opflitst bij het laden.
          Relatief pad: deze pagina staat een map dieper. -->

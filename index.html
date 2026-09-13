@@ -47,6 +47,22 @@
     <!-- Zonder deze regel toont X/Twitter een klein vierkant miniatuurtje in plaats van de
          volle breedte. De rest leest het uit de og-tags hierboven. -->
     <meta name="twitter:card" content="summary_large_image" />
+    <!-- Structured data: zegt Google hoe de site heet, zodat de zoekresultaten "Zoek je school"
+         tonen in plaats van de kale domeinnaam. Dat is geen rankingfactor, enkel de weergave.
+         Alleen op de startpagina: Google leest de sitenaam enkel van de homepage.
+         Bewust zonder SearchAction: het zoekvak onder een resultaat heeft Google in 2024
+         afgeschaft. De CSP blokkeert dit blok niet, want een ld+json-blok wordt niet
+         uitgevoerd. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Zoek je school",
+        "alternateName": "zoekjeschool.be",
+        "url": "https://zoekjeschool.be/",
+        "inLanguage": "nl-BE"
+      }
+    </script>
 
     <!-- Synchroon, vóór de app laadt: voorkomt dat het verkeerde thema kort opflitst.
          Apart bestand omdat de CSP geen inline scripts toestaat, zie netlify.toml. -->
