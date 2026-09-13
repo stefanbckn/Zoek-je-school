@@ -124,8 +124,9 @@ export function Footer({
             simpleanalyticsbadges.com: zo komt er geen extra verzoek bij (ook niet voor wie Do
             Not Track aan heeft en dus niet geteld wordt), blijft de CSP ongewijzigd, en heeft
             hij vaste kleuren in plaats van het systeemthema te volgen terwijl de site een eigen
-            themaknop heeft. Getoond op 36px hoog, naast de steunknop; `rx` in de SVG is daarop
-            afgestemd, zodat de hoek er net als bij die knop 6px uitziet.
+            themaknop heeft. Er zijn twee varianten, gewisseld via `.sa-badge-licht` en
+            `.sa-badge-donker` in index.css. Getoond op 36px hoog, naast de steunknop; `rx` in de
+            SVG is daarop afgestemd, zodat de hoek er net als bij die knop 6px uitziet.
             `referrerpolicy="origin"` neemt hun embedcode over: ze zien enkel het domein. */}
         <a
           href="https://www.simpleanalytics.com/?utm_source=zoekjeschool.be&utm_content=badge"
@@ -139,7 +140,15 @@ export function Footer({
             alt="Bezoekers geteld met Simple Analytics, privacyvriendelijk"
             width={151}
             height={36}
-            className="h-9 w-auto"
+            className="sa-badge-licht h-9 w-auto"
+          />
+          <img
+            src="/simple-analytics-badge-donker.svg"
+            alt="Bezoekers geteld met Simple Analytics, privacyvriendelijk"
+            width={151}
+            height={36}
+            loading="lazy"
+            className="sa-badge-donker h-9 w-auto"
           />
         </a>
       </div>
