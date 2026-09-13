@@ -8,6 +8,15 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.4.6 — 13 september 2026
+
+**Achter de schermen**
+
+- **Het themascript en het telscript staan nu op één plaats in de code**, in plaats van als kopie
+  in elke pagina. Voor een bezoeker verandert er niets: de pagina's laden exact dezelfde scripts
+  in dezelfde volgorde. Een pagina die er later bijkomt, krijgt ze vanzelf mee en kan dus niet
+  vergeten worden bij de telling of het donkere thema.
+
 ## 2.4.5 — 13 september 2026
 
 **Verbeterd**
