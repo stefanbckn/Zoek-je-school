@@ -68,20 +68,9 @@
       }
     </script>
 
-    <!-- Synchroon, vóór de app laadt: voorkomt dat het verkeerde thema kort opflitst.
-         Apart bestand omdat de CSP geen inline scripts toestaat, zie netlify.toml. -->
-    <script src="/thema.js"></script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-
-    <!-- 100% privacy-first analytics -->
-    <!-- Bewust ZONDER data-collect-dnt="true": met dat attribuut worden bezoekers die
-         Do Not Track aan hebben staan alsnog geteld. Standaard slaat Simple Analytics die
-         over, en dat respecteert het signaal dat mensen bewust aanzetten. -->
-    <!-- Vereist een aangepaste CSP (script-src/connect-src/img-src naar *.simpleanalyticscdn.com),
-         zie netlify.toml — zonder die aanpassing wordt dit script stil geblokkeerd. -->
-    <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
   </body>
 </html>
