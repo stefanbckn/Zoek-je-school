@@ -23,7 +23,10 @@ Deze liggen vast. Keer ze niet om zonder de gebruiker.
 - **Geen ranglijsten, geen scores, geen kwaliteitsoordeel over scholen.** Cijfers over
   leerlingen zijn context met uitleg, nooit een rapport.
 - **Geen advertenties en geen betaalmuur.** Een donatieknop kan; commercieel worden kost ons de
-  toegang tot Transitous.
+  toegang tot Transitous. Eén bewuste uitzondering: de **Simple Analytics-badge** in de footer.
+  Die is de prijs voor hun gratis plan (zonder badge sluiten ze het dashboard af) en is dus geen
+  overtreding om op te ruimen. Hij staat lokaal in `public/`, niet van hun badgeserver, zodat
+  er geen extra live call bijkomt.
 - De code staat onder **AGPL-3.0**. Twee dingen in de footer zijn daarom geen opsmuk maar een
   verplichting: de **broncodelink** (AGPL artikel 13) en de **contactregel `info@zoekjeschool.be`**
   (voorwaarde van Transitous). Ook de attributie van openrouteservice en Transitous moet
