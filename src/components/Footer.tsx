@@ -127,7 +127,9 @@ export function Footer({
             themaknop heeft. Er zijn twee varianten, gewisseld via `.sa-badge-licht` en
             `.sa-badge-donker` in index.css. Getoond op 36px hoog, naast de steunknop; `rx` in de
             SVG is daarop afgestemd, zodat de hoek er net als bij die knop 6px uitziet.
-            `referrerpolicy="origin"` neemt hun embedcode over: ze zien enkel het domein. */}
+            `referrerpolicy="origin"` neemt hun embedcode over: ze zien enkel het domein.
+            De twee uitlegpagina's dragen een handgeschreven kopie; wijzigt hier iets, pas die
+            mee aan. */}
         <a
           href="https://www.simpleanalytics.com/?utm_source=zoekjeschool.be&utm_content=badge"
           target="_blank"
