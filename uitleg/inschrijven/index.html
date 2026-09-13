@@ -46,8 +46,6 @@
       }
     </script>
 
-    <!-- Zelfde themascript als de zoeker, zodat licht/donker niet opflitst bij het laden. -->
-    <script src="/thema.js"></script>
     <!-- Vite bundelt deze stylesheet mee als derde entry point; deze pagina staat twee mappen
          diep, vandaar het dubbele ../. -->
     <link rel="stylesheet" href="../../src/index.css" />
@@ -293,9 +291,5 @@
         </div>
       </footer>
     </div>
-    <!-- Zelfde telscript als de zoeker in index.html, zodat ook deze pagina geteld wordt. Bewust
-         ZONDER data-collect-dnt="true": met dat attribuut worden bezoekers die Do Not Track aan
-         hebben staan alsnog geteld. De CSP in netlify.toml geldt voor de hele site. -->
-    <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
   </body>
 </html>

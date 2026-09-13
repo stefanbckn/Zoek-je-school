@@ -32,6 +32,10 @@ Waarom het palet is wat het is:
 - **Anti-flits: `public/thema.js` zet het attribuut synchroon vóór React mount.** Bewust een
   apart bestand en géén inline `<script>`: de CSP staat alleen `script-src 'self'` toe, en dat
   houden we zo.
+- **`thema.js` en het Simple Analytics-script staan in geen enkel HTML-bestand.** De plugin
+  `gedeeldeScripts` in `vite.config.ts` zet ze in elk HTML-entry point, in build én dev. Een
+  nieuwe pagina hoeft ze dus niet zelf te laden: voeg ze enkel toe aan `rollupOptions.input`.
+  Zet ze niet opnieuw met de hand in een pagina, anders laden ze twee keer.
 - Kleur is nergens de enige drager van informatie (WCAG 1.4.1): kaartmarkers zijn allemaal
   identiek en elke chip heeft een tekstlabel.
 

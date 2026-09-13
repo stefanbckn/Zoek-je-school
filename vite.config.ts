@@ -45,6 +45,40 @@ function fietsrouteDevProxy(apiKey: string | undefined): Plugin {
   }
 }
 
+/**
+ * Zet de scripts die op elke pagina horen in alle HTML-entry points: de zoeker en de
+ * uitlegpagina's. Zo staan ze op één plaats, en wordt een pagina die er later bijkomt vanzelf
+ * geteld en krijgt ze vanzelf het juiste thema.
+ *
+ * `order: 'pre'`, zodat Vite de tags daarna nog verwerkt zoals een tag die in de HTML zelf
+ * staat: `/thema.js` wordt dan per pagina een relatief pad (`./`, `../`, `../../`), wat `base:
+ * './'` vraagt.
+ */
+function gedeeldeScripts(): Plugin {
+  return {
+    name: 'gedeelde-scripts',
+    transformIndexHtml: {
+      order: 'pre',
+      handler: () => [
+        // Synchroon in de head, vóór de pagina getekend wordt: voorkomt dat het verkeerde thema
+        // kort opflitst. Een apart bestand en geen inline script, omdat de CSP geen inline
+        // scripts toestaat (zie netlify.toml). Dus geen async of defer toevoegen.
+        { tag: 'script', attrs: { src: '/thema.js' }, injectTo: 'head' },
+        // Simple Analytics, de enige meting op de site. Bewust ZONDER data-collect-dnt="true":
+        // met dat attribuut worden bezoekers die Do Not Track aan hebben staan alsnog geteld.
+        // Standaard slaat Simple Analytics die over, en dat respecteert het signaal dat mensen
+        // bewust aanzetten. Vereist de CSP-regels naar *.simpleanalyticscdn.com in netlify.toml;
+        // zonder die regels wordt het script stil geblokkeerd.
+        {
+          tag: 'script',
+          attrs: { async: true, src: 'https://scripts.simpleanalyticscdn.com/latest.js' },
+          injectTo: 'body',
+        },
+      ],
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   // Laadt .env-bestanden zonder prefix-filter, zodat we ORS_API_KEY server-side kunnen lezen.
@@ -52,7 +86,7 @@ export default defineConfig(({ mode }) => {
   // dev-middleware hierboven gebruikt, die in Node draait.
   const env = loadEnv(mode, process.cwd(), '')
   return {
-    plugins: [react(), tailwindcss(), fietsrouteDevProxy(env.ORS_API_KEY)],
+    plugins: [react(), tailwindcss(), fietsrouteDevProxy(env.ORS_API_KEY), gedeeldeScripts()],
     define: {
       __APP_VERSION__: JSON.stringify(version),
     },
