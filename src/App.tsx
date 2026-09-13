@@ -410,13 +410,17 @@ function App() {
               De ".be" is geel en decoratief; de betekenis zit in het woord ervoor. Op deze
               balk haalt dat geel 4,95:1, ruim boven de grens, dus het mag hier wél als tekst
               meetellen. Op een lichte grond zou dat niet lukken — daar bestaat
-              logo-lockup-be-teal.svg voor. */}
+              logo-lockup-be-teal.svg voor.
+
+              De h1 omvat het woordmerk én de regel eronder. Enkel "zoekjeschool.be" zei een
+              zoekmachine niet waarover de site gaat. Op het scherm verandert er niets: de
+              stijl staat op de twee spans, en Tailwind zet de standaardopmaak van een h1 op nul. */}
           <a href="/" className="flex items-center gap-3 rounded-lg">
             <Beeldmerk grootte={34} />
-            <span className="flex min-w-0 flex-col">
-              <h1 className="text-xl font-extrabold leading-tight tracking-tight">
+            <h1 className="flex min-w-0 flex-col">
+              <span className="text-xl font-extrabold leading-tight tracking-tight">
                 zoekjeschool<span className="text-signaal">.be</span>
-              </h1>
+              </span>
               {/* Wat de site doet, in gewone woorden. Dit hoort hier en niet in het logo: een
                   woordmerk met een zin erin valt weg op een favicon van 16 pixels en op je
                   beginscherm, en deze regel is inhoud die nog kan veranderen.
@@ -427,11 +431,18 @@ function App() {
                   Op een telefoon valt hij weg: daar staat de zoekbalk meteen onder de kop, en
                   die zegt met "Typ je gemeente of adres" hetzelfde in minder ruimte. Doorgemeten
                   dat hij de knoppen nergens naar een tweede rij duwt: op 1024 px stond de balk
-                  ook zonder deze regel al op twee rijen, en op 1280 blijft ze op één. */}
-              <span className="hidden text-sm text-kop-inkt/90 sm:block">
+                  ook zonder deze regel al op twee rijen, en op 1280 blijft ze op één.
+
+                  De spatie ervoor tekent niets in een flexkolom, maar zonder leest de kop als
+                  "zoekjeschool.beMiddelbare". */}
+              {' '}
+              {/* text-wrap: die regel stond niet in een kop en brak dus gewoon af. Nu erft hij
+                  de balance van h1 uit index.css, en die kan de regelbreuk verleggen op 1024 px,
+                  waar de regel over twee lijnen loopt. */}
+              <span className="hidden text-sm text-wrap text-kop-inkt/90 sm:block">
                 Middelbare scholen in Vlaanderen en Brussel
               </span>
-            </span>
+            </h1>
           </a>
 
           {/* Vanaf een tablet staan de vier ingangen gewoon naast elkaar. */}
