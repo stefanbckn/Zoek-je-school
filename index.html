@@ -5,7 +5,11 @@
     <!-- De SVG wint in elke browser die hem ondersteunt; de twee PNG's zijn de terugval.
          Het beeldmerk heeft drie detailniveaus: vier ramen vanaf 48 pixels, twee ramen op 32,
          en op 16 blijven alleen de klok, het blok en de deur over. Kleiner tekenen laat de
-         ramen in elkaar lopen tot een grijze vlek. -->
+         ramen in elkaar lopen tot een grijze vlek.
+         public/favicon.ico staat hier bewust niet bij: sommige browsers, feedlezers en tools
+         vragen /favicon.ico blind op, los van deze tags. Het bevat dezelfde twee PNG's van 16
+         en 32 pixels. Verandert het logo, maak het dan opnieuw met
+         magick public/favicon-16.png public/favicon-32.png public/favicon.ico -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
@@ -25,7 +29,7 @@
          die dient enkel voor de linkvoorbeelden in chat-apps en op Mastodon/Bluesky. -->
     <meta
       name="description"
-      content="Vind middelbare scholen in Vlaanderen en Brussel. Filter op afstand, provincie, gemeente, net en studierichting, en vergelijk tot vier campussen naast elkaar."
+      content="Scholenzoeker voor middelbare scholen in Vlaanderen en Brussel. Filter op afstand, provincie, gemeente, net en studierichting, en vergelijk tot vier campussen."
     />
     <link rel="canonical" href="https://zoekjeschool.be/" />
     <link rel="me" href="https://mastodon.social/@stefanbckn" />
