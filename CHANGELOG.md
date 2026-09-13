@@ -18,9 +18,11 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
   het hulppaneel van de zoeker, en ook dat is rechtgezet.
 - **Een leerling met een getuigschrift basisonderwijs kan ook in 1B starten**, als de klassenraad
   daar gunstig over beslist. Dat staat nu bij de uitleg over de eerste graad.
-- **De uitleg over duaal leren en over de netten is preciezer.** Bij duaal staat nu dat de
-  studiebewijzen gelijk zijn voor richtingen met arbeidsmarktfinaliteit, want alleen daarover
-  zegt de bron iets. Bij de netten staan de drie officiële netten, met een link naar Onderwijs en
+- **De uitleg over duaal leren en over de netten is preciezer.** Er stond dat je met een duale
+  richting hetzelfde diploma haalt als zonder. Dat klopt niet altijd, dus die zin is weg. Nu
+  staat er waar duaal kan: bij arbeidsmarktfinaliteit, en vanaf de derde graad ook in een aantal
+  richtingen met dubbele finaliteit. Voor het studiebewijs verwijzen we naar Onderwijs en
+  Vorming. Bij de netten staan de drie officiële netten, met een link naar Onderwijs en
   Vorming. De zin dat het net het schoolreglement bepaalt, is weg: daar vonden we geen bron voor.
 
 ## 2.4.6 — 13 september 2026
