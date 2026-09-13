@@ -143,8 +143,16 @@ export function SearchBar({
       {/* Op 375x667 besloeg deze tip vier regels en begon de eerste resultaatkaart pas op
           y=268 van 667 px: veertig procent van het eerste scherm ging op aan iets wat je pas
           nodig hebt zodra je typt. Hij verschijnt daarom op een telefoon pas bij de eerste
-          aanslag. Vanaf md staat hij er meteen, want daar is de ruimte er wel. */}
-      <p className={`mt-1.5 text-xs text-zacht ${invoer.trim() ? '' : 'hidden md:block'}`}>
+          aanslag. Vanaf md staat hij er meteen, want daar is de ruimte er wel.
+
+          data-nosnippet: Google toonde deze tip als tekst onder het zoekresultaat, bij de
+          zoekopdracht "scholen zoeker": het woord "zoekdienst" leek er het best op. Dit
+          attribuut sluit de tip uit van snippets. Bewust een lege string en niet kaal: React
+          schrijft een kaal attribuut uit als "true", en Google vraagt de booleaanse vorm. */}
+      <p
+        data-nosnippet=""
+        className={`mt-1.5 text-xs text-zacht ${invoer.trim() ? '' : 'hidden md:block'}`}
+      >
         Tip: typ een straatnaam voor de nauwkeurigste locatie. Deelgemeenten zoals Borsbeek, Vremde
         of Deurne worden door deze zoekdienst niet apart herkend en vallen terug op het centrum van
         de hoofdgemeente.

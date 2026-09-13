@@ -8,6 +8,17 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.4.4 — 13 september 2026
+
+**Verbeterd**
+
+- **Onder een zoekresultaat in Google staat niet langer de zoektip.** Wie zocht op "scholen
+  zoeker", kreeg onder de link de tip over straatnamen en deelgemeenten te lezen in plaats van
+  een zin over wat de site doet. Google mag die tip nu niet meer gebruiken, en de beschrijving
+  van de site begint met "Scholenzoeker". Op de site zelf verandert niets. Google neemt dit pas
+  over bij een volgend bezoek aan de pagina, en een hogere positie in de resultaten levert het
+  waarschijnlijk niet op.
+
 ## 2.4.3 — 13 september 2026
 
 **Verbeterd**
