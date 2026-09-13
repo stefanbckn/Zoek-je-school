@@ -99,8 +99,9 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
               </li>
               <li>
                 <strong className="font-medium text-inkt">Finaliteit.</strong> Doorstroom,
-                dubbel of arbeidsmarkt. Dit is de opvolger van ASO, TSO en BSO, en zegt waar een
-                richting je op voorbereidt: verder studeren, allebei, of meteen aan het werk.
+                dubbel of arbeidsmarkt. Dat zegt waar een richting je op voorbereidt: verder
+                studeren, allebei, of meteen aan het werk. Het is geen nieuwe naam voor ASO,
+                TSO, KSO of BSO; die bestaan nog als onderwijsvorm.
               </li>
               <li>
                 <strong className="font-medium text-inkt">Studiedomein.</strong> Waarover een
