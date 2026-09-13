@@ -562,3 +562,39 @@ button:not(:disabled) {
     break-inside: avoid;
   }
 }
+
+/* Simple Analytics-badge: twee lokale SVG's, want een <img> ziet de CSS-variabelen van de pagina
+   niet. De donkere variant draagt dezelfde achtergrond als de steunknop ernaast (--c-accent),
+   met de tekstkleur van die knop en petrol balkjes: het geel en de lichte tekst van de lichte
+   badge halen op #6fc7d8 geen leesbaar contrast. Dezelfde drie themastanden als hierboven, en
+   op papier altijd de lichte, net als het palet. */
+.sa-badge-donker {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sa-badge-licht {
+    display: none;
+  }
+  :root:not([data-theme="light"]) .sa-badge-donker {
+    display: block;
+  }
+}
+
+:root[data-theme="dark"] .sa-badge-licht {
+  display: none;
+}
+:root[data-theme="dark"] .sa-badge-donker {
+  display: block;
+}
+
+@media print {
+  :root:not([data-theme="light"]) .sa-badge-licht,
+  :root[data-theme="dark"] .sa-badge-licht {
+    display: block;
+  }
+  :root:not([data-theme="light"]) .sa-badge-donker,
+  :root[data-theme="dark"] .sa-badge-donker {
+    display: none;
+  }
+}

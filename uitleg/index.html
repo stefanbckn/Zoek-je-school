@@ -294,7 +294,7 @@
              gebruiken. Die docstring is de waarheid; wijzigt daar de tekst, de link of het
              kopje, pas het hier dan mee aan. Klassen en het brand asset zijn letterlijk
              overgenomen, want Ko-fi vraagt dat kopje ongewijzigd. -->
-        <p class="mt-4">
+        <div class="mt-4 flex flex-wrap items-center gap-3">
           <a
             href="https://ko-fi.com/n7b826hces"
             target="_blank"
@@ -304,8 +304,38 @@
             <img src="/kofi-symbool.svg" alt="" aria-hidden="true" class="h-4 w-auto" />
             Steun deze site op Ko-fi
           </a>
-        </p>
+          <!-- Handgeschreven kopie van de Simple Analytics-badge uit Footer.tsx: het commentaar
+               daar is de waarheid. De twee varianten wisselen via .sa-badge-licht en
+               .sa-badge-donker in src/index.css. -->
+          <a
+            href="https://www.simpleanalytics.com/?utm_source=zoekjeschool.be&amp;utm_content=badge"
+            target="_blank"
+            rel="noopener"
+            referrerpolicy="origin"
+            class="rounded-md"
+          >
+            <img
+              src="/simple-analytics-badge.svg"
+              alt="Bezoekers geteld met Simple Analytics, privacyvriendelijk"
+              width="151"
+              height="36"
+              class="sa-badge-licht h-9 w-auto"
+            />
+            <img
+              src="/simple-analytics-badge-donker.svg"
+              alt="Bezoekers geteld met Simple Analytics, privacyvriendelijk"
+              width="151"
+              height="36"
+              loading="lazy"
+              class="sa-badge-donker h-9 w-auto"
+            />
+          </a>
+        </div>
       </footer>
     </div>
+    <!-- Zelfde telscript als de zoeker in index.html, zodat ook deze pagina geteld wordt. Bewust
+         ZONDER data-collect-dnt="true": met dat attribuut worden bezoekers die Do Not Track aan
+         hebben staan alsnog geteld. De CSP in netlify.toml geldt voor de hele site. -->
+    <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
   </body>
 </html>

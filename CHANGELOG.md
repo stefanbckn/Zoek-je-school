@@ -8,6 +8,18 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.4.5 — 13 september 2026
+
+**Verbeterd**
+
+- **Onderaan de pagina staat nu een badge van Simple Analytics, naast de steunknop.** Die dienst
+  telt hoeveel mensen de site bezoeken, zonder cookies en zonder je te volgen. Het gratis plan
+  vraagt die badge in ruil. De afbeelding staat op onze eigen server, dus je browser maakt er
+  geen extra verbinding voor. In het donkere thema kleurt de badge mee met de steunknop.
+- **Ook de uitleg over het secundair en over aanmelden en inschrijven wordt nu geteld.** Tot nu
+  telde Simple Analytics enkel de zoeker. Dezelfde regels gelden: geen cookies, en wie Do Not
+  Track aan heeft staan, telt niet mee. Onderaan die pagina's staat nu ook de badge.
+
 ## 2.4.4 — 13 september 2026
 
 **Verbeterd**
