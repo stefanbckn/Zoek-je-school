@@ -18,6 +18,11 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
   van de site begint met "Scholenzoeker". Op de site zelf verandert niets. Google neemt dit pas
   over bij een volgend bezoek aan de pagina, en een hogere positie in de resultaten levert het
   waarschijnlijk niet op.
+- **Ook programma's die het icoon op de klassieke plek zoeken, vinden nu het nieuwe logo.**
+  Sommige browsers, feedlezers en tools kijken niet naar wat de pagina aangeeft, maar vragen
+  rechtstreeks `favicon.ico` op. Dat bestand bestond niet, en dan toonden ze niets of een oud
+  icoon uit hun geheugen. Hoe snel Google het nieuwe logo in de zoekresultaten overneemt,
+  beslist Google zelf.
 
 ## 2.4.3 — 13 september 2026
 
