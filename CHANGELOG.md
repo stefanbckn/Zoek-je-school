@@ -8,6 +8,14 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.4.8 — 13 september 2026
+
+**Gecorrigeerd**
+
+- **De korte omschrijving van de pagina over aanmelden en inschrijven is ingekort.** Zoekmachines
+  zoals Bing kappen een omschrijving langer dan 160 tekens af en melden ze als fout. De inhoud van
+  de pagina zelf bleef hetzelfde.
+
 ## 2.4.7 — 13 september 2026
 
 **Gecorrigeerd**
