@@ -8,6 +8,22 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.4.7 — 13 september 2026
+
+**Gecorrigeerd**
+
+- **De uitleg over het secundair zei dat ASO, TSO en BSO niet meer bestaan. Dat klopte niet.**
+  Die onderwijsvormen bestaan in de tweede en de derde graad nog, ook KSO, en ze staan naast de
+  finaliteit. Een richting met doorstroomfinaliteit kan dus ook TSO zijn. Hetzelfde stond kort in
+  het hulppaneel van de zoeker, en ook dat is rechtgezet.
+- **Een leerling met een getuigschrift basisonderwijs kan ook in 1B starten**, als de klassenraad
+  daar gunstig over beslist. Dat staat nu bij de uitleg over de eerste graad.
+- **De uitleg over duaal leren en over de netten is preciezer.** Er stond dat je met een duale
+  richting hetzelfde diploma haalt als zonder. Dat klopt niet altijd, dus die zin is weg. Duaal
+  wordt nu enkel kort vermeld: op deze site kies je een school, niet al een traject voor later.
+  Bij de netten staan de drie officiële netten, met een link naar Onderwijs en
+  Vorming. De zin dat het net het schoolreglement bepaalt, is weg: daar vonden we geen bron voor.
+
 ## 2.4.6 — 13 september 2026
 
 **Achter de schermen**
