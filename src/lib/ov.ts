@@ -116,7 +116,9 @@ export async function berekenOvReis(
     resultaat = { status: 'onbeschikbaar' }
   }
 
-  cache.set(key, resultaat)
+  // Zelfde afspraak als bij de fietsroute: een tijdelijke fout niet cachen, anders volgt er de
+  // hele sessie geen nieuwe poging meer terwijl de UI "probeer later opnieuw" zegt.
+  if (resultaat.status !== 'onbeschikbaar') cache.set(key, resultaat)
   return resultaat
 }
 

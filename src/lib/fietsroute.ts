@@ -57,7 +57,10 @@ export async function berekenFietsroute(
     resultaat = { status: 'onbeschikbaar' }
   }
 
-  cache.set(key, resultaat)
+  // 'onbeschikbaar' is een tijdelijke toestand (quota, storing, netwerk) en de UI zegt "probeer
+  // later opnieuw". In de cache zou dat een leugen worden: de rest van de sessie kwam er dan
+  // geen nieuwe poging meer. Enkel wat bij een nieuwe call hetzelfde zou opleveren, blijft staan.
+  if (resultaat.status !== 'onbeschikbaar') cache.set(key, resultaat)
   return resultaat
 }
 

@@ -17,7 +17,9 @@ en [docs/onderzoek/openbaar-vervoer.md](../../docs/onderzoek/openbaar-vervoer.md
 **Gedeelde regel:** beide routes worden **enkel voor de geselecteerde school in het
 detailpaneel** aangeroepen, nooit voor elke kaart in de resultatenlijst. Anders is de gratis
 quota in enkele zoekopdrachten op, en bij Transitous is dat precies de belasting waar zij voor
-waarschuwen. Beide hebben een in-memory cache per route-paar.
+waarschuwen. Beide hebben een in-memory cache per route-paar. **`onbeschikbaar` gaat er niet
+in**: dat is een tijdelijke fout, en de UI zegt "probeer later opnieuw". Een nieuwe poging komt
+er enkel wanneer iemand de school opnieuw opent, dus dat kost geen calls vanzelf.
 
 ## Fietsroute — via onze eigen Netlify Function
 
