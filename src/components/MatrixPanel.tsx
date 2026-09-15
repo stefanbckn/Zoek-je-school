@@ -9,6 +9,7 @@ import {
 import { DOMEIN_OVERSCHRIJDEND, domeinLabel } from '../lib/domein'
 import { MATRIX_GRADEN, bouwMatrix, telPerRichting, type MatrixGraad, type MatrixRichting } from '../lib/matrix'
 import type { Campus, Studierichting } from '../types'
+import { useDialoogFocus } from '../lib/useDialoogFocus'
 
 interface MatrixPanelProps {
   open: boolean
@@ -53,6 +54,7 @@ export function MatrixPanel({
   onKiesCel,
 }: MatrixPanelProps) {
   const [graad, setGraad] = useState<MatrixGraad>('Tweede graad')
+  const vensterRef = useDialoogFocus<HTMLDivElement>(open)
 
   useEffect(() => {
     if (!open) return
@@ -83,8 +85,10 @@ export function MatrixPanel({
       role="presentation"
     >
       <div
-        className="mt-4 w-full max-w-6xl rounded-lg bg-kaart p-6 shadow-xl sm:mt-8"
+        className="mt-4 w-full max-w-6xl rounded-lg bg-kaart p-6 shadow-xl sm:mt-8 focus:outline-none"
         onClick={(e) => e.stopPropagation()}
+        ref={vensterRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="matrix-titel"

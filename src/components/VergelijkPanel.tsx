@@ -13,6 +13,7 @@ import { NET_CHIP, NET_STYLES } from '../lib/net'
 import { huisnummerLabel } from '../lib/adres'
 import { datumLabel, KENMERKEN, percentageLabel } from '../lib/leerlingenkenmerken'
 import { KenmerkBalkje } from './KenmerkBalkje'
+import { useDialoogFocus } from '../lib/useDialoogFocus'
 
 /** Eén rij van de vergelijking: het label plus één cel per adres, in dezelfde volgorde. */
 interface TabelRij {
@@ -55,6 +56,7 @@ export function VergelijkPanel({
   onClose,
 }: VergelijkPanelProps) {
   const open = campussen.length > 0
+  const vensterRef = useDialoogFocus<HTMLDivElement>(open)
 
   // Zelfde afspraak als in DetailPanel: een modaal venster hoort met Escape te sluiten.
   useEffect(() => {
@@ -265,14 +267,20 @@ export function VergelijkPanel({
       // binnen te blijven, en een grijze overlay met een schaduwrand kost enkel inkt.
       className="fixed inset-0 z-30 flex items-start justify-center overflow-y-auto bg-black/30 p-4 print:static print:block print:overflow-visible print:bg-transparent print:p-0"
       onClick={onClose}
+      role="presentation"
     >
       <div
-        className="vergelijk-afdruk mt-4 w-full max-w-5xl rounded-lg bg-kaart p-4 shadow-xl sm:mt-8 sm:p-6 print:m-0 print:max-w-none print:rounded-none print:p-0 print:shadow-none"
+        className="vergelijk-afdruk mt-4 w-full max-w-5xl rounded-lg bg-kaart p-4 shadow-xl sm:mt-8 sm:p-6 print:m-0 print:max-w-none print:rounded-none print:p-0 print:shadow-none focus:outline-none"
         onClick={(e) => e.stopPropagation()}
+        ref={vensterRef}
+        tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="vergelijk-titel"
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-lg font-semibold text-inkt">
+            <h2 id="vergelijk-titel" className="text-lg font-semibold text-inkt">
               {campussen.length} adressen vergeleken
             </h2>
             <p className="mt-0.5 text-xs text-zacht">

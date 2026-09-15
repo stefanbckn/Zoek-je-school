@@ -18,6 +18,7 @@ import {
 import { huisnummerLabel } from '../lib/adres'
 import { datumLabel, KENMERKEN, percentageLabel } from '../lib/leerlingenkenmerken'
 import { KenmerkBalkje } from './KenmerkBalkje'
+import { useDialoogFocus } from '../lib/useDialoogFocus'
 
 interface DetailPanelProps {
   campus: CampusMetAfstand | null
@@ -50,7 +51,14 @@ export function DetailPanel({
   // Eén keer vastleggen, zodat de API-call en de dieplink naar de planner over exact hetzelfde
   // moment gaan. Zou de link z'n eigen moment berekenen, dan kan die net over de grens van 8u30
   // vallen en een andere dag tonen dan het resultaat ernaast.
-  const aankomstmoment = useMemo(() => volgendeSchooldagOchtend(), [])
+  //
+  // Wel opnieuw per geopende school: het paneel blijft gemount, dus met een lege dependencylijst
+  // bleef het moment van het laden van de pagina staan. Een tabblad dat een nacht openstond,
+  // plande dan voor een ochtend die al voorbij was. Dit kost geen extra calls: de uitkomst is
+  // de hele dag dezelfde 8u30, dus de OV-cache vindt dezelfde sleutel terug.
+  const campusId = campus?.id
+  const aankomstmoment = useMemo(() => (campusId ? volgendeSchooldagOchtend() : null), [campusId])
+  const vensterRef = useDialoogFocus<HTMLDivElement>(Boolean(campus && school))
 
   useEffect(() => {
     if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
@@ -70,7 +78,7 @@ export function DetailPanel({
   // Net als de fietsroute enkel voor de geselecteerde school, niet voor elke kaart in de lijst.
   // Transitous vraagt expliciet om licht om te springen met routing-calls.
   useEffect(() => {
-    if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
+    if (!campus || !zoeklocatie || !aankomstmoment || campus.lat === null || campus.lon === null) {
       setOvReis(null)
       return
     }
@@ -115,7 +123,7 @@ export function DetailPanel({
           },
         }
       : null
-  const plannerUrl = routePunten
+  const plannerUrl = routePunten && aankomstmoment
     ? transitousPlannerUrl(routePunten.van, routePunten.naar, routePunten.namen, aankomstmoment)
     : null
   const fietskaartUrl = routePunten
@@ -126,13 +134,19 @@ export function DetailPanel({
     <div
       className="fixed inset-0 z-20 flex items-start justify-center bg-black/30 p-4 overflow-y-auto"
       onClick={onClose}
+      role="presentation"
     >
       <div
-        className="mt-8 w-full max-w-lg rounded-lg bg-kaart p-6 shadow-xl"
+        className="mt-8 w-full max-w-lg rounded-lg bg-kaart p-6 shadow-xl focus:outline-none"
         onClick={(e) => e.stopPropagation()}
+        ref={vensterRef}
+        tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="detail-titel"
       >
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-lg font-semibold text-inkt">{school.naam}</h2>
+          <h2 id="detail-titel" className="text-lg font-semibold text-inkt">{school.naam}</h2>
           <button
             type="button"
             onClick={onClose}

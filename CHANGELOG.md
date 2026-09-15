@@ -8,6 +8,36 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.5.0 — 15 september 2026
+
+Deze versie is vooral voor wie de site met het toetsenbord of een schermlezer gebruikt. Met de
+muis merk je weinig verschil, behalve dat de zoekbalk je nu vertelt wanneer iets misloopt.
+
+**Nieuw**
+
+- **De suggesties onder de zoekbalk kies je met de pijltjes.** Enter bevestigt de suggestie,
+  Escape sluit de lijst. Vroeger kon dat enkel met de muis: probeerde je er met Tab naartoe te
+  gaan, dan was de lijst al dicht voor je er was. Druk je Enter zonder een suggestie te kiezen,
+  dan zoekt de site op wat je getypt hebt.
+- **De vensters houden de focus bij.** Open je een school, de uitleg of de vergelijking, dan
+  springt de focus in dat venster en blijft Tab erbinnen. Sluit je het, dan sta je terug waar
+  je was. Een schermlezer kondigt het detail- en het vergelijkvenster nu ook aan als venster,
+  met de naam erbij.
+
+**Opgelost**
+
+- **Een locatie die niet gevonden wordt, meldt dat ook.** Liep het opzoeken fout, dan gebeurde
+  er niets terwijl je gekozen adres gewoon in het veld stond. Nu staat er een korte melding
+  onder.
+- **Suggesties komen niet meer in de verkeerde volgorde binnen.** Een traag antwoord op wat je
+  eerder typte, kon de lijst voor je nieuwe invoer overschrijven, of de lijst weer openklappen
+  nadat je het veld had leeggemaakt.
+- **Een mislukte reistijd probeert het opnieuw.** Was de fiets- of OV-route even niet
+  beschikbaar, dan bleef dat zo tot je de pagina herlaadde, ook al stond er "probeer later
+  opnieuw". Open je de school nog eens, dan volgt nu een nieuwe poging.
+- **De OV-reistijd rekent met de juiste ochtend.** Stond het tabblad een nacht open, dan
+  plande de site nog voor de ochtend van de dag ervoor.
+
 ## 2.4.8 — 13 september 2026
 
 **Gecorrigeerd**

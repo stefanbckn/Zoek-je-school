@@ -151,6 +151,11 @@ dan hetzelfde.**
 
 ## De panelen
 
+- **Elk modaal paneel heeft dezelfde vier dingen**: `role="dialog"` met `aria-modal` en de
+  titel als `aria-labelledby`, `role="presentation"` op de overlay, sluiten met Escape, en
+  `useDialoogFocus` (`src/lib/useDialoogFocus.ts`) op het venster, met `tabIndex={-1}` en
+  `focus:outline-none`. De hook zet de focus in het venster, houdt Tab erbinnen en geeft de
+  focus bij het sluiten terug aan wat het venster opende. Een nieuw paneel krijgt ze alle vier.
 - **`OverPanel`** beantwoordt "kan ik dit vertrouwen": herkomst, bewerkingen, disclaimer,
   privacy. De **korte disclaimerregel staat in de footer zelf**, niet enkel achter de link: wie
   nooit doorklikt moet toch gezien hebben dat dit geen officiële bron is.
