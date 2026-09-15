@@ -21,6 +21,9 @@ dist-ssr
 .env.*
 !.env.example
 
+# persoonlijke Claude Code-agents, horen niet in de repo
+.claude/agents/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
