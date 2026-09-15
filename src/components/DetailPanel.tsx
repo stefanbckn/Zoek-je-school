@@ -50,7 +50,13 @@ export function DetailPanel({
   // Eén keer vastleggen, zodat de API-call en de dieplink naar de planner over exact hetzelfde
   // moment gaan. Zou de link z'n eigen moment berekenen, dan kan die net over de grens van 8u30
   // vallen en een andere dag tonen dan het resultaat ernaast.
-  const aankomstmoment = useMemo(() => volgendeSchooldagOchtend(), [])
+  //
+  // Wel opnieuw per geopende school: het paneel blijft gemount, dus met een lege dependencylijst
+  // bleef het moment van het laden van de pagina staan. Een tabblad dat een nacht openstond,
+  // plande dan voor een ochtend die al voorbij was. Dit kost geen extra calls: de uitkomst is
+  // de hele dag dezelfde 8u30, dus de OV-cache vindt dezelfde sleutel terug.
+  const campusId = campus?.id
+  const aankomstmoment = useMemo(() => (campusId ? volgendeSchooldagOchtend() : null), [campusId])
 
   useEffect(() => {
     if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
@@ -70,7 +76,7 @@ export function DetailPanel({
   // Net als de fietsroute enkel voor de geselecteerde school, niet voor elke kaart in de lijst.
   // Transitous vraagt expliciet om licht om te springen met routing-calls.
   useEffect(() => {
-    if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
+    if (!campus || !zoeklocatie || !aankomstmoment || campus.lat === null || campus.lon === null) {
       setOvReis(null)
       return
     }
@@ -115,7 +121,7 @@ export function DetailPanel({
           },
         }
       : null
-  const plannerUrl = routePunten
+  const plannerUrl = routePunten && aankomstmoment
     ? transitousPlannerUrl(routePunten.van, routePunten.naar, routePunten.namen, aankomstmoment)
     : null
   const fietskaartUrl = routePunten
