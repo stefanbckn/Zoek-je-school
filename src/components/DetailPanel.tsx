@@ -18,6 +18,7 @@ import {
 import { huisnummerLabel } from '../lib/adres'
 import { datumLabel, KENMERKEN, percentageLabel } from '../lib/leerlingenkenmerken'
 import { KenmerkBalkje } from './KenmerkBalkje'
+import { useDialoogFocus } from '../lib/useDialoogFocus'
 
 interface DetailPanelProps {
   campus: CampusMetAfstand | null
@@ -57,6 +58,7 @@ export function DetailPanel({
   // de hele dag dezelfde 8u30, dus de OV-cache vindt dezelfde sleutel terug.
   const campusId = campus?.id
   const aankomstmoment = useMemo(() => (campusId ? volgendeSchooldagOchtend() : null), [campusId])
+  const vensterRef = useDialoogFocus<HTMLDivElement>(Boolean(campus && school))
 
   useEffect(() => {
     if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
@@ -135,8 +137,10 @@ export function DetailPanel({
       role="presentation"
     >
       <div
-        className="mt-8 w-full max-w-lg rounded-lg bg-kaart p-6 shadow-xl"
+        className="mt-8 w-full max-w-lg rounded-lg bg-kaart p-6 shadow-xl focus:outline-none"
         onClick={(e) => e.stopPropagation()}
+        ref={vensterRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="detail-titel"

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { MAX_VERGELIJK, MIN_VERGELIJK } from '../lib/vergelijking'
+import { useDialoogFocus } from '../lib/useDialoogFocus'
 
 interface HelpPanelProps {
   open: boolean
@@ -24,6 +25,8 @@ interface HelpPanelProps {
  * uit nieuwsgierigheid geopend, meestal omdat iemand iets zoekt dat er niet is.
  */
 export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
+  const vensterRef = useDialoogFocus<HTMLDivElement>(open)
+
   useEffect(() => {
     if (!open) return
     function opToets(e: KeyboardEvent) {
@@ -42,8 +45,10 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
       role="presentation"
     >
       <div
-        className="mt-4 w-full max-w-2xl rounded-lg bg-kaart p-6 shadow-xl sm:mt-8"
+        className="mt-4 w-full max-w-2xl rounded-lg bg-kaart p-6 shadow-xl sm:mt-8 focus:outline-none"
         onClick={(e) => e.stopPropagation()}
+        ref={vensterRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="help-titel"

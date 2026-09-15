@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import type { DatasetMeta } from '../types'
 import { SteunKnop } from './SteunKnop'
+import { useDialoogFocus } from '../lib/useDialoogFocus'
 
 interface OverPanelProps {
   open: boolean
@@ -27,6 +28,8 @@ interface OverPanelProps {
  * en allebei horen ze zichtbaar te zijn zonder dat iemand eerst iets moet openklikken.
  */
 export function OverPanel({ open, meta, onClose }: OverPanelProps) {
+  const vensterRef = useDialoogFocus<HTMLDivElement>(open)
+
   useEffect(() => {
     if (!open) return
     function opToets(e: KeyboardEvent) {
@@ -53,8 +56,10 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
       role="presentation"
     >
       <div
-        className="mt-4 w-full max-w-2xl rounded-lg bg-kaart p-6 shadow-xl sm:mt-8"
+        className="mt-4 w-full max-w-2xl rounded-lg bg-kaart p-6 shadow-xl sm:mt-8 focus:outline-none"
         onClick={(e) => e.stopPropagation()}
+        ref={vensterRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="over-titel"
