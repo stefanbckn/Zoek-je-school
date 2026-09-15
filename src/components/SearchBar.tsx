@@ -47,6 +47,10 @@ export function SearchBar({
   const [suggesties, setSuggesties] = useState<LocatieSuggestie[]>([])
   const [open, setOpen] = useState(false)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Volgnummer van de laatste suggestievraag. Antwoorden komen niet in volgorde binnen: een
+  // traag antwoord op "Ber" kon de lijst voor "Berchem" overschrijven, of de lijst heropenen
+  // nadat het veld al leeg was. Elk antwoord met een ouder nummer wordt genegeerd.
+  const verzoekRef = useRef(0)
 
   useEffect(() => {
     setInvoer(label ?? '')
@@ -55,6 +59,7 @@ export function SearchBar({
   function handleChange(waarde: string) {
     setInvoer(waarde)
     if (debounceRef.current) clearTimeout(debounceRef.current)
+    const verzoek = ++verzoekRef.current
     if (!waarde.trim()) {
       setSuggesties([])
       setOpen(false)
@@ -63,15 +68,20 @@ export function SearchBar({
     debounceRef.current = setTimeout(async () => {
       try {
         const resultaten = await suggestLocaties(waarde)
+        if (verzoek !== verzoekRef.current) return
         setSuggesties(resultaten)
         setOpen(resultaten.length > 0)
       } catch {
+        if (verzoek !== verzoekRef.current) return
         setSuggesties([])
       }
     }, 250)
   }
 
   async function kiesSuggestie(tekst: string) {
+    // Ook een keuze maakt openstaande suggestievragen oud, anders klapt de lijst weer open.
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    verzoekRef.current++
     setInvoer(tekst)
     setOpen(false)
     const locatie = await zoekLocatie(tekst)
