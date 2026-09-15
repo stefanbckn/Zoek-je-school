@@ -132,13 +132,17 @@ export function DetailPanel({
     <div
       className="fixed inset-0 z-20 flex items-start justify-center bg-black/30 p-4 overflow-y-auto"
       onClick={onClose}
+      role="presentation"
     >
       <div
         className="mt-8 w-full max-w-lg rounded-lg bg-kaart p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="detail-titel"
       >
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-lg font-semibold text-inkt">{school.naam}</h2>
+          <h2 id="detail-titel" className="text-lg font-semibold text-inkt">{school.naam}</h2>
           <button
             type="button"
             onClick={onClose}
