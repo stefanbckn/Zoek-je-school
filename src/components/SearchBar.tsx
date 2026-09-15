@@ -46,6 +46,7 @@ export function SearchBar({
   const [invoer, setInvoer] = useState(label ?? '')
   const [suggesties, setSuggesties] = useState<LocatieSuggestie[]>([])
   const [open, setOpen] = useState(false)
+  const [melding, setMelding] = useState<string | null>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   // Volgnummer van de laatste suggestievraag. Antwoorden komen niet in volgorde binnen: een
   // traag antwoord op "Ber" kon de lijst voor "Berchem" overschrijven, of de lijst heropenen
@@ -58,6 +59,7 @@ export function SearchBar({
 
   function handleChange(waarde: string) {
     setInvoer(waarde)
+    setMelding(null)
     if (debounceRef.current) clearTimeout(debounceRef.current)
     const verzoek = ++verzoekRef.current
     if (!waarde.trim()) {
@@ -82,10 +84,23 @@ export function SearchBar({
     // Ook een keuze maakt openstaande suggestievragen oud, anders klapt de lijst weer open.
     if (debounceRef.current) clearTimeout(debounceRef.current)
     verzoekRef.current++
+    const verzoek = verzoekRef.current
     setInvoer(tekst)
     setOpen(false)
-    const locatie = await zoekLocatie(tekst)
+    setMelding(null)
+    // Faalde dit vroeger, dan gebeurde er niets terwijl het veld de gekozen tekst toonde: het
+    // leek alsof de zoektocht liep of gelukt was. Nu staat er onder het veld wat er misging.
+    let locatie: Awaited<ReturnType<typeof zoekLocatie>>
+    try {
+      locatie = await zoekLocatie(tekst)
+    } catch {
+      if (verzoek === verzoekRef.current) setMelding('Locatie opzoeken lukt nu niet. Probeer later opnieuw.')
+      return
+    }
+    // Intussen verder getypt? Dan hoort dit antwoord niet meer bij wat er in het veld staat.
+    if (verzoek !== verzoekRef.current) return
     if (locatie) onLocatieGekozen(locatie)
+    else setMelding('Geen locatie gevonden. Kies een suggestie uit de lijst of typ een straatnaam.')
   }
 
   return (
@@ -149,6 +164,12 @@ export function SearchBar({
           </select>
         </div>
       </div>
+
+      {/* Staat er altijd, ook leeg: een schermlezer kondigt een live region pas betrouwbaar aan
+          als die al bestond vóór de tekst erin verscheen. */}
+      <p role="status" className={melding ? 'mt-1.5 text-sm text-waarschuwing' : ''}>
+        {melding}
+      </p>
 
       {/* Op 375x667 besloeg deze tip vier regels en begon de eerste resultaatkaart pas op
           y=268 van 667 px: veertig procent van het eerste scherm ging op aan iets wat je pas
