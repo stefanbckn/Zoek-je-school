@@ -134,6 +134,10 @@ in CLAUDE.md; de rekenregels in `src/lib/beslisblad.ts`, de vorm in `Beslisblad.
   invoer. Een adres dat eruit gaat, neemt zijn notities en keuzes mee (`zonderCampus`).
 - **Enkel een beste en een tweede kiezen**, de rest krijgt 1 punt. Bij twee adressen volstaat
   één klik en is het andere de tweede.
+- **"Telt niet mee" klapt het onderwerp in.** Elf onderwerpen maal drie adressen was op een
+  telefoon te lang (open 822 px per onderwerp, ingeklapt 188 px). De gewichtknoppen blijven
+  staan om het terug open te klappen. Op papier valt een ingeklapt onderwerp weg, behalve als
+  er notities in staan: die worden dan als gewone lijst afgedrukt.
 - **Balkjes via `KenmerkBalkje`**: neutraal grijs, geen kleur per adres.
 - **Kiezen per adres, tonen als school.** `schoolLabel` in `lib/vergelijking.ts` toont enkel
   namen die letterlijk in de dataset staan. Op een adres met meerdere namen zonder gedeelde

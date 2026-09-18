@@ -208,20 +208,44 @@ function OnderwerpKaart({
   const af = isIngevuld(blad, onderwerp.id, ids)
   const gewichtLabel = GEWICHTEN.find((g) => g.waarde === gewicht)?.label
 
+  /*
+   * "Telt niet mee" klapt het onderwerp in: elf onderwerpen maal drie of vier adressen is op
+   * een telefoon anders een eindeloze lap. De titel en de gewichten blijven staan, zodat je het
+   * met één klik terug openklapt. Notities en keuzes blijven in de stand staan, ook ingeklapt.
+   */
+  const dicht = gewicht === 0
+  const heeftNotities = ids.some(
+    (id) => (blad.notities[notitieSleutel(onderwerp.id, id)] ?? '').trim() !== '',
+  )
+
   let hint = ''
-  if (gewicht === 0) hint = 'Weegt niet mee. Je notities blijven wel staan.'
-  else if (gelijk) hint = 'Alle adressen krijgen evenveel punten.'
+  if (gelijk) hint = 'Alle adressen krijgen evenveel punten.'
   else if (af) hint = 'Ingevuld. Klik een keuze opnieuw om ze weg te halen.'
   else if (aangeklikt.length === 1) hint = 'Kies nu de tweede.'
 
   return (
-    <article className="beslisblad-blok rounded-xl border border-rand p-3 sm:p-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <article
+      // Ingeklapt en zonder notities hoort het niet op papier: dat is een lege titel die inkt
+      // kost. Met notities wel, dan blijft wat er geschreven werd niet achter op het scherm.
+      className={`beslisblad-blok rounded-xl border border-rand ${
+        dicht ? 'bg-grond p-3' : 'p-3 sm:p-4'
+      } ${dicht && !heeftNotities ? 'print:hidden' : ''}`}
+    >
+      <div className={`flex flex-wrap justify-between gap-3 ${dicht ? 'items-center' : 'items-start'}`}>
         <div className="min-w-0 flex-[1_1_16rem]">
-          <h3 className="font-semibold text-inkt">{onderwerp.titel}</h3>
-          <p className="mt-0.5 text-sm text-zacht">{onderwerp.vraag}</p>
-          {onderwerp.tip && (
-            <p className="mt-0.5 text-xs text-zacht italic print:hidden">{onderwerp.tip}</p>
+          <h3 className={`font-semibold ${dicht ? 'text-zacht' : 'text-inkt'}`}>{onderwerp.titel}</h3>
+          {dicht ? (
+            <p className="mt-0.5 text-xs text-zacht print:hidden">
+              Telt niet mee en staat ingeklapt. Kies een gewicht om het open te klappen
+              {heeftNotities ? '; je notities staan er nog.' : '.'}
+            </p>
+          ) : (
+            <>
+              <p className="mt-0.5 text-sm text-zacht">{onderwerp.vraag}</p>
+              {onderwerp.tip && (
+                <p className="mt-0.5 text-xs text-zacht italic print:hidden">{onderwerp.tip}</p>
+              )}
+            </>
           )}
         </div>
         <div
@@ -244,46 +268,64 @@ function OnderwerpKaart({
         <p className="hidden text-xs text-zacht print:block">Gewicht: {gewichtLabel}</p>
       </div>
 
-      <div className={`mt-3 grid grid-cols-1 gap-2 ${KOLOMMEN[campussen.length] ?? ''}`}>
-        {campussen.map((campus) => {
-          const plaats = plaatsVan(blad, onderwerp.id, campus.id, ids)
-          return (
-            <AdresVak
-              key={campus.id}
-              onderwerp={onderwerp}
-              campus={campus}
-              naam={naamVan(campus)}
-              plaats={plaats}
-              gedimd={gewicht === 0}
-              kiesLabel={aangeklikt.length === 0 ? 'Kies als beste' : 'Kies als tweede'}
-              notitie={blad.notities[notitieSleutel(onderwerp.id, campus.id)] ?? ''}
-              onNotitie={(tekst) => onChange((b) => zetNotitie(b, onderwerp.id, campus.id, tekst))}
-              onKies={() => onChange((b) => klikAdres(b, onderwerp.id, campus.id, ids))}
-            />
-          )
-        })}
-      </div>
+      {!dicht && (
+        <>
+          <div className={`mt-3 grid grid-cols-1 gap-2 ${KOLOMMEN[campussen.length] ?? ''}`}>
+            {campussen.map((campus) => {
+              const plaats = plaatsVan(blad, onderwerp.id, campus.id, ids)
+              return (
+                <AdresVak
+                  key={campus.id}
+                  onderwerp={onderwerp}
+                  campus={campus}
+                  naam={naamVan(campus)}
+                  plaats={plaats}
+                  kiesLabel={aangeklikt.length === 0 ? 'Kies als beste' : 'Kies als tweede'}
+                  notitie={blad.notities[notitieSleutel(onderwerp.id, campus.id)] ?? ''}
+                  onNotitie={(tekst) => onChange((b) => zetNotitie(b, onderwerp.id, campus.id, tekst))}
+                  onKies={() => onChange((b) => klikAdres(b, onderwerp.id, campus.id, ids))}
+                />
+              )
+            })}
+          </div>
 
-      <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-zacht print:hidden">
-        <button
-          type="button"
-          aria-pressed={gelijk}
-          onClick={() => onChange((b) => zetGelijk(b, onderwerp.id))}
-          className="min-h-11 rounded-md border border-rand px-2.5 font-medium text-inkt hover:bg-hover aria-pressed:border-inkt sm:min-h-0 sm:py-1"
-        >
-          Gelijkspel
-        </button>
-        {(aangeklikt.length > 0 || gelijk) && (
-          <button
-            type="button"
-            onClick={() => onChange((b) => wisKeuze(b, onderwerp.id))}
-            className="min-h-11 rounded-md border border-rand px-2.5 font-medium text-inkt hover:bg-hover sm:min-h-0 sm:py-1"
-          >
-            Keuze wissen
-          </button>
-        )}
-        <span>{hint}</span>
-      </div>
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-zacht print:hidden">
+            <button
+              type="button"
+              aria-pressed={gelijk}
+              onClick={() => onChange((b) => zetGelijk(b, onderwerp.id))}
+              className="min-h-11 rounded-md border border-rand px-2.5 font-medium text-inkt hover:bg-hover aria-pressed:border-inkt sm:min-h-0 sm:py-1"
+            >
+              Gelijkspel
+            </button>
+            {(aangeklikt.length > 0 || gelijk) && (
+              <button
+                type="button"
+                onClick={() => onChange((b) => wisKeuze(b, onderwerp.id))}
+                className="min-h-11 rounded-md border border-rand px-2.5 font-medium text-inkt hover:bg-hover sm:min-h-0 sm:py-1"
+              >
+                Keuze wissen
+              </button>
+            )}
+            <span>{hint}</span>
+          </div>
+        </>
+      )}
+      {/* Ingeklapt met notities: op papier toch de notities, want die zijn geschreven. */}
+      {dicht && heeftNotities && (
+        <ul className="mt-2 hidden list-none p-0 print:block">
+          {campussen.map((campus) => {
+            const tekst = (blad.notities[notitieSleutel(onderwerp.id, campus.id)] ?? '').trim()
+            if (!tekst) return null
+            return (
+              <li key={campus.id} className="mt-1">
+                <span className="font-semibold text-inkt">{naamVan(campus)}:</span>{' '}
+                <span className="whitespace-pre-wrap text-inkt">{tekst}</span>
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </article>
   )
 }
@@ -293,7 +335,6 @@ function AdresVak({
   campus,
   naam,
   plaats,
-  gedimd,
   kiesLabel,
   notitie,
   onNotitie,
@@ -303,7 +344,6 @@ function AdresVak({
   campus: CampusMetAfstand
   naam: string
   plaats: Plaats | null
-  gedimd: boolean
   kiesLabel: string
   notitie: string
   onNotitie: (tekst: string) => void
@@ -329,7 +369,7 @@ function AdresVak({
     <div
       className={`flex min-w-0 flex-col gap-2 rounded-lg border p-2.5 ${
         beste ? 'border-2 border-inkt' : 'border-rand'
-      } ${gedimd ? 'opacity-60' : ''}`}
+      }`}
     >
       <p className="text-sm leading-tight">
         <span className="font-semibold text-inkt">{naam}</span>
@@ -358,7 +398,6 @@ function AdresVak({
       <button
         type="button"
         onClick={onKies}
-        disabled={gedimd}
         aria-pressed={plaats === 'beste' || plaats === 'tweede'}
         className={`min-h-11 self-start rounded-md border px-2.5 text-xs font-medium sm:min-h-0 sm:py-1 print:hidden ${
           beste
@@ -366,7 +405,7 @@ function AdresVak({
             : plaats
               ? 'border-inkt text-inkt'
               : 'border-rand text-inkt hover:bg-hover'
-        } disabled:cursor-not-allowed`}
+        }`}
       >
         {plaats ? PLAATS_LABEL[plaats] : kiesLabel}
         <span className="sr-only">

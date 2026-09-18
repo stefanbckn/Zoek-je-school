@@ -22,6 +22,9 @@ eigen oordeel en niet met dat van de site.
   wat je hoorde. Per onderwerp zeg je hoe zwaar het weegt en welk adres jullie het beste
   vinden. Onderaan volgt daaruit jullie volgorde, met een zin die eerlijk zegt wanneer het
   verschil te klein is om iets te betekenen.
+- **Wat niet meetelt, klapt in.** Zet je een onderwerp op "Telt niet mee", dan blijft enkel de
+  titel staan en wordt het blad een stuk korter. Een ander gewicht klapt het weer open, met je
+  notities er nog in.
 - **Het blad spreekt over scholen, niet over straten.** Elk adres staat er met de naam van de
   school, het adres klein eronder. Staan er op één adres meerdere scholen met een andere naam,
   dan kies je bovenaan welke school jullie bedoelen.
