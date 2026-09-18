@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import type { CampusMetAfstand } from '../types'
 import { huisnummerLabel } from '../lib/adres'
-import { campusLabel } from '../lib/vergelijking'
+import { campusLabel, schoolLabel } from '../lib/vergelijking'
 import {
   berekenUitslag,
   GEWICHTEN,
@@ -113,7 +113,10 @@ export function Beslisblad({ campussen, blad, onChange }: BeslisbladProps) {
                   <span className="w-5 shrink-0 font-semibold text-inkt tabular-nums">
                     {heeftUitslag ? s.plaats : '–'}
                   </span>
-                  <span className="flex-1 text-inkt">{campusLabel(campus)}</span>
+                  <span className="min-w-0 flex-1 text-inkt">
+                    {schoolLabel(campus)}
+                    <span className="block text-xs text-zacht">{campusLabel(campus)}</span>
+                  </span>
                   <span className="font-semibold text-inkt tabular-nums">
                     {heeftUitslag ? Math.round(s.op100) : '–'}
                   </span>
@@ -263,7 +266,9 @@ function AdresVak({
   onKies: () => void
 }) {
   const veldRef = useRef<HTMLTextAreaElement>(null)
-  const adres = `${campus.straat} ${huisnummerLabel(campus.huisnummer)}`
+  const adres = `${campus.straat} ${huisnummerLabel(campus.huisnummer)}, ${campus.gemeente}`
+  const naam = schoolLabel(campus)
+  const voluit = `${naam}, ${campusLabel(campus)}`
 
   // Het veld groeit mee met de tekst, ook wanneer het venster opnieuw opengaat met een
   // notitie die er al stond. `field-sizing: content` zou dit in CSS doen, maar Firefox en
@@ -284,8 +289,8 @@ function AdresVak({
       } ${gedimd ? 'opacity-60' : ''}`}
     >
       <p className="text-sm leading-tight">
-        <span className="font-semibold text-inkt">{adres}</span>
-        <span className="block text-xs text-zacht">{campus.gemeente}</span>
+        <span className="font-semibold text-inkt">{naam}</span>
+        <span className="block text-xs text-zacht">{adres}</span>
       </p>
 
       <textarea
@@ -294,7 +299,7 @@ function AdresVak({
         onChange={(e) => onNotitie(e.target.value)}
         rows={onderwerp.ruim ? 4 : 2}
         placeholder="Wat hoorden jullie?"
-        aria-label={`Notitie over ${onderwerp.titel.toLowerCase()} bij ${campusLabel(campus)}`}
+        aria-label={`Notitie over ${onderwerp.titel.toLowerCase()} bij ${voluit}`}
         className="w-full resize-none overflow-hidden rounded-md border border-rand bg-kaart px-2 py-1.5 text-base text-inkt placeholder:text-zacht sm:text-sm print:hidden"
       />
       {/* Op papier: de notitie als gewone tekst, of een lege lijn om met de pen in te vullen. */}
@@ -323,7 +328,7 @@ function AdresVak({
         {plaats ? PLAATS_LABEL[plaats] : kiesLabel}
         <span className="sr-only">
           {' '}
-          voor {onderwerp.titel.toLowerCase()}: {campusLabel(campus)}
+          voor {onderwerp.titel.toLowerCase()}: {voluit}
         </span>
       </button>
       {plaats && <p className="hidden text-xs font-semibold text-inkt print:block">{PLAATS_LABEL[plaats]}</p>}
@@ -353,7 +358,7 @@ function vonnis(
   if (verschil < RUIS) {
     return `De adressen liggen dicht bij elkaar. Dat is binnen de ruis: dit blad kiest hier niet voor jullie. ${teller}`
   }
-  const voorop = `${naam ? campusLabel(naam) : 'Eén adres'} staat voorop met ${Math.round(verschil)} punten voorsprong.`
+  const voorop = `${naam ? schoolLabel(naam) : 'Eén adres'} staat voorop met ${Math.round(verschil)} punten voorsprong.`
   const duiding =
     verschil < SMAL
       ? 'Een smalle voorsprong die kan omslaan als je één gewicht verschuift.'
