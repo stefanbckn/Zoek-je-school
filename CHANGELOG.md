@@ -31,8 +31,10 @@ eigen oordeel en niet met dat van de site.
 - **De site oordeelt nog altijd niet over scholen.** De vragen zijn voor elke school dezelfde,
   en de punten komen volledig uit jullie eigen antwoorden.
 - **Niets wordt bewaard.** Wat je invult blijft staan zolang de pagina openstaat, ook als je
-  het venster even sluit. Herlaad je de pagina, haal je een adres met notities weg of wis je
-  alles, dan vraagt de site eerst of je dat zeker wil. Wil je het houden, druk het dan af.
+  het venster even sluit. Haal je een adres met notities weg of wis je alles, dan vraagt de
+  site eerst of je dat zeker wil. Herlaad je de pagina, dan vraagt je browser eerst of je dat
+  zeker wil. Op een telefoon slaat de browser die vraag vaak over, dus druk daar af of neem een
+  schermafbeelding als je het wil houden.
 - **Enkel een beste en een tweede kiezen.** Bij vier adressen krijgen de laatste twee evenveel
   punten; een derde en vierde plaats aanduiden kan niet.
 
