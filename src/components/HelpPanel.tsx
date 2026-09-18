@@ -185,7 +185,7 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
             </p>
             <p className="mt-2 text-zacht">
               Onder "Jullie keuze" staan vragen om mee te nemen naar de infodag. Noteer per adres
-              wat je hoorde, zeg hoe zwaar elk onderwerp weegt en welk adres jullie het beste
+              wat jullie opviel, zeg hoe zwaar elk onderwerp weegt en welk adres jullie het beste
               vinden: daaruit volgt jullie eigen volgorde. De site oordeelt zelf niet over
               scholen, ze telt enkel jullie antwoorden op. Niets wordt bewaard, dus druk het af
               als je het wil houden.

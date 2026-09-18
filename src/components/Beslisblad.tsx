@@ -69,7 +69,7 @@ export function Beslisblad({ campussen, blad, onChange }: BeslisbladProps) {
   return (
     <div className="mt-4">
       <p className="text-sm text-zacht print:hidden">
-        Noteer per adres wat je op de infodag hoorde, zeg hoe zwaar elk onderwerp weegt en welk
+        Noteer per adres wat jullie opviel, zeg hoe zwaar elk onderwerp weegt en welk
         adres jullie daar het beste vinden. De volgorde onderaan komt uit jullie antwoorden, niet
         van deze site.{' '}
         <span className="text-inkt">
@@ -78,7 +78,7 @@ export function Beslisblad({ campussen, blad, onChange }: BeslisbladProps) {
         Het wordt nergens bewaard of verstuurd: druk het af als je het wil houden.
       </p>
       <p className="hidden text-zacht print:block">
-        Per onderwerp: wat we hoorden, hoe zwaar het weegt en welk adres we het beste vinden.
+        Per onderwerp: onze notities, hoe zwaar het weegt en welk adres we het beste vinden.
       </p>
 
       {/* Op een adres met meerdere scholen zonder gedeelde naam weet de site niet welke school
@@ -381,7 +381,7 @@ function AdresVak({
         value={notitie}
         onChange={(e) => onNotitie(e.target.value)}
         rows={onderwerp.ruim ? 4 : 2}
-        placeholder="Wat hoorden jullie?"
+        placeholder="Jullie notities"
         aria-label={`Notitie over ${onderwerp.titel.toLowerCase()} bij ${voluit}`}
         className="w-full resize-none overflow-hidden rounded-md border border-rand bg-kaart px-2 py-1.5 text-base text-inkt placeholder:text-zacht sm:text-sm print:hidden"
       />

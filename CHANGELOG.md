@@ -19,7 +19,7 @@ eigen oordeel en niet met dat van de site.
   elf vragen om mee te nemen naar de infodag: de grootte van het eerste jaar, de breedte van
   het aanbod, de route met fiets en openbaar vervoer, kostprijs, laptop, uitstappen, kledij,
   zorg, de schooldag, de sfeer op de infodag en de klik van je kind zelf. Per adres noteer je
-  wat je hoorde. Per onderwerp zeg je hoe zwaar het weegt en welk adres jullie het beste
+  wat jullie opviel. Per onderwerp zeg je hoe zwaar het weegt en welk adres jullie het beste
   vinden. Onderaan volgt daaruit jullie volgorde, met een zin die eerlijk zegt wanneer het
   verschil te klein is om iets te betekenen.
 - **Wat niet meetelt, klapt in.** Zet je een onderwerp op "Telt niet mee", dan blijft enkel de
