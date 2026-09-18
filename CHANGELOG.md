@@ -20,6 +20,9 @@ eigen oordeel en niet met dat van de site.
   de schooldag en jullie eigen indruk. Per adres noteer je wat je hoorde. Per onderwerp zeg je
   hoe zwaar het weegt en welk adres jullie het beste vinden. Onderaan volgt daaruit jullie
   volgorde, met een zin die eerlijk zegt wanneer het verschil te klein is om iets te betekenen.
+- **Het blad spreekt over scholen, niet over straten.** Elk adres staat er met de naam van de
+  school, het adres klein eronder. Staan er op één adres meerdere scholen met een andere naam,
+  dan kies je bovenaan welke school jullie bedoelen.
 - **Afdrukken zoals je het nodig hebt.** Leeg geeft het een blad om met de pen in te vullen op
   de infodag, ingevuld een overzicht om te bewaren.
 

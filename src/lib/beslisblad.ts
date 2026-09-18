@@ -105,9 +105,14 @@ export interface Beslisblad {
   keuze: Record<string, Keuze>
   /** Sleutel `onderwerpId|campusId`, zie `notitieSleutel`. */
   notities: Record<string, string>
+  /**
+   * Per campus-id de school die de ouder bedoelt, op adressen waar de naam niet vanzelf volgt.
+   * Zie `schoolLabel` in `lib/vergelijking.ts`.
+   */
+  schoolnaam: Record<string, string>
 }
 
-export const LEEG_BLAD: Beslisblad = { gewicht: {}, keuze: {}, notities: {} }
+export const LEEG_BLAD: Beslisblad = { gewicht: {}, keuze: {}, notities: {}, schoolnaam: {} }
 
 export function notitieSleutel(onderwerpId: string, campusId: string): string {
   return `${onderwerpId}|${campusId}`
@@ -187,6 +192,10 @@ export function zetGewicht(blad: Beslisblad, onderwerpId: string, gewicht: numbe
   return { ...blad, gewicht: { ...blad.gewicht, [onderwerpId]: gewicht } }
 }
 
+export function zetSchoolnaam(blad: Beslisblad, campusId: string, naam: string): Beslisblad {
+  return { ...blad, schoolnaam: { ...blad.schoolnaam, [campusId]: naam } }
+}
+
 export function zetNotitie(
   blad: Beslisblad,
   onderwerpId: string,
@@ -222,7 +231,8 @@ export function zonderCampus(blad: Beslisblad, campusId: string): Beslisblad {
       { ...k, volgorde: k.volgorde.filter((x) => x !== campusId) },
     ]),
   )
-  return { ...blad, notities, keuze }
+  const { [campusId]: _weg, ...schoolnaam } = blad.schoolnaam
+  return { ...blad, notities, keuze, schoolnaam }
 }
 
 export interface Stand {

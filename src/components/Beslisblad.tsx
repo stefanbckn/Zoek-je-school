@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import type { CampusMetAfstand } from '../types'
 import { huisnummerLabel } from '../lib/adres'
-import { campusLabel, schoolLabel } from '../lib/vergelijking'
+import { campusLabel, schoolLabel, schoolNamen, vraagtSchoolkeuze } from '../lib/vergelijking'
 import {
   berekenUitslag,
   GEWICHTEN,
@@ -22,6 +22,7 @@ import {
   zetGelijk,
   zetGewicht,
   zetNotitie,
+  zetSchoolnaam,
 } from '../lib/beslisblad'
 import type { Beslisblad as BeslisbladStand, Onderwerp, Plaats } from '../lib/beslisblad'
 import { KenmerkBalkje } from './KenmerkBalkje'
@@ -57,6 +58,8 @@ export function Beslisblad({ campussen, blad, onChange }: BeslisbladProps) {
   const uitslag = berekenUitslag(blad, ids)
   const gerangschikt = [...uitslag.stand].sort((a, b) => b.punten - a.punten)
   const heeftUitslag = uitslag.ingevuld > 0
+  const naamVan = (campus: CampusMetAfstand) => schoolLabel(campus, blad.schoolnaam[campus.id])
+  const tekiezen = campussen.filter(vraagtSchoolkeuze)
 
   function allesWissen() {
     if (!window.confirm('Alle notities, gewichten en keuzes gaan weg. Dit kan niet ongedaan gemaakt worden.')) return
@@ -78,6 +81,38 @@ export function Beslisblad({ campussen, blad, onChange }: BeslisbladProps) {
         Per onderwerp: wat we hoorden, hoe zwaar het weegt en welk adres we het beste vinden.
       </p>
 
+      {/* Op een adres met meerdere scholen zonder gedeelde naam weet de site niet welke school
+          de ouder bedoelt, dus vraagt ze het. Eén keer per adres, niet per onderwerp. Op papier
+          staat de gekozen naam al in elk kaartje. */}
+      {tekiezen.length > 0 && (
+        <div className="mt-4 rounded-xl border border-rand p-3 sm:p-4 print:hidden">
+          <h3 className="font-semibold text-inkt">Welke school bedoelen jullie?</h3>
+          <p className="mt-0.5 text-sm text-zacht">
+            Op {tekiezen.length === 1 ? 'dit adres staan' : 'deze adressen staan'} meerdere
+            scholen. Kies de school die jullie bezoeken, dan staat die naam op het blad.
+          </p>
+          <div className="mt-3 flex flex-col gap-3">
+            {tekiezen.map((campus) => (
+              <label key={campus.id} className="flex flex-col gap-1 text-sm">
+                <span className="text-zacht">{campusLabel(campus)}</span>
+                <select
+                  value={blad.schoolnaam[campus.id] ?? ''}
+                  onChange={(e) => onChange((b) => zetSchoolnaam(b, campus.id, e.target.value))}
+                  className="min-h-11 w-full rounded-md border border-rand bg-kaart px-2 text-base text-inkt sm:min-h-0 sm:py-1.5 sm:text-sm"
+                >
+                  <option value="">Nog niet gekozen</option>
+                  {schoolNamen(campus).map((naam) => (
+                    <option key={naam} value={naam}>
+                      {naam}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="mt-4 flex flex-col gap-3">
         {ONDERWERPEN.map((onderwerp) => (
           <OnderwerpKaart
@@ -85,6 +120,7 @@ export function Beslisblad({ campussen, blad, onChange }: BeslisbladProps) {
             onderwerp={onderwerp}
             campussen={campussen}
             blad={blad}
+            naamVan={naamVan}
             onChange={onChange}
           />
         ))}
@@ -114,7 +150,7 @@ export function Beslisblad({ campussen, blad, onChange }: BeslisbladProps) {
                     {heeftUitslag ? s.plaats : '–'}
                   </span>
                   <span className="min-w-0 flex-1 text-inkt">
-                    {schoolLabel(campus)}
+                    {naamVan(campus)}
                     <span className="block text-xs text-zacht">{campusLabel(campus)}</span>
                   </span>
                   <span className="font-semibold text-inkt tabular-nums">
@@ -135,7 +171,7 @@ export function Beslisblad({ campussen, blad, onChange }: BeslisbladProps) {
         </ol>
 
         <p className="mt-3 border-t border-rand pt-3 text-sm text-zacht">
-          {vonnis(uitslag.ingevuld, uitslag.meewegend, gerangschikt, campussen)}
+          {vonnis(uitslag.ingevuld, uitslag.meewegend, gerangschikt, campussen, naamVan)}
         </p>
 
         {heeftInvoer(blad) && (
@@ -156,11 +192,13 @@ function OnderwerpKaart({
   onderwerp,
   campussen,
   blad,
+  naamVan,
   onChange,
 }: {
   onderwerp: Onderwerp
   campussen: CampusMetAfstand[]
   blad: BeslisbladStand
+  naamVan: (campus: CampusMetAfstand) => string
   onChange: Dispatch<SetStateAction<BeslisbladStand>>
 }) {
   const ids = campussen.map((c) => c.id)
@@ -211,6 +249,7 @@ function OnderwerpKaart({
               key={campus.id}
               onderwerp={onderwerp}
               campus={campus}
+              naam={naamVan(campus)}
               plaats={plaats}
               gedimd={gewicht === 0}
               kiesLabel={aangeklikt.length === 0 ? 'Kies als beste' : 'Kies als tweede'}
@@ -249,6 +288,7 @@ function OnderwerpKaart({
 function AdresVak({
   onderwerp,
   campus,
+  naam,
   plaats,
   gedimd,
   kiesLabel,
@@ -258,6 +298,7 @@ function AdresVak({
 }: {
   onderwerp: Onderwerp
   campus: CampusMetAfstand
+  naam: string
   plaats: Plaats | null
   gedimd: boolean
   kiesLabel: string
@@ -267,7 +308,6 @@ function AdresVak({
 }) {
   const veldRef = useRef<HTMLTextAreaElement>(null)
   const adres = `${campus.straat} ${huisnummerLabel(campus.huisnummer)}, ${campus.gemeente}`
-  const naam = schoolLabel(campus)
   const voluit = `${naam}, ${campusLabel(campus)}`
 
   // Het veld groeit mee met de tekst, ook wanneer het venster opnieuw opengaat met een
@@ -346,19 +386,20 @@ function vonnis(
   meewegend: number,
   gerangschikt: { campusId: string; op100: number }[],
   campussen: CampusMetAfstand[],
+  naamVan: (campus: CampusMetAfstand) => string,
 ): string {
   if (meewegend === 0) return 'Alle onderwerpen staan op "Telt niet mee", dus er valt niets te tellen.'
   if (ingevuld === 0) {
     return 'Nog niets aangeduid. Zodra je bij één onderwerp een beste en een tweede kiest, beweegt de volgorde mee.'
   }
   const [eerste, tweede] = gerangschikt
-  const naam = campussen.find((c) => c.id === eerste.campusId)
+  const campus = campussen.find((c) => c.id === eerste.campusId)
   const verschil = eerste.op100 - tweede.op100
   const teller = `${ingevuld} van ${meewegend} meewegende onderwerpen ingevuld.`
   if (verschil < RUIS) {
     return `De adressen liggen dicht bij elkaar. Dat is binnen de ruis: dit blad kiest hier niet voor jullie. ${teller}`
   }
-  const voorop = `${naam ? schoolLabel(naam) : 'Eén adres'} staat voorop met ${Math.round(verschil)} punten voorsprong.`
+  const voorop = `${campus ? naamVan(campus) : 'Eén adres'} staat voorop met ${Math.round(verschil)} punten voorsprong.`
   const duiding =
     verschil < SMAL
       ? 'Een smalle voorsprong die kan omslaan als je één gewicht verschuift.'

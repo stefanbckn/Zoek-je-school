@@ -135,6 +135,11 @@ in CLAUDE.md; de rekenregels in `src/lib/beslisblad.ts`, de vorm in `Beslisblad.
 - **Enkel een beste en een tweede kiezen**, de rest krijgt 1 punt. Bij twee adressen volstaat
   één klik en is het andere de tweede.
 - **Balkjes via `KenmerkBalkje`**: neutraal grijs, geen kleur per adres.
+- **Kiezen per adres, tonen als school.** `schoolLabel` in `lib/vergelijking.ts` toont enkel
+  namen die letterlijk in de dataset staan. Op een adres met meerdere namen zonder gedeelde
+  naam (398 van de 1075) vraagt het blad bovenaan "Welke school bedoelen jullie?". **Knip
+  geen gemeenschappelijk begin af**: doorgemeten gaf dat naast "Moretus" ook "De", "GO!" en
+  "Vrije".
 - **Op papier geen `<textarea>`.** Die snijdt lange tekst af. Het veld is `print:hidden` en
   ernaast staat de notitie als gewone tekst, of een stippellijn als ze leeg is. De print-CSS
   zet de lettergroottes van `.beslisblad-blok` apart: de rem-groottes van Tailwind krimpen niet
