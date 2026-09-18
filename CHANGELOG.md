@@ -8,7 +8,7 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
-## Niet uitgebracht
+## 2.6.0 — 18 september 2026
 
 Voor wie tussen twee of drie scholen twijfelt: de vergelijking helpt je nu ook kiezen, met je
 eigen oordeel en niet met dat van de site.
