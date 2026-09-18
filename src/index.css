@@ -561,6 +561,25 @@ button:not(:disabled) {
   .vergelijk-afdruk th {
     break-inside: avoid;
   }
+
+  /* Het beslisblad. De Tailwind-groottes zijn in rem en krimpen dus niet mee met de 8.5pt van
+     het venster: zonder dit stond de vraag op papier groter dan de titel erboven. Een onderwerp
+     wordt nooit over twee bladen gesneden, anders staat de notitie los van zijn vraag. */
+  .vergelijk-afdruk .beslisblad-blok {
+    break-inside: avoid;
+  }
+
+  .vergelijk-afdruk .beslisblad-blok h3 {
+    font-size: 10.5pt;
+  }
+
+  .vergelijk-afdruk .beslisblad-blok .text-sm {
+    font-size: 9pt;
+  }
+
+  .vergelijk-afdruk .beslisblad-blok .text-xs {
+    font-size: 7.5pt;
+  }
 }
 
 /* Simple Analytics-badge: twee lokale SVG's, want een <img> ziet de CSS-variabelen van de pagina
