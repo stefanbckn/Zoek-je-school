@@ -8,6 +8,33 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## Niet uitgebracht
+
+Voor wie tussen twee of drie scholen twijfelt: de vergelijking helpt je nu ook kiezen, met je
+eigen oordeel en niet met dat van de site.
+
+**Nieuw**
+
+- **"Jullie keuze" in het vergelijkingsvenster.** Naast de gegevens staat een beslisblad met
+  zeven vragen om mee te nemen naar de infodag: kostprijs, laptop, uitstappen, kledij, zorg,
+  de schooldag en jullie eigen indruk. Per adres noteer je wat je hoorde. Per onderwerp zeg je
+  hoe zwaar het weegt en welk adres jullie het beste vinden. Onderaan volgt daaruit jullie
+  volgorde, met een zin die eerlijk zegt wanneer het verschil te klein is om iets te betekenen.
+- **Afdrukken zoals je het nodig hebt.** Leeg geeft het een blad om met de pen in te vullen op
+  de infodag, ingevuld een overzicht om te bewaren.
+
+**Goed om te weten**
+
+- **De site oordeelt nog altijd niet over scholen.** De vragen zijn voor elke school dezelfde,
+  en de punten komen volledig uit jullie eigen antwoorden.
+- **Niets wordt bewaard.** Wat je invult blijft staan zolang de pagina openstaat, ook als je
+  het venster even sluit. Herlaad je de pagina, haal je een adres met notities weg of wis je
+  alles, dan vraagt de site eerst of je dat zeker wil. Wil je het houden, druk het dan af.
+- **Enkel een beste en een tweede kiezen.** Bij vier adressen krijgen de laatste twee evenveel
+  punten; een derde en vierde plaats aanduiden kan niet.
+
+---
+
 ## 2.5.0 — 15 september 2026
 
 Deze versie is vooral voor wie de site met het toetsenbord of een schermlezer gebruikt. Met de

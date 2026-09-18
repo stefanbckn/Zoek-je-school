@@ -184,6 +184,13 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
               aan tafel kan leggen.
             </p>
             <p className="mt-2 text-zacht">
+              Onder "Jullie keuze" staan vragen om mee te nemen naar de infodag. Noteer per adres
+              wat je hoorde, zeg hoe zwaar elk onderwerp weegt en welk adres jullie het beste
+              vinden: daaruit volgt jullie eigen volgorde. De site oordeelt zelf niet over
+              scholen, ze telt enkel jullie antwoorden op. Niets wordt bewaard, dus druk het af
+              als je het wil houden.
+            </p>
+            <p className="mt-2 text-zacht">
               Je selectie zit niet in de link die je deelt. Wil je iemand hetzelfde laten zien,
               stuur dan de link met je filters erin en klik samen opnieuw.
             </p>

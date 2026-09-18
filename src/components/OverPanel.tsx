@@ -244,6 +244,10 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
               : zonder cookies, zonder profielen, en wie "Do Not Track" aan heeft staan wordt niet
               geteld. Je zoekopdracht en je thema-keuze blijven in je eigen browser.
             </p>
+            <p className="mt-2 text-zacht">
+              Wat je invult onder "Jullie keuze" in de vergelijking, verlaat je browser niet en
+              wordt ook daar niet bewaard: het is weg zodra je de pagina sluit of herlaadt.
+            </p>
           </section>
 
           <section>
