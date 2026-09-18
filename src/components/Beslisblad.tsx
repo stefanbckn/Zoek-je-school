@@ -69,8 +69,8 @@ export function Beslisblad({ campussen, blad, onChange }: BeslisbladProps) {
   return (
     <div className="mt-4">
       <p className="text-sm text-zacht print:hidden">
-        Noteer per adres wat jullie opviel, zeg hoe zwaar elk onderwerp weegt en welk
-        adres jullie daar het beste vinden. De volgorde onderaan komt uit jullie antwoorden, niet
+        Noteer per school wat jullie opviel, zeg hoe zwaar elk onderwerp weegt en welke school
+        jullie daar het beste vinden. De volgorde onderaan komt uit jullie antwoorden, niet
         van deze site.{' '}
         <span className="text-inkt">
           Wat je invult, blijft staan zolang deze pagina openstaat, ook als je dit venster sluit.
@@ -78,7 +78,7 @@ export function Beslisblad({ campussen, blad, onChange }: BeslisbladProps) {
         Het wordt nergens bewaard of verstuurd: druk het af als je het wil houden.
       </p>
       <p className="hidden text-zacht print:block">
-        Per onderwerp: onze notities, hoe zwaar het weegt en welk adres we het beste vinden.
+        Per onderwerp: onze notities, hoe zwaar het weegt en welke school we het beste vinden.
       </p>
 
       {/* Op een adres met meerdere scholen zonder gedeelde naam weet de site niet welke school
@@ -219,7 +219,7 @@ function OnderwerpKaart({
   )
 
   let hint = ''
-  if (gelijk) hint = 'Alle adressen krijgen evenveel punten.'
+  if (gelijk) hint = 'Alle scholen krijgen evenveel punten.'
   else if (af) hint = 'Ingevuld. Klik een keuze opnieuw om ze weg te halen.'
   else if (aangeklikt.length === 1) hint = 'Kies nu de tweede.'
 
@@ -439,9 +439,9 @@ function vonnis(
   const verschil = eerste.op100 - tweede.op100
   const teller = `${ingevuld} van ${meewegend} meewegende onderwerpen ingevuld.`
   if (verschil < RUIS) {
-    return `De adressen liggen dicht bij elkaar. Dat is binnen de ruis: dit blad kiest hier niet voor jullie. ${teller}`
+    return `De scholen liggen dicht bij elkaar. Dat is binnen de ruis: dit blad kiest hier niet voor jullie. ${teller}`
   }
-  const voorop = `${campus ? naamVan(campus) : 'Eén adres'} staat voorop met ${Math.round(verschil)} punten voorsprong.`
+  const voorop = `${campus ? naamVan(campus) : 'Eén school'} staat voorop met ${Math.round(verschil)} punten voorsprong.`
   const duiding =
     verschil < SMAL
       ? 'Een smalle voorsprong die kan omslaan als je één gewicht verschuift.'
