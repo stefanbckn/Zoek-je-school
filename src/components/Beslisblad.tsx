@@ -220,6 +220,9 @@ function OnderwerpKaart({
         <div className="min-w-0 flex-[1_1_16rem]">
           <h3 className="font-semibold text-inkt">{onderwerp.titel}</h3>
           <p className="mt-0.5 text-sm text-zacht">{onderwerp.vraag}</p>
+          {onderwerp.tip && (
+            <p className="mt-0.5 text-xs text-zacht italic print:hidden">{onderwerp.tip}</p>
+          )}
         </div>
         <div
           role="group"

@@ -18,16 +18,39 @@ export interface Onderwerp {
   id: string
   titel: string
   vraag: string
+  /**
+   * Waar op deze site je al een deel van het antwoord vindt. Enkel een verwijzing, nooit het
+   * gegeven zelf: in het blad staat niets over een school dat de ouder er niet zelf in zette.
+   */
+  tip?: string
   /** Meer plaats om te schrijven, op het scherm en op papier. */
   ruim?: boolean
 }
 
 /**
- * De onderwerpen, in de volgorde waarin ze op het blad staan. Allemaal dingen die niet in de
- * officiële gegevens staan en die per school verschillen; "Eigen indruk" staat bewust
- * achteraan, na de feiten.
+ * De onderwerpen, in de volgorde waarin ze op het blad staan: eerst wat je kan navragen of
+ * opzoeken, dan kosten en afspraken, en als laatste wat enkel ter plaatse te voelen is. Die
+ * volgorde is bewust: eerst de feiten, dan de indruk.
  */
 export const ONDERWERPEN: Onderwerp[] = [
+  {
+    id: 'grootte',
+    titel: 'Grootte van het eerste jaar',
+    vraag: 'Hoeveel leerlingen starten er in het eerste jaar, en in hoeveel klassen? Kleinschalig of groot?',
+  },
+  {
+    id: 'aanbod',
+    titel: 'Breedte van het aanbod',
+    vraag:
+      'Welke richtingen blijven er open na de eerste graad, vooral in doorstroom? Wat als de gekozen richting toch niet past?',
+    tip: 'Het aanbod per graad staat bij "Gegevens".',
+  },
+  {
+    id: 'route',
+    titel: 'Route met fiets en openbaar vervoer',
+    vraag: 'Hoe lang duurt de rit, en hoe veilig voelt de route, ook in de winter in het donker?',
+    tip: 'De reistijd met de fiets en met bus of trein zie je als je een school opent.',
+  },
   {
     id: 'kostprijs',
     titel: 'Kostprijs',
@@ -59,9 +82,15 @@ export const ONDERWERPEN: Onderwerp[] = [
     vraag: 'Hoe laat begint en eindigt de dag? Hoe zit het met de middag en warme maaltijden?',
   },
   {
-    id: 'indruk',
-    titel: 'Eigen indruk',
-    vraag: 'De sfeer, de gebouwen, en wat je kind er zelf van vond.',
+    id: 'sfeer',
+    titel: 'Sfeer op de infodag',
+    vraag: 'Hoe werd er met jullie en met de leerlingen gepraat? Hoe voelden de gebouwen en de speelplaats?',
+    ruim: true,
+  },
+  {
+    id: 'klik',
+    titel: 'Klik van je kind',
+    vraag: 'Wat vond je kind er zelf van? Laat het dit onderwerp gerust zelf aanduiden.',
     ruim: true,
   },
 ]

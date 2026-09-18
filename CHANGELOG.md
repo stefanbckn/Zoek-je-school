@@ -16,10 +16,12 @@ eigen oordeel en niet met dat van de site.
 **Nieuw**
 
 - **"Jullie keuze" in het vergelijkingsvenster.** Naast de gegevens staat een beslisblad met
-  zeven vragen om mee te nemen naar de infodag: kostprijs, laptop, uitstappen, kledij, zorg,
-  de schooldag en jullie eigen indruk. Per adres noteer je wat je hoorde. Per onderwerp zeg je
-  hoe zwaar het weegt en welk adres jullie het beste vinden. Onderaan volgt daaruit jullie
-  volgorde, met een zin die eerlijk zegt wanneer het verschil te klein is om iets te betekenen.
+  elf vragen om mee te nemen naar de infodag: de grootte van het eerste jaar, de breedte van
+  het aanbod, de route met fiets en openbaar vervoer, kostprijs, laptop, uitstappen, kledij,
+  zorg, de schooldag, de sfeer op de infodag en de klik van je kind zelf. Per adres noteer je
+  wat je hoorde. Per onderwerp zeg je hoe zwaar het weegt en welk adres jullie het beste
+  vinden. Onderaan volgt daaruit jullie volgorde, met een zin die eerlijk zegt wanneer het
+  verschil te klein is om iets te betekenen.
 - **Het blad spreekt over scholen, niet over straten.** Elk adres staat er met de naam van de
   school, het adres klein eronder. Staan er op één adres meerdere scholen met een andere naam,
   dan kies je bovenaan welke school jullie bedoelen.
