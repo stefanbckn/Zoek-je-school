@@ -25,6 +25,8 @@ import { NET_OPTIONS } from './lib/net'
 import { PROVINCIE_OPTIONS } from './lib/provincie'
 import { useSearchState } from './lib/useSearchState'
 import { MAX_VERGELIJK, toggleVergelijking } from './lib/vergelijking'
+import { heeftInvoer, LEEG_BLAD, zonderCampus } from './lib/beslisblad'
+import type { Beslisblad } from './lib/beslisblad'
 import { useVestigingen } from './lib/useVestigingen'
 import type { CampusMetAfstand, SchoolOpCampus } from './types'
 
@@ -55,6 +57,52 @@ function App() {
    */
   const [vergelijking, setVergelijking] = useState<string[]>([])
   const [vergelijkOpen, setVergelijkOpen] = useState(false)
+  /**
+   * Het beslisblad uit het vergelijkingsvenster. Hier en niet in het venster zelf, zodat het
+   * sluiten en opnieuw openen van dat venster niets wist. Bewaard wordt het nergens: zie
+   * `lib/beslisblad.ts`. Wat er wél gebeurt, is waarschuwen voor het verloren gaat.
+   */
+  const [blad, setBlad] = useState<Beslisblad>(LEEG_BLAD)
+  const bladIngevuld = heeftInvoer(blad)
+
+  // Herladen of de tab sluiten met iets ingevuld: dan vraagt de browser of je echt weg wil. De
+  // tekst van die vraag kiest de browser zelf; een eigen tekst negeren ze allemaal.
+  useEffect(() => {
+    if (!bladIngevuld) return
+    function voorVertrek(e: BeforeUnloadEvent) {
+      e.preventDefault()
+    }
+    window.addEventListener('beforeunload', voorVertrek)
+    return () => window.removeEventListener('beforeunload', voorVertrek)
+  }, [bladIngevuld])
+
+  /**
+   * Een adres uit de vergelijking halen, vanuit de balk of vanuit de lijst. Staan er notities of
+   * keuzes bij, dan eerst vragen: die gaan mee weg.
+   */
+  function haalUitVergelijking(id: string) {
+    if (
+      heeftInvoer(blad, id) &&
+      !window.confirm(
+        'Bij dit adres staan notities of keuzes in "Jullie keuze". Haal je het uit de vergelijking, dan zijn die weg.',
+      )
+    ) {
+      return
+    }
+    setVergelijking((huidig) => huidig.filter((x) => x !== id))
+    setBlad((b) => zonderCampus(b, id))
+  }
+
+  function wisVergelijking() {
+    if (
+      bladIngevuld &&
+      !window.confirm('Alle notities en keuzes in "Jullie keuze" gaan mee weg. Toch wissen?')
+    ) {
+      return
+    }
+    setVergelijking([])
+    setBlad(LEEG_BLAD)
+  }
 
   const actieveFilters =
     state.netten.length +
@@ -667,7 +715,9 @@ function App() {
                     vergelijking={vergelijking}
                     vergelijkVol={vergelijking.length >= MAX_VERGELIJK}
                     onVergelijkToggle={(campus) =>
-                      setVergelijking((huidig) => toggleVergelijking(huidig, campus.id))
+                      vergelijking.includes(campus.id)
+                        ? haalUitVergelijking(campus.id)
+                        : setVergelijking((huidig) => toggleVergelijking(huidig, campus.id))
                     }
                   />
                 ) : (
@@ -704,8 +754,8 @@ function App() {
 
       <VergelijkBalk
         gekozen={vergelekenCampussen}
-        onVerwijder={(id) => setVergelijking((huidig) => huidig.filter((x) => x !== id))}
-        onWisAlles={() => setVergelijking([])}
+        onVerwijder={haalUitVergelijking}
+        onWisAlles={wisVergelijking}
         onOpen={() => setVergelijkOpen(true)}
       />
 
@@ -728,6 +778,8 @@ function App() {
         schooljaarAanbod={meta?.schooljaarAanbod ?? null}
         kenmerkenMeta={meta?.leerlingenkenmerken ?? null}
         zevendeCodes={zevendeCodes}
+        blad={blad}
+        onBladChange={setBlad}
         onClose={() => setVergelijkOpen(false)}
       />
 

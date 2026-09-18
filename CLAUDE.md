@@ -22,6 +22,12 @@ Deze liggen vast. Keer ze niet om zonder de gebruiker.
   Analytics.
 - **Geen ranglijsten, geen scores, geen kwaliteitsoordeel over scholen.** Cijfers over
   leerlingen zijn context met uitleg, nooit een rapport.
+  - **Een volgorde die de ouder zelf opstelt, is geen ranglijst van de site** (beslist door de
+    gebruiker op 18/09/2026, bij 2.6.0). Het beslisblad "Jullie keuze" in de vergelijking mag
+    dus punten optellen, zolang aan vier voorwaarden voldaan is: de onderwerpen zijn voor elke
+    school dezelfde vragen zonder één gegeven over een school, gewicht en keuze komen van de
+    ouder, niets wordt bewaard, en de uitkomst vloeit nooit terug naar de lijst, de kaart of
+    een link. **Ruim het niet op** als een overtreding; zie `src/lib/beslisblad.ts`.
 - **Geen advertenties en geen betaalmuur.** Een donatieknop kan; commercieel worden kost ons de
   toegang tot Transitous. Eén bewuste uitzondering: de **Simple Analytics-badge** in de footer.
   Die is de prijs voor hun gratis plan (zonder badge sluiten ze het dashboard af) en is dus geen

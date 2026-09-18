@@ -120,6 +120,35 @@ dan hetzelfde.**
   aanzet om te scrollen.
 - **Exporteren gebeurt als afdruk**, niet als link of CSV. Zo gekozen door de gebruiker.
 
+## Het beslisblad "Jullie keuze"
+
+Tweede weergave in `VergelijkPanel`, naast de gegevens. Waarom het geen ranglijst is, staat
+in CLAUDE.md; de rekenregels in `src/lib/beslisblad.ts`, de vorm in `Beslisblad.tsx`.
+
+- **De stand leeft in `App.tsx`, niet in het venster.** Zo overleeft ze het sluiten en
+  opnieuw openen. Niet in `localStorage`: dat is een beslissing van de gebruiker, mede omdat
+  notities over een kind op een gedeelde computer blijven staan.
+- **Niet bewaren, wel waarschuwen.** `beforeunload` bij herladen of sluiten met iets ingevuld,
+  en `window.confirm` bij een adres weghalen (balk én lijst lopen via `haalUitVergelijking`),
+  bij "Wissen" in de balk en bij "Alles wissen" in het blad. Een gewicht alleen telt niet als
+  invoer. Een adres dat eruit gaat, neemt zijn notities en keuzes mee (`zonderCampus`).
+- **Enkel een beste en een tweede kiezen**, de rest krijgt 1 punt. Bij twee adressen volstaat
+  één klik en is het andere de tweede.
+- **"Telt niet mee" klapt het onderwerp in.** Elf onderwerpen maal drie adressen was op een
+  telefoon te lang (open 822 px per onderwerp, ingeklapt 188 px). De gewichtknoppen blijven
+  staan om het terug open te klappen. Op papier valt een ingeklapt onderwerp weg, behalve als
+  er notities in staan: die worden dan als gewone lijst afgedrukt.
+- **Balkjes via `KenmerkBalkje`**: neutraal grijs, geen kleur per adres.
+- **Kiezen per adres, tonen als school.** `schoolLabel` in `lib/vergelijking.ts` toont enkel
+  namen die letterlijk in de dataset staan. Op een adres met meerdere namen zonder gedeelde
+  naam (398 van de 1075) vraagt het blad bovenaan "Welke school bedoelen jullie?". **Knip
+  geen gemeenschappelijk begin af**: doorgemeten gaf dat naast "Moretus" ook "De", "GO!" en
+  "Vrije".
+- **Op papier geen `<textarea>`.** Die snijdt lange tekst af. Het veld is `print:hidden` en
+  ernaast staat de notitie als gewone tekst, of een stippellijn als ze leeg is. De print-CSS
+  zet de lettergroottes van `.beslisblad-blok` apart: de rem-groottes van Tailwind krimpen niet
+  mee met de 8.5pt van het venster, en dan stond de vraag groter dan de titel.
+
 ## Print
 
 - `VergelijkPanel` staat in `App.tsx` bewust **buiten** de app-wrapper in de JSX. Die wrapper

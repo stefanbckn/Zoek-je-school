@@ -8,6 +8,43 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.6.0 — 18 september 2026
+
+Voor wie tussen twee of drie scholen twijfelt: de vergelijking helpt je nu ook kiezen, met je
+eigen oordeel en niet met dat van de site.
+
+**Nieuw**
+
+- **"Jullie keuze" in het vergelijkingsvenster.** Naast de gegevens staat een beslisblad met
+  elf vragen om mee te nemen naar de infodag: de grootte van het eerste jaar, de breedte van
+  het aanbod, de route met fiets en openbaar vervoer, kostprijs, laptop, uitstappen, kledij,
+  zorg, de schooldag, de sfeer op de infodag en de klik van je kind zelf. Per school noteer je
+  wat jullie opviel. Per onderwerp zeg je hoe zwaar het weegt en welke school jullie het beste
+  vinden. Onderaan volgt daaruit jullie volgorde, met een zin die eerlijk zegt wanneer het
+  verschil te klein is om iets te betekenen.
+- **Wat niet meetelt, klapt in.** Zet je een onderwerp op "Telt niet mee", dan blijft enkel de
+  titel staan en wordt het blad een stuk korter. Een ander gewicht klapt het weer open, met je
+  notities er nog in.
+- **Het blad spreekt over scholen, niet over straten.** Elk adres staat er met de naam van de
+  school, het adres klein eronder. Staan er op één adres meerdere scholen met een andere naam,
+  dan kies je bovenaan welke school jullie bedoelen.
+- **Afdrukken zoals je het nodig hebt.** Leeg geeft het een blad om met de pen in te vullen op
+  de infodag, ingevuld een overzicht om te bewaren.
+
+**Goed om te weten**
+
+- **De site oordeelt nog altijd niet over scholen.** De vragen zijn voor elke school dezelfde,
+  en de punten komen volledig uit jullie eigen antwoorden.
+- **Niets wordt bewaard.** Wat je invult blijft staan zolang de pagina openstaat, ook als je
+  het venster even sluit. Haal je een adres met notities weg of wis je alles, dan vraagt de
+  site eerst of je dat zeker wil. Herlaad je de pagina, dan vraagt je browser eerst of je dat
+  zeker wil. Op een telefoon slaat de browser die vraag vaak over, dus druk daar af of neem een
+  schermafbeelding als je het wil houden.
+- **Enkel een beste en een tweede kiezen.** Bij vier adressen krijgen de laatste twee evenveel
+  punten; een derde en vierde plaats aanduiden kan niet.
+
+---
+
 ## 2.5.0 — 15 september 2026
 
 Deze versie is vooral voor wie de site met het toetsenbord of een schermlezer gebruikt. Met de

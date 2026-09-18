@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import type { CampusMetAfstand, DatasetMeta, Richting } from '../types'
 import {
   campusAanbod,
@@ -14,6 +15,8 @@ import { huisnummerLabel } from '../lib/adres'
 import { datumLabel, KENMERKEN, percentageLabel } from '../lib/leerlingenkenmerken'
 import { KenmerkBalkje } from './KenmerkBalkje'
 import { useDialoogFocus } from '../lib/useDialoogFocus'
+import type { Beslisblad as BeslisbladStand } from '../lib/beslisblad'
+import { Beslisblad } from './Beslisblad'
 
 /** Eén rij van de vergelijking: het label plus één cel per adres, in dezelfde volgorde. */
 interface TabelRij {
@@ -30,8 +33,17 @@ interface VergelijkPanelProps {
   kenmerkenMeta: DatasetMeta['leerlingenkenmerken']
   /** Codes van de zevende leerjaren, zodat die achteraan de derde graad komen. */
   zevendeCodes: Set<string>
+  /** Het beslisblad leeft in App, zodat het sluiten van dit venster het niet wist. */
+  blad: BeslisbladStand
+  onBladChange: Dispatch<SetStateAction<BeslisbladStand>>
   onClose: () => void
 }
+
+/**
+ * Twee weergaven in hetzelfde venster: de gegevens uit de dataset, en het beslisblad dat de
+ * bezoeker zelf invult. Afdrukken drukt af wat er openstaat.
+ */
+type Weergave = 'gegevens' | 'keuze'
 
 /**
  * Twee tot vier adressen naast elkaar in één tabel.
@@ -53,9 +65,12 @@ export function VergelijkPanel({
   schooljaarAanbod,
   kenmerkenMeta,
   zevendeCodes,
+  blad,
+  onBladChange,
   onClose,
 }: VergelijkPanelProps) {
   const open = campussen.length > 0
+  const [weergave, setWeergave] = useState<Weergave>('gegevens')
   const vensterRef = useDialoogFocus<HTMLDivElement>(open)
 
   // Zelfde afspraak als in DetailPanel: een modaal venster hoort met Escape te sluiten.
@@ -283,11 +298,15 @@ export function VergelijkPanel({
             <h2 id="vergelijk-titel" className="text-lg font-semibold text-inkt">
               {campussen.length} adressen vergeleken
             </h2>
-            <p className="mt-0.5 text-xs text-zacht">
-              Studieaanbod
-              {schooljaarAanbod !== null && ` van schooljaar ${schooljaarAanbod}-${schooljaarAanbod + 1}`}
-              , per adres samengevoegd over alle scholen die er staan.
-            </p>
+            {weergave === 'gegevens' ? (
+              <p className="mt-0.5 text-xs text-zacht">
+                Studieaanbod
+                {schooljaarAanbod !== null && ` van schooljaar ${schooljaarAanbod}-${schooljaarAanbod + 1}`}
+                , per adres samengevoegd over alle scholen die er staan.
+              </p>
+            ) : (
+              <p className="mt-0.5 text-xs text-zacht">Jullie keuze, ingevuld door jullie zelf.</p>
+            )}
           </div>
           <div className="flex shrink-0 items-center gap-2 print:hidden">
             <button
@@ -308,94 +327,125 @@ export function VergelijkPanel({
           </div>
         </div>
 
-        {/* Twee weergaven van dezelfde rijen. Vanaf sm en op papier de tabel: naast elkaar
-            kijken is waarvoor deze functie bestaat. Op een telefoon werd dat bladeren — de
-            tabel is 668 px breed in een venster van 311 px, waarvan de kenmerkkolom er 115
-            neemt, dus je zag één adres tegelijk. Daar staat nu een stapel per adres, met
-            dezelfde rijlabels. */}
-        <div className="relative mt-4 hidden overflow-x-auto sm:block print:block print:overflow-visible">
-          <table className="w-full border-collapse text-sm">
-            <caption className="sr-only">
-              Vergelijking van {campussen.length} adressen op ligging, scholen en studieaanbod
-            </caption>
-            <thead>
-              <tr>
-                <th
-                  scope="col"
-                  className="sticky left-0 z-10 w-24 min-w-24 border-r border-rand bg-kaart p-2 text-left align-bottom text-xs font-medium text-zacht sm:w-32 sm:min-w-32 print:static"
-                >
-                  <span className="sr-only">Kenmerk</span>
-                </th>
-                {campussen.map((campus) => (
-                  <th
-                    key={campus.id}
-                    scope="col"
-                    className="min-w-44 border-b-2 border-rand p-2 text-left align-bottom text-inkt sm:min-w-52"
-                  >
-                    <span className="font-semibold">
-                      {campus.straat} {huisnummerLabel(campus.huisnummer)}
-                    </span>
-                    <span className="block text-xs font-normal text-zacht">
-                      {campus.postcode} {campus.gemeente}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
-            <tbody>
-              {rijen.map((rij) => (
-                <Rij key={rij.kop} kop={rij.kop} className={rij.className}>
-                  {campussen.map((campus, i) => (
-                    <Cel key={campus.id}>{rij.cellen[i]}</Cel>
-                  ))}
-                </Rij>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="mt-4 flex flex-col gap-4 sm:hidden print:hidden">
-          {campussen.map((campus, i) => (
-            <section key={campus.id} className="rounded-lg border border-rand">
-              <h3 className="border-b border-rand bg-grond px-3 py-2 text-sm">
-                <span className="font-semibold text-inkt">
-                  {campus.straat} {huisnummerLabel(campus.huisnummer)}
-                </span>
-                <span className="block text-xs font-normal text-zacht">
-                  {campus.postcode} {campus.gemeente}
-                </span>
-              </h3>
-              {/* Vaste labelkolom, zodat de rijen van het ene adres verticaal uitlijnen met die
-                  van het volgende: dat is wat er van het naast elkaar leggen overblijft wanneer
-                  de adressen onder elkaar staan. */}
-              <dl className="divide-y divide-rand text-sm">
-                {rijen.map((rij) => (
-                  <div key={rij.kop} className="grid grid-cols-[6.5rem_1fr] gap-3 px-3 py-2">
-                    <dt className="text-xs font-medium text-zacht">{rij.kop}</dt>
-                    <dd className="text-inkt">{rij.cellen[i]}</dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
+        {/* Schakelaar tussen de gegevens en het beslisblad. Knoppen met aria-pressed en geen
+            tabbladen met pijltjesnavigatie: het zijn er twee, en Tab volstaat dan. */}
+        <div
+          role="group"
+          aria-label="Weergave"
+          className="mt-4 inline-flex overflow-hidden rounded-lg border border-rand print:hidden"
+        >
+          {(
+            [
+              ['gegevens', 'Gegevens'],
+              ['keuze', 'Jullie keuze'],
+            ] as const
+          ).map(([waarde, label]) => (
+            <button
+              key={waarde}
+              type="button"
+              aria-pressed={weergave === waarde}
+              onClick={() => setWeergave(waarde)}
+              className="min-h-11 px-4 text-sm font-medium text-inkt hover:bg-hover aria-pressed:bg-inkt aria-pressed:text-kaart sm:min-h-0 sm:py-1.5"
+            >
+              {label}
+            </button>
           ))}
         </div>
 
-        <p className="mt-4 text-xs text-zacht">
-          Richtingen zijn per graad samengevat: de brondata vermeldt elk leerjaar apart, hier
-          staat elke richting één keer. Afstanden zijn in vogelvlucht, geen reisafstand. Controleer
-          de officiële fiche voor het definitieve aanbod.
-        </p>
+        {weergave === 'keuze' ? (
+          <Beslisblad campussen={campussen} blad={blad} onChange={onBladChange} />
+        ) : (
+          <>
+          {/* Twee weergaven van dezelfde rijen. Vanaf sm en op papier de tabel: naast elkaar
+              kijken is waarvoor deze functie bestaat. Op een telefoon werd dat bladeren — de
+              tabel is 668 px breed in een venster van 311 px, waarvan de kenmerkkolom er 115
+              neemt, dus je zag één adres tegelijk. Daar staat nu een stapel per adres, met
+              dezelfde rijlabels. */}
+          <div className="relative mt-4 hidden overflow-x-auto sm:block print:block print:overflow-visible">
+            <table className="w-full border-collapse text-sm">
+              <caption className="sr-only">
+                Vergelijking van {campussen.length} adressen op ligging, scholen en studieaanbod
+              </caption>
+              <thead>
+                <tr>
+                  <th
+                    scope="col"
+                    className="sticky left-0 z-10 w-24 min-w-24 border-r border-rand bg-kaart p-2 text-left align-bottom text-xs font-medium text-zacht sm:w-32 sm:min-w-32 print:static"
+                  >
+                    <span className="sr-only">Kenmerk</span>
+                  </th>
+                  {campussen.map((campus) => (
+                    <th
+                      key={campus.id}
+                      scope="col"
+                      className="min-w-44 border-b-2 border-rand p-2 text-left align-bottom text-inkt sm:min-w-52"
+                    >
+                      <span className="font-semibold">
+                        {campus.straat} {huisnummerLabel(campus.huisnummer)}
+                      </span>
+                      <span className="block text-xs font-normal text-zacht">
+                        {campus.postcode} {campus.gemeente}
+                      </span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
 
-        {kenmerkenMeta && (
-          <p className="mt-2 text-xs text-zacht">
-            De vier leerlingenkenmerken komen uit de leerlingentelling van{' '}
-            {datumLabel(kenmerkenMeta.teldatum)} (schooljaar {kenmerkenMeta.schooljaar}) voor de
-            berekening van de werkingstoelagen, en gelden per school in plaats van per adres. Het
-            zijn indicatieve achtergrondcijfers over de leerlingengroep: ze zeggen niets over de
-            kwaliteit van het onderwijs. Een streepje betekent dat de school niet in die
-            publicatie staat.
+              <tbody>
+                {rijen.map((rij) => (
+                  <Rij key={rij.kop} kop={rij.kop} className={rij.className}>
+                    {campussen.map((campus, i) => (
+                      <Cel key={campus.id}>{rij.cellen[i]}</Cel>
+                    ))}
+                  </Rij>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-4 flex flex-col gap-4 sm:hidden print:hidden">
+            {campussen.map((campus, i) => (
+              <section key={campus.id} className="rounded-lg border border-rand">
+                <h3 className="border-b border-rand bg-grond px-3 py-2 text-sm">
+                  <span className="font-semibold text-inkt">
+                    {campus.straat} {huisnummerLabel(campus.huisnummer)}
+                  </span>
+                  <span className="block text-xs font-normal text-zacht">
+                    {campus.postcode} {campus.gemeente}
+                  </span>
+                </h3>
+                {/* Vaste labelkolom, zodat de rijen van het ene adres verticaal uitlijnen met die
+                    van het volgende: dat is wat er van het naast elkaar leggen overblijft wanneer
+                    de adressen onder elkaar staan. */}
+                <dl className="divide-y divide-rand text-sm">
+                  {rijen.map((rij) => (
+                    <div key={rij.kop} className="grid grid-cols-[6.5rem_1fr] gap-3 px-3 py-2">
+                      <dt className="text-xs font-medium text-zacht">{rij.kop}</dt>
+                      <dd className="text-inkt">{rij.cellen[i]}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            ))}
+          </div>
+
+          <p className="mt-4 text-xs text-zacht">
+            Richtingen zijn per graad samengevat: de brondata vermeldt elk leerjaar apart, hier
+            staat elke richting één keer. Afstanden zijn in vogelvlucht, geen reisafstand. Controleer
+            de officiële fiche voor het definitieve aanbod.
           </p>
+
+          {kenmerkenMeta && (
+            <p className="mt-2 text-xs text-zacht">
+              De vier leerlingenkenmerken komen uit de leerlingentelling van{' '}
+              {datumLabel(kenmerkenMeta.teldatum)} (schooljaar {kenmerkenMeta.schooljaar}) voor de
+              berekening van de werkingstoelagen, en gelden per school in plaats van per adres. Het
+              zijn indicatieve achtergrondcijfers over de leerlingengroep: ze zeggen niets over de
+              kwaliteit van het onderwijs. Een streepje betekent dat de school niet in die
+              publicatie staat.
+            </p>
+          )}
+          </>
         )}
       </div>
     </div>
