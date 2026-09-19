@@ -17,6 +17,7 @@ import { KenmerkBalkje } from './KenmerkBalkje'
 import { useDialoogFocus } from '../lib/useDialoogFocus'
 import type { Beslisblad as BeslisbladStand } from '../lib/beslisblad'
 import { Beslisblad } from './Beslisblad'
+import { Beeldmerk } from './Beeldmerk'
 
 /** Eén rij van de vergelijking: het label plus één cel per adres, in dezelfde volgorde. */
 interface TabelRij {
@@ -293,6 +294,17 @@ export function VergelijkPanel({
         aria-modal="true"
         aria-labelledby="vergelijk-titel"
       >
+        {/* Enkel op papier: wie het blad later op tafel vindt, ziet waar het vandaan komt en
+            waar het opnieuw te maken is. Op het scherm staat de kopbalk al achter het venster.
+            Het woordmerk volgt logo-lockup-be-teal.svg: het geel van ".be" haalt op wit papier
+            geen leesbaar contrast, dus daar wordt het teal. */}
+        <div className="mb-3 hidden items-center gap-2 border-b border-rand pb-2 text-accent print:flex">
+          <Beeldmerk grootte={24} ondergrond="var(--c-kaart)" />
+          <span className="text-base font-extrabold leading-tight tracking-tight">
+            <span className="text-inkt">zoekjeschool</span>.be
+          </span>
+        </div>
+
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 id="vergelijk-titel" className="text-lg font-semibold text-inkt">

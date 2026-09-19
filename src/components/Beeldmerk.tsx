@@ -10,10 +10,19 @@
  * bij 48 en niet bij 34, want daar houdt het pakket ze ook: op de kopbalk staat dus de versie
  * met twee ramen.
  *
- * De inkt komt uit `currentColor`, de ramen uit --c-kop, de klok uit --c-signaal. Nooit een
- * vaste hexwaarde, anders volgt het merk het thema niet mee.
+ * De inkt komt uit `currentColor`, de ramen uit `ondergrond`, de klok uit --c-signaal. Nooit een
+ * vaste hexwaarde, anders volgt het merk het thema niet mee. `ondergrond` is standaard --c-kop,
+ * de kleur van de kopbalk. Staat het merk op een lichte grond, zoals bovenaan een afdruk, dan
+ * wordt het gebouw teal en krijgen de ramen de kleur van het papier, net als in
+ * logo-lockup-be-teal.svg.
  */
-export function Beeldmerk({ grootte = 34 }: { grootte?: number }) {
+export function Beeldmerk({
+  grootte = 34,
+  ondergrond = 'var(--c-kop)',
+}: {
+  grootte?: number
+  ondergrond?: string
+}) {
   const niveau = grootte >= 48 ? 'vol' : grootte >= 24 ? 'twee' : 'klein'
 
   return (
@@ -29,7 +38,7 @@ export function Beeldmerk({ grootte = 34 }: { grootte?: number }) {
         <>
           <circle cx="32" cy="11" r="8" fill="var(--c-signaal)" />
           <rect x="4" y="20" width="56" height="36" rx="2" fill="currentColor" />
-          <rect x="26" y="38" width="12" height="18" fill="var(--c-kop)" />
+          <rect x="26" y="38" width="12" height="18" fill={ondergrond} />
         </>
       ) : (
         <>
@@ -45,16 +54,16 @@ export function Beeldmerk({ grootte = 34 }: { grootte?: number }) {
           {niveau === 'vol' ? (
             <>
               {[14, 23.5, 33, 42.5].map((x) => (
-                <rect key={x} x={x} y="30" width="7.5" height="7.5" rx="1" fill="var(--c-kop)" />
+                <rect key={x} x={x} y="30" width="7.5" height="7.5" rx="1" fill={ondergrond} />
               ))}
-              <path d="M27.8 52v-8.4a4.2 4.2 0 018.4 0V52z" fill="var(--c-kop)" />
+              <path d="M27.8 52v-8.4a4.2 4.2 0 018.4 0V52z" fill={ondergrond} />
             </>
           ) : (
             <>
               {[15, 40].map((x) => (
-                <rect key={x} x={x} y="31" width="9" height="9" rx="1" fill="var(--c-kop)" />
+                <rect key={x} x={x} y="31" width="9" height="9" rx="1" fill={ondergrond} />
               ))}
-              <path d="M27 52v-9a5 5 0 0110 0v9z" fill="var(--c-kop)" />
+              <path d="M27 52v-9a5 5 0 0110 0v9z" fill={ondergrond} />
             </>
           )}
         </>

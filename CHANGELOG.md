@@ -8,6 +8,14 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.6.1 — 19 september 2026
+
+**Gecorrigeerd**
+
+- **Een afgedrukte vergelijking draagt nu het logo.** Bovenaan het blad staat het beeldmerk met
+  zoekjeschool.be, zowel bij de gegevens als bij "Jullie keuze". Wie het blad later terugvindt,
+  weet zo waar het vandaan komt. Op het scherm verandert er niets.
+
 ## 2.6.0 — 18 september 2026
 
 Voor wie tussen twee of drie scholen twijfelt: de vergelijking helpt je nu ook kiezen, met je
