@@ -84,12 +84,16 @@ ${json({
           ${esc(stad.naam)} heen. Je ziet er per school hoe lang de rit duurt met de fiets en
           met het openbaar vervoer.
         </p>
-        <p class="mt-3 text-sm">
+        <!-- Bewust zónder text-sm, in tegenstelling tot de terugweg bovenaan en de doorverwijzing
+             onderaan: dit zijn de twee belangrijkste acties van de pagina, en in text-sm stonden
+             ze kleiner dan de domeinlinks eronder. Klein is hier voor navigatie, niet voor een
+             call to action. -->
+        <p class="mt-3">
           <a href="../../" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
             Zoek vanaf je eigen adres &rarr;
           </a>
         </p>
-        <p class="text-sm">
+        <p>
           <a href="${zoeker(p.gemeenteNamen)}" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
             Of open ${esc(stad.naam)} in de zoeker en filter verder &rarr;
           </a>
@@ -224,7 +228,10 @@ ${p.adressen
     (c) => `          <li>
             <p class="font-medium">${esc(adresRegel(c))}</p>
             <p class="text-sm text-zacht">${esc(c.postcode)} ${esc(c.gemeente)}</p>
-            <ul class="mt-1 space-y-1 text-sm">
+            <!-- Geen text-sm: de schoolnaam is waar een ouder naar kijkt, en stond kleiner dan
+                 de domein- en buurgemeentelinks elders op de pagina. De straatnaam erboven
+                 blijft de kop door font-medium, niet door de rest te verkleinen. -->
+            <ul class="mt-1 space-y-1">
 ${(p.regelsPerAdres.get(c.id) ?? [])
   .map(
     (s) => `              <li>
