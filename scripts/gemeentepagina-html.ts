@@ -259,7 +259,9 @@ function kaart(stad: Stad, p: Profiel): string {
   return `
         <h2 class="mt-8 text-lg font-semibold">${esc(stad.naam)} op de kaart</h2>
         <p class="mt-2 text-sm text-zacht">
-          Elke speld is één adres. Klik erop voor de scholen die er staan.${
+          Elke speld is één adres; klik erop voor de scholen die er staan. Liggen er meerdere
+          dicht bij elkaar, dan zie je eerst een bol met hun aantal. Klik die aan om in te
+          zoomen.${
             zonderLocatie > 0
               ? ` ${zonderLocatie} ${woord(zonderLocatie, 'adres staat', 'adressen staan')} er niet op: de bron geeft er geen coördinaten voor.`
               : ''

@@ -17,6 +17,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
 import { huisnummerLabel } from '../lib/adres'
+import { LOS_VANAF_ZOOM, clusterIcon } from '../lib/clusterbol'
 
 // Vite bundelt de marker-afbeeldingen niet automatisch mee onder hun verwachte pad;
 // dit is de gedocumenteerde workaround voor react-leaflet + Vite.
@@ -38,36 +39,12 @@ const defaultIcon = L.icon({
  */
 const DATA_MIDDEN: [number, number] = [51.09, 4.19]
 
-// Vanaf dit zoomniveau staan alle markers los. Een cluster dat op straatniveau blijft liggen,
-// verbergt precies wat je dan wil zien: één adres kan meerdere scholen dragen, en die staan
-// in de popup onder de losse marker.
-const LOS_VANAF_ZOOM = 16
-
 interface MapViewProps {
   campussen: CampusMetAfstand[]
   onSelect: (campus: CampusMetAfstand, school: SchoolOpCampus) => void
 }
 
 type CampusMetLocatie = CampusMetAfstand & { lat: number; lon: number }
-
-// Eén clusterbol. Het getal erin is puur visueel: een cluster is géén campus en zegt niets
-// over scholen, alleen hoeveel adressen er op dit zoomniveau samenvallen.
-function clusterIcon(cluster: L.MarkerCluster) {
-  const aantal = cluster.getChildCount()
-  const maat = aantal < 10 ? 'klein' : aantal < 50 ? 'midden' : 'groot'
-  const diameter = aantal < 10 ? 36 : aantal < 50 ? 44 : 52
-  return L.divIcon({
-    // Leaflet zet zelf `tabindex="0"` en `role="button"` op de bol (nagekeken in de DOM), dus
-    // hij is met Tab bereikbaar en wordt als knop aangekondigd. Wat er niet vanzelf komt, is een
-    // toegankelijke naam: `aria-label` op het buitenste element kan niet, want
-    // `iconCreateFunction` levert enkel de inhoud. Vandaar de verborgen zin ernaast.
-    html:
-      `<span aria-hidden="true">${aantal}</span>` +
-      `<span class="sr-only">${aantal} adressen, open om te spreiden</span>`,
-    className: `cluster-bol cluster-bol--${maat}`,
-    iconSize: L.point(diameter, diameter),
-  })
-}
 
 // Op een Mac is ⌘ de toets die hier voor de hand ligt; ctrl doet daar de systeemzoom. Elders is
 // het net ctrl. Eén keer bepalen volstaat: het toetsenbord wisselt niet tijdens een bezoek.

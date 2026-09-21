@@ -10,14 +10,22 @@
  * (`script-src 'self'`) blijft ongemoeid, en de tiles komen van dezelfde OSM-server als de
  * zoeker, die al in `img-src` staat.
  *
- * Geen clustering zoals in MapView.tsx: daar gaat het over 1075 adressen, hier over enkele
- * tientallen. Een cluster zou hier alleen maar verbergen.
+ * Clustert net als de kaart in de zoeker, en met dezelfde bollen. Dat is niet omdat het er
+ * veel zijn, maar omdat een stad haar deelgemeenten meetelt: Brugge loopt door tot Zeebrugge,
+ * vijftien kilometer noordelijker. Zonder cluster past de kaart zich op die spreiding in en
+ * verdwijnt het centrum in een hoopje spelden. Nu zie je eerst de hele stad, klik je de bol
+ * van het centrum aan en zoomt hij in.
  */
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+// Alleen de basisstijl van markercluster, níét MarkerCluster.Default.css. Het waarom staat bij
+// clusterIcon in src/lib/clusterbol.ts.
+import 'leaflet.markercluster'
+import 'leaflet.markercluster/dist/MarkerCluster.css'
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+import { LOS_VANAF_ZOOM, clusterIcon } from './lib/clusterbol'
 
 interface KaartSchool {
   naam: string
@@ -73,14 +81,25 @@ function start(): void {
     maxZoom: 19,
   }).addTo(kaart)
 
+  const groep = L.markerClusterGroup({
+    iconCreateFunction: clusterIcon,
+    disableClusteringAtZoom: LOS_VANAF_ZOOM,
+    maxClusterRadius: 50,
+    // De omtrekpolygoon bij hover tekent een vlak over de kaart dat niets toevoegt zolang
+    // klikken al inzoomt. Zelfde keuze als in MapView.tsx.
+    showCoverageOnHover: false,
+  })
   const punten: L.LatLngExpression[] = []
   for (const a of adressen) {
     punten.push([a.lat, a.lon])
-    L.marker([a.lat, a.lon], { icon: icoon, title: `${a.adres}, ${a.plaats}` })
-      .addTo(kaart)
-      .bindPopup(popup(a))
+    groep.addLayer(
+      L.marker([a.lat, a.lon], { icon: icoon, title: `${a.adres}, ${a.plaats}` }).bindPopup(popup(a)),
+    )
   }
-  kaart.fitBounds(L.latLngBounds(punten), { padding: [30, 30], maxZoom: 15 })
+  kaart.addLayer(groep)
+  // Géén maxZoom hier: bij een stad die in één straat past, mag hij gerust ver inzoomen. De
+  // spreiding van een stad als Brugge vangt het cluster op, niet een zoomgrens.
+  kaart.fitBounds(L.latLngBounds(punten), { padding: [30, 30] })
 }
 
 function popup(a: KaartAdres): string {
