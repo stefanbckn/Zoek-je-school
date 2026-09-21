@@ -1,10 +1,13 @@
 {
   "name": "zoek-je-school",
   "private": true,
-  "version": "2.6.1",
+  "version": "2.7.0",
   "type": "module",
   "scripts": {
+    "genereer-gemeentepaginas": "tsx scripts/genereer-gemeentepaginas.ts",
+    "predev": "npm run genereer-gemeentepaginas",
     "dev": "vite",
+    "prebuild": "npm run genereer-gemeentepaginas",
     "fetch-data": "tsx scripts/fetch-data.ts",
     "build": "tsc -b && vite build",
     "lint": "oxlint",

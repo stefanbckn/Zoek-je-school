@@ -8,6 +8,41 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.7.0 — 21 september 2026
+
+Ouders zoeken niet op "middelbare school Vlaanderen" maar op hun eigen stad. Daar had de site
+tot nu niets voor: alles stond op één adres, en wie "middelbare scholen Mechelen" intikte, kreeg
+ons niet te zien. Twee steden krijgen daarom een eigen pagina, als proef.
+
+**Nieuw**
+
+- **Een pagina per stad, om te beginnen [Mechelen](https://zoekjeschool.be/gemeente/mechelen/)
+  en [Brugge](https://zoekjeschool.be/gemeente/brugge/).** Je leest er in één blik hoeveel
+  scholen er staan, op hoeveel adressen, welke studiedomeinen je er vindt en welke niet, welke
+  netten er zijn, of er een onthaaljaar voor anderstalige nieuwkomers is en of er duaal geleerd
+  kan worden. Elke regel is een dieplink naar de zoeker, met de filters al goed gezet.
+- **"Wat vind je hier niet?"** Ontbreekt een studiedomein in de stad, dan staat erbij waar het
+  dichtstbij wél kan, met de afstand in vogelvlucht. In Brugge is dat Land- en tuinbouw, op
+  zes kilometer in Oedelem. In Mechelen ontbreekt er niets.
+- **Een lijst met gemeenten binnen tien kilometer**, want een schoolkeuze stopt niet aan de
+  gemeentegrens.
+
+**Goed om te weten**
+
+- **De hele gemeente telt mee.** De brondata noemt elke postcode apart, dus Brugge staat er als
+  Assebroek, Sint-Andries, Sint-Kruis, Sint-Michiels, Zeebrugge en Brugge. De pagina voegt die
+  samen op NIS-code, zoals je het zelf zou verwachten.
+- **Alleen adressen met studieaanbod**, net zoals de zoeker die standaard toont. De cijfers op
+  de pagina kloppen dus met wat je na het doorklikken ziet.
+- **Geen volgorde en geen oordeel.** De adressen staan op alfabet van de straatnaam. De pagina
+  zegt niets over de kwaliteit van een school, en dat blijft zo.
+
+**Nog niet**
+
+- **Elf andere centrumsteden wachten.** Dit zijn er bewust twee: eerst kijken of ze opgepikt
+  worden en of ze echt van elkaar verschillen, dan pas doorschalen. Antwerpen vraagt daarbij
+  nog een eigen blik, want de stad staat in de data als negen districten.
+
 ## 2.6.1 — 19 september 2026
 
 **Gecorrigeerd**
