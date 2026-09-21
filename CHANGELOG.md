@@ -31,6 +31,9 @@ dezelfde balk als de zoeker.
   terug.
 - **De voet loopt over de volle breedte**, net als de kopbalk en net als op de zoeker. De streep
   erboven stopte eerder bij de rand van de tekstkolom.
+- **Het logo staat in lijn met de rest van de pagina.** Op een breed scherm begon het twaalf
+  pixels verder naar rechts dan de zoekbalk en de voet eronder. Dat gold ook op de zoeker zelf,
+  dus die schuift mee. De kopbalk houdt wel zijn hoogte.
 
 **Goed om te weten**
 

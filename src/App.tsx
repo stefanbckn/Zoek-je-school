@@ -447,8 +447,13 @@ function App() {
           zonder ook de tabel te verbergen. */}
       <div className={`min-h-full flex flex-col ${vergelijkOpen ? 'print:hidden' : ''}`}>
         {/* flex-wrap is nodig: op 375px past de knoppenrij niet naast de titel en viel
-            "Donker" buiten het scherm. Bij weinig ruimte zakt ze naar een eigen regel. */}
-        <header className="flex items-center justify-between gap-4 bg-kop px-4 py-3 text-kop-inkt sm:px-7 sm:py-3.5">
+            "Donker" buiten het scherm. Bij weinig ruimte zakt ze naar een eigen regel.
+
+            De zijkant staat bewust op px-4 zonder sm:px-7. Met die extra ruimte begon het
+            logo op 28 px terwijl de zoekbalk, de resultaten en de voet eronder allemaal op
+            16 px staan; dat gaf een knik vanaf 640 px. De extra hóógte (sm:py-3.5) blijft wel:
+            die maakt de balk royaler zonder iets uit de lijn te duwen. */}
+        <header className="flex items-center justify-between gap-4 bg-kop px-4 py-3 text-kop-inkt sm:py-3.5">
           {/* Het woordmerk is echte tekst en geen afbeelding. Het logopakket levert het als
               vectorpaden, maar sinds Plus Jakarta Sans zelf op de site staat tekent de browser
               exact dezelfde letters — en dan blijft het selecteerbaar, schaalt het mee met de

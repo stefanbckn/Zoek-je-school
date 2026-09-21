@@ -21,7 +21,7 @@
 export type KopIngang = 'uitleg' | null
 
 export function paginakop(huidige: KopIngang = null): string {
-  return `    <header class="flex items-center justify-between gap-4 bg-kop px-4 py-3 text-kop-inkt sm:px-7 sm:py-3.5">
+  return `    <header class="flex items-center justify-between gap-4 bg-kop px-4 py-3 text-kop-inkt sm:py-3.5">
       <a href="/" class="flex items-center gap-3 rounded-lg">
         ${beeldmerk()}
         <span class="flex min-w-0 flex-col">
