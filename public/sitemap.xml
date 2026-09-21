@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Drie URL's: de zoeker en de twee uitlegpagina's. De zoeker staat er maar één keer in, want
+<!-- De zoeker, de twee uitlegpagina's en een pagina per stad. De zoeker staat er maar één keer in, want
      alle state zit in de querystring en die hoort niet in een sitemap (zie de canonical in
      index.html).
+     De stadspagina's worden build-time gegenereerd door scripts/genereer-gemeentepaginas.ts
+     en staan niet in git. Dat script stopt met een fout zodra een stad hier ontbreekt, zodat
+     deze lijst en scripts/steden.ts niet uit elkaar kunnen lopen.
      Bewust zonder <lastmod>: dat zou een handmatig bij te houden datum zijn die na de eerste
      deploy meteen liegt, en een foute lastmod is voor crawlers slechter dan geen. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -13,5 +16,11 @@
   </url>
   <url>
     <loc>https://zoekjeschool.be/uitleg/inschrijven/</loc>
+  </url>
+  <url>
+    <loc>https://zoekjeschool.be/gemeente/mechelen/</loc>
+  </url>
+  <url>
+    <loc>https://zoekjeschool.be/gemeente/brugge/</loc>
   </url>
 </urlset>
