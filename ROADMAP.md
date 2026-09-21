@@ -77,6 +77,7 @@ mét die beperking erbij.
 | 4 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Staat hier enkel omdat de gebruiker het als wens genoemd heeft; zonder bron valt er niets te bouwen |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
 | 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 7 | Gemeentepagina's voor zoekmachines | Een eigen URL per centrumstad met de scholen, netten en studiedomeinen van die stad | *Nice to have.* **Klaar om te bouwen, geen bron nodig.** Alles komt uit `vestigingen.json` en wordt build-time gegenereerd, dus geen backend. Risico is thin content: dertien pagina's die enkel in de naam verschillen, zakken eerder dan ze stijgen. Zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -275,6 +276,64 @@ npm: 1.4.2 (nagekeken 01/09/2026).
   levert hier meer op**, want het risico zit in dependencies. ⚠️ Niet geverifieerd: default setup
   zet géén workflowbestand in de repo, en de badge-URL verwijst naar een workflowbestand. Wil je
   per se een CodeQL-badge, dan moet je waarschijnlijk de advanced variant nemen.
+
+## Gemeentepagina's voor zoekmachines (besproken 21/09/2026)
+
+**Waarom.** Ouders zoeken niet op "middelbare school Vlaanderen" maar op hun eigen regio:
+"middelbare scholen Mechelen". Daar kan de site vandaag niet op scoren. Er zijn precies drie
+URL's (`/`, `/uitleg/` en `/uitleg/inschrijven/`), alle gemeentekeuze zit in de querystring, en
+de canonical in `index.html` wijst alles terug naar `/`. Er bestaat dus geen pagina die over één
+stad gaat, en dan valt er niets te ranken.
+
+Aanleiding was Bing Webmaster Tools op 20/09/2026: twee vertoningen, op "middelbare school" en
+op "zoek en vind school". Op de brede term is niets te winnen (die is bezet door de scholen zelf
+en door Onderwijs Vlaanderen); op een term met intentie erin staat de site wél vooraan, met de
+`<meta name="description">` letterlijk als antwoordblok bovenaan.
+
+**Welke steden.** De dertien Vlaamse centrumsteden. De vijf provinciehoofdsteden zitten daar al
+in (Antwerpen, Gent, Brugge, Hasselt, Leuven), dus het blijven dertien pagina's, geen achttien.
+Geteld in `public/data/vestigingen.json` op 21/09/2026:
+
+| Stad | Adressen |
+| --- | --- |
+| Antwerpen | 72 (121 mét de districten, zie hieronder) |
+| Gent | 44 |
+| Aalst | 23 |
+| Kortrijk | 23 |
+| Sint-Niklaas | 23 |
+| Brugge | 21 |
+| Hasselt | 19 |
+| Mechelen | 18 |
+| Oostende | 17 |
+| Roeselare | 15 |
+| Turnhout | 15 |
+| Genk | 13 |
+| Leuven | 13 |
+
+Samen 316 van de 1075 adressen, dus 29% van de data met dertien pagina's.
+
+**Twee dingen die eerst beslist moeten worden.**
+
+- **Antwerpen staat als districten in de dataset.** Berchem (8), Borgerhout (5), Deurne (13),
+  Ekeren (3), Hoboken (5), Merksem (11) en Wilrijk (4) zijn aparte waarden in `gemeente`. Een
+  pagina "Antwerpen" toont dus 72 adressen, terwijl wie "middelbare scholen Antwerpen" zoekt de
+  121 van de hele stad bedoelt. Dat samenvoegen is een expliciete keuze, geen detail. Let op:
+  postcode 2040 (Berendrecht-Zandvliet-Lillo) komt niet voor in de dataset.
+- **Brussel valt uit de boot.** De gemeenten staan apart, met Anderlecht op 12 en de rest op 1
+  tot 8. Pagina's per Brusselse gemeente worden te dun. Eén pagina voor het hele gewest dekt 57
+  adressen en heeft meer kans.
+
+**Aanpak.** Niet alle 241 gemeenten. Dertien pagina's die alleen in de naam verschillen, zijn
+doorway pages en kosten posities in plaats van ze op te leveren. Elke pagina moet iets zeggen
+dat enkel voor die stad klopt: welke scholen er staan, welke netten, welke studiedomeinen er wel
+en niet zijn, welke buurgemeenten binnen tien kilometer liggen. Begin met een handvol, wacht drie
+maanden, en schaal pas door als de vertoningen stijgen. Mechelen is de logische test: groot
+genoeg om inhoud te hebben, klein genoeg om te overzien.
+
+**Past binnen de harde regels.** Build-time gegenereerd uit de bestaande statische JSON, dus geen
+backend en geen live call erbij. De build maakt al meerdere HTML-bestanden (`rollupOptions.input`
+in `vite.config.ts`), net als `/uitleg/`. Nieuwe URL's horen ook in `public/sitemap.xml`, en elke
+pagina krijgt een eigen canonical. Geen ranglijst: een stadspagina somt op, ze rangschikt niet.
 
 ## Bewust geschrapt
 
