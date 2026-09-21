@@ -29,6 +29,8 @@ dezelfde balk als de zoeker.
 - **"← Terug naar de zoeker" is een kruimelpad geworden**, bijvoorbeeld "Zoek je school ›
   Middelbare scholen in Mechelen". Dat zegt ook waar je zit, en het logo in de kop is nu de weg
   terug.
+- **De voet loopt over de volle breedte**, net als de kopbalk en net als op de zoeker. De streep
+  erboven stopte eerder bij de rand van de tekstkolom.
 
 **Goed om te weten**
 
