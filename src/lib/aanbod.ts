@@ -1,4 +1,4 @@
-import type { Campus, Finaliteit, Richting, Studierichting } from '../types'
+import type { Campus, Finaliteit, Richting, Studierichting } from '../types.ts'
 
 /** De finaliteiten waarop gefilterd kan worden. `null` (eerste graad, 7e leerjaar, HBO5,
  *  OKAN) is geen keuze — dat is "niet van toepassing", geen categorie. */

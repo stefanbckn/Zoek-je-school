@@ -24,6 +24,11 @@ dist-ssr
 # persoonlijke Claude Code-agents, horen niet in de repo
 .claude/agents/
 
+# Stadspagina's: build-time gegenereerd door scripts/genereer-gemeentepaginas.ts, dat als
+# prebuild en predev draait. Niet committen — ze zouden bij elke dataverversing scheeflopen
+# met public/data. De sitemap staat wél in git en het script bewaakt dat ze gelijk blijven.
+/gemeente/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
