@@ -9,7 +9,8 @@
  * Het thema-script en Simple Analytics worden door de plugin `gedeeldeScripts` in
  * vite.config.ts geïnjecteerd, net als bij de andere pagina's. Niet hier bijzetten.
  */
-import type { DatasetMeta } from '../src/types.ts'
+import { huisnummerLabel } from '../src/lib/adres.ts'
+import type { Campus, DatasetMeta } from '../src/types.ts'
 import type { Profiel } from './genereer-gemeentepaginas.ts'
 import type { Stad } from './steden.ts'
 
@@ -70,7 +71,7 @@ ${json({
       <article class="mt-4">
         <h1 class="text-2xl font-semibold">${esc(titel)}</h1>
         <p class="mt-3">
-          In ${esc(stad.naam)} ${p.aantalScholen === 1 ? 'staat' : 'staan'}
+          In ${esc(stad.naam)} ${p.aantalScholen === 1 ? 'is er' : 'zijn er'}
           <strong>${p.aantalScholen} ${woord(p.aantalScholen, 'school', 'scholen')}</strong>
           voor voltijds gewoon secundair onderwijs, verdeeld over
           <strong>${p.adressen.length} ${woord(p.adressen.length, 'adres', 'adressen')}</strong>.
@@ -85,6 +86,7 @@ ${json({
 
         ${domeinen(stad, p)}
         ${ontbrekend(stad, p)}
+        ${kaart(stad, p)}
         ${adressen(stad, p)}
         ${netten(p)}
         ${bijzonderheden(stad, p)}
@@ -149,8 +151,8 @@ function domeinen(stad: Stad, p: Profiel): string {
   return `
         <h2 class="mt-8 text-lg font-semibold">Welke studiedomeinen vind je in ${esc(stad.naam)}?</h2>
         <p class="mt-2 text-sm text-zacht">
-          Het aantal adressen waar je dat domein kan volgen. Klik door om die adressen in de
-          zoeker te zien.
+          Hier zie je de studiedomeinen en op hoeveel adressen je ze kan volgen. Klik een domein
+          aan om die adressen in de zoeker te openen.
         </p>
         <ul class="mt-3 space-y-1">
 ${p.domeinen
@@ -171,8 +173,8 @@ function ontbrekend(stad: Stad, p: Profiel): string {
     return `
         <h2 class="mt-8 text-lg font-semibold">Wat vind je hier niet?</h2>
         <p class="mt-2">
-          Niets: alle acht de studiedomeinen zijn in ${esc(stad.naam)} te vinden. Dat is niet in
-          elke stad zo, dus wie hier zoekt hoeft voor een domein niet verder te kijken.
+          Niets: elk studiedomein is in ${esc(stad.naam)} te vinden. Dat is niet in elke stad zo,
+          dus wie hier zoekt hoeft voor een domein niet verder te kijken.
         </p>`
   }
   return `
@@ -212,7 +214,7 @@ function adressen(stad: Stad, p: Profiel): string {
 ${p.adressen
   .map(
     (c) => `          <li>
-            <p class="font-medium">${esc(c.straat)} ${esc(c.huisnummer)}</p>
+            <p class="font-medium">${esc(adresRegel(c))}</p>
             <p class="text-sm text-zacht">${esc(c.postcode)} ${esc(c.gemeente)}</p>
             <ul class="mt-1 space-y-1 text-sm">
 ${(p.regelsPerAdres.get(c.id) ?? [])
@@ -230,6 +232,49 @@ ${(p.regelsPerAdres.get(c.id) ?? [])
   )
   .join('\n')}
         </ul>`
+}
+
+/**
+ * De kaart zelf staat in src/gemeentekaart.ts; hier komt enkel de container, de data en het
+ * scripttag. Het JSON-blok wordt niet uitgevoerd, dus de CSP blijft ongemoeid. `</` moet er
+ * wel uit: anders sluit een schoolnaam met die tekens het script vroegtijdig af.
+ */
+function kaart(stad: Stad, p: Profiel): string {
+  const punten = p.adressen
+    .filter((c) => c.lat !== null && c.lon !== null)
+    .map((c) => ({
+      lat: c.lat as number,
+      lon: c.lon as number,
+      adres: adresRegel(c),
+      plaats: `${c.postcode} ${c.gemeente}`,
+      scholen: (p.regelsPerAdres.get(c.id) ?? []).map((s) => ({
+        naam: s.naam,
+        net: s.net,
+        href: zoeker(p.gemeenteNamen, { q: s.naam }),
+      })),
+    }))
+  if (punten.length === 0) return ''
+
+  const zonderLocatie = p.adressen.length - punten.length
+  return `
+        <h2 class="mt-8 text-lg font-semibold">${esc(stad.naam)} op de kaart</h2>
+        <p class="mt-2 text-sm text-zacht">
+          Elke speld is één adres. Klik erop voor de scholen die er staan.${
+            zonderLocatie > 0
+              ? ` ${zonderLocatie} ${woord(zonderLocatie, 'adres staat', 'adressen staan')} er niet op: de bron geeft er geen coördinaten voor.`
+              : ''
+          }
+          Zoomen doe je met de knoppen, zodat de kaart het scrollen van de pagina niet overneemt.
+          De volledige lijst staat eronder.
+        </p>
+        <div id="kaart" class="mt-3 h-96 w-full rounded-lg border border-rand" role="application" aria-label="Kaart met de adressen in ${esc(stad.naam)}"></div>
+        <script type="application/json" id="kaartdata">${JSON.stringify(punten).replace(/</g, '\\u003c')}</script>
+        <script type="module" src="../../src/gemeentekaart.ts"></script>`
+}
+
+/** Straat plus huisnummer zoals het hoort: de bron schrijft `46_A`, een mens leest `46A`. */
+function adresRegel(c: Campus): string {
+  return `${c.straat} ${huisnummerLabel(c.huisnummer)}`
 }
 
 function netten(p: Profiel): string {

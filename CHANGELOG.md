@@ -26,6 +26,9 @@ ons niet te zien. Twee steden krijgen daarom een eigen pagina, als proef.
   zes kilometer in Oedelem. In Mechelen ontbreekt er niets.
 - **Een lijst met gemeenten binnen tien kilometer**, want een schoolkeuze stopt niet aan de
   gemeentegrens.
+- **Een kaart met alle adressen van de stad.** Klik een speld aan voor de scholen die er staan.
+  Zoomen gaat met de knoppen, zodat de kaart het scrollen van de pagina niet overneemt. Zet je
+  JavaScript uit, dan verdwijnt de kaart en blijft de volledige lijst eronder gewoon staan.
 
 **Goed om te weten**
 

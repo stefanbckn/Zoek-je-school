@@ -18,7 +18,7 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { heeftAanbod, scholenMetAanbod } from '../src/lib/aanbod.ts'
-import { DOMEIN_VOLGORDE, domeinLabel } from '../src/lib/domein.ts'
+import { DOMEIN_RIJEN, domeinLabel } from '../src/lib/domein.ts'
 import { haversineKm } from '../src/lib/haversine.ts'
 import type { Campus, DatasetMeta } from '../src/types.ts'
 import { pagina } from './gemeentepagina-html.ts'
@@ -128,7 +128,10 @@ function maakProfiel(stad: Stad, alle: Campus[]): Profiel {
           if (r.duaal) duaal.add(r.studierichtingCode)
         }
         if (r.onderwijsvorm === 'OKAN') okanHier = true
-        if (r.domeinCode !== null && DOMEIN_VOLGORDE.includes(r.domeinCode)) {
+        // DOMEIN_RIJEN en niet DOMEIN_VOLGORDE: domeinoverschrijdend ('9') is de rij met de
+        // meeste doorstroomrichtingen en hoort er dus bij, net als in de matrix. Code '10'
+        // (Eerste graad) valt er bewust buiten, ook daar.
+        if (r.domeinCode !== null && DOMEIN_RIJEN.includes(r.domeinCode)) {
           domeinenHier.add(r.domeinCode)
         }
       }
@@ -138,8 +141,8 @@ function maakProfiel(stad: Stad, alle: Campus[]): Profiel {
   }
 
   const midden = middelpunt(adressen)
-  const aanwezig = DOMEIN_VOLGORDE.filter((d) => adressenPerDomein.has(d))
-  const ontbrekend = DOMEIN_VOLGORDE.filter((d) => !adressenPerDomein.has(d)).map((code) => ({
+  const aanwezig = DOMEIN_RIJEN.filter((d) => adressenPerDomein.has(d))
+  const ontbrekend = DOMEIN_RIJEN.filter((d) => !adressenPerDomein.has(d)).map((code) => ({
     code,
     label: domeinLabel(code),
     dichtstbij: dichtstbijMetDomein(code, midden, alle.filter((c) => !hoortErbij(c))),
