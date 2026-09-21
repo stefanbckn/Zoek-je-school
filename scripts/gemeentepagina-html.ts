@@ -95,10 +95,8 @@ ${json({
         <h2 class="mt-8 text-lg font-semibold">Waar deze cijfers vandaan komen</h2>
         <p class="mt-2 text-sm text-zacht">
           Alle gegevens op deze pagina komen uit de open data van Onderwijs en Vorming, opgehaald
-          op ${esc(datum(meta.opgehaaldOp))}${schooljaar(meta.schooljaarAanbod)}.
-          De pagina telt enkel adressen met studieaanbod, net zoals de zoeker dat standaard doet.
-          Ze zegt niets over de kwaliteit van een school: dat oordeel hoort hier niet, en de
-          officiële fiche gaat altijd voor.
+          op ${esc(datum(meta.opgehaaldOp))}${schooljaar(meta.schooljaarAanbod)}. De officiële
+          fiche gaat voor.
         </p>
       </article>
 
@@ -206,9 +204,9 @@ function adressen(stad: Stad, p: Profiel): string {
   return `
         <h2 class="mt-8 text-lg font-semibold">De scholen in ${esc(stad.naam)}, per adres</h2>
         <p class="mt-2 text-sm text-zacht">
-          Op alfabet van de straatnaam. Meerdere scholen op één adres komt vaak voor: ze delen
-          dan een campus. Een school met meer dan één adres in de stad staat er ook meer dan één
-          keer. Dit is geen volgorde van beter naar slechter.
+          Op alfabetische volgorde van de straatnaam. Meerdere scholen op één adres komt vaak
+          voor: ze delen dan een campus. Een school met meer dan één adres in de stad staat er
+          ook meer dan één keer.
         </p>
         <ul class="mt-3 space-y-4">
 ${p.adressen
@@ -266,7 +264,6 @@ function kaart(stad: Stad, p: Profiel): string {
               ? ` ${zonderLocatie} ${woord(zonderLocatie, 'adres staat', 'adressen staan')} er niet op: de bron geeft er geen coördinaten voor.`
               : ''
           }
-          Zoomen doe je met de knoppen, zodat de kaart het scrollen van de pagina niet overneemt.
           De volledige lijst staat eronder.
         </p>
         <div id="kaart" class="mt-3 h-96 w-full rounded-lg border border-rand" role="application" aria-label="Kaart met de adressen in ${esc(stad.naam)}"></div>

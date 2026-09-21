@@ -29,9 +29,8 @@ ons niet te zien. Twee steden krijgen daarom een eigen pagina, als proef.
 - **Een kaart met alle adressen van de stad.** Klik een speld aan voor de scholen die er staan.
   Liggen er meerdere dicht bij elkaar, dan zie je eerst een bol met hun aantal; klik die aan om
   in te zoomen. Handig bij een stad die ver uitloopt: Brugge toont eerst het hele grondgebied
-  tot Zeebrugge, en met één klik zit je in het centrum. Zoomen gaat met de knoppen, zodat de
-  kaart het scrollen van de pagina niet overneemt. Zet je JavaScript uit, dan verdwijnt de kaart
-  en blijft de volledige lijst eronder gewoon staan.
+  tot Zeebrugge, en met één klik zit je in het centrum. Zet je JavaScript uit, dan verdwijnt de
+  kaart en blijft de volledige lijst eronder gewoon staan.
 
 **Goed om te weten**
 
