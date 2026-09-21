@@ -114,7 +114,9 @@ ${json({
         </p>
       </article>
 
-      <p class="mt-6 text-sm">
+      <!-- Zonder text-sm, net als de twee links bovenaan: dit is een volgende stap voor de
+           lezer, geen navigatie. Alleen de terugweg helemaal bovenaan blijft klein. -->
+      <p class="mt-6">
         <a href="../../uitleg/" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
           Wat betekenen 1A, 1B, doorstroom en arbeidsmarkt? &rarr;
         </a>
@@ -228,10 +230,10 @@ ${p.adressen
     (c) => `          <li>
             <p class="font-medium">${esc(adresRegel(c))}</p>
             <p class="text-sm text-zacht">${esc(c.postcode)} ${esc(c.gemeente)}</p>
-            <!-- Geen text-sm: de schoolnaam is waar een ouder naar kijkt, en stond kleiner dan
-                 de domein- en buurgemeentelinks elders op de pagina. De straatnaam erboven
-                 blijft de kop door font-medium, niet door de rest te verkleinen. -->
-            <ul class="mt-1 space-y-1">
+            <!-- Bewust text-sm, ook al staan de domein- en buurgemeentelinks op de gewone
+                 maat. Dit zijn er tientallen onder elkaar; op volle grootte roepen ze te hard
+                 en verdwijnt de straatnaam als kop. Keuze van de gebruiker, 21/09/2026. -->
+            <ul class="mt-1 space-y-1 text-sm">
 ${(p.regelsPerAdres.get(c.id) ?? [])
   .map(
     (s) => `              <li>
