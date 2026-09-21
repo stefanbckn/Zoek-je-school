@@ -25,7 +25,9 @@ ons niet te zien. Twee steden krijgen daarom een eigen pagina, als proef.
   dichtstbij wél kan, met de afstand in vogelvlucht. In Brugge is dat Land- en tuinbouw, op
   zes kilometer in Oedelem. In Mechelen ontbreekt er niets.
 - **Een lijst met gemeenten binnen tien kilometer**, want een schoolkeuze stopt niet aan de
-  gemeentegrens.
+  gemeentegrens. Bovenaan staat daarom ook meteen de weg naar de zoeker: daar vertrek je vanaf
+  je eigen adres, bepaal je zelf hoe ver je wil kijken en zie je de reistijd met de fiets en het
+  openbaar vervoer erbij.
 - **Een kaart met alle adressen van de stad.** Klik een speld aan voor de scholen die er staan.
   Liggen er meerdere dicht bij elkaar, dan zie je eerst een bol met hun aantal; klik die aan om
   in te zoomen. Handig bij een stad die ver uitloopt: Brugge toont eerst het hele grondgebied

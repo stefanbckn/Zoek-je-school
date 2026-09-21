@@ -78,9 +78,20 @@ ${json({
           Samen richten ze ${p.aantalRichtingen} verschillende studierichtingen in.
         </p>
         ${deelgemeenten(stad, p)}
+        <p class="mt-3">
+          Deze pagina stopt aan de gemeentegrens, een schoolkeuze niet. In de zoeker vertrek je
+          vanaf je eigen adres en bepaal je zelf hoe ver je wil kijken, ook over de grens van
+          ${esc(stad.naam)} heen. Je ziet er per school hoe lang de rit duurt met de fiets en
+          met het openbaar vervoer.
+        </p>
         <p class="mt-3 text-sm">
+          <a href="../../" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
+            Zoek vanaf je eigen adres &rarr;
+          </a>
+        </p>
+        <p class="text-sm">
           <a href="${zoeker(p.gemeenteNamen)}" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
-            Open ${esc(stad.naam)} in de zoeker en filter verder &rarr;
+            Of open ${esc(stad.naam)} in de zoeker en filter verder &rarr;
           </a>
         </p>
 
@@ -95,8 +106,7 @@ ${json({
         <h2 class="mt-8 text-lg font-semibold">Waar deze cijfers vandaan komen</h2>
         <p class="mt-2 text-sm text-zacht">
           Alle gegevens op deze pagina komen uit de open data van Onderwijs en Vorming, opgehaald
-          op ${esc(datum(meta.opgehaaldOp))}${schooljaar(meta.schooljaarAanbod)}. De officiële
-          fiche gaat voor.
+          op ${esc(datum(meta.opgehaaldOp))}${schooljaar(meta.schooljaarAanbod)}.
         </p>
       </article>
 
