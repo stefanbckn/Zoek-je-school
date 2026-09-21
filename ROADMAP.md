@@ -77,7 +77,7 @@ mét die beperking erbij.
 | 4 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Staat hier enkel omdat de gebruiker het als wens genoemd heeft; zonder bron valt er niets te bouwen |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
 | 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
-| 7 | Gemeentepagina's voor zoekmachines | Een eigen URL per centrumstad met de scholen, netten en studiedomeinen van die stad | **Proef loopt.** Mechelen en Brugge staan live sinds 2.7.0. De elf andere centrumsteden volgen pas als die twee opgepikt worden; Antwerpen vraagt nog een beslissing. Zie hieronder |
+| 7 | Gemeentepagina's voor zoekmachines | Een eigen URL per centrumstad met de scholen, netten en studiedomeinen van die stad | **Proef loopt.** Mechelen en Brugge live sinds 2.7.0, eigen kopbalk sinds 2.8.0. De elf andere centrumsteden volgen pas als die twee opgepikt worden; Antwerpen vraagt nog een beslissing. **Geen link vanaf de zoeker**, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -337,6 +337,35 @@ backend en geen live call erbij. Geen hardgecodeerde schoolnaam of richting: het
 geen enkele, het leest ze. Geen ranglijst: de adressen staan op alfabet van de straatnaam en de
 pagina velt geen oordeel. De leerlingenkenmerken staan er bewust **niet** op: die per stad
 optellen leest als een oordeel over een stad.
+
+**2.8.0 gaf ze dezelfde kopbalk als de zoeker**, met een kruimelpad in plaats van een
+terugweglink. Vanaf die pagina's openen `?matrix=1`, `?help=1` en `?over=1` de zoeker met dat
+venster open.
+
+### Geen link vanaf de zoeker naar deze pagina's (beslist 21/09/2026 door de gebruiker)
+
+Deze pagina's blijven **ingangen, geen onderdeel van de app**. De zoeker krijgt er geen link
+naartoe. Reden: een stadspagina stopt aan de gemeentegrens, en de site zegt zelf dat een
+schoolkeuze dat niet doet. Voor wie al op de zoeker staat, is de stadspagina dus het mindere
+gereedschap: minder precies dan een eigen adres met een straal, en zonder reistijd. Een link
+daarheen stuurt mensen van het betere naar het mindere.
+
+Het publiek verschilt: de stadspagina is er voor wie de site nog niet kent en "middelbare
+scholen Mechelen" intikt. Haar taak is binnenhalen en doorsturen, en dat doen de twee links
+bovenaan al.
+
+**Wat we wél gaan doen, zodra er meer steden zijn.** De buurgemeentenlijst wijst nu volledig
+naar de zoeker. Bestaat een buurgemeente zelf als pagina, laat die regel er dan naartoe wijzen.
+Zo ontstaat een net van ingangen dat zichzelf vindbaar maakt, zonder dat de zoeker rommeliger
+wordt.
+
+**De goedkope achterdeur als vindbaarheid tegenvalt:** een overzichtje op `/gemeente/` met één
+link in de voet. De voet is geen gereedschap, dus daar kost een link niets aan focus. Pas doen
+vanaf een stuk of vijf steden; met twee is zo'n pagina zelf thin content.
+
+**Waaraan je zou merken dat deze beslissing fout is:** als Search Console toont dat mensen op een
+stadspagina landen en weggaan zonder door te klikken naar de zoeker. Dan doet de pagina haar werk
+als ingang niet, en gaat het gesprek over de tekst bovenaan die pagina, niet over integratie.
 
 ## Bewust geschrapt
 
