@@ -51,12 +51,15 @@
     <link rel="stylesheet" href="../../src/index.css" />
   </head>
   <body>
-    <div class="mx-auto max-w-3xl px-4 py-10">
-      <p class="text-sm">
-        <a href="../../" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
-          &larr; Terug naar de zoeker
-        </a>
-      </p>
+    <!-- De kopbalk komt hier uit scripts/paginakop.ts, via de plugin gedeeldeKop in
+         vite.config.ts. Niet met de hand invullen. -->
+    <!--kop-->
+    <div class="mx-auto max-w-3xl px-4 py-8">
+      <nav class="text-sm text-zacht" aria-label="Kruimelpad">
+        <a href="/" class="text-accent underline underline-offset-2">Zoek je school</a>
+        <span aria-hidden="true"> &rsaquo; </span>
+        <span>Aanmelden en inschrijven</span>
+      </nav>
 
       <!-- De schakelaar tussen de twee uitlegpagina's. Bewust twee links en geen JavaScript:
            elke helft houdt zo een eigen adres, titel en socialkaart, en ze werkt zonder script.
@@ -225,71 +228,77 @@
       <!-- Beknopte footer, identiek aan die van de termenpagina. De broncodelink is de "way to
            get the source" die artikel 13 van de AGPL vraagt en het contactadres is de voorwaarde
            van Transitous; die twee horen op elke pagina van de site. Zie CLAUDE.md. -->
-      <footer class="mt-10 border-t border-rand pt-4 text-xs text-zacht">
-        <p>
-          Geen officiële bron: de fiche van Onderwijs en Vorming gaat altijd voor. Gegevens over
-          scholen en studieaanbod komen van
-          <a
-            href="https://www.vlaanderen.be/onderwijs-en-vorming"
-            target="_blank"
-            rel="noreferrer"
-            class="underline"
-            >Onderwijs en Vorming</a
-          >.
-        </p>
-        <p class="mt-1">
-          Vragen of een fout gezien?
-          <a href="mailto:info@zoekjeschool.be" class="underline">info@zoekjeschool.be</a> ·
-          <a
-            href="https://github.com/stefanbckn/Zoek-je-school"
-            target="_blank"
-            rel="noreferrer"
-            class="underline"
-            >Broncode</a
-          >
-          onder AGPL-3.0 · © 2026 Stefan Bocken
-        </p>
-        <!-- Handgeschreven kopie van SteunKnop.tsx: een statische pagina kan die component niet
-             gebruiken. Die docstring is de waarheid; wijzigt daar de tekst, de link of het
-             kopje, pas het hier dan mee aan. -->
-        <div class="mt-4 flex flex-wrap items-center gap-3">
-          <a
-            href="https://ko-fi.com/n7b826hces"
-            target="_blank"
-            rel="noreferrer"
-            class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-inkt hover:opacity-90"
-          >
-            <img src="/kofi-symbool.svg" alt="" aria-hidden="true" class="h-4 w-auto" />
-            Steun deze site op Ko-fi
-          </a>
-          <!-- Handgeschreven kopie van de Simple Analytics-badge uit Footer.tsx: het commentaar
-               daar is de waarheid. De twee varianten wisselen via .sa-badge-licht en
-               .sa-badge-donker in src/index.css. -->
-          <a
-            href="https://www.simpleanalytics.com/?utm_source=zoekjeschool.be&amp;utm_content=badge"
-            target="_blank"
-            rel="noopener"
-            referrerpolicy="origin"
-            class="rounded-md"
-          >
-            <img
-              src="/simple-analytics-badge.svg"
-              alt="Bezoekers geteld met Simple Analytics, privacyvriendelijk"
-              width="151"
-              height="36"
-              class="sa-badge-licht h-9 w-auto"
-            />
-            <img
-              src="/simple-analytics-badge-donker.svg"
-              alt="Bezoekers geteld met Simple Analytics, privacyvriendelijk"
-              width="151"
-              height="36"
-              loading="lazy"
-              class="sa-badge-donker h-9 w-auto"
-            />
-          </a>
-        </div>
-      </footer>
     </div>
+
+    <!-- Beknopte footer, buiten de gecentreerde kolom zodat de streep over de volle breedte
+         loopt, net als de kopbalk. Klassen overgenomen uit src/components/Footer.tsx.
+         De broncodelink is de "way to get the source" die artikel 13 van de AGPL vraagt en het
+         contactadres is de voorwaarde van Transitous; die twee horen op elke pagina van de
+         site, niet enkel op de zoeker. Zie CLAUDE.md. -->
+    <footer class="border-t border-rand px-4 py-3 text-xs text-zacht">
+      <p>
+        Geen officiële bron: de fiche van Onderwijs en Vorming gaat altijd voor. Gegevens over
+        scholen en studieaanbod komen van
+        <a
+          href="https://www.vlaanderen.be/onderwijs-en-vorming"
+          target="_blank"
+          rel="noreferrer"
+          class="underline"
+          >Onderwijs en Vorming</a
+        >.
+      </p>
+      <p class="mt-1">
+        Vragen of een fout gezien?
+        <a href="mailto:info@zoekjeschool.be" class="underline">info@zoekjeschool.be</a> ·
+        <a
+          href="https://github.com/stefanbckn/Zoek-je-school"
+          target="_blank"
+          rel="noreferrer"
+          class="underline"
+          >Broncode</a
+        >
+        onder AGPL-3.0 · © 2026 Stefan Bocken
+      </p>
+      <!-- Handgeschreven kopie van SteunKnop.tsx: een statische pagina kan die component niet
+           gebruiken. Die docstring is de waarheid; wijzigt daar de tekst, de link of het
+           kopje, pas het hier dan mee aan. -->
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <a
+          href="https://ko-fi.com/n7b826hces"
+          target="_blank"
+          rel="noreferrer"
+          class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-inkt hover:opacity-90"
+        >
+          <img src="/kofi-symbool.svg" alt="" aria-hidden="true" class="h-4 w-auto" />
+          Steun deze site op Ko-fi
+        </a>
+        <!-- Handgeschreven kopie van de Simple Analytics-badge uit Footer.tsx: het commentaar
+             daar is de waarheid. De twee varianten wisselen via .sa-badge-licht en
+             .sa-badge-donker in src/index.css. -->
+        <a
+          href="https://www.simpleanalytics.com/?utm_source=zoekjeschool.be&amp;utm_content=badge"
+          target="_blank"
+          rel="noopener"
+          referrerpolicy="origin"
+          class="rounded-md"
+        >
+          <img
+            src="/simple-analytics-badge.svg"
+            alt="Bezoekers geteld met Simple Analytics, privacyvriendelijk"
+            width="151"
+            height="36"
+            class="sa-badge-licht h-9 w-auto"
+          />
+          <img
+            src="/simple-analytics-badge-donker.svg"
+            alt="Bezoekers geteld met Simple Analytics, privacyvriendelijk"
+            width="151"
+            height="36"
+            loading="lazy"
+            class="sa-badge-donker h-9 w-auto"
+          />
+        </a>
+      </div>
+    </footer>
   </body>
 </html>

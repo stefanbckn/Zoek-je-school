@@ -8,6 +8,40 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.8.0 — 21 september 2026
+
+Wie via een zoekmachine op een stadspagina of op de uitleg binnenkwam, zag een kale tekst zonder
+kop. Geen logo, geen menu, niets dat zei waar hij terechtgekomen was. Die vier pagina's dragen nu
+dezelfde balk als de zoeker.
+
+**Nieuw**
+
+- **Dezelfde kopbalk op elke pagina.** Het logo, de vier ingangen en de themaknop staan nu ook
+  op "Het secundair onderwijs uitgelegd", "Aanmelden en inschrijven" en de twee stadspagina's.
+  Op een telefoon zit hij achter hetzelfde uitklapmenu als op de zoeker.
+- **Licht, systeem of donker werkt overal.** Je keuze geldt op de hele site en blijft bewaard,
+  ook als je van een stadspagina naar de zoeker gaat.
+- **"Alle richtingen", "Hoe werkt deze site?" en "Over deze site"** openen vanaf deze pagina's
+  de zoeker met dat venster meteen open.
+
+**Gewijzigd**
+
+- **"← Terug naar de zoeker" is een kruimelpad geworden**, bijvoorbeeld "Zoek je school ›
+  Middelbare scholen in Mechelen". Dat zegt ook waar je zit, en het logo in de kop is nu de weg
+  terug.
+- **De voet loopt over de volle breedte**, net als de kopbalk en net als op de zoeker. De streep
+  erboven stopte eerder bij de rand van de tekstkolom.
+- **Het logo staat in lijn met de rest van de pagina.** Op een breed scherm begon het twaalf
+  pixels verder naar rechts dan de zoekbalk en de voet eronder. Dat gold ook op de zoeker zelf,
+  dus die schuift mee. De kopbalk houdt wel zijn hoogte.
+
+**Goed om te weten**
+
+- De pagina's blijven leesbaar zonder JavaScript, ook het menu op een telefoon. Alleen de
+  themaknop heeft script nodig; zonder script volgt de pagina je eerdere keuze of je toestel.
+- De voet van deze pagina's blijft de korte versie, met de disclaimer, de herkomst, het
+  contactadres en de broncodelink.
+
 ## 2.7.0 — 21 september 2026
 
 Ouders zoeken niet op "middelbare school Vlaanderen" maar op hun eigen stad. Daar had de site

@@ -5,6 +5,7 @@ import { createRequire } from 'node:module'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { haalFietsroute, parsePunt } from './shared/ors.js'
+import { paginakop, type KopIngang } from './scripts/paginakop.ts'
 import { STEDEN, UITVOERMAP } from './scripts/steden.ts'
 
 // package.json is de enige plek waar de versie staat; de footer toont ze via __APP_VERSION__.
@@ -80,6 +81,41 @@ function gedeeldeScripts(): Plugin {
   }
 }
 
+/**
+ * Zet de kopbalk in de statische pagina's, op de plaats van `<!--kop-->`.
+ *
+ * Eén bron voor alle vier: de twee uitlegpagina's en de stadspagina's. Zonder dit zou de balk
+ * vier keer met de hand gekopieerd staan, en dan lopen ze uit elkaar — dat is met de footer al
+ * bijna gebeurd (zie het commentaar in uitleg/index.html).
+ *
+ * `index.html` draagt de markering niet: daar tekent React de echte balk, met knoppen die de
+ * panelen ter plaatse openen in plaats van links naar `?matrix=1` en co.
+ *
+ * Een string-transform en geen tag-injectie: de balk is een stuk opmaak met een SVG erin, en
+ * dat in de tagbeschrijvingen van Vite gieten levert onleesbare code op.
+ */
+function gedeeldeKop(): Plugin {
+  const MARKERING = '<!--kop-->'
+  return {
+    name: 'gedeelde-kop',
+    transformIndexHtml: {
+      order: 'pre',
+      handler: (html, ctx) => {
+        if (!html.includes(MARKERING)) return html
+        // De uitlegpagina markeert haar eigen ingang in de balk.
+        const huidige: KopIngang = ctx.path.startsWith('/uitleg/') ? 'uitleg' : null
+        return {
+          html: html.replace(MARKERING, paginakop(huidige)),
+          // Enkel op de pagina's mét de balk: dit script zet de themaknop in de juiste stand
+          // en bewaart een klik. Mag defer zijn — thema.js in de head heeft het thema dan al
+          // toegepast, dus er flitst niets op; dit gaat alleen over de knop zelf.
+          tags: [{ tag: 'script', attrs: { defer: true, src: '/thema-knop.js' }, injectTo: 'body' as const }],
+        }
+      },
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   // Laadt .env-bestanden zonder prefix-filter, zodat we ORS_API_KEY server-side kunnen lezen.
@@ -87,7 +123,13 @@ export default defineConfig(({ mode }) => {
   // dev-middleware hierboven gebruikt, die in Node draait.
   const env = loadEnv(mode, process.cwd(), '')
   return {
-    plugins: [react(), tailwindcss(), fietsrouteDevProxy(env.ORS_API_KEY), gedeeldeScripts()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      fietsrouteDevProxy(env.ORS_API_KEY),
+      gedeeldeScripts(),
+      gedeeldeKop(),
+    ],
     define: {
       __APP_VERSION__: JSON.stringify(version),
     },

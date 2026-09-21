@@ -10,6 +10,7 @@
  * vite.config.ts geïnjecteerd, net als bij de andere pagina's. Niet hier bijzetten.
  */
 import { huisnummerLabel } from '../src/lib/adres.ts'
+import { broodkruimel } from './paginakop.ts'
 import type { Campus, DatasetMeta } from '../src/types.ts'
 import type { Profiel } from './genereer-gemeentepaginas.ts'
 import type { Stad } from './steden.ts'
@@ -61,12 +62,9 @@ ${json({
     <link rel="stylesheet" href="../../src/index.css" />
   </head>
   <body>
-    <div class="mx-auto max-w-3xl px-4 py-10">
-      <p class="text-sm">
-        <a href="../../" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
-          &larr; Terug naar de zoeker
-        </a>
-      </p>
+    <!--kop-->
+    <div class="mx-auto max-w-3xl px-4 py-8">
+${broodkruimel(esc(titel))}
 
       <article class="mt-4">
         <h1 class="text-2xl font-semibold">${esc(titel)}</h1>
@@ -122,27 +120,30 @@ ${json({
         </a>
       </p>
 
-      <!-- Beknopte footer, zelfde inhoud als uitleg/index.html. De broncodelink is de "way to
-           get the source" die artikel 13 van de AGPL vraagt en het contactadres is de
-           voorwaarde van Transitous; die twee horen op elke pagina. Zie CLAUDE.md. -->
-      <footer class="mt-10 border-t border-rand pt-4 text-xs text-zacht">
-        <p>
-          Geen officiële bron: de fiche van Onderwijs en Vorming gaat altijd voor. Gegevens over
-          scholen en studieaanbod komen van
-          <a href="https://www.vlaanderen.be/onderwijs-en-vorming" target="_blank" rel="noreferrer" class="underline"
-            >Onderwijs en Vorming</a
-          >.
-        </p>
-        <p class="mt-1">
-          Vragen of een fout gezien?
-          <a href="mailto:info@zoekjeschool.be" class="underline">info@zoekjeschool.be</a> ·
-          <a href="https://github.com/stefanbckn/Zoek-je-school" target="_blank" rel="noreferrer" class="underline"
-            >Broncode</a
-          >
-          onder AGPL-3.0 · © 2026 Stefan Bocken
-        </p>
-      </footer>
     </div>
+
+    <!-- Beknopte footer, zelfde inhoud en zelfde klassen als uitleg/index.html en
+         src/components/Footer.tsx. Buiten de gecentreerde kolom, zodat de streep over de volle
+         breedte loopt net als de kopbalk. De broncodelink is de "way to get the source" die
+         artikel 13 van de AGPL vraagt en het contactadres is de voorwaarde van Transitous;
+         die twee horen op elke pagina. Zie CLAUDE.md. -->
+    <footer class="border-t border-rand px-4 py-3 text-xs text-zacht">
+      <p>
+        Geen officiële bron: de fiche van Onderwijs en Vorming gaat altijd voor. Gegevens over
+        scholen en studieaanbod komen van
+        <a href="https://www.vlaanderen.be/onderwijs-en-vorming" target="_blank" rel="noreferrer" class="underline"
+          >Onderwijs en Vorming</a
+        >.
+      </p>
+      <p class="mt-1">
+        Vragen of een fout gezien?
+        <a href="mailto:info@zoekjeschool.be" class="underline">info@zoekjeschool.be</a> ·
+        <a href="https://github.com/stefanbckn/Zoek-je-school" target="_blank" rel="noreferrer" class="underline"
+          >Broncode</a
+        >
+        onder AGPL-3.0 · © 2026 Stefan Bocken
+      </p>
+    </footer>
   </body>
 </html>
 `
