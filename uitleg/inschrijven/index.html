@@ -51,12 +51,15 @@
     <link rel="stylesheet" href="../../src/index.css" />
   </head>
   <body>
-    <div class="mx-auto max-w-3xl px-4 py-10">
-      <p class="text-sm">
-        <a href="../../" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
-          &larr; Terug naar de zoeker
-        </a>
-      </p>
+    <!-- De kopbalk komt hier uit scripts/paginakop.ts, via de plugin gedeeldeKop in
+         vite.config.ts. Niet met de hand invullen. -->
+    <!--kop-->
+    <div class="mx-auto max-w-3xl px-4 py-8">
+      <nav class="text-sm text-zacht" aria-label="Kruimelpad">
+        <a href="/" class="text-accent underline underline-offset-2">Zoek je school</a>
+        <span aria-hidden="true"> &rsaquo; </span>
+        <span>Aanmelden en inschrijven</span>
+      </nav>
 
       <!-- De schakelaar tussen de twee uitlegpagina's. Bewust twee links en geen JavaScript:
            elke helft houdt zo een eigen adres, titel en socialkaart, en ze werkt zonder script.

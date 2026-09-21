@@ -10,6 +10,7 @@
  * vite.config.ts geïnjecteerd, net als bij de andere pagina's. Niet hier bijzetten.
  */
 import { huisnummerLabel } from '../src/lib/adres.ts'
+import { broodkruimel } from './paginakop.ts'
 import type { Campus, DatasetMeta } from '../src/types.ts'
 import type { Profiel } from './genereer-gemeentepaginas.ts'
 import type { Stad } from './steden.ts'
@@ -61,12 +62,9 @@ ${json({
     <link rel="stylesheet" href="../../src/index.css" />
   </head>
   <body>
-    <div class="mx-auto max-w-3xl px-4 py-10">
-      <p class="text-sm">
-        <a href="../../" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
-          &larr; Terug naar de zoeker
-        </a>
-      </p>
+    <!--kop-->
+    <div class="mx-auto max-w-3xl px-4 py-8">
+${broodkruimel(esc(titel))}
 
       <article class="mt-4">
         <h1 class="text-2xl font-semibold">${esc(titel)}</h1>
