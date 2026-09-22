@@ -298,10 +298,14 @@ ${p.groepen.map((gr) => groep(p, gr)).join('\n')}`
 function groep(p: Profiel, gr: Groep): string {
   return `
         <section id="${gr.anker}" class="mt-8 scroll-mt-2" aria-labelledby="${gr.anker}-kop">
-          <div class="sticky top-0 z-10 -mx-4 flex flex-wrap items-baseline justify-between gap-x-4 border-y border-rand bg-kaart px-4 py-2">
-            <h3 id="${gr.anker}-kop" class="text-lg font-semibold">
-              ${esc(gr.naam)}
-              <span class="text-sm font-normal text-zacht">· ${gr.adressen.length} ${woord(gr.adressen.length, 'adres', 'adressen')}</span>
+          <!-- De naam als pil in het groen van de kopbalk: tussen de straatnamen moet hij ook
+               bij snel scrollen opvallen. Keuze van de gebruiker, 22/09/2026.
+               Bewust bg-accent en niet bg-kop: in het lichte thema zijn die gelijk, maar in het
+               donkere is de kopbalk bijna zwart en viel de pil weg tegen de achtergrond. -->
+          <div class="sticky top-0 z-10 -mx-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-rand bg-grond px-4 py-2">
+            <h3 id="${gr.anker}-kop" class="flex flex-wrap items-center gap-x-2">
+              <span class="rounded-full bg-accent px-3 py-1 text-base font-semibold text-accent-inkt">${esc(gr.naam)}</span>
+              <span class="text-sm font-normal text-zacht">${gr.adressen.length} ${woord(gr.adressen.length, 'adres', 'adressen')}</span>
             </h3>
             <a href="${zoeker(gr.gemeenteNamen)}" class="text-sm text-accent underline underline-offset-2"
               >open ${esc(gr.naam)} in de zoeker</a
