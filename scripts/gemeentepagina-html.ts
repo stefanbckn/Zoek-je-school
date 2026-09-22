@@ -12,16 +12,17 @@
 import { huisnummerLabel } from '../src/lib/adres.ts'
 import { broodkruimel } from './paginakop.ts'
 import type { Campus, DatasetMeta } from '../src/types.ts'
-import type { Profiel } from './genereer-gemeentepaginas.ts'
+import type { Groep, Profiel } from './genereer-gemeentepaginas.ts'
 import type { Stad } from './steden.ts'
 
 const SITE = 'https://zoekjeschool.be'
 
 export function pagina(stad: Stad, p: Profiel, meta: DatasetMeta): string {
   const url = `${SITE}/gemeente/${stad.slug}/`
-  const titel = `Middelbare scholen in ${stad.naam}`
+  const titel = stad.titel ?? `Middelbare scholen in ${stad.naam}`
+  const soort = stad.gewest ? 'Nederlandstalige middelbare scholen' : 'middelbare scholen'
   const omschrijving =
-    `${p.aantalScholen} middelbare scholen op ${p.adressen.length} adressen in ${stad.naam}. ` +
+    `${p.aantalScholen} ${soort} op ${p.adressen.length} adressen in ${stad.naam}. ` +
     'Bekijk hun studierichtingen, hun net en wat er in de buurt ligt.'
 
   return `<!doctype html>
@@ -69,15 +70,17 @@ ${broodkruimel(esc(titel))}
       <article class="mt-4">
         <h1 class="text-2xl font-semibold">${esc(titel)}</h1>
         <p class="mt-3">
-          In ${esc(stad.naam)} ${p.aantalScholen === 1 ? 'is er' : 'zijn er'}
-          <strong>${p.aantalScholen} ${woord(p.aantalScholen, 'school', 'scholen')}</strong>
+          In ${esc(stad.gewest ?? stad.naam)} ${p.aantalScholen === 1 ? 'is er' : 'zijn er'}
+          <strong>${p.aantalScholen} ${stad.gewest ? 'Nederlandstalige ' : ''}${woord(p.aantalScholen, 'school', 'scholen')}</strong>
           voor voltijds gewoon secundair onderwijs, verdeeld over
           <strong>${p.adressen.length} ${woord(p.adressen.length, 'adres', 'adressen')}</strong>.
           Samen richten ze ${p.aantalRichtingen} verschillende studierichtingen in.
         </p>
+        ${taal(stad)}
         ${deelgemeenten(stad, p)}
+        ${inhoud(stad, p)}
         <p class="mt-3">
-          Deze pagina stopt aan de gemeentegrens, een schoolkeuze niet. In de zoeker vertrek je
+          Deze pagina stopt aan de ${stad.gewest ? 'gewestgrens' : 'gemeentegrens'}, een schoolkeuze niet. In de zoeker vertrek je
           vanaf je eigen adres en bepaal je zelf hoe ver je wil kijken, ook over de grens van
           ${esc(stad.naam)} heen. Je ziet er per school hoe lang de rit duurt met de fiets en
           met het openbaar vervoer.
@@ -154,12 +157,59 @@ ${broodkruimel(esc(titel))}
  * die namen in de adreslijst ziet staan zonder uitleg, denkt dat de pagina te ver kijkt.
  */
 function deelgemeenten(stad: Stad, p: Profiel): string {
+  // Met groepen noemt de inhoudsopgave ze al, met een link erbij.
+  if (p.groepen.length > 0) return ''
   const andere = p.gemeenteNamen.filter((n) => n !== stad.naam)
   if (andere.length === 0) return ''
   return `
         <p class="mt-3">
           De hele gemeente telt mee, dus ook ${lijst(andere)}.
         </p>`
+}
+
+/**
+ * De dataset is het onderwijs van de Vlaamse Gemeenschap. In Vlaanderen is dat zo goed als
+ * alles, in Brussel maar een deel: daar moet de pagina het zeggen, anders lijkt de lijst
+ * volledig.
+ */
+function taal(stad: Stad): string {
+  if (!stad.gewest) return ''
+  return `
+        <p class="mt-3">
+          Deze site toont het onderwijs van de Vlaamse Gemeenschap, dus enkel de
+          Nederlandstalige scholen. De Franstalige scholen in ${esc(stad.naam)} staan er niet op.
+        </p>`
+}
+
+/** De inhoudsopgave boven de pagina: per district of gemeente een ankerlink naar de adressen. */
+function inhoud(stad: Stad, p: Profiel): string {
+  const g = stad.groepen
+  if (!g || p.groepen.length === 0) return ''
+  const zonder =
+    p.delenZonderSchool.length === 0
+      ? ''
+      : `
+        <p class="mt-3">
+          In ${lijst(p.delenZonderSchool)} staat geen${stad.gewest ? ' Nederlandstalige' : ''}
+          middelbare school.
+        </p>`
+  return `
+        <p class="mt-3">
+          De scholen liggen in ${p.groepen.length} ${woord(p.groepen.length, g.woord, g.meervoud)}.
+          Kies er een om meteen naar de adressen daar te gaan:
+        </p>
+        <ul class="mt-2 flex flex-wrap gap-x-4">
+${p.groepen
+  .map(
+    (gr) => `          <li>
+            <a href="#${gr.anker}" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2"
+              >${esc(gr.naam)}</a
+            >
+            <span class="text-zacht">· ${gr.adressen.length}</span>
+          </li>`,
+  )
+  .join('\n')}
+        </ul>${zonder}`
 }
 
 function domeinen(stad: Stad, p: Profiel): string {
@@ -197,7 +247,7 @@ function ontbrekend(stad: Stad, p: Profiel): string {
         <p class="mt-2">
           ${esc(stad.naam)} heeft geen aanbod in
           ${lijst(p.ontbrekend.map((o) => o.label))}. Waar dat wel kan, dichtst bij het midden van
-          de stad gerekend in vogelvlucht:
+          ${stad.gewest ? 'het gewest' : 'de stad'} gerekend in vogelvlucht:
         </p>
         <ul class="mt-3 space-y-1">
 ${p.ontbrekend
@@ -218,15 +268,43 @@ ${p.ontbrekend
 }
 
 function adressen(stad: Stad, p: Profiel): string {
-  return `
-        <h2 class="mt-8 text-lg font-semibold">De scholen in ${esc(stad.naam)}, per adres</h2>
+  const binnen = stad.gewest ? 'in het gewest' : 'in de stad'
+  const g = stad.groepen
+  const uitleg = `
         <p class="mt-2 text-sm text-zacht">
-          Op alfabetische volgorde van de straatnaam. Meerdere scholen op één adres komt vaak
-          voor: ze delen dan een campus. Een school met meer dan één adres in de stad staat er
-          ook meer dan één keer.
+          ${g ? `Per ${esc(g.woord)}, en daarbinnen op` : 'Op'} alfabetische volgorde van de
+          straatnaam. Meerdere scholen op één adres komt vaak voor: ze delen dan een campus. Een
+          school met meer dan één adres ${binnen} staat er ook meer dan één keer.
+        </p>`
+  if (!g || p.groepen.length === 0) {
+    return `
+        <h2 class="mt-8 text-lg font-semibold">De scholen in ${esc(stad.naam)}, per adres</h2>${uitleg}
+${adreslijst(p, p.adressen)}`
+  }
+  return `
+        <h2 class="mt-8 text-lg font-semibold">De scholen in ${esc(stad.naam)}, per ${esc(g.woord)}</h2>${uitleg}
+${p.groepen.map((gr) => groep(p, gr)).join('\n')}`
+}
+
+/**
+ * Eén district of gemeente. De link naar de zoeker filtert enkel op de plaatsnamen van die
+ * groep, niet op de hele stad: wie in Deurne woont, wil Deurne zien.
+ */
+function groep(p: Profiel, gr: Groep): string {
+  return `
+        <h3 id="${gr.anker}" class="mt-6 scroll-mt-4 font-semibold">${esc(gr.naam)}</h3>
+        <p class="text-sm">
+          <span class="text-zacht">${gr.adressen.length} ${woord(gr.adressen.length, 'adres', 'adressen')} ·</span>
+          <a href="${zoeker(gr.gemeenteNamen)}" class="text-accent underline underline-offset-2"
+            >open ${esc(gr.naam)} in de zoeker</a
+          >
         </p>
-        <ul class="mt-3 space-y-4">
-${p.adressen
+${adreslijst(p, gr.adressen)}`
+}
+
+function adreslijst(p: Profiel, lijst: Campus[]): string {
+  return `        <ul class="mt-3 space-y-4">
+${lijst
   .map(
     (c) => `          <li>
             <p class="font-medium">${esc(adresRegel(c))}</p>
@@ -345,7 +423,7 @@ function buurt(stad: Stad, p: Profiel): string {
         <h2 class="mt-8 text-lg font-semibold">In de buurt van ${esc(stad.naam)}</h2>
         <p class="mt-2 text-sm text-zacht">
           Gemeenten met middelbare scholen binnen tien kilometer, in vogelvlucht gerekend vanaf
-          het midden van de stad. Een gemeentegrens zegt weinig over hoe ver fietsen het is.
+          het midden van ${stad.gewest ? 'het gewest' : 'de stad'}. Een gemeentegrens zegt weinig over hoe ver fietsen het is.
         </p>
         <ul class="mt-3 space-y-1">
 ${p.buurgemeenten
