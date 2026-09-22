@@ -8,6 +8,27 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.9.0 — 22 september 2026
+
+Wie "middelbare scholen Antwerpen" of "Nederlandstalige middelbare school Brussel" zoekt, vindt
+nu een eigen pagina, net als voor Mechelen en Brugge.
+
+**Nieuw**
+
+- **Een pagina voor Antwerpen**, met de scholen per district. Bovenaan staan de districten met
+  hun aantal adressen; een klik brengt je naar dat stuk van de lijst. Elk district opent ook
+  apart in de zoeker.
+- **Een pagina voor het Brussels Hoofdstedelijk Gewest**, met de scholen per gemeente. De pagina
+  zegt erbij dat ze enkel de Nederlandstalige scholen toont, en in welke gemeenten er geen
+  Nederlandstalige middelbare school staat.
+
+**Nog niet**
+
+- Het district Berendrecht-Zandvliet-Lillo staat er niet bij: daar staat geen middelbare
+  school. Anders dan bij Brussel zegt de pagina dat nog niet.
+
+---
+
 ## 2.8.0 — 21 september 2026
 
 Wie via een zoekmachine op een stadspagina of op de uitleg binnenkwam, zag een kale tekst zonder

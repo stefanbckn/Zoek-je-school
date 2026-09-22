@@ -22,7 +22,7 @@ import { DOMEIN_RIJEN, domeinLabel } from '../src/lib/domein.ts'
 import { haversineKm } from '../src/lib/haversine.ts'
 import type { Campus, DatasetMeta } from '../src/types.ts'
 import { pagina } from './gemeentepagina-html.ts'
-import { STEDEN, UITVOERMAP, stadPad, type Stad } from './steden.ts'
+import { STEDEN, UITVOERMAP, hoortBij, stadPad, type Stad } from './steden.ts'
 
 const WORTEL = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const SITE = 'https://zoekjeschool.be'
@@ -47,6 +47,18 @@ export interface Profiel {
   midden: { lat: number; lon: number }
   /** De plaatsnamen die samen deze stad vormen, voor de dieplinks naar de zoeker. */
   gemeenteNamen: string[]
+  /** Leeg zonder `stad.groepen`. Op alfabet van de naam, de adressen erin op straatnaam. */
+  groepen: Groep[]
+  /** Delen uit `stad.groepen.alle` waar geen enkel adres met aanbod staat. */
+  delenZonderSchool: string[]
+}
+
+export interface Groep {
+  naam: string
+  /** Voor de ankerlink in de inhoudsopgave. */
+  anker: string
+  adressen: Campus[]
+  gemeenteNamen: string[]
 }
 
 function main(): void {
@@ -65,6 +77,19 @@ function main(): void {
 
   for (const stad of STEDEN) {
     const profiel = maakProfiel(stad, zichtbaar)
+    const alle = stad.groepen?.alle
+    if (alle) {
+      const metSchool = new Set(profiel.groepen.map((g) => g.naam))
+      const onbekend = [...metSchool].filter((n) => !alle.includes(n))
+      if (onbekend.length > 0) {
+        // Anders zegt de pagina dat er in een gemeente geen school staat terwijl die er onder
+        // een andere schrijfwijze wel is.
+        throw new Error(
+          `${stad.naam}: ${onbekend.join(', ')} staat niet in groepen.alle in scripts/steden.ts.`,
+        )
+      }
+      profiel.delenZonderSchool = alle.filter((n) => !metSchool.has(n))
+    }
     if (profiel.adressen.length === 0) {
       throw new Error(
         `Geen adressen gevonden voor ${stad.naam} (niscode ${stad.niscode}). ` +
@@ -85,7 +110,7 @@ function main(): void {
 }
 
 function maakProfiel(stad: Stad, alle: Campus[]): Profiel {
-  const hoortErbij = (c: Campus) => c.niscode === stad.niscode
+  const hoortErbij = (c: Campus) => hoortBij(stad, c.niscode)
   const adressen = alle
     .filter(hoortErbij)
     .slice()
@@ -167,10 +192,52 @@ function maakProfiel(stad: Stad, alle: Campus[]): Profiel {
     duaalRichtingen: duaal.size,
     buurgemeenten: buurgemeenten(stad, midden, alle),
     midden,
-    gemeenteNamen: [...new Set(adressen.map((c) => c.gemeente))].sort((a, b) =>
-      a.localeCompare(b, 'nl'),
-    ),
+    gemeenteNamen: plaatsnamen(adressen),
+    groepen: groepen(stad, adressen),
+    delenZonderSchool: [],
   }
+}
+
+function plaatsnamen(adressen: Campus[]): string[] {
+  return [...new Set(adressen.map((c) => c.gemeente))].sort((a, b) => a.localeCompare(b, 'nl'))
+}
+
+function groepen(stad: Stad, adressen: Campus[]): Groep[] {
+  const g = stad.groepen
+  if (!g) return []
+  const per = new Map<string, Campus[]>()
+  for (const c of adressen) {
+    const sleutel = g.per === 'district' ? c.gemeente : c.niscode
+    per.set(sleutel, [...(per.get(sleutel) ?? []), c])
+  }
+  return [...per.entries()]
+    .map(([sleutel, lijst]) => {
+      const namen = plaatsnamen(lijst)
+      let naam = g.per === 'district' ? sleutel : g.namen?.[sleutel]
+      if (naam === undefined) {
+        // Een Brusselse gemeente met één plaatsnaam draagt gewoon die naam. Met meer dan één
+        // (Brussel en Laken) valt er niet te raden welke de gemeente is: dan een fout.
+        if (namen.length !== 1) {
+          throw new Error(
+            `${stad.naam}: niscode ${sleutel} heeft meerdere plaatsnamen (${namen.join(', ')}). ` +
+              'Geef de groep een naam in groepen.namen in scripts/steden.ts.',
+          )
+        }
+        naam = namen[0]
+      }
+      return { naam, anker: anker(naam), adressen: lijst, gemeenteNamen: namen }
+    })
+    .sort((a, b) => a.naam.localeCompare(b.naam, 'nl'))
+}
+
+/** "Sint-Jans-Molenbeek" wordt "sint-jans-molenbeek": leesbaar in de adresbalk. */
+function anker(naam: string): string {
+  return naam
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
 }
 
 /** Het gemiddelde van de coördinaten: goed genoeg om afstanden tot een stad mee te schatten. */
@@ -206,7 +273,7 @@ function buurgemeenten(
   for (const c of alle) {
     // Op niscode uitsluiten, niet op naam: anders staat Sint-Andries als buurgemeente van
     // Brugge terwijl het Brugge zelf is.
-    if (c.niscode === stad.niscode) continue
+    if (hoortBij(stad, c.niscode)) continue
     if (c.lat === null || c.lon === null) continue
     const km = haversineKm(midden.lat, midden.lon, c.lat, c.lon)
     if (km > BUURT_KM) continue
