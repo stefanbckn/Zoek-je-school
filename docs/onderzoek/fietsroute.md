@@ -28,7 +28,7 @@ want het is dan same-origin.
 - Gratis tier: **2000 calls/dag, 40/minuut**, geverifieerd op de prijzenpagina van het
   HeiGIT-account.
 - Er bestaat een gratis **"Collaborative"-tier (10.000/dag)** voor onderwijs, overheid en
-  non-profit. De moeite waard om voor dit project aan te vragen via het dashboard.
+  non-profit. **Dit project zit op dat plan** (bevestigd door de gebruiker op 22/09/2026).
 
 ## Attributie is contractueel
 

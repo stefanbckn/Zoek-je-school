@@ -44,7 +44,8 @@ Voor de call naar ORS zelf:
 - Auth: header `Authorization: <key>`, de ruwe key, **geen `Bearer`-prefix**.
 - Body: `{"coordinates": [[lon,lat],[lon,lat]]}`. **lon eerst**, omgekeerd van de rest van de app.
 - Respons: `routes[0].summary.distance` (meter) en `.duration` (seconden).
-- Quota gratis tier: 2000 calls/dag, 40/minuut.
+- Quota: we zitten op het **Collaborative-plan, 10.000 calls/dag** (het gewone gratis plan
+  geeft 2000/dag, 40/minuut). De per-minuutlimiet van Collaborative is niet apart nagekeken.
 - Geen key ingesteld: `berekenFietsroute` geeft stil `null` terug. Geen fetch-poging, geen crash.
 
 `orsKaartUrl()` maakt een dieplink naar `maps.openrouteservice.org`. Dat is géén API-gebruik:
