@@ -77,7 +77,7 @@ mét die beperking erbij.
 | 4 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Staat hier enkel omdat de gebruiker het als wens genoemd heeft; zonder bron valt er niets te bouwen |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
 | 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
-| 7 | Gemeentepagina's voor zoekmachines | Een eigen URL per centrumstad met de scholen, netten en studiedomeinen van die stad | **Proef loopt.** Mechelen en Brugge live sinds 2.7.0, eigen kopbalk sinds 2.8.0. De elf andere centrumsteden volgen pas als die twee opgepikt worden; Antwerpen vraagt nog een beslissing. **Geen link vanaf de zoeker**, zie hieronder |
+| 7 | Gemeentepagina's voor zoekmachines | Een eigen URL per centrumstad met de scholen, netten en studiedomeinen van die stad | **Proef loopt.** Mechelen en Brugge live sinds 2.7.0, eigen kopbalk sinds 2.8.0, Antwerpen en het Brussels gewest sinds 2.9.0. De andere centrumsteden volgen pas als deze opgepikt worden. **Geen link vanaf de zoeker**, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -317,15 +317,27 @@ de pagina's ze tellen:
 | --- | --- | --- | --- |
 | Mechelen | 16 | 19 | 151 |
 | Brugge | 29 | 31 | 204 |
+| Antwerpen | 106 | 77 | 254 |
+| Brussels gewest | 49 | 45 | 175 |
 
 ⚠️ Een eerdere telling in dit bestand ging uit van de plaatsnaam en telde ook adressen zonder
 aanbod mee. Die cijfers (Brugge 21 adressen) waren dus te laag én verkeerd afgebakend. Tel
 nieuwe steden met hetzelfde script, niet met de hand.
 
-**Nog te beslissen.** Brussel valt buiten de centrumsteden en is in de data over negentien
-gemeenten verspreid, met Anderlecht op 12 adressen en de rest op 1 tot 8. Pagina's per Brusselse
-gemeente worden te dun; één pagina voor het gewest is de kandidaat, maar dat past niet in de
-niscode-aanpak (het zijn negentien aparte gemeenten, geen deelgemeenten).
+**Antwerpen en Brussel in 2.9.0 (beslist 22/09/2026 door de gebruiker).** Allebei te groot
+voor één lijst op straatnaam, dus de adressen staan per groep met een inhoudsopgave erboven:
+Antwerpen per district (de plaatsnaam in `gemeente` valt daar samen met het district), Brussel
+per gemeente (op niscode, want Laken is een plaatsnaam van Brussel-stad). Elke groep heeft een
+eigen dieplink naar de zoeker.
+
+Brussel is één pagina voor het hele gewest, geen pagina per gemeente: die zouden te dun zijn.
+Dat past toch in de niscode-aanpak, door `niscode` in `scripts/steden.ts` als prefix te lezen:
+`'21'` dekt alle negentien gemeenten. Twee dingen die alleen daar gelden: de titel zegt
+"Nederlandstalige", omdat de dataset enkel het onderwijs van de Vlaamse Gemeenschap bevat, en de
+pagina noemt de gemeenten zonder school. Op 22/09/2026 waren dat Sint-Gillis,
+Sint-Joost-ten-Node, Sint-Lambrechts-Woluwe en Watermaal-Bosvoorde. Die lijst leidt het script
+af uit `groepen.alle`; komt er een gemeente bij met een andere schrijfwijze, dan stopt het met
+een fout in plaats van een foute zin te schrijven.
 
 **Wanneer doorschalen.** Niet meteen. Dertien pagina's die alleen in de naam verschillen, zijn
 doorway pages en kosten posities in plaats van ze op te leveren. Eerst drie maanden kijken of
