@@ -289,17 +289,26 @@ ${p.groepen.map((gr) => groep(p, gr)).join('\n')}`
 /**
  * Eén district of gemeente. De link naar de zoeker filtert enkel op de plaatsnamen van die
  * groep, niet op de hele stad: wie in Deurne woont, wil Deurne zien.
+ *
+ * De kop is een balk die bovenaan blijft plakken zolang je in die groep scrolt. Een gewone
+ * tussenkop viel weg tussen de straatnamen: wie snel scrolde, zag niet waar de ene gemeente
+ * ophield en de volgende begon. Omdat elke groep een eigen <section> is, duwt de volgende
+ * balk de vorige weg in plaats van eroverheen te schuiven.
  */
 function groep(p: Profiel, gr: Groep): string {
   return `
-        <h3 id="${gr.anker}" class="mt-6 scroll-mt-4 font-semibold">${esc(gr.naam)}</h3>
-        <p class="text-sm">
-          <span class="text-zacht">${gr.adressen.length} ${woord(gr.adressen.length, 'adres', 'adressen')} ·</span>
-          <a href="${zoeker(gr.gemeenteNamen)}" class="text-accent underline underline-offset-2"
-            >open ${esc(gr.naam)} in de zoeker</a
-          >
-        </p>
-${adreslijst(p, gr.adressen)}`
+        <section id="${gr.anker}" class="mt-8 scroll-mt-2" aria-labelledby="${gr.anker}-kop">
+          <div class="sticky top-0 z-10 -mx-4 flex flex-wrap items-baseline justify-between gap-x-4 border-y border-rand bg-kaart px-4 py-2">
+            <h3 id="${gr.anker}-kop" class="text-lg font-semibold">
+              ${esc(gr.naam)}
+              <span class="text-sm font-normal text-zacht">· ${gr.adressen.length} ${woord(gr.adressen.length, 'adres', 'adressen')}</span>
+            </h3>
+            <a href="${zoeker(gr.gemeenteNamen)}" class="text-sm text-accent underline underline-offset-2"
+              >open ${esc(gr.naam)} in de zoeker</a
+            >
+          </div>
+${adreslijst(p, gr.adressen)}
+        </section>`
 }
 
 function adreslijst(p: Profiel, lijst: Campus[]): string {
