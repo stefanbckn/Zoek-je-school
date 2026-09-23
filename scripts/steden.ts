@@ -57,11 +57,18 @@ export interface Stad {
 }
 
 export const STEDEN: Stad[] = [
-  { slug: 'mechelen', naam: 'Mechelen', niscode: '12025' },
-  { slug: 'gent', naam: 'Gent', niscode: '44021' },
-  { slug: 'leuven', naam: 'Leuven', niscode: '24062' },
-  { slug: 'kortrijk', naam: 'Kortrijk', niscode: '34010' },
+  { slug: 'aalst', naam: 'Aalst', niscode: '41002' },
   { slug: 'brugge', naam: 'Brugge', niscode: '31005' },
+  { slug: 'genk', naam: 'Genk', niscode: '71016' },
+  { slug: 'gent', naam: 'Gent', niscode: '44021' },
+  { slug: 'hasselt', naam: 'Hasselt', niscode: '71072' },
+  { slug: 'kortrijk', naam: 'Kortrijk', niscode: '34022' },
+  { slug: 'leuven', naam: 'Leuven', niscode: '24062' },
+  { slug: 'mechelen', naam: 'Mechelen', niscode: '12025' },
+  { slug: 'oostende', naam: 'Oostende', niscode: '35013' },
+  { slug: 'roeselare', naam: 'Roeselare', niscode: '36015' },
+  { slug: 'sint-niklaas', naam: 'Sint-Niklaas', niscode: '46021' },
+  { slug: 'turnhout', naam: 'Turnhout', niscode: '13040' },
   {
     slug: 'antwerpen',
     naam: 'Antwerpen',
