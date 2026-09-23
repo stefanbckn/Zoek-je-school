@@ -77,7 +77,7 @@ mét die beperking erbij.
 | 4 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Staat hier enkel omdat de gebruiker het als wens genoemd heeft; zonder bron valt er niets te bouwen |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
 | 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
-| 7 | Gemeentepagina's voor zoekmachines | Een eigen URL per centrumstad met de scholen, netten en studiedomeinen van die stad | **Proef loopt.** Mechelen en Brugge live sinds 2.7.0, eigen kopbalk sinds 2.8.0, Antwerpen en het Brussels gewest sinds 2.9.0, Gent sinds 2.10.0. De andere centrumsteden volgen pas als deze opgepikt worden. **Geen link vanaf de zoeker**, zie hieronder |
+| 7 | Gemeentepagina's voor zoekmachines | Een eigen URL per centrumstad met de scholen, netten en studiedomeinen van die stad | **Proef loopt.** Mechelen en Brugge live sinds 2.7.0, eigen kopbalk sinds 2.8.0, Antwerpen en het Brussels gewest sinds 2.9.0, Gent sinds 2.10.0. De resterende negen centrumsteden (Aalst, Genk, Hasselt, Kortrijk, Leuven, Oostende, Roeselare, Sint-Niklaas, Turnhout) staan sinds 23/09/2026 op branch `v2.11.0-overige-steden`, gebouwd en klopt met `npm run build`, maar nog niet uitgebracht. Daarmee zijn dan alle dertien Vlaamse centrumsteden gedekt. **Geen link vanaf de zoeker**, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -310,16 +310,28 @@ zes de namen. Het script leidt die lijst uit de data af.
 
 **Welke steden nog.** De dertien Vlaamse centrumsteden; de vijf provinciehoofdsteden zitten daar
 al in (Antwerpen, Gent, Brugge, Hasselt, Leuven), dus het blijven er dertien. Mechelen, Gent,
-Brugge, Antwerpen en het Brussels gewest staan live. Geteld op 21/09/2026 (Gent op 23/09/2026),
+Brugge, Antwerpen en het Brussels gewest staan live. De overige negen (Aalst, Genk, Hasselt,
+Kortrijk, Leuven, Oostende, Roeselare, Sint-Niklaas, Turnhout) staan sinds 23/09/2026 op branch
+`v2.11.0-overige-steden`, nog niet uitgebracht. Geteld op 21/09/2026 (Gent op 23/09/2026, de
+negen resterende op 23/09/2026 via `npm run genereer-gemeentepaginas` op die branch),
 **op niscode en enkel adressen met studieaanbod**, dus zoals de pagina's ze tellen:
 
-| Stad | Adressen | Scholen | Studierichtingen |
-| --- | --- | --- | --- |
-| Mechelen | 16 | 19 | 151 |
-| Gent | 57 | 53 | 229 |
-| Brugge | 29 | 31 | 204 |
-| Antwerpen | 106 | 77 | 254 |
-| Brussels gewest | 49 | 45 | 175 |
+| Stad | Adressen | Scholen | Studierichtingen | Status |
+| --- | --- | --- | --- | --- |
+| Mechelen | 16 | 19 | 151 | Live sinds 2.7.0 |
+| Gent | 57 | 53 | 229 | Live sinds 2.10.0 |
+| Brugge | 29 | 31 | 204 | Live sinds 2.7.0 |
+| Antwerpen | 106 | 77 | 254 | Live sinds 2.9.0 |
+| Brussels gewest | 49 | 45 | 175 | Live sinds 2.9.0 |
+| Aalst | 17 | 24 | 154 | Branch `v2.11.0-overige-steden` |
+| Genk | 12 | 12 | 146 | Branch `v2.11.0-overige-steden` |
+| Hasselt | 16 | 20 | 177 | Branch `v2.11.0-overige-steden` |
+| Kortrijk | 21 | 25 | 172 | Branch `v2.11.0-overige-steden` |
+| Leuven | 22 | 31 | 159 | Branch `v2.11.0-overige-steden` |
+| Oostende | 13 | 14 | 132 | Branch `v2.11.0-overige-steden` |
+| Roeselare | 14 | 19 | 165 | Branch `v2.11.0-overige-steden` |
+| Sint-Niklaas | 17 | 24 | 134 | Branch `v2.11.0-overige-steden` |
+| Turnhout | 13 | 20 | 142 | Branch `v2.11.0-overige-steden` |
 
 ⚠️ Een eerdere telling in dit bestand ging uit van de plaatsnaam en telde ook adressen zonder
 aanbod mee. Die cijfers (Brugge 21 adressen) waren dus te laag én verkeerd afgebakend. Tel
@@ -340,10 +352,12 @@ Sint-Joost-ten-Node, Sint-Lambrechts-Woluwe en Watermaal-Bosvoorde. Die lijst le
 af uit `groepen.alle`; komt er een gemeente bij met een andere schrijfwijze, dan stopt het met
 een fout in plaats van een foute zin te schrijven.
 
-**Wanneer doorschalen.** Niet meteen. Dertien pagina's die alleen in de naam verschillen, zijn
-doorway pages en kosten posities in plaats van ze op te leveren. Eerst drie maanden kijken of
-Mechelen en Brugge vertoningen oppikken in Search Console en Bing Webmaster Tools. Doen ze dat
-niet, dan is het probleem de opzet en niet het aantal.
+**Wanneer doorschalen (herzien 23/09/2026 door de gebruiker).** De wachtperiode van drie
+maanden hierboven is losgelaten: Mechelen en Brugge staan pas sinds 2.7.0 (21/09/2026) live, dus
+lang voor die termijn om was, dook in Bing Webmaster Tools al een vertoning op voor een
+zoekopdracht die specifiek genoeg was om te overtuigen. Op branch `v2.11.0-overige-steden`
+staan de resterende negen centrumsteden daarom al gebouwd, in dezelfde stap in plaats van na een
+verdere wachttijd.
 
 **Past binnen de harde regels.** Build-time gegenereerd uit de bestaande statische JSON, dus geen
 backend en geen live call erbij. Geen hardgecodeerde schoolnaam of richting: het script kent er
@@ -382,7 +396,8 @@ als ingang niet, en gaat het gesprek over de tekst bovenaan die pagina, niet ove
 
 ### Van centrumsteden naar alle gemeenten (nog te bouwen, besproken 23/09/2026)
 
-**Volgorde.** Eerst de resterende centrumsteden afwerken. Pas daarna de stap naar alle Vlaamse
+**Volgorde.** Eerst de resterende centrumsteden afwerken — dat staat sinds 23/09/2026 gebouwd op
+branch `v2.11.0-overige-steden`, nog niet uitgebracht. Pas daarna de stap naar alle Vlaamse
 en Brusselse gemeenten, met dezelfde reden als bij de Google Search-aanleiding hierboven: ook
 een kleine gemeente is een zoekterm ("middelbare school Aalst-net-niet-centrumstad"), en zonder
 eigen pagina wint de site daar niets. De gebruiker bouwt dit zelf, op een eigen versie-branch.
