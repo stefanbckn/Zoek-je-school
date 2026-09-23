@@ -8,6 +8,39 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.12.0 — 24 september 2026
+
+Wie een gemeente zoekt die geen centrumstad is, vindt nu ook een eigen pagina: van 14 naar 172
+gemeenten in Vlaanderen en Brussel met minstens één school voor secundair onderwijs, telkens op
+`/gemeente/<naam>/` (bv. [Wijnegem](https://zoekjeschool.be/gemeente/wijnegem/),
+[Mol](https://zoekjeschool.be/gemeente/mol/)).
+
+**Nieuw**
+
+- **158 nieuwe gemeentepagina's**, automatisch afgeleid uit de dataset in plaats van met de hand
+  bijgehouden zoals de 14 centrumsteden tot nu toe.
+- **Gemeenten met minder dan 5 scholen tonen een andere hoofdlijst.** In plaats van een dunne
+  lijst met enkel de eigen school(en) wordt "Scholen in de buurt van [gemeente]" de hoofdlijst,
+  met de eigen school(en) er gewoon tussen.
+- **Zes fusiegemeenten van 1 januari 2025 tonen hun juiste naam**
+  ([Bilzen-Hoeselt](https://zoekjeschool.be/gemeente/bilzen-hoeselt/),
+  [Tongeren-Borgloon](https://zoekjeschool.be/gemeente/tongeren-borgloon/),
+  [Merelbeke-Melle](https://zoekjeschool.be/gemeente/merelbeke-melle/),
+  [Nazareth-De Pinte](https://zoekjeschool.be/gemeente/nazareth-de-pinte/),
+  [Tessenderlo-Ham](https://zoekjeschool.be/gemeente/tessenderlo-ham/) en
+  [Beveren-Kruibeke-Zwijndrecht](https://zoekjeschool.be/gemeente/beveren-kruibeke-zwijndrecht/))
+  — de brondata van Onderwijs Vlaanderen zelf loopt daar nog op achter.
+
+**Fix**
+
+- Bij precies 1 school stond er "Samen richten ze ... studierichtingen in"; dat is nu "Ze richt
+  ... studierichtingen in".
+
+**Wat je hier niet vindt**
+
+- Gemeenten zonder enige school in de dataset (zo'n 130 van de ~319 in Vlaanderen en Brussel)
+  krijgen geen pagina: er is voor hen geen naam of coördinaat uit onze eigen data te halen.
+
 ## 2.11.0 — 23 september 2026
 
 Wie "middelbare scholen Kortrijk" of "middelbare school Turnhout" zoekt, vindt nu een eigen
