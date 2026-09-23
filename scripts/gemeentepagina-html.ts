@@ -79,7 +79,7 @@ ${broodkruimel(esc(titel))}
           <strong>${p.aantalScholen} ${stad.gewest ? 'Nederlandstalige ' : ''}${woord(p.aantalScholen, 'school', 'scholen')}</strong>
           voor voltijds gewoon secundair onderwijs, verdeeld over
           <strong>${p.adressen.length} ${woord(p.adressen.length, 'adres', 'adressen')}</strong>.
-          Samen richten ze ${p.aantalRichtingen} verschillende studierichtingen in.
+          ${p.aantalScholen === 1 ? 'Ze richt' : 'Samen richten ze'} ${p.aantalRichtingen} verschillende studierichtingen in.
         </p>
         ${taal(stad)}
         ${deelgemeenten(stad, p)}
