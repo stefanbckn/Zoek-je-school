@@ -137,14 +137,19 @@ function maakProfiel(stad: Stad, alle: Campus[]): Profiel {
   const richtingen = new Set<string>()
   const duaal = new Set<string>()
   const adressenPerDomein = new Map<string, number>()
-  const scholenPerNet = new Map<string, number>()
+  // Op schoolnummer, niet op schoolrij: een school met meerdere adressen in dezelfde stad
+  // (33 in Antwerpen) telde hier anders meermaals mee, terwijl `aantalScholen` hieronder wél
+  // ontdubbelt. Dat gaf een nettentelling die niet optelde tot het aantal scholen op de pagina.
+  const schoolnummersPerNet = new Map<string, Set<string>>()
   let okanAdressen = 0
 
   for (const c of adressen) {
     const domeinenHier = new Set<string>()
     let okanHier = false
     for (const s of c.scholen) {
-      scholenPerNet.set(s.net, (scholenPerNet.get(s.net) ?? 0) + 1)
+      const netSet = schoolnummersPerNet.get(s.net) ?? new Set<string>()
+      netSet.add(s.schoolnummer)
+      schoolnummersPerNet.set(s.net, netSet)
       for (const r of s.richtingen) {
         // `studierichtingCode` mag null zijn in het model; zonder code valt er niets te
         // ontdubbelen, dus telt zo'n rij niet mee in het aantal verschillende richtingen.
@@ -185,8 +190,8 @@ function maakProfiel(stad: Stad, alle: Campus[]): Profiel {
       adressen: adressenPerDomein.get(code) ?? 0,
     })),
     ontbrekend,
-    netten: [...scholenPerNet.entries()]
-      .map(([net, s]) => ({ net, scholen: s }))
+    netten: [...schoolnummersPerNet.entries()]
+      .map(([net, s]) => ({ net, scholen: s.size }))
       .sort((a, b) => a.net.localeCompare(b.net, 'nl')),
     okanAdressen,
     duaalRichtingen: duaal.size,
