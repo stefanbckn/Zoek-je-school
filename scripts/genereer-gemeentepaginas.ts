@@ -21,8 +21,9 @@ import { heeftAanbod, scholenMetAanbod } from '../src/lib/aanbod.ts'
 import { DOMEIN_RIJEN, domeinLabel } from '../src/lib/domein.ts'
 import { haversineKm } from '../src/lib/haversine.ts'
 import type { Campus, DatasetMeta } from '../src/types.ts'
+import { alleSteden } from './gemeenten-afgeleid.ts'
 import { pagina } from './gemeentepagina-html.ts'
-import { STEDEN, UITVOERMAP, anker, hoortBij, stadPad, type Stad } from './steden.ts'
+import { UITVOERMAP, anker, hoortBij, stadPad, type Stad } from './steden.ts'
 
 const WORTEL = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const SITE = 'https://zoekjeschool.be'
@@ -72,10 +73,12 @@ function main(): void {
   // Alleen adressen die de zoeker standaard ook toont, en per adres alleen de scholen die
   // er echt lesgeven. Zie de docstring bovenaan.
   const zichtbaar = campussen.filter(heeftAanbod).map(scholenMetAanbod)
+  const stedenAlles = alleSteden(zichtbaar)
+  controleerSlugs(stedenAlles)
 
   rmSync(resolve(WORTEL, UITVOERMAP), { recursive: true, force: true })
 
-  for (const stad of STEDEN) {
+  for (const stad of stedenAlles) {
     const profiel = maakProfiel(stad, zichtbaar)
     const alle = stad.groepen?.alle
     if (alle) {
@@ -106,7 +109,7 @@ function main(): void {
     )
   }
 
-  controleerSitemap()
+  schrijfSitemap(stedenAlles)
 }
 
 function maakProfiel(stad: Stad, alle: Campus[]): Profiel {
@@ -284,20 +287,50 @@ function buurgemeenten(
 }
 
 /**
- * Een gegenereerde pagina die niet in de sitemap staat, wordt trager of niet gevonden, en dat
- * merk je pas maanden later. Daarom een harde fout in plaats van een waarschuwing: de sitemap
- * staat in git en het script niet, dus alleen deze controle houdt ze gelijk.
+ * Twee gemeenten die tot dezelfde slug herleiden (bv. de commune Brussel-stad tegenover het
+ * Brussels gewest, dat nu al de slug "brussel" draagt) zouden zonder deze controle stilzwijgend
+ * elkaars `gemeente/<slug>/index.html` overschrijven — de laatste in de lijst wint, zonder
+ * foutmelding. Harde fout in plaats daarvan, dezelfde reden als bij `heeftAanbod` en de
+ * onbekende groepsnaam hierboven.
  */
-function controleerSitemap(): void {
-  const pad = resolve(WORTEL, 'public/sitemap.xml')
-  const sitemap = readFileSync(pad, 'utf8')
-  const ontbreekt = STEDEN.filter((s) => !sitemap.includes(`${SITE}${stadPad(s)}`))
-  if (ontbreekt.length > 0) {
+function controleerSlugs(stedenAlles: Stad[]): void {
+  const perSlug = new Map<string, Stad[]>()
+  for (const stad of stedenAlles) {
+    perSlug.set(stad.slug, [...(perSlug.get(stad.slug) ?? []), stad])
+  }
+  const botsingen = [...perSlug.values()].filter((lijst) => lijst.length > 1)
+  if (botsingen.length > 0) {
     throw new Error(
-      'Deze pagina\'s staan niet in public/sitemap.xml:\n' +
-        ontbreekt.map((s) => `  <url><loc>${SITE}${stadPad(s)}</loc></url>`).join('\n'),
+      'Twee gemeenten delen dezelfde slug:\n' +
+        botsingen
+          .map(
+            (lijst) =>
+              `  ${lijst[0].slug}: ${lijst.map((s) => `${s.naam} (${s.niscode})`).join(', ')}`,
+          )
+          .join('\n') +
+        '\nGeef één van beide een eigen entry met titel in scripts/steden.ts.',
     )
   }
+}
+
+/**
+ * Schrijft `public/sitemap.xml` uit dezelfde `stedenAlles`-lijst als de pagina's zelf, zodat een
+ * pagina nooit zonder sitemap-vermelding kan bestaan en omgekeerd. Sinds v2.12.0 gegenereerd in
+ * plaats van met de hand bijgehouden: met 172 pagina's is met de hand geen haalbare vangrail
+ * meer. Bewust zonder `<lastmod>`: dat zou een datum zijn die na de eerste deploy meteen liegt,
+ * en een foute lastmod is voor crawlers slechter dan geen.
+ */
+function schrijfSitemap(stedenAlles: Stad[]): void {
+  const paden = ['/', '/uitleg/', '/uitleg/inschrijven/', ...stedenAlles.map(stadPad)]
+  const xml =
+    '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<!-- Build-time gegenereerd door scripts/genereer-gemeentepaginas.ts, samen met de\n' +
+    '     pagina\'s zelf. Niet met de hand bewerken: npm run build/dev overschrijft dit\n' +
+    '     bestand. Bewust zonder <lastmod>, zie de docstring bij schrijfSitemap(). -->\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    paden.map((pad) => `  <url>\n    <loc>${SITE}${pad}</loc>\n  </url>`).join('\n') +
+    '\n</urlset>\n'
+  writeFileSync(resolve(WORTEL, 'public/sitemap.xml'), xml, 'utf8')
 }
 
 main()

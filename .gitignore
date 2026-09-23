@@ -24,10 +24,13 @@ dist-ssr
 # persoonlijke Claude Code-agents, horen niet in de repo
 .claude/agents/
 
-# Stadspagina's: build-time gegenereerd door scripts/genereer-gemeentepaginas.ts, dat als
-# prebuild en predev draait. Niet committen — ze zouden bij elke dataverversing scheeflopen
-# met public/data. De sitemap staat wél in git en het script bewaakt dat ze gelijk blijven.
+# Stadspagina's + sitemap: build-time gegenereerd door scripts/genereer-gemeentepaginas.ts, dat
+# als prebuild en predev draait. Niet committen — ze zouden bij elke dataverversing scheeflopen
+# met public/data. Sinds v2.12.0 genereert hetzelfde script ook public/sitemap.xml uit dezelfde
+# lijst als de pagina's, zodat de twee per definitie niet meer uit elkaar kunnen lopen (met 172
+# pagina's is een met de hand bijgehouden sitemap geen haalbare vangrail meer).
 /gemeente/
+/public/sitemap.xml
 
 # Editor directories and files
 .vscode/*
