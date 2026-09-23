@@ -380,6 +380,42 @@ vanaf een stuk of vijf steden; met twee is zo'n pagina zelf thin content.
 stadspagina landen en weggaan zonder door te klikken naar de zoeker. Dan doet de pagina haar werk
 als ingang niet, en gaat het gesprek over de tekst bovenaan die pagina, niet over integratie.
 
+### Van centrumsteden naar alle gemeenten (nog te bouwen, besproken 23/09/2026)
+
+**Volgorde.** Eerst de resterende centrumsteden afwerken. Pas daarna de stap naar alle Vlaamse
+en Brusselse gemeenten, met dezelfde reden als bij de Google Search-aanleiding hierboven: ook
+een kleine gemeente is een zoekterm ("middelbare school Aalst-net-niet-centrumstad"), en zonder
+eigen pagina wint de site daar niets. De gebruiker bouwt dit zelf, op een eigen versie-branch.
+
+**`steden.ts` dekt de lading dan niet meer.** Een handonderhouden `Stad[]`-entry per gemeente
+schaalt niet naar de ~300 niscodes in de dataset, zoals dat nu wel gaat voor een stuk of dertien
+centrumsteden. Open vraag om vóór de bouw te beslissen: blijft er één lijst, of komt er een
+losse, **uit de dataset afgeleide** volle gemeentenlijst (elke niscode die nog geen eigen
+centrumstad- of gewest-entry heeft) naast een kleinere `steden.ts` voor de uitzonderingen
+(`groepen`, een aangepaste titel zoals bij Brussel)?
+
+**Gemeenten met minder dan 5 scholen krijgen een andere pagina-opbouw.** Vanaf 5 scholen blijft
+het zoals nu: eerst de eigen scholen, dan "In de buurt". Onder de 5 wordt "Scholen in de buurt
+van [gemeente]" de hoofdlijst, met de eigen school(en) er gewoon tussen en de titel mee
+aangepast. Reden: een pagina met twee scholen is thin content; het bredere buurtaanbod is dan
+het nuttigere antwoord op de zoekterm.
+
+**Let op bij Brussel: naam- en slugbotsing.** Er bestaat al een `Stad`-entry "Brussel" (slug
+`brussel`, niscode-prefix `'21'`, het hele gewest). Krijgt straks ook de commune Brussel-stad
+zelf (niscode 21004) een eigen gemeentepagina, dan wil die dezelfde naam "Brussel" en dus
+dezelfde slug dragen — de tweede `writeFileSync` naar `gemeente/brussel/index.html` overschrijft
+dan stil de eerste, zonder foutmelding. Twee dingen die dat voorkomen: de bestaande
+`groepen.namen`-afspraak (`{'21004': 'Brussel-stad'}`) ook als slug voor de eigen
+commune-pagina hergebruiken, én een harde fout in het generatorscript zodra twee entries tot
+dezelfde output-slug leiden — dezelfde aanpak als `controleerSitemap()` nu al voor de sitemap
+toepast.
+
+**`/gemeente/` blijft een pure ingang, ook op deze schaal.** Zie "Geen link vanaf de zoeker naar
+deze pagina's" hierboven: die beslissing verandert niet zodra het er honderden zijn. Een
+overzichtspagina op `/gemeente/` mag bestaan als vindbaarheid tegenvalt, met een link in de
+voet, maar zoekjeschool.be zelf blijft nergens naar een gemeentepagina linken — enkel andersom:
+wie van een zoekmachine op zo'n pagina landt, vindt daar de weg naar de zoeker.
+
 ## Bewust geschrapt
 
 Ideeën die uit de volgorde gehaald zijn, met de reden erbij. Ze staan hier zodat ze niet over een
