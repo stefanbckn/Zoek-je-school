@@ -22,7 +22,7 @@ import { DOMEIN_RIJEN, domeinLabel } from '../src/lib/domein.ts'
 import { haversineKm } from '../src/lib/haversine.ts'
 import type { Campus, DatasetMeta } from '../src/types.ts'
 import { pagina } from './gemeentepagina-html.ts'
-import { STEDEN, UITVOERMAP, hoortBij, stadPad, type Stad } from './steden.ts'
+import { STEDEN, UITVOERMAP, anker, hoortBij, stadPad, type Stad } from './steden.ts'
 
 const WORTEL = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const SITE = 'https://zoekjeschool.be'
@@ -233,16 +233,6 @@ function groepen(stad: Stad, adressen: Campus[]): Groep[] {
       return { naam, anker: anker(naam), adressen: lijst, gemeenteNamen: namen }
     })
     .sort((a, b) => a.naam.localeCompare(b.naam, 'nl'))
-}
-
-/** "Sint-Jans-Molenbeek" wordt "sint-jans-molenbeek": leesbaar in de adresbalk. */
-function anker(naam: string): string {
-  return naam
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
 }
 
 /** Het gemiddelde van de coördinaten: goed genoeg om afstanden tot een stad mee te schatten. */
