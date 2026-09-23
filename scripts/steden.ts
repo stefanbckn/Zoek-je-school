@@ -59,6 +59,8 @@ export interface Stad {
 export const STEDEN: Stad[] = [
   { slug: 'mechelen', naam: 'Mechelen', niscode: '12025' },
   { slug: 'gent', naam: 'Gent', niscode: '44021' },
+  { slug: 'leuven', naam: 'Leuven', niscode: '24062' },
+  { slug: 'kortrijk', naam: 'Kortrijk', niscode: '34010' },
   { slug: 'brugge', naam: 'Brugge', niscode: '31005' },
   {
     slug: 'antwerpen',
