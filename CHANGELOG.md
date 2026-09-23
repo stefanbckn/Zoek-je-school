@@ -8,6 +8,17 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.10.0 — 23 september 2026
+
+Wie "middelbare scholen Gent" zoekt, vindt nu een eigen pagina, net als voor Mechelen, Brugge,
+Antwerpen en Brussel.
+
+**Nieuw**
+
+- **Een pagina voor [Gent](https://zoekjeschool.be/gemeente/gent/).** Op niscode, dus met
+  Drongen, Gentbrugge, Ledeberg, Mariakerke, Oostakker, Sint-Amandsberg, Sint-Denijs-Westrem en
+  Zwijnaarde erbij: 57 adressen, 53 scholen, 229 studierichtingen.
+
 ## 2.9.1 — 23 september 2026
 
 **Gecorrigeerd**

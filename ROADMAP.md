@@ -309,13 +309,14 @@ De zoeker filtert wél op plaatsnaam (`?gemeenten=`), dus een dieplink voor Brug
 zes de namen. Het script leidt die lijst uit de data af.
 
 **Welke steden nog.** De dertien Vlaamse centrumsteden; de vijf provinciehoofdsteden zitten daar
-al in (Antwerpen, Gent, Brugge, Hasselt, Leuven), dus het blijven er dertien. Mechelen en Brugge
-staan live. Geteld op 21/09/2026, **op niscode en enkel adressen met studieaanbod**, dus zoals
-de pagina's ze tellen:
+al in (Antwerpen, Gent, Brugge, Hasselt, Leuven), dus het blijven er dertien. Mechelen, Gent,
+Brugge, Antwerpen en het Brussels gewest staan live. Geteld op 21/09/2026 (Gent op 23/09/2026),
+**op niscode en enkel adressen met studieaanbod**, dus zoals de pagina's ze tellen:
 
 | Stad | Adressen | Scholen | Studierichtingen |
 | --- | --- | --- | --- |
 | Mechelen | 16 | 19 | 151 |
+| Gent | 57 | 53 | 229 |
 | Brugge | 29 | 31 | 204 |
 | Antwerpen | 106 | 77 | 254 |
 | Brussels gewest | 49 | 45 | 175 |
