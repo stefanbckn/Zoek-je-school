@@ -5,8 +5,9 @@ import { createRequire } from 'node:module'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { haalFietsroute, parsePunt } from './shared/ors.js'
+import { alleSteden } from './scripts/gemeenten-afgeleid.ts'
 import { paginakop, type KopIngang } from './scripts/paginakop.ts'
-import { STEDEN, UITVOERMAP } from './scripts/steden.ts'
+import { UITVOERMAP } from './scripts/steden.ts'
 
 // package.json is de enige plek waar de versie staat; de footer toont ze via __APP_VERSION__.
 // createRequire in plaats van een gewone import, zodat we geen resolveJsonModule nodig hebben.
@@ -148,8 +149,11 @@ export default defineConfig(({ mode }) => {
           // De stadspagina's staan niet in git: `npm run prebuild` schrijft ze net vóór deze
           // build weg in gemeente/<slug>/index.html. Ontbreken ze, dan faalt de build hier
           // met een duidelijke fout, en dat is beter dan stil een pagina minder deployen.
+          // alleSteden() leest vestigingen.json zelf in (dezelfde gecommitte dataset als
+          // genereer-gemeentepaginas.ts), zodat deze lijst nooit kan afwijken van wat er
+          // effectief op gemeente/ staat.
           ...Object.fromEntries(
-            STEDEN.map((stad) => [
+            alleSteden().map((stad) => [
               `gemeente-${stad.slug}`,
               resolve(__dirname, UITVOERMAP, stad.slug, 'index.html'),
             ]),
