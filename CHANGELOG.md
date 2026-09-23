@@ -8,6 +8,16 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.9.1 — 23 september 2026
+
+**Gecorrigeerd**
+
+- **De nettentelling op de pagina's voor Antwerpen en Brussel klopte niet.** "Welke netten zijn
+  er?" telde een school die op meerdere adressen in dezelfde stad lesgeeft, ook meermaals — de
+  som lag daardoor hoger dan het aantal scholen dat de pagina zelf belooft (Antwerpen: 136 in
+  plaats van 77, Brussel: 67 in plaats van 45). Nu telt elke school er één keer, net als overal
+  elders op de pagina.
+
 ## 2.9.0 — 22 september 2026
 
 Wie "middelbare scholen Antwerpen" of "Nederlandstalige middelbare school Brussel" zoekt, vindt
