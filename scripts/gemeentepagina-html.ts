@@ -19,7 +19,12 @@ const SITE = 'https://zoekjeschool.be'
 
 export function pagina(stad: Stad, p: Profiel, meta: DatasetMeta): string {
   const url = `${SITE}/gemeente/${stad.slug}/`
-  const titel = stad.titel ?? `Middelbare scholen in ${stad.naam}`
+  // Onder de 5 scholen is de eigen lijst te dun om als hoofdlijst te dienen: de buurtlijst wordt
+  // dan de hoofdlijst, met de titel die dat ook zegt. Zie buurtHoofdlijst() hieronder en
+  // ROADMAP.md, "Van centrumsteden naar alle gemeenten".
+  const onder5 = p.aantalScholen < 5
+  const titel =
+    stad.titel ?? (onder5 ? `Scholen in de buurt van ${stad.naam}` : `Middelbare scholen in ${stad.naam}`)
   const soort = stad.gewest ? 'Nederlandstalige middelbare scholen' : 'middelbare scholen'
   const omschrijving =
     `${p.aantalScholen} ${soort} op ${p.adressen.length} adressen in ${stad.naam}. ` +
@@ -74,7 +79,7 @@ ${broodkruimel(esc(titel))}
           <strong>${p.aantalScholen} ${stad.gewest ? 'Nederlandstalige ' : ''}${woord(p.aantalScholen, 'school', 'scholen')}</strong>
           voor voltijds gewoon secundair onderwijs, verdeeld over
           <strong>${p.adressen.length} ${woord(p.adressen.length, 'adres', 'adressen')}</strong>.
-          Samen richten ze ${p.aantalRichtingen} verschillende studierichtingen in.
+          ${p.aantalScholen === 1 ? 'Ze richt' : 'Samen richten ze'} ${p.aantalRichtingen} verschillende studierichtingen in.
         </p>
         ${taal(stad)}
         ${deelgemeenten(stad, p)}
@@ -103,10 +108,10 @@ ${broodkruimel(esc(titel))}
         ${domeinen(stad, p)}
         ${ontbrekend(stad, p)}
         ${kaart(stad, p)}
-        ${adressen(stad, p)}
+        ${onder5 ? buurtHoofdlijst(stad, p, titel) : adressen(stad, p)}
         ${netten(p)}
         ${bijzonderheden(stad, p)}
-        ${buurt(stad, p)}
+        ${onder5 ? '' : buurt(stad, p)}
 
         <h2 class="mt-8 text-lg font-semibold">Waar deze cijfers vandaan komen</h2>
         <p class="mt-2 text-sm text-zacht">
@@ -437,7 +442,44 @@ function buurt(stad: Stad, p: Profiel): string {
         <p class="mt-2 text-sm text-zacht">
           Gemeenten met middelbare scholen binnen tien kilometer, in vogelvlucht gerekend vanaf
           het midden van ${stad.gewest ? 'het gewest' : 'de stad'}. Een gemeentegrens zegt weinig over hoe ver fietsen het is.
-        </p>
+        </p>${buurgemeentenLijst(p)}`
+}
+
+/**
+ * Onder de 5 scholen (ROADMAP.md, "Van centrumsteden naar alle gemeenten"): de buurtlijst wordt
+ * de hoofdlijst, met de eigen school(en) er gewoon tussen. Verschijnt op de plek waar
+ * `adressen()` anders zou staan; de losse "In de buurt"-sectie onderaan (`buurt()`) vervalt dan
+ * in `pagina()`, want die stond hier al.
+ *
+ * Geen regel-per-regel sortering op afstand: de eigen adressen staan in hun eigen blokje, direct
+ * gevolgd door dezelfde buurtlijst-opmaak als `buurt()`. Dat volstaat om "ertussen" te lezen
+ * zonder dat `buurgemeenten()` per buurgemeente echte adresrijen zou moeten teruggeven in plaats
+ * van enkel aantallen — gekozen met de gebruiker op 23/09/2026.
+ */
+function buurtHoofdlijst(stad: Stad, p: Profiel, titel: string): string {
+  const eigen = `
+        <h3 class="mt-4 font-semibold">In ${esc(stad.naam)} zelf</h3>
+${adreslijst(p, p.adressen)}`
+  if (p.buurgemeenten.length === 0) {
+    return `
+        <h2 class="mt-8 text-lg font-semibold">${esc(titel)}</h2>
+        <p class="mt-2 text-sm text-zacht">
+          Binnen tien kilometer van ${esc(stad.naam)} ligt geen andere gemeente met een middelbare
+          school in de dataset. Op alfabetische volgorde van de straatnaam.
+        </p>${eigen}`
+  }
+  return `
+        <h2 class="mt-8 text-lg font-semibold">${esc(titel)}</h2>
+        <p class="mt-2 text-sm text-zacht">
+          Eerst de scholen in ${esc(stad.naam)} zelf, op alfabetische volgorde van de straatnaam.
+          Daaronder gemeenten met middelbare scholen binnen tien kilometer, in vogelvlucht
+          gerekend vanaf het midden van ${esc(stad.naam)}.
+        </p>${eigen}
+        <h3 class="mt-4 font-semibold">In de buurt</h3>${buurgemeentenLijst(p)}`
+}
+
+function buurgemeentenLijst(p: Profiel): string {
+  return `
         <ul class="mt-3 space-y-1">
 ${p.buurgemeenten
   .map(
