@@ -8,6 +8,33 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.11.0 — 23 september 2026
+
+Wie "middelbare scholen Kortrijk" of "middelbare school Turnhout" zoekt, vindt nu een eigen
+pagina, net als voor Mechelen, Gent, Brugge, Antwerpen en Brussel. Daarmee heeft elke Vlaamse
+centrumstad een eigen gemeentepagina.
+
+**Nieuw**
+
+- **Een pagina voor [Aalst](https://zoekjeschool.be/gemeente/aalst/).** Op niscode, dus met
+  Gijzegem erbij: 17 adressen, 24 scholen, 154 studierichtingen.
+- **Een pagina voor [Genk](https://zoekjeschool.be/gemeente/genk/).** 12 adressen, 12 scholen,
+  146 studierichtingen.
+- **Een pagina voor [Hasselt](https://zoekjeschool.be/gemeente/hasselt/).** Op niscode, dus met
+  Stevoort erbij: 16 adressen, 20 scholen, 177 studierichtingen.
+- **Een pagina voor [Kortrijk](https://zoekjeschool.be/gemeente/kortrijk/).** Op niscode, dus met
+  Heule erbij: 21 adressen, 25 scholen, 172 studierichtingen.
+- **Een pagina voor [Leuven](https://zoekjeschool.be/gemeente/leuven/).** Op niscode, dus met
+  Heverlee, Kessel Lo en Wijgmaal erbij: 22 adressen, 31 scholen, 159 studierichtingen.
+- **Een pagina voor [Oostende](https://zoekjeschool.be/gemeente/oostende/).** 13 adressen, 14
+  scholen, 132 studierichtingen.
+- **Een pagina voor [Roeselare](https://zoekjeschool.be/gemeente/roeselare/).** 14 adressen, 19
+  scholen, 165 studierichtingen.
+- **Een pagina voor [Sint-Niklaas](https://zoekjeschool.be/gemeente/sint-niklaas/).** 17
+  adressen, 24 scholen, 134 studierichtingen.
+- **Een pagina voor [Turnhout](https://zoekjeschool.be/gemeente/turnhout/).** 13 adressen, 20
+  scholen, 142 studierichtingen.
+
 ## 2.10.0 — 23 september 2026
 
 Wie "middelbare scholen Gent" zoekt, vindt nu een eigen pagina, net als voor Mechelen, Brugge,
