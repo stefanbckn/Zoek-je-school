@@ -120,6 +120,24 @@ export const STEDEN: Stad[] = [
       ],
     },
   },
+  // Zes fusiegemeenten van 1 januari 2025 waar de meerderheidsregel in
+  // scripts/gemeenten-afgeleid.ts de verkeerde naam zou kiezen: `Campus.gemeente` draagt nog de
+  // plaatsnamen van vóór de fusie (bv. "Bilzen" en "Hoeselt" apart), niet de nieuwe officiële
+  // samengestelde naam. Nagekeken tegen Statbel en de Wikipedia-lijst van fusiegemeenten op
+  // 23/09/2026; de niscodes zijn ongewijzigd door de fusie. Twee andere fusies met een nieuwe
+  // niscode (Pajottegem 23106, Wingene 37021) hebben op die datum geen school met aanbod en
+  // krijgen dus sowieso geen pagina — geen override nodig. Hasselt (fusie met Kortessem) en
+  // Antwerpen (fusie met Borsbeek) hielden hun naam en stonden al hierboven.
+  { slug: 'bilzen-hoeselt', naam: 'Bilzen-Hoeselt', niscode: '73110' },
+  { slug: 'tongeren-borgloon', naam: 'Tongeren-Borgloon', niscode: '73111' },
+  { slug: 'merelbeke-melle', naam: 'Merelbeke-Melle', niscode: '44088' },
+  { slug: 'nazareth-de-pinte', naam: 'Nazareth-De Pinte', niscode: '44086' },
+  { slug: 'tessenderlo-ham', naam: 'Tessenderlo-Ham', niscode: '71071' },
+  {
+    slug: 'beveren-kruibeke-zwijndrecht',
+    naam: 'Beveren-Kruibeke-Zwijndrecht',
+    niscode: '46030',
+  },
 ]
 
 /** Hoort een adres met deze niscode bij de stad? Zie `Stad.niscode` voor het prefix. */
