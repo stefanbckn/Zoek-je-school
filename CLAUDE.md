@@ -69,8 +69,6 @@ nooit blind:** een adres dat 200 teruggeeft is niet automatisch de juiste pagina
 
 ## Valkuilen van deze machine
 
-- **Systeem-`node` is een oude v12** (`/usr/local/bin/node`). Zet de Homebrew-node (v25) op
-  PATH via `/usr/local/opt/node/bin`, anders faalt Vite/tsx.
 - **Start de dev-server zelf** met `npm run dev` in een aparte shell; koppel de preview daarna
   vast aan `http://localhost:5173`.
 - **`.claude/launch.json` is bewust attach-only** (enkel een `url`, geen `runtimeExecutable`).
