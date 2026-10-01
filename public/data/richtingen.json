@@ -10,7 +10,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 633
+    "aantalAdressen": 634
   },
   {
     "code": "1540",
@@ -127,7 +127,20 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 10
+    "aantalAdressen": 9
+  },
+  {
+    "code": "810",
+    "naam": "Algemeen jaar (BuSO fr.)",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": null,
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
   },
   {
     "code": "1555",
@@ -331,7 +344,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 21
+    "aantalAdressen": 20
   },
   {
     "code": "1438",
@@ -383,7 +396,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 405
+    "aantalAdressen": 407
   },
   {
     "code": "1267",
@@ -654,7 +667,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 198
+    "aantalAdressen": 199
   },
   {
     "code": "1694",
@@ -667,7 +680,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 29
+    "aantalAdressen": 30
   },
   {
     "code": "1270",
@@ -732,7 +745,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 157
+    "aantalAdressen": 158
   },
   {
     "code": "1375",
@@ -1029,7 +1042,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 85
+    "aantalAdressen": 86
   },
   {
     "code": "1525",
@@ -1068,7 +1081,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 97
+    "aantalAdressen": 98
   },
   {
     "code": "1448",
@@ -1173,6 +1186,19 @@
     "duaal": false,
     "zevendeLeerjaar": false,
     "aantalAdressen": 3
+  },
+  {
+    "code": "1132",
+    "naam": "Bouwplaatsmachinist duaal",
+    "graad": "Derde graad",
+    "finaliteit": "Arbeidsmarkt",
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "BSO"
+    ],
+    "duaal": true,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 1
   },
   {
     "code": "1281",
@@ -1315,7 +1341,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 7
+    "aantalAdressen": 6
   },
   {
     "code": "1707",
@@ -1417,7 +1443,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 27
+    "aantalAdressen": 28
   },
   {
     "code": "1710",
@@ -1586,7 +1612,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 7
+    "aantalAdressen": 8
   },
   {
     "code": "1588",
@@ -1937,7 +1963,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 11
+    "aantalAdressen": 12
   },
   {
     "code": "1157",
@@ -1976,7 +2002,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 363
+    "aantalAdressen": 367
   },
   {
     "code": "1153",
@@ -1989,7 +2015,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 18
+    "aantalAdressen": 19
   },
   {
     "code": "1164",
@@ -2067,7 +2093,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 185
+    "aantalAdressen": 186
   },
   {
     "code": "1169",
@@ -2145,7 +2171,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 35
+    "aantalAdressen": 36
   },
   {
     "code": "1591",
@@ -2171,7 +2197,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 5
+    "aantalAdressen": 6
   },
   {
     "code": "1289",
@@ -2236,7 +2262,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 26
+    "aantalAdressen": 25
   },
   {
     "code": "1290",
@@ -2299,7 +2325,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 8
+    "aantalAdressen": 7
   },
   {
     "code": "OV3-189",
@@ -2336,7 +2362,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 14
+    "aantalAdressen": 13
   },
   {
     "code": "1594",
@@ -2456,6 +2482,19 @@
     "aantalAdressen": 7
   },
   {
+    "code": "1088",
+    "naam": "Franstalig beroepsvoorb. lj. (BuSO-Fr.)",
+    "graad": "Eerste graad",
+    "finaliteit": null,
+    "domeinCode": null,
+    "onderwijsvormen": [
+      "GSO"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
+  },
+  {
     "code": "1234",
     "naam": "Freinetpedagogie",
     "graad": "Eerste graad",
@@ -2519,6 +2558,19 @@
     "duaal": false,
     "zevendeLeerjaar": false,
     "aantalAdressen": 162
+  },
+  {
+    "code": "1799",
+    "naam": "GI aanbod",
+    "graad": "Andere",
+    "finaliteit": null,
+    "domeinCode": null,
+    "onderwijsvormen": [
+      "Andere"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": false,
+    "aantalAdressen": 0
   },
   {
     "code": "1467",
@@ -2930,7 +2982,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 107
+    "aantalAdressen": 108
   },
   {
     "code": "1299",
@@ -2980,7 +3032,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 8
+    "aantalAdressen": 7
   },
   {
     "code": "1300",
@@ -3019,7 +3071,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 3
+    "aantalAdressen": 4
   },
   {
     "code": "1475",
@@ -3108,7 +3160,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 21
+    "aantalAdressen": 22
   },
   {
     "code": "1477",
@@ -3208,7 +3260,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 99
+    "aantalAdressen": 100
   },
   {
     "code": "1732",
@@ -3221,7 +3273,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 33
+    "aantalAdressen": 35
   },
   {
     "code": "1622",
@@ -3260,7 +3312,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 352
+    "aantalAdressen": 353
   },
   {
     "code": "1478",
@@ -3351,7 +3403,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 9
+    "aantalAdressen": 8
   },
   {
     "code": "1143",
@@ -3481,7 +3533,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 25
+    "aantalAdressen": 27
   },
   {
     "code": "1301",
@@ -3533,7 +3585,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 260
+    "aantalAdressen": 261
   },
   {
     "code": "1485",
@@ -3570,7 +3622,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 1
+    "aantalAdressen": 2
   },
   {
     "code": "1736",
@@ -3609,7 +3661,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 371
+    "aantalAdressen": 373
   },
   {
     "code": "1302",
@@ -3661,7 +3713,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 9
+    "aantalAdressen": 10
   },
   {
     "code": "1196",
@@ -3687,7 +3739,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 154
+    "aantalAdressen": 155
   },
   {
     "code": "OV3-91",
@@ -3848,7 +3900,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 3
+    "aantalAdressen": 2
   },
   {
     "code": "1627",
@@ -4223,7 +4275,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 14
+    "aantalAdressen": 13
   },
   {
     "code": "OV3-190",
@@ -4379,6 +4431,19 @@
     "aantalAdressen": 1
   },
   {
+    "code": "1631",
+    "naam": "Meubelmaker",
+    "graad": "Derde graad",
+    "finaliteit": null,
+    "domeinCode": "2",
+    "onderwijsvormen": [
+      "7DE"
+    ],
+    "duaal": false,
+    "zevendeLeerjaar": true,
+    "aantalAdressen": 1
+  },
+  {
     "code": "1632",
     "naam": "Meubelstoffeerder",
     "graad": "Derde graad",
@@ -4467,7 +4532,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 246
+    "aantalAdressen": 247
   },
   {
     "code": "1309",
@@ -4480,7 +4545,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 218
+    "aantalAdressen": 221
   },
   {
     "code": "1146",
@@ -4493,7 +4558,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 403
+    "aantalAdressen": 402
   },
   {
     "code": "1492",
@@ -4671,7 +4736,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 9
+    "aantalAdressen": 10
   },
   {
     "code": "1638",
@@ -4788,7 +4853,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 17
+    "aantalAdressen": 18
   },
   {
     "code": "1312",
@@ -4840,7 +4905,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 138
+    "aantalAdressen": 141
   },
   {
     "code": "1641",
@@ -4879,7 +4944,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 8
+    "aantalAdressen": 7
   },
   {
     "code": "1747",
@@ -4957,7 +5022,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 61
+    "aantalAdressen": 63
   },
   {
     "code": "1202",
@@ -5009,7 +5074,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 187
+    "aantalAdressen": 189
   },
   {
     "code": "1313",
@@ -5578,7 +5643,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 5
+    "aantalAdressen": 4
   },
   {
     "code": "1761",
@@ -5773,7 +5838,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 9
+    "aantalAdressen": 10
   },
   {
     "code": "1505",
@@ -5862,7 +5927,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 28
+    "aantalAdressen": 27
   },
   {
     "code": "1507",
@@ -5925,7 +5990,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 7
+    "aantalAdressen": 8
   },
   {
     "code": "1673",
@@ -6146,7 +6211,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 11
+    "aantalAdressen": 12
   },
   {
     "code": "1152",
@@ -6185,7 +6250,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 204
+    "aantalAdressen": 203
   },
   {
     "code": "1149",
@@ -6406,7 +6471,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 12
+    "aantalAdressen": 11
   },
   {
     "code": "1682",
@@ -6835,7 +6900,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 13
+    "aantalAdressen": 14
   },
   {
     "code": "1777",
@@ -6935,7 +7000,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 129
+    "aantalAdressen": 130
   },
   {
     "code": "1778",
@@ -6948,7 +7013,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 50
+    "aantalAdressen": 51
   },
   {
     "code": "1517",
@@ -6987,7 +7052,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 3
+    "aantalAdressen": 4
   },
   {
     "code": "1779",
@@ -7126,7 +7191,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 160
+    "aantalAdressen": 161
   },
   {
     "code": "1521",
@@ -7291,6 +7356,6 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 216
+    "aantalAdressen": 217
   }
 ]
