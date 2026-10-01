@@ -20,9 +20,10 @@
 /** Welke ingang de huidige pagina is, zodat die `aria-current` krijgt. */
 export type KopIngang = 'uitleg' | null
 
-export function paginakop(huidige: KopIngang = null): string {
+export function paginakop(huidige: KopIngang = null, ref: string | null = null): string {
+  const naarZoeker = (params: string) => zoekerLink(params, ref)
   return `    <header class="flex items-center justify-between gap-4 bg-kop px-4 py-3 text-kop-inkt sm:py-3.5">
-      <a href="/" class="flex items-center gap-3 rounded-lg">
+      <a href="${naarZoeker('')}" class="flex items-center gap-3 rounded-lg">
         ${beeldmerk()}
         <span class="flex min-w-0 flex-col">
           <span class="text-xl font-extrabold leading-tight tracking-tight">
@@ -41,7 +42,7 @@ export function paginakop(huidige: KopIngang = null): string {
            de bediening met het toetsenbord zitten al in het element zelf. Zo werkt het menu
            ook zonder JavaScript, en dat is de hele reden dat deze pagina's statisch zijn. -->
       <div class="hidden min-w-0 flex-wrap items-center justify-end gap-3 md:flex">
-${ingangen(huidige)}
+${ingangen(huidige, naarZoeker)}
       </div>
       <details class="relative md:hidden">
         <summary class="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-lg border border-kop-inkt/30 [&::-webkit-details-marker]:hidden">
@@ -53,19 +54,19 @@ ${ingangen(huidige)}
           </svg>
         </summary>
         <div class="absolute right-0 z-30 mt-2 flex w-64 flex-col items-stretch gap-2 rounded-xl border border-kop-inkt/25 bg-kop p-3 shadow-lg">
-${ingangen(huidige)}
+${ingangen(huidige, naarZoeker)}
         </div>
       </details>
     </header>`
 }
 
 /** De vier ingangen plus de themaknop, gedeeld door de rij en het uitklapmenu. */
-function ingangen(huidige: KopIngang): string {
+function ingangen(huidige: KopIngang, naarZoeker: (params: string) => string): string {
   return [
-    ingang('/?matrix=1', 'Alle richtingen', false),
-    ingang('/?help=1', 'Hoe werkt deze site?', false),
+    ingang(naarZoeker('matrix=1'), 'Alle richtingen', false),
+    ingang(naarZoeker('help=1'), 'Hoe werkt deze site?', false),
     ingang('/uitleg/', 'Uitleg voor ouders', huidige === 'uitleg'),
-    ingang('/?over=1', 'Over deze site', false),
+    ingang(naarZoeker('over=1'), 'Over deze site', false),
     themaknop(),
   ].join('\n')
 }
@@ -128,10 +129,25 @@ function beeldmerk(): string {
  * gaat, in plaats van enkel dat laatste. Sluit aan bij de BreadcrumbList-data die al in elke
  * statische pagina staat voor Google.
  */
-export function broodkruimel(titel: string): string {
+export function broodkruimel(titel: string, ref: string | null = null): string {
   return `      <nav class="text-sm text-zacht" aria-label="Kruimelpad">
-        <a href="/" class="text-accent underline underline-offset-2">Zoek je school</a>
+        <a href="${zoekerLink('', ref)}" class="text-accent underline underline-offset-2">Zoek je school</a>
         <span aria-hidden="true"> &rsaquo; </span>
         <span>${titel}</span>
       </nav>`
+}
+
+/**
+ * Een link naar de zoeker, met `ref` erbij als de pagina er een meegeeft. De stadspagina's doen
+ * dat, zodat Simple Analytics per gemeente toont hoeveel bezoekers ze naar de zoeker sturen; zie
+ * `ref()` in gemeentepagina-html.ts. De uitlegpagina's geven niets mee.
+ */
+function zoekerLink(params: string, ref: string | null): string {
+  const delen = [params, ref ? `ref=${encodeURIComponent(ref)}` : ''].filter(Boolean)
+  return delen.length ? `/?${delen.join('&')}` : '/'
+}
+
+/** De `ref` van een stadspagina. Eén plaats, want de kopbalk en de pagina zelf gebruiken hem allebei. */
+export function gemeenteRef(slug: string): string {
+  return `gemeente-${slug}`
 }
