@@ -10,7 +10,7 @@
  * vite.config.ts geïnjecteerd, net als bij de andere pagina's. Niet hier bijzetten.
  */
 import { huisnummerLabel } from '../src/lib/adres.ts'
-import { broodkruimel } from './paginakop.ts'
+import { broodkruimel, gemeenteRef } from './paginakop.ts'
 import type { Campus, DatasetMeta } from '../src/types.ts'
 import type { Groep, Profiel } from './genereer-gemeentepaginas.ts'
 import type { Stad } from './steden.ts'
@@ -70,7 +70,7 @@ ${json({
   <body>
     <!--kop-->
     <div class="mx-auto max-w-3xl px-4 py-8">
-${broodkruimel(esc(titel))}
+${broodkruimel(esc(titel), ref(stad))}
 
       <article class="mt-4">
         <h1 class="text-2xl font-semibold">${esc(titel)}</h1>
@@ -95,12 +95,12 @@ ${broodkruimel(esc(titel))}
              ze kleiner dan de domeinlinks eronder. Klein is hier voor navigatie, niet voor een
              call to action. -->
         <p class="mt-3">
-          <a href="../../" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
+          <a href="../../?ref=${ref(stad)}" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
             Zoek vanaf je eigen adres &rarr;
           </a>
         </p>
         <p>
-          <a href="${zoeker(p.gemeenteNamen)}" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
+          <a href="${zoeker(stad, p.gemeenteNamen)}" class="inline-flex min-h-11 items-center text-accent underline underline-offset-2">
             Of open ${esc(stad.naam)} in de zoeker en filter verder &rarr;
           </a>
         </p>
@@ -228,7 +228,7 @@ function domeinen(stad: Stad, p: Profiel): string {
 ${p.domeinen
   .map(
     (d) => `          <li>
-            <a href="${zoeker(p.gemeenteNamen, { domein: d.code })}" class="text-accent underline underline-offset-2"
+            <a href="${zoeker(stad, p.gemeenteNamen, { domein: d.code })}" class="text-accent underline underline-offset-2"
               >${esc(d.label)}</a
             >
             <span class="text-zacht">· ${d.adressen} ${woord(d.adressen, 'adres', 'adressen')}</span>
@@ -262,7 +262,7 @@ ${p.ontbrekend
     }
     return `          <li>
             ${esc(o.label)}:
-            <a href="${zoeker([o.dichtstbij.gemeente], { domein: o.code })}" class="text-accent underline underline-offset-2"
+            <a href="${zoeker(stad, [o.dichtstbij.gemeente], { domein: o.code })}" class="text-accent underline underline-offset-2"
               >${esc(o.dichtstbij.gemeente)}</a
             >
             <span class="text-zacht">· ${km(o.dichtstbij.km)} in vogelvlucht</span>
@@ -284,11 +284,11 @@ function adressen(stad: Stad, p: Profiel): string {
   if (!g || p.groepen.length === 0) {
     return `
         <h2 class="mt-8 text-lg font-semibold">De scholen in ${esc(stad.naam)}, per adres</h2>${uitleg}
-${adreslijst(p, p.adressen)}`
+${adreslijst(stad, p, p.adressen)}`
   }
   return `
         <h2 class="mt-8 text-lg font-semibold">De scholen in ${esc(stad.naam)}, per ${esc(g.woord)}</h2>${uitleg}
-${p.groepen.map((gr) => groep(p, gr)).join('\n')}`
+${p.groepen.map((gr) => groep(stad, p, gr)).join('\n')}`
 }
 
 /**
@@ -300,7 +300,7 @@ ${p.groepen.map((gr) => groep(p, gr)).join('\n')}`
  * ophield en de volgende begon. Omdat elke groep een eigen <section> is, duwt de volgende
  * balk de vorige weg in plaats van eroverheen te schuiven.
  */
-function groep(p: Profiel, gr: Groep): string {
+function groep(stad: Stad, p: Profiel, gr: Groep): string {
   return `
         <section id="${gr.anker}" class="mt-8 scroll-mt-2" aria-labelledby="${gr.anker}-kop">
           <!-- De naam als pil in het groen van de kopbalk: tussen de straatnamen moet hij ook
@@ -312,15 +312,15 @@ function groep(p: Profiel, gr: Groep): string {
               <span class="rounded-full bg-accent px-3 py-1 text-base font-semibold text-accent-inkt">${esc(gr.naam)}</span>
               <span class="text-sm font-normal text-zacht">${gr.adressen.length} ${woord(gr.adressen.length, 'adres', 'adressen')}</span>
             </h3>
-            <a href="${zoeker(gr.gemeenteNamen)}" class="text-sm text-accent underline underline-offset-2"
+            <a href="${zoeker(stad, gr.gemeenteNamen)}" class="text-sm text-accent underline underline-offset-2"
               >open ${esc(gr.naam)} in de zoeker</a
             >
           </div>
-${adreslijst(p, gr.adressen)}
+${adreslijst(stad, p, gr.adressen)}
         </section>`
 }
 
-function adreslijst(p: Profiel, lijst: Campus[]): string {
+function adreslijst(stad: Stad, p: Profiel, lijst: Campus[]): string {
   return `        <ul class="mt-3 space-y-4">
 ${lijst
   .map(
@@ -334,7 +334,7 @@ ${lijst
 ${(p.regelsPerAdres.get(c.id) ?? [])
   .map(
     (s) => `              <li>
-                <a href="${zoeker(p.gemeenteNamen, { q: s.naam })}" class="text-accent underline underline-offset-2"
+                <a href="${zoeker(stad, p.gemeenteNamen, { q: s.naam })}" class="text-accent underline underline-offset-2"
                   >${esc(s.naam)}</a
                 >
                 <span class="text-zacht">· ${esc(s.net)}</span>
@@ -364,7 +364,7 @@ function kaart(stad: Stad, p: Profiel): string {
       scholen: (p.regelsPerAdres.get(c.id) ?? []).map((s) => ({
         naam: s.naam,
         net: s.net,
-        href: zoeker(p.gemeenteNamen, { q: s.naam }),
+        href: zoeker(stad, p.gemeenteNamen, { q: s.naam }),
       })),
     }))
   if (punten.length === 0) return ''
@@ -442,7 +442,7 @@ function buurt(stad: Stad, p: Profiel): string {
         <p class="mt-2 text-sm text-zacht">
           Gemeenten met middelbare scholen binnen tien kilometer, in vogelvlucht gerekend vanaf
           het midden van ${stad.gewest ? 'het gewest' : 'de stad'}. Een gemeentegrens zegt weinig over hoe ver fietsen het is.
-        </p>${buurgemeentenLijst(p)}`
+        </p>${buurgemeentenLijst(stad, p)}`
 }
 
 /**
@@ -459,7 +459,7 @@ function buurt(stad: Stad, p: Profiel): string {
 function buurtHoofdlijst(stad: Stad, p: Profiel, titel: string): string {
   const eigen = `
         <h3 class="mt-4 font-semibold">In ${esc(stad.naam)} zelf</h3>
-${adreslijst(p, p.adressen)}`
+${adreslijst(stad, p, p.adressen)}`
   if (p.buurgemeenten.length === 0) {
     return `
         <h2 class="mt-8 text-lg font-semibold">${esc(titel)}</h2>
@@ -475,16 +475,16 @@ ${adreslijst(p, p.adressen)}`
           Daaronder gemeenten met middelbare scholen binnen tien kilometer, in vogelvlucht
           gerekend vanaf het midden van ${esc(stad.naam)}.
         </p>${eigen}
-        <h3 class="mt-4 font-semibold">In de buurt</h3>${buurgemeentenLijst(p)}`
+        <h3 class="mt-4 font-semibold">In de buurt</h3>${buurgemeentenLijst(stad, p)}`
 }
 
-function buurgemeentenLijst(p: Profiel): string {
+function buurgemeentenLijst(stad: Stad, p: Profiel): string {
   return `
         <ul class="mt-3 space-y-1">
 ${p.buurgemeenten
   .map(
     (b) => `          <li>
-            <a href="${zoeker([b.gemeente])}" class="text-accent underline underline-offset-2"
+            <a href="${zoeker(stad, [b.gemeente])}" class="text-accent underline underline-offset-2"
               >${esc(b.gemeente)}</a
             >
             <span class="text-zacht">· ${b.adressen} ${woord(b.adressen, 'adres', 'adressen')} · ${km(b.km)}</span>
@@ -495,7 +495,7 @@ ${p.buurgemeenten
 }
 
 /** Dieplink naar de zoeker. `straal=alles` want zonder vertrekpunt heeft een straal geen zin. */
-function zoeker(namen: string[], extra: { domein?: string; q?: string } = {}): string {
+function zoeker(stad: Stad, namen: string[], extra: { domein?: string; q?: string } = {}): string {
   const params = new URLSearchParams()
   // De zoeker filtert op de plaatsnaam uit `gemeente`, niet op niscode. Voor een stad met
   // deelgemeenten zijn dat er dus meerdere.
@@ -503,7 +503,19 @@ function zoeker(namen: string[], extra: { domein?: string; q?: string } = {}): s
   params.set('straal', 'alles')
   if (extra.domein) params.set('domein', extra.domein)
   if (extra.q) params.set('q', extra.q)
+  params.set('ref', ref(stad))
   return `../../?${params.toString()}`
+}
+
+/**
+ * De bron voor Simple Analytics: staat `ref` in de URL, dan toont het dashboard die in plaats
+ * van de vorige pagina. Zo zie je per gemeentepagina hoeveel bezoekers ze naar de zoeker
+ * stuurt. Herkent geen bezoeker, enkel de pagina. De zoeker laat de parameter vallen bij de
+ * eerste filterwijziging (useSearchState.ts kent hem niet), dus een gedeelde link draagt hem
+ * zelden verder.
+ */
+function ref(stad: Stad): string {
+  return gemeenteRef(stad.slug)
 }
 
 /** Leeg als de bron geen schooljaar meegaf: liever niets dan een verzonnen jaartal. */

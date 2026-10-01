@@ -6,7 +6,7 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { haalFietsroute, parsePunt } from './shared/ors.js'
 import { alleSteden } from './scripts/gemeenten-afgeleid.ts'
-import { paginakop, type KopIngang } from './scripts/paginakop.ts'
+import { gemeenteRef, paginakop, type KopIngang } from './scripts/paginakop.ts'
 import { UITVOERMAP } from './scripts/steden.ts'
 
 // package.json is de enige plek waar de versie staat; de footer toont ze via __APP_VERSION__.
@@ -105,8 +105,11 @@ function gedeeldeKop(): Plugin {
         if (!html.includes(MARKERING)) return html
         // De uitlegpagina markeert haar eigen ingang in de balk.
         const huidige: KopIngang = ctx.path.startsWith('/uitleg/') ? 'uitleg' : null
+        // Een stadspagina geeft haar ref mee aan de kopbalk, net als aan haar eigen links naar de
+        // zoeker. Zie ref() in scripts/gemeentepagina-html.ts.
+        const slug = /^\/gemeente\/([^/]+)\//.exec(ctx.path)?.[1]
         return {
-          html: html.replace(MARKERING, paginakop(huidige)),
+          html: html.replace(MARKERING, paginakop(huidige, slug ? gemeenteRef(slug) : null)),
           // Enkel op de pagina's mét de balk: dit script zet de themaknop in de juiste stand
           // en bewaart een klik. Mag defer zijn — thema.js in de head heeft het thema dan al
           // toegepast, dus er flitst niets op; dit gaat alleen over de knop zelf.

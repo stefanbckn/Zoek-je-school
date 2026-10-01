@@ -8,6 +8,25 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.13.0 — 1 oktober 2026
+
+Kom je via een gemeentepagina in de zoeker terecht, dan staat er nu `ref=gemeente-<naam>` in
+het adres, bijvoorbeeld `?ref=gemeente-aalst`. Daarmee zien we in Simple Analytics welke
+gemeentepagina's ouders naar de zoeker brengen. Het zegt iets over de pagina, niets over jou: er
+komt geen cookie of herkenbaar gegeven bij.
+
+**Nieuw**
+
+- **Elke link van een gemeentepagina naar de zoeker draagt de naam van die gemeente mee**: de
+  kopbalk, het kruimelpad, de knoppen bovenaan, de studiedomeinen, de scholen in de lijst en op
+  de kaart, en de buurgemeenten.
+
+**Goed om te weten**
+
+- De parameter verdwijnt uit het adres zodra je een filter aanpast. Kopieer je de link meteen na
+  het openen, dan reist hij wel mee, en telt een bezoek via die gedeelde link ook als een bezoek
+  via de gemeentepagina.
+
 ## 2.12.0 — 24 september 2026
 
 Wie een gemeente zoekt die geen centrumstad is, vindt nu ook een eigen pagina: van 14 naar 172
