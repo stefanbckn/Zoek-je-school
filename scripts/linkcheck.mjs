@@ -16,7 +16,8 @@
  * Vier uitkomsten, en het onderscheid tussen de laatste twee is de kern van het nut:
  *   ok          antwoordt op het adres dat in de code staat
  *   verhuisd    antwoordt, maar op een ánder adres — het eindadres hoort in de code
- *   geblokkeerd 401/403/429: de server weigert óns, niet de pagina (API-keys, bot-filters)
+ *   geblokkeerd 401/403/429: de server weigert óns, niet de pagina (API-keys, bot-filters),
+ *               of een host uit WEIGERT_VERBINDING die geen verbinding toelaat
  *   dood        4xx, 5xx, time-out of een netwerkfout
  *
  * Alleen "dood" laat het script falen. Zou "geblokkeerd" dat ook doen, dan gaat het elk
@@ -85,6 +86,21 @@ const API_ENDPOINTS = [
   /^https:\/\/geo\.api\.vlaanderen\.be\//,
   /^https:\/\/onderwijs\.api\.vlaanderen\.be\//,
   /^https:\/\/data-onderwijs\.vlaanderen\.be\/documenten\/bestanden/,
+]
+
+/**
+ * Hosts die de machines van GitHub Actions weigeren. Ze verbreken de verbinding al tijdens de
+ * TLS-handshake ("Client network socket disconnected before secure TLS connection was
+ * established"), terwijl dezelfde adressen vanaf een gewone verbinding 200 geven. Vastgesteld
+ * in de runs van 01/10/2026 en 05/10/2026 (issues #64 en #66).
+ *
+ * Alleen een netwerkfout telt hier als "geblokkeerd". Antwoordt de server wél, met een 404
+ * bijvoorbeeld, dan blijft dat gewoon "dood". Lokaal worden deze links dus volledig
+ * gecontroleerd; in de Action valt enkel weg wat daar toch niet te zien is.
+ */
+const WEIGERT_VERBINDING = [
+  /^https:\/\/data-onderwijs\.vlaanderen\.be\//,
+  /^https:\/\/onderwijs-api-portaal\.vlaanderen\.be\//,
 ]
 
 // Puur ASCII, en dat is geen stijlkwestie: een HTTP-header is een ByteString, dus een teken
@@ -188,6 +204,9 @@ async function controleer(url) {
       // gewoon werkten, en viel er niet uit af te leiden waarom de Action er niet bij kon.
       const oorzaak = err2.cause instanceof Error ? ` (${err2.cause.message})` : ''
       const reden = err2.name === 'TimeoutError' ? `time-out na ${TIMEOUT_MS / 1000}s` : `${err2.message}${oorzaak}`
+      if (WEIGERT_VERBINDING.some((r) => r.test(url))) {
+        return { status: 'geblokkeerd', detail: `deze host weigert GitHub Actions: ${reden}` }
+      }
       return { status: 'dood', detail: reden, oorspronkelijk: err.message }
     }
   }
