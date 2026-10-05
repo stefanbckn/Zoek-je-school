@@ -6,8 +6,8 @@ v4), gehost op Netlify, zonder backend en zonder database.
 
 ## Begin van elke sessie
 
-Kijk met `gh issue list --state open` of er issues openstaan, en meld ze kort in je eerste
-antwoord. Staat er niets open, zeg dat in één zin.
+Een SessionStart-hook in `.claude/settings.json` zet de open GitHub-issues bij de start in je
+context. Meld ze kort in je eerste antwoord. Staat er niets open, zeg dat in één zin.
 
 ## Harde productregels
 

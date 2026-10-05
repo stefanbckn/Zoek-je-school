@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "out=$(gh issue list --state open --limit 20 2>/dev/null) || { echo 'Open GitHub-issues: kon gh niet bereiken.'; exit 0; }; if [ -z \"$out\" ]; then echo 'Open GitHub-issues: geen.'; else printf 'Open GitHub-issues:\\n%s\\n' \"$out\"; fi",
+            "timeout": 15,
+            "statusMessage": "Open issues ophalen"
+          }
+        ]
+      }
+    ]
+  }
+}
