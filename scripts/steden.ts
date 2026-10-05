@@ -121,9 +121,10 @@ export const STEDEN: Stad[] = [
     },
   },
   // Zes fusiegemeenten van 1 januari 2025 waar de meerderheidsregel in
-  // scripts/gemeenten-afgeleid.ts de verkeerde naam zou kiezen: `Campus.gemeente` draagt nog de
-  // plaatsnamen van vóór de fusie (bv. "Bilzen" en "Hoeselt" apart), niet de nieuwe officiële
-  // samengestelde naam. Nagekeken tegen Statbel en de Wikipedia-lijst van fusiegemeenten op
+  // scripts/gemeenten-afgeleid.ts de verkeerde naam zou kiezen: `Campus.gemeente` is per
+  // definitie de deelgemeente die de school opgeeft (bv. "Bilzen" en "Hoeselt" apart), niet de
+  // nieuwe officiële samengestelde naam. Geen fout in de bron, dus deze overrides zijn blijvend;
+  // zie "Gemeentenaam" in docs/onderzoek/databronnen.md. Nagekeken tegen Statbel en de Wikipedia-lijst van fusiegemeenten op
   // 23/09/2026; de niscodes zijn ongewijzigd door de fusie. Twee andere fusies met een nieuwe
   // niscode (Pajottegem 23106, Wingene 37021) hebben op die datum geen school met aanbod en
   // krijgen dus sowieso geen pagina — geen override nodig. Hasselt (fusie met Kortessem) en

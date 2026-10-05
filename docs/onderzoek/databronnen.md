@@ -33,6 +33,25 @@ voor. Verdeling geverifieerd op 02/09/2026: Oost-Vlaanderen 569, Antwerpen 560, 
 De API heeft géén provinciefilter (`filter_instellingslocatie_provincie` geeft HTTP 400); het
 provincieveld staat wel op elke vestigingsplaats.
 
+## Gemeentenaam: deelgemeente, niet fusiegemeente
+
+`instellingslocatie_gemeente` bevat de **deelgemeente zoals de school ze zelf opgeeft**, niet de
+fusiegemeente. Dat is zo bedoeld: de technische specificatie (Instellingslocatie v1.8,
+23/10/2024, p. 7) omschrijft het veld als "Deelgemeente van de instellingslocatie", en
+`instellingslocatie_gemeente_nis` als "Niscode van de fusiegemeente". Bron:
+<https://onderwijs-api-portaal.vlaanderen.be/system/files/api/doc/2026-02/20241023_Instellingslocatie_v1_8.pdf>
+
+Gevolg: bij de fusies van 01/01/2025 draagt de niscode al de nieuwe gemeente, maar de naam blijft
+de plaatsnaam van de school (bv. 73110 met "Bilzen", "Munsterbilzen" en "Hoeselt", nooit
+"Bilzen-Hoeselt"). Om dezelfde reden staan Berchem en Sint-Andries apart van Antwerpen en Brugge.
+
+Op 24/09/2026 als mogelijke fout gemeld bij de Centrale Cel ICT van Onderwijs en Vorming. Hun
+antwoord van 02/10/2026: het veld werkt zoals bedoeld, enkel de omschrijving in de specificatie
+wordt verduidelijkt. **Er komt dus geen correctie in de data.** De overrides voor de zes
+fusiegemeenten in `scripts/steden.ts` zijn blijvend, en groeperen hoort op niscode te gebeuren,
+nooit op dit naamveld. De actuele gemeentenaam staat wel in het Adressenregister van
+Basisregisters Vlaanderen, via `best_address_id`.
+
 ## Finaliteit is officieel beschikbaar, niet afgeleid
 
 Codes: `DO` Doorstroomfinaliteit, `DU` Dubbele finaliteit, `A` Arbeidsmarktfinaliteit,
