@@ -83,6 +83,29 @@ geen filter op. Beide staan uitgewerkt in [matrix-studiedomein.md](./matrix-stud
 richting, maar de algemene voorwaarden verbieden kopiëren, reproduceren en herdistribueren van
 hun materiaal. **Enkel naar linken mag.** Niet als databron gebruiken.
 
+### OKAPI, de API van Onderwijskiezer (nagekeken 05/10/2026)
+
+Onderwijskiezer heeft een eigen API: <https://okapi.onderwijskiezer.be/>, spec op
+`/swagger/swagger.json` (titel "OKAPI", versie 0.1). Wat de spec effectief bevat:
+
+- Negen GET-endpoints: `/api/beroepen`, `/api/beroepen/{beroepId}`, `/api/clbs`,
+  `/api/clbs/{clbId}`, `/api/instellingclbrelations`, `/api/instellingen`,
+  `/api/instellingen/{instellingId}`, `/api/opleidingen`, `/api/opleidingen/{depCode}`.
+  `/api/instellingen` neemt onder meer `clb_id` en `postcode` als filter.
+- **Geen endpoint voor infomomenten.** Of ze ergens anders in zitten, is niet te zien.
+- Elk endpoint vraagt een `apikey`-header. Zonder key: `401 Unauthorized`.
+- De spec beschrijft **geen responsvelden**. Hoe een CLB-record of een relatie eruitziet, en
+  welke sleutel een instelling heeft (instellingsnummer van Onderwijs of een eigen id), weten
+  we pas met een key. Niet invullen op goed geluk.
+- Key aanvragen bij Geert Wittoek (Vrij CLB Netwerk), `geert.wittoek@vrijclbnetwerk.be`.
+
+**Status: niet bruikbaar tot er schriftelijke toestemming is.** Een API-key verandert de
+voorwaarden van hierboven niet vanzelf. De vraag om toestemming, de infomomenten en een
+eventuele andere bron ligt bij de API-beheerder (mail opgesteld 05/10/2026, nog geen antwoord).
+
+Waarom het interessant is: `/api/instellingclbrelations` zou het CLB per school geven, nuttig
+op de schoolfiche omdat het CLB voor ouders het aanspreekpunt is bij twijfel over de keuze.
+
 ## Licentie van de data zelf
 
 Het API-portaal publiceert **geen expliciete hergebruikslicentie** bij deze producten
