@@ -183,7 +183,11 @@ async function controleer(url) {
     try {
       res = await fetch(url, { ...opties, method: 'GET' })
     } catch (err2) {
-      const reden = err2.name === 'TimeoutError' ? `time-out na ${TIMEOUT_MS / 1000}s` : err2.message
+      // `fetch failed` is de buitenkant; de echte reden (ECONNRESET, ENOTFOUND, een TLS-fout)
+      // zit in `cause`. Zonder die regel meldde de run van 01/10/2026 vier links als dood die
+      // gewoon werkten, en viel er niet uit af te leiden waarom de Action er niet bij kon.
+      const oorzaak = err2.cause instanceof Error ? ` (${err2.cause.message})` : ''
+      const reden = err2.name === 'TimeoutError' ? `time-out na ${TIMEOUT_MS / 1000}s` : `${err2.message}${oorzaak}`
       return { status: 'dood', detail: reden, oorspronkelijk: err.message }
     }
   }

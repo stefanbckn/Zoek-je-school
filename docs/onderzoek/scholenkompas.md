@@ -22,7 +22,7 @@ gewoon secundair onderwijs in Vlaanderen. Geen login.
 
 ```
 https://www.vlaanderen.be/onderwijs-en-vorming/scholenkompas
-→ https://public.tableau.com/views/ScholenKompasSecundair/Landingspagina
+→ https://public.tableau.com/app/profile/departement.onderwijs.vlaamse.overheid/viz/ScholenKompasSecundair/Landingspagina
 ```
 
 Let op: dit staat op **Tableau Public**, niet op de Tableau-server van de overheid waar Dataloep

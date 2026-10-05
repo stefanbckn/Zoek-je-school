@@ -49,7 +49,7 @@ script gebruikt.
 ## De Dataloep-route (per vestigingsplaats, handmatig)
 
 - Bron: **Dataloep Leerlingenkenmerken Secundair**, op de Tableau Server van de overheid:
-  `https://onderwijs-tableau.vlaanderen.be/t/EXTERN/views/DataloepLeerlingenkenmerkenSecundair/SOCijfersperschooljaar`
+  `https://onderwijs-tableau.vlaanderen.be/#/site/EXTERN/views/DataloepLeerlingenkenmerkenSecundair/SOCijfersperschooljaar`
   Publiek, geen login.
 - Zet in het dashboard de uitsplitsing **"instelling | vestigingsplaats adres"**. Rijen zien er
   dan zo uit: `28514 - Provinciaal Instituut PIVA | Antwerpen, Desguinlei 244` met gemiddelde
