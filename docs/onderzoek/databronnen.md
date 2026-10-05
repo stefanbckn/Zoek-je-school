@@ -119,8 +119,22 @@ Onderwijskiezer heeft een eigen API: <https://okapi.onderwijskiezer.be/>, spec o
 - Key aanvragen bij Geert Wittoek (Vrij CLB Netwerk), `geert.wittoek@vrijclbnetwerk.be`.
 
 **Status: niet bruikbaar tot er schriftelijke toestemming is.** Een API-key verandert de
-voorwaarden van hierboven niet vanzelf. De vraag om toestemming, de infomomenten en een
-eventuele andere bron ligt bij de API-beheerder (mail opgesteld 05/10/2026, nog geen antwoord).
+voorwaarden van hierboven niet vanzelf.
+
+**Antwoord van Geert Wittoek (oktober 2026):**
+
+- OKAPI bevat enkel basisinformatie die ook op Onderwijskiezer staat: opleidingen,
+  instellingen, CLB's en beroepen.
+- **De infomomenten zitten er niet in.** Die worden door CLB'ers en scholen ingegeven.
+- Elk gebruik van OKAPI wordt voorgelegd aan hun werkgroep. Er is geen vrije toegang.
+- Onderwijskiezer wordt opnieuw gebouwd met een externe partner, met als doel online in
+  **september 2027**. Daar hoort een nieuwe, wellicht uitgebreidere API bij.
+- Hij vond het nu te vroeg om over OKAPI te beslissen en vroeg om **opnieuw contact op te
+  nemen in maart/april 2027**, wanneer de nieuwe API duidelijker is.
+
+Dus: tot dan niets bouwen op OKAPI, ook de CLB-koppeling niet. In maart/april 2027 dezelfde
+drie vragen opnieuw stellen (hergebruik en voorwaarden, infomomenten in de nieuwe API, CLB per
+school), nu voor de nieuwe API.
 
 Waarom het interessant is: `/api/instellingclbrelations` zou het CLB per school geven, nuttig
 op de schoolfiche omdat het CLB voor ouders het aanspreekpunt is bij twijfel over de keuze.
