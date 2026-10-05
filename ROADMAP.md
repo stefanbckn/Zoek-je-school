@@ -293,8 +293,9 @@ en door Onderwijs Vlaanderen); op een term met intentie erin staat de site wél 
 pagina per stad naar `gemeente/<slug>/index.html`, uit de gecommitte dataset. De uitvoer staat
 niet in git (zie `.gitignore`); `prebuild` en `predev` draaien het script. De stedenlijst staat
 in `scripts/steden.ts`, en `vite.config.ts` leidt daar zijn entry points uit af. Het script
-stopt met een fout zodra een stad niet in `public/sitemap.xml` staat, want dat bestand staat wél
-in git en zou anders stil achterlopen.
+stopte met een fout zodra een stad niet in `public/sitemap.xml` stond, want dat bestand stond toen
+nog in git en zou anders stil achterlopen. Sinds 2.12.0 genereert het script de sitemap zelf uit
+dezelfde lijst als de pagina's; het bestand staat nu in `.gitignore` en die controle is weg.
 
 **Groeperen gebeurt op `niscode`, niet op de naam in `gemeente`.** Dat veld draagt de plaatsnaam
 van de postcode: Brugge staat er als Assebroek, Brugge, Sint-Andries, Sint-Kruis, Sint-Michiels
@@ -422,8 +423,8 @@ dezelfde slug dragen — de tweede `writeFileSync` naar `gemeente/brussel/index.
 dan stil de eerste, zonder foutmelding. Twee dingen die dat voorkomen: de bestaande
 `groepen.namen`-afspraak (`{'21004': 'Brussel-stad'}`) ook als slug voor de eigen
 commune-pagina hergebruiken, én een harde fout in het generatorscript zodra twee entries tot
-dezelfde output-slug leiden — dezelfde aanpak als `controleerSitemap()` nu al voor de sitemap
-toepast.
+dezelfde output-slug leiden. Die harde fout bestaat sinds 2.12.0: `controleerSlugs()` in
+`scripts/genereer-gemeentepaginas.ts`.
 
 **`/gemeente/` blijft een pure ingang, ook op deze schaal.** Zie "Geen link vanaf de zoeker naar
 deze pagina's" hierboven: die beslissing verandert niet zodra het er honderden zijn. Een

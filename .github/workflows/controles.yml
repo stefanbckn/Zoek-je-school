@@ -67,6 +67,12 @@ jobs:
         with:
           node-version: '22'
 
+      # public/sitemap.xml staat sinds 2.12.0 niet meer in git: Netlify maakt hem bij elke build
+      # aan. Zonder deze stap ontbreekt hij hier, en dan controleert de linkcheck de gemeentepagina's
+      # niet. Gewone node draait het .ts-bestand zelf, dus ook hier geen npm ci nodig.
+      - name: Sitemap genereren
+        run: node scripts/genereer-gemeentepaginas.ts > /dev/null
+
       - name: Links controleren
         id: check
         run: |

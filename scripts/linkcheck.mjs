@@ -225,9 +225,14 @@ for (const bron of BRONNEN) {
     let inhoud
     try {
       inhoud = await readFile(join(WORTEL, bestand), 'utf8')
-    } catch {
-      console.warn(`  (overgeslagen, niet leesbaar: ${bestand})`)
-      continue
+    } catch (err) {
+      // Een bron die ontbreekt is een fout in de opzet, geen bevinding. Tot 05/10/2026 stond hier
+      // een waarschuwing en ging het script verder: sinds public/sitemap.xml in 2.12.0
+      // gegenereerd wordt in plaats van gecommit, sloeg de Action die 152 adressen elk kwartaal
+      // stil over. Bij een gegenereerd bestand: draai eerst `npm run genereer-gemeentepaginas`.
+      console.error(`Bron ${bestand} is niet leesbaar (${err.code ?? err.message}).`)
+      console.error('Staat ze in .gitignore, genereer ze dan eerst; is ze hernoemd, pas BRONNEN aan.')
+      process.exit(1)
     }
     for (const url of urlsUit(inhoud)) {
       if (!vindplaatsen.has(url)) vindplaatsen.set(url, new Set())
