@@ -43,6 +43,11 @@ weten terwijl je het script schrijft.
   letterlijk in dat veld (geteld 02/09/2026), want zo houdt de bron gelijknamige scholen uit
   elkaar. **Niet wegpoetsen met een regex**, dan zijn die scholen op het scherm niet meer te
   onderscheiden.
+- **Lees eerst de veldomschrijving in de technische specificatie** voor je een waarde een fout
+  in de bron noemt, in code, documentatie of een mail naar Onderwijs. De PDF's staan per product
+  op het API-portaal. Hier is het misgegaan: `instellingslocatie_gemeente` werd als achterstand
+  na de fusies van 2025 behandeld en zo gemeld, terwijl de specificatie het veld omschrijft als
+  de deelgemeente. Zie "Gemeentenaam" in `docs/onderzoek/databronnen.md`.
 - **Besturen worden in één gepagineerde call opgehaald** (`filter_instelling_type=300`, 928
   records) en lokaal gejoind, niet als 928 losse detailcalls.
 
