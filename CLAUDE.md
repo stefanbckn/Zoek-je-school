@@ -4,6 +4,11 @@ Zoeker voor middelbare scholen (voltijds gewoon secundair onderwijs) in Vlaander
 voor ouders die een school kiezen. Volledig client-side (Vite + React + TypeScript + Tailwind
 v4), gehost op Netlify, zonder backend en zonder database.
 
+## Begin van elke sessie
+
+Kijk met `gh issue list --state open` of er issues openstaan, en meld ze kort in je eerste
+antwoord. Staat er niets open, zeg dat in één zin.
+
 ## Harde productregels
 
 Deze liggen vast. Keer ze niet om zonder de gebruiker.
