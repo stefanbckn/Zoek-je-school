@@ -2366,7 +2366,7 @@
             "domeinCode": "5",
             "studierichtingCode": "1404",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 40824,
@@ -2377,7 +2377,7 @@
             "domeinCode": "8",
             "studierichtingCode": "1259",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 42717,
@@ -2443,7 +2443,18 @@
             "domeinCode": "8",
             "studierichtingCode": "1360",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
+          },
+          {
+            "code": 40382,
+            "naam": "2e leerjaar in de 2e graad Medewerker (banket)bakkerij duaal DBSO",
+            "graad": "Tweede graad",
+            "finaliteit": "Arbeidsmarkt",
+            "onderwijsvorm": "BSO",
+            "domeinCode": "8",
+            "studierichtingCode": "1211",
+            "duaal": true,
+            "inschrijvingenOpen": true
           },
           {
             "code": 41555,
@@ -2564,7 +2575,7 @@
             "domeinCode": "8",
             "studierichtingCode": "1259",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 44023,
@@ -12720,7 +12731,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "03 233 93 20",
-        "email": "Koen.geens@stludgardis.be",
+        "email": "cynthia.vandermeiren@stludgardis.be",
         "website": "https://www.stludgardis.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=127472",
         "statusErkenning": "S",
@@ -16546,6 +16557,17 @@
             "onderwijsvorm": "GSO",
             "domeinCode": "10",
             "studierichtingCode": "1145",
+            "duaal": false,
+            "inschrijvingenOpen": true
+          },
+          {
+            "code": 40151,
+            "naam": "2e leerjaar B Opstroomoptie",
+            "graad": "Eerste graad",
+            "finaliteit": null,
+            "onderwijsvorm": "GSO",
+            "domeinCode": "10",
+            "studierichtingCode": "1151",
             "duaal": false,
             "inschrijvingenOpen": true
           },
@@ -30786,7 +30808,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1112",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 42415,
@@ -30819,7 +30841,7 @@
             "domeinCode": "8",
             "studierichtingCode": "1259",
             "duaal": true,
-            "inschrijvingenOpen": true
+            "inschrijvingenOpen": false
           },
           {
             "code": 40818,
@@ -42271,7 +42293,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1394",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 41333,
@@ -42755,7 +42777,7 @@
             "domeinCode": "8",
             "studierichtingCode": "1259",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 38503,
@@ -43008,7 +43030,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1366",
             "duaal": true,
-            "inschrijvingenOpen": true
+            "inschrijvingenOpen": false
           },
           {
             "code": 41559,
@@ -49034,7 +49056,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1356",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 42558,
@@ -52650,7 +52672,7 @@
             "domeinCode": "5",
             "studierichtingCode": "1134",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43107,
@@ -52947,7 +52969,7 @@
             "domeinCode": "8",
             "studierichtingCode": "1360",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 41554,
@@ -52958,7 +52980,7 @@
             "domeinCode": "5",
             "studierichtingCode": "1362",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 42010,
@@ -52969,6 +52991,17 @@
             "domeinCode": "2",
             "studierichtingCode": "1306",
             "duaal": false,
+            "inschrijvingenOpen": true
+          },
+          {
+            "code": 41557,
+            "naam": "2e leerjaar in de 2e graad Medewerker groen- en tuinbeheer duaal DBSO",
+            "graad": "Tweede graad",
+            "finaliteit": "Arbeidsmarkt",
+            "onderwijsvorm": "BSO",
+            "domeinCode": "4",
+            "studierichtingCode": "1365",
+            "duaal": true,
             "inschrijvingenOpen": true
           },
           {
@@ -53277,7 +53310,7 @@
             "domeinCode": "8",
             "studierichtingCode": "1259",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43554,
@@ -62648,7 +62681,7 @@
             "domeinCode": "5",
             "studierichtingCode": "1271",
             "duaal": false,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43068,
@@ -62659,7 +62692,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1447",
             "duaal": false,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43141,
@@ -62670,7 +62703,7 @@
             "domeinCode": "6",
             "studierichtingCode": "1520",
             "duaal": false,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           }
         ],
         "leerlingenkenmerken": {
@@ -70250,7 +70283,7 @@
         "levensbeschouwing": null,
         "telefoon": "015 20 21 13",
         "email": "info@BAstassart.be",
-        "website": "https://www.busleydenatheneum.be",
+        "website": "https://www.bastassart.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=60831",
         "statusErkenning": "S",
         "scholengemeenschap": "112003",
@@ -75228,7 +75261,7 @@
         "levensbeschouwing": null,
         "telefoon": "015 28 62 60",
         "email": "info@BAstassart.be",
-        "website": "https://www.busleydenatheneum.be",
+        "website": "https://www.bastassart.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=60831",
         "statusErkenning": "S",
         "scholengemeenschap": "112003",
@@ -75757,7 +75790,7 @@
         "levensbeschouwing": null,
         "telefoon": "015 27 56 50",
         "email": "info@BAstassart.be",
-        "website": "https://www.busleydenatheneum.be",
+        "website": "https://www.bastassart.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=60831",
         "statusErkenning": "S",
         "scholengemeenschap": "112003",
@@ -76041,6 +76074,17 @@
             "onderwijsvorm": "BSO",
             "domeinCode": "2",
             "studierichtingCode": "1479",
+            "duaal": false,
+            "inschrijvingenOpen": true
+          },
+          {
+            "code": 43532,
+            "naam": "2e leerjaar in de 3e graad Latijn-Wetenschappen ASO",
+            "graad": "Derde graad",
+            "finaliteit": "Doorstroom",
+            "onderwijsvorm": "ASO",
+            "domeinCode": "9",
+            "studierichtingCode": "1483",
             "duaal": false,
             "inschrijvingenOpen": true
           },
@@ -111837,7 +111881,7 @@
             "domeinCode": "8",
             "studierichtingCode": "1473",
             "duaal": false,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43029,
@@ -115067,7 +115111,7 @@
             "domeinCode": "6",
             "studierichtingCode": "1421",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43479,
@@ -115404,7 +115448,7 @@
             "domeinCode": "10",
             "studierichtingCode": "1144",
             "duaal": false,
-            "inschrijvingenOpen": true
+            "inschrijvingenOpen": false
           },
           {
             "code": 40095,
@@ -115629,7 +115673,7 @@
             "domeinCode": "10",
             "studierichtingCode": "1144",
             "duaal": false,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           }
         ],
         "leerlingenkenmerken": {
@@ -119116,7 +119160,7 @@
             "domeinCode": "9",
             "studierichtingCode": "1482",
             "duaal": false,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43105,
@@ -133021,7 +133065,7 @@
             "domeinCode": "6",
             "studierichtingCode": "1747",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43864,
@@ -134554,6 +134598,17 @@
             "inschrijvingenOpen": true
           },
           {
+            "code": 43082,
+            "naam": "1e leerjaar in de 3e graad Economie-Moderne talen ASO",
+            "graad": "Derde graad",
+            "finaliteit": "Doorstroom",
+            "onderwijsvorm": "ASO",
+            "domeinCode": "9",
+            "studierichtingCode": "1461",
+            "duaal": false,
+            "inschrijvingenOpen": true
+          },
+          {
             "code": 43083,
             "naam": "1e leerjaar in de 3e graad Economie-Wiskunde ASO",
             "graad": "Derde graad",
@@ -134672,7 +134727,7 @@
             "domeinCode": "9",
             "studierichtingCode": "1300",
             "duaal": false,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 42005,
@@ -137860,7 +137915,7 @@
             "domeinCode": "9",
             "studierichtingCode": "1483",
             "duaal": false,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43105,
@@ -142665,7 +142720,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1103",
             "duaal": true,
-            "inschrijvingenOpen": true
+            "inschrijvingenOpen": false
           },
           {
             "code": 42918,
@@ -142742,7 +142797,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1096",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 38502,
@@ -142954,6 +143009,17 @@
             "inschrijvingenOpen": true
           },
           {
+            "code": 42379,
+            "naam": "2e leerjaar in de 2e graad Hoeknaadlasser duaal DBSO",
+            "graad": "Tweede graad",
+            "finaliteit": "Arbeidsmarkt",
+            "onderwijsvorm": "BSO",
+            "domeinCode": "2",
+            "studierichtingCode": "1394",
+            "duaal": true,
+            "inschrijvingenOpen": true
+          },
+          {
             "code": 42383,
             "naam": "2e leerjaar in de 2e graad Installateur elektrotechnische basiscomponenten duaal DBSO",
             "graad": "Tweede graad",
@@ -142962,7 +143028,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1395",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 41554,
@@ -142973,7 +143039,7 @@
             "domeinCode": "5",
             "studierichtingCode": "1362",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 42409,
@@ -143039,7 +143105,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1096",
             "duaal": true,
-            "inschrijvingenOpen": true
+            "inschrijvingenOpen": false
           },
           {
             "code": 42966,
@@ -143203,17 +143269,6 @@
             "onderwijsvorm": "BSO",
             "domeinCode": "2",
             "studierichtingCode": "1239",
-            "duaal": true,
-            "inschrijvingenOpen": true
-          },
-          {
-            "code": 44002,
-            "naam": "7e leerjaar Commercieel assistent duaal CDO",
-            "graad": "Derde graad",
-            "finaliteit": null,
-            "onderwijsvorm": "7DE",
-            "domeinCode": "5",
-            "studierichtingCode": "1710",
             "duaal": true,
             "inschrijvingenOpen": true
           },
@@ -152322,6 +152377,17 @@
             "domeinCode": "2",
             "studierichtingCode": "1463",
             "duaal": false,
+            "inschrijvingenOpen": true
+          },
+          {
+            "code": 38493,
+            "naam": "2e leerjaar in de 3e graad Elektrische installaties duaal BSO",
+            "graad": "Derde graad",
+            "finaliteit": "Arbeidsmarkt",
+            "onderwijsvorm": "BSO",
+            "domeinCode": "2",
+            "studierichtingCode": "1096",
+            "duaal": true,
             "inschrijvingenOpen": true
           },
           {
@@ -167089,7 +167155,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1367",
             "duaal": true,
-            "inschrijvingenOpen": true
+            "inschrijvingenOpen": false
           },
           {
             "code": 42575,
@@ -170630,7 +170696,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1774",
             "duaal": true,
-            "inschrijvingenOpen": true
+            "inschrijvingenOpen": false
           },
           {
             "code": 44070,
@@ -184963,7 +185029,7 @@
         "soortBestuur": "GO!",
         "levensbeschouwing": null,
         "telefoon": "012 23 24 26",
-        "email": "erwin.bogaers@atheneumtungrorum.be",
+        "email": "petra.cornu@atheneumtungrorum.be",
         "website": null,
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=44453",
         "statusErkenning": "S",
@@ -186666,7 +186732,7 @@
         "net": "Vrij gesubsidieerd",
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
-        "telefoon": "012 24 20 75",
+        "telefoon": "012 24 20 70",
         "email": "tongeren@viio.be",
         "website": "https://www.viio.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=125294",
@@ -187163,7 +187229,7 @@
         "soortBestuur": "GO!",
         "levensbeschouwing": null,
         "telefoon": "012 39 89 30",
-        "email": "erwin.bogaers@atheneumtungrorum.be",
+        "email": "petra.cornu@atheneumtungrorum.be",
         "website": null,
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=44453",
         "statusErkenning": "S",
@@ -195459,7 +195525,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1356",
             "duaal": true,
-            "inschrijvingenOpen": true
+            "inschrijvingenOpen": false
           },
           {
             "code": 42558,
@@ -209276,7 +209342,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1730",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43796,
@@ -220738,7 +220804,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "09 222 37 82",
-        "email": "dieter.probst@benedictuspoort.be",
+        "email": "campus.dedeyne@benedictuspoort.be",
         "website": "https://www.benedictuspoort.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=126433",
         "statusErkenning": "S",
@@ -222091,7 +222157,7 @@
             "domeinCode": "8",
             "studierichtingCode": "1363",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 42566,
@@ -240684,7 +240750,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "09 231 23 48",
-        "email": "dieter.probst@benedictuspoort.be",
+        "email": "campus.dedeyne@benedictuspoort.be",
         "website": "https://www.benedictuspoort.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=126433",
         "statusErkenning": "S",
@@ -240909,7 +240975,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "09 231 23 48",
-        "email": "soren.delclef@benedictuspoort.be",
+        "email": "campus.ledeberg@benedictuspoort.be",
         "website": "https://www.benedictuspoort.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=126441",
         "statusErkenning": "S",
@@ -244290,7 +244356,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1381",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43084,
@@ -267179,6 +267245,17 @@
             "inschrijvingenOpen": true
           },
           {
+            "code": 43925,
+            "naam": "7e leerjaar Elektromecanicien duaal",
+            "graad": "Derde graad",
+            "finaliteit": null,
+            "onderwijsvorm": "7DE",
+            "domeinCode": "2",
+            "studierichtingCode": "1716",
+            "duaal": true,
+            "inschrijvingenOpen": true
+          },
+          {
             "code": 43926,
             "naam": "7e leerjaar Elektrotechnicus duaal",
             "graad": "Derde graad",
@@ -289859,7 +289936,7 @@
             "domeinCode": "5",
             "studierichtingCode": "1419",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 42846,
@@ -299824,7 +299901,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1708",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           }
         ],
         "leerlingenkenmerken": {
@@ -303634,17 +303711,6 @@
         "scholengemeenschap": "111591",
         "richtingen": [
           {
-            "code": 41337,
-            "naam": "1e leerjaar in de 2e graad Latijn ASO",
-            "graad": "Tweede graad",
-            "finaliteit": "Doorstroom",
-            "onderwijsvorm": "ASO",
-            "domeinCode": "9",
-            "studierichtingCode": "1301",
-            "duaal": false,
-            "inschrijvingenOpen": true
-          },
-          {
             "code": 6246,
             "naam": "1ste leerjaar A",
             "graad": "Eerste graad",
@@ -306319,7 +306385,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "016 76 75 21",
-        "email": "derdegraad@viatienen.be",
+        "email": "viaderdegraad@aurascholen.be",
         "website": "https://www.viatienen.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=110321",
         "statusErkenning": "S",
@@ -307723,7 +307789,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1381",
             "duaal": true,
-            "inschrijvingenOpen": true
+            "inschrijvingenOpen": false
           },
           {
             "code": 42509,
@@ -329918,7 +329984,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "016 81 28 15",
-        "email": "derdegraad@viatienen.be",
+        "email": "viaderdegraad@aurascholen.be",
         "website": "https://www.viatienen.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=110321",
         "statusErkenning": "S",
@@ -329944,7 +330010,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "016 81 28 15",
-        "email": "eerstegraad@viatienen.be",
+        "email": "viaeerstegraad@aurascholen.be",
         "website": "https://www.viatienen.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=110338",
         "statusErkenning": "S",
@@ -329970,7 +330036,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "016 81 28 15",
-        "email": "tweedegraad@viatienen.be",
+        "email": "viatweedegraad@aurascholen.be",
         "website": "https://www.viatienen.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=127886",
         "statusErkenning": "S",
@@ -330214,7 +330280,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "016 81 14 09",
-        "email": "derdegraad@viatienen.be",
+        "email": "viaderdegraad@aurascholen.be",
         "website": "https://www.viatienen.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=110321",
         "statusErkenning": "S",
@@ -330626,7 +330692,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "016 81 14 09",
-        "email": "tweedegraad@viatienen.be",
+        "email": "viatweedegraad@aurascholen.be",
         "website": "https://www.viatienen.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=127886",
         "statusErkenning": "S",
@@ -330985,7 +331051,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "016 81 14 09",
-        "email": "derdegraad@viatienen.be",
+        "email": "viaderdegraad@aurascholen.be",
         "website": "https://www.viatienen.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=110321",
         "statusErkenning": "S",
@@ -331034,7 +331100,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "016 81 98 01",
-        "email": "tweedegraad@viatienen.be",
+        "email": "viatweedegraad@aurascholen.be",
         "website": "https://www.viatienen.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=127886",
         "statusErkenning": "S",
@@ -331118,7 +331184,7 @@
         "soortBestuur": "Vrij",
         "levensbeschouwing": "Katholiek",
         "telefoon": "016 81 28 15",
-        "email": "eerstegraad@viatienen.be",
+        "email": "viaeerstegraad@aurascholen.be",
         "website": "https://www.viatienen.be",
         "linkFiche": "https://data-onderwijs.vlaanderen.be/onderwijsaanbod/instelling?sn=110338",
         "statusErkenning": "S",
@@ -359551,6 +359617,17 @@
             "inschrijvingenOpen": true
           },
           {
+            "code": 42061,
+            "naam": "2e leerjaar in de 3e graad Binnenschrijnwerk en interieur duaal BSO",
+            "graad": "Derde graad",
+            "finaliteit": "Arbeidsmarkt",
+            "onderwijsvorm": "BSO",
+            "domeinCode": "2",
+            "studierichtingCode": "1382",
+            "duaal": true,
+            "inschrijvingenOpen": true
+          },
+          {
             "code": 43512,
             "naam": "2e leerjaar in de 3e graad Elektrische installaties BSO",
             "graad": "Derde graad",
@@ -377951,17 +378028,6 @@
             "inschrijvingenOpen": true
           },
           {
-            "code": 42925,
-            "naam": "1e leerjaar in de 3e graad Aanloop Ruwbouw duaal DBSO",
-            "graad": "Derde graad",
-            "finaliteit": "Arbeidsmarkt",
-            "onderwijsvorm": "BSO",
-            "domeinCode": "2",
-            "studierichtingCode": "1098",
-            "duaal": true,
-            "inschrijvingenOpen": false
-          },
-          {
             "code": 42339,
             "naam": "1e leerjaar in de 3e graad Binnenschrijnwerk en interieur duaal DBSO",
             "graad": "Derde graad",
@@ -377981,7 +378047,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1533",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 38501,
@@ -378002,17 +378068,6 @@
             "onderwijsvorm": "BSO",
             "domeinCode": "2",
             "studierichtingCode": "1112",
-            "duaal": true,
-            "inschrijvingenOpen": false
-          },
-          {
-            "code": 38503,
-            "naam": "1e leerjaar in de 3e graad Ruwbouw duaal DBSO",
-            "graad": "Derde graad",
-            "finaliteit": "Arbeidsmarkt",
-            "onderwijsvorm": "BSO",
-            "domeinCode": "2",
-            "studierichtingCode": "1098",
             "duaal": true,
             "inschrijvingenOpen": false
           },
@@ -378918,7 +378973,7 @@
             "domeinCode": "10",
             "studierichtingCode": "1146",
             "duaal": false,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 40099,
@@ -387671,7 +387726,7 @@
             "domeinCode": "4",
             "studierichtingCode": "1114",
             "duaal": true,
-            "inschrijvingenOpen": false
+            "inschrijvingenOpen": true
           },
           {
             "code": 43109,
@@ -387726,7 +387781,7 @@
             "domeinCode": "2",
             "studierichtingCode": "1098",
             "duaal": true,
-            "inschrijvingenOpen": true
+            "inschrijvingenOpen": false
           },
           {
             "code": 43132,
@@ -387859,6 +387914,17 @@
             "studierichtingCode": "1360",
             "duaal": true,
             "inschrijvingenOpen": false
+          },
+          {
+            "code": 41557,
+            "naam": "2e leerjaar in de 2e graad Medewerker groen- en tuinbeheer duaal DBSO",
+            "graad": "Tweede graad",
+            "finaliteit": "Arbeidsmarkt",
+            "onderwijsvorm": "BSO",
+            "domeinCode": "4",
+            "studierichtingCode": "1365",
+            "duaal": true,
+            "inschrijvingenOpen": true
           },
           {
             "code": 41559,
@@ -388165,6 +388231,17 @@
             "onderwijsvorm": "BSO",
             "domeinCode": "5",
             "studierichtingCode": "1404",
+            "duaal": true,
+            "inschrijvingenOpen": true
+          },
+          {
+            "code": 40857,
+            "naam": "2e leerjaar in de 3e graad Restaurant en keuken duaal DBSO",
+            "graad": "Derde graad",
+            "finaliteit": "Arbeidsmarkt",
+            "onderwijsvorm": "BSO",
+            "domeinCode": "8",
+            "studierichtingCode": "1259",
             "duaal": true,
             "inschrijvingenOpen": true
           },
@@ -390602,17 +390679,6 @@
             "domeinCode": "2",
             "studierichtingCode": "1444",
             "duaal": false,
-            "inschrijvingenOpen": true
-          },
-          {
-            "code": 42057,
-            "naam": "2e leerjaar in de 3e graad Binnen- en buitenschrijnwerk duaal BSO",
-            "graad": "Derde graad",
-            "finaliteit": "Arbeidsmarkt",
-            "onderwijsvorm": "BSO",
-            "domeinCode": "2",
-            "studierichtingCode": "1381",
-            "duaal": true,
             "inschrijvingenOpen": true
           },
           {
@@ -396587,8 +396653,8 @@
     "gemeente": "Sint-Andries",
     "niscode": "31005",
     "provincie": "West-Vlaanderen",
-    "lat": 51.19881,
-    "lon": 3.18565,
+    "lat": 51.19888,
+    "lon": 3.18554,
     "scholen": [
       {
         "id": "34306-3",
@@ -397178,8 +397244,8 @@
     "gemeente": "Sint-Andries",
     "niscode": "31005",
     "provincie": "West-Vlaanderen",
-    "lat": 51.19169,
-    "lon": 3.21585,
+    "lat": 51.19166,
+    "lon": 3.21561,
     "scholen": [
       {
         "id": "42085-4",
@@ -402792,8 +402858,8 @@
     "gemeente": "Sint-Michiels",
     "niscode": "31005",
     "provincie": "West-Vlaanderen",
-    "lat": 51.1901,
-    "lon": 3.21676,
+    "lat": 51.18996,
+    "lon": 3.2166,
     "scholen": [
       {
         "id": "48769-1",

@@ -1456,7 +1456,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 14
+    "aantalAdressen": 13
   },
   {
     "code": "1453",
@@ -2171,7 +2171,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 36
+    "aantalAdressen": 37
   },
   {
     "code": "1591",
@@ -2197,7 +2197,7 @@
     ],
     "duaal": true,
     "zevendeLeerjaar": true,
-    "aantalAdressen": 6
+    "aantalAdressen": 7
   },
   {
     "code": "1289",
@@ -5022,7 +5022,7 @@
     ],
     "duaal": false,
     "zevendeLeerjaar": false,
-    "aantalAdressen": 63
+    "aantalAdressen": 64
   },
   {
     "code": "1202",
