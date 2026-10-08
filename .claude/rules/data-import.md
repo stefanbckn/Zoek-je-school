@@ -106,6 +106,20 @@ veld. `onderwijsvorm` bewaren we apart omdat ouders die termen nog kennen.
   dependency). Wat er niet in zit: formules, datumopmaak, meerdere werkbladen, zip64. Heb je dat
   nodig, neem dan een echte bibliotheek. Niet dit uitbreiden.
 
+## Schema's op de responses
+
+Sinds 2.13.3 gaat elk record door een valibot-schema in `scripts/api-schemas.ts` voor er iets
+gemapt wordt. Wat daarbij vastligt:
+
+- **Een veld erbij gebruiken = het eerst in het schema zetten.** `v.object` laat onbekende
+  sleutels vallen, dus een veld dat niet in het schema staat, is in `fetch-data.ts` gewoon
+  `undefined`. TypeScript zegt dat ook, want de records zijn getypeerd en niet meer `any`.
+- **Verplicht of optioneel meet je op een live respons**, niet op de specificatie en niet op
+  gevoel. Een veld dat soms ontbreekt, is `v.nullish`; zet het dan ook in `OPTIONELE_VELDEN`,
+  anders vangt niets het op wanneer het hernoemd wordt.
+- **Faalt de validatie, dan is de bron veranderd.** Niet het schema losser maken tot het past:
+  eerst een live respons nakijken, dan beslissen.
+
 ## Wanneer draait dit script
 
 **Niet bij elke build.** `public/data/*.json` staat bewust in git en is de primaire bron voor

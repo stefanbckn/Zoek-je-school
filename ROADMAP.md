@@ -85,7 +85,6 @@ mét die beperking erbij.
 | 3 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | *Nice to have.* **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
 | 4 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af, en hun API (OKAPI) bevat ze niet (bevestigd door de beheerder, oktober 2026). **Volgende stap: maart/april 2027** opnieuw contact opnemen over de nieuwe Onderwijskiezer-API, die tegen september 2027 komt. Dan ook de CLB per school meevragen. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Tot dan valt er niets te bouwen |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
-| 6 | Kwaliteitsbewaking | Schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** CI sinds 2.13.1, tests sinds 2.13.2. Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -189,7 +188,7 @@ vergelijkingstabel hoort het voorlopig niet thuis, daar staat het aanbod al per 
 
 Eén thema, want de losse stukken hangen samen: zonder CI draait er niets automatisch, en zonder
 tests bewaakt die CI niets dat de build niet al bewaakt. Stap 1 is uitgebracht in 2.13.1, stap 2
-in 2.13.2.
+in 2.13.2, stap 3 in 2.13.3. Daarmee is het thema af; wat er nog zou kunnen, staat onderaan.
 
 **De aanleiding.** Op 01/09/2026 draaide er niets automatisch. Sinds 04/09/2026 doet
 `controles.yml` de kleurcheck bij een PR die aan `src/index.css` komt, en per kwartaal de
@@ -235,17 +234,25 @@ een nieuwe test komt er wanneer er iets misgaat dat een test had kunnen vangen.
 - **Nagekeken dat ze iets vangen:** de UTC-tijdstempel, de lat/lon-volgorde en de netmigratie
   teruggezet, en telkens werd de suite rood.
 
-### Stap 3: schemavalidatie op de API-responses (valibot)
+### Stap 3: schemavalidatie op de API-responses (uitgebracht in 2.13.3)
 
-Alleen in `scripts/fetch-data.ts`, want daar zit de enige echt onbetrouwbare grens. Hernoemt
-Onderwijs en Vorming een veld, dan schrijft het script nu stil `null` weg; de omvangcontrole van
-15% vangt alleen krimp, niet stille verarming. Een schema per endpoint maakt daar een luide fout
-van.
+`scripts/api-schemas.ts` beschrijft per endpoint de velden die `fetch-data.ts` leest. Elk record
+moet erin passen, en een optioneel veld dat in geen enkel record meer voorkomt, geeft ook een
+fout: een hernoemd optioneel veld ontbreekt anders gewoon overal, en dat vindt een schema
+geldig. De werkregels staan in `.claude/rules/data-import.md`.
 
-**Niet client-side gebruiken.** `public/data/vestigingen.json` maakt je eigen script; die 4 MB
-opnieuw valideren in de browser kost bundle en parsetijd voor nul winst. Valibot is boven zod de
-juiste keuze vanwege tree-shaking, al speelt dat in een buildscript niet eens. Laatste versie op
-npm: 1.4.2 (nagekeken 01/09/2026).
+- **Verplicht of optioneel is gemeten** op een live respons van 08/10/2026, met het aantal
+  records zonder erbij in het schema. Geen enkel veld kwam als `null` terug; ontbrekende velden
+  ontbreken echt.
+- **Bewezen zonder gedragswijziging:** de oude en de nieuwe versie van het script schreven op
+  dezelfde dag byte voor byte dezelfde data weg, op het tijdstip in `meta.json` na.
+- **Enkel in het buildscript, niet in de browser.** `vestigingen.json` maakt ons eigen script;
+  die opnieuw valideren kost bundle en parsetijd voor nul winst.
+
+**Wat er nog kan, niet gepland.** De codes zelf worden niet gecontroleerd: een nieuwe
+finaliteitscode of bestuurssoort valt vandaag stil terug op `null`, net als voor 2.13.3. Een
+`v.picklist` zou dat luid maken, maar dan stopt de kwartaalverversing ook op een onschuldige
+nieuwe code. Pas doen als het eens misgaat.
 
 ### Wat er bewust NIET in zit
 
