@@ -12,6 +12,19 @@ import type {
   Studierichting,
 } from '../src/types.ts'
 import { adresSleutel } from './adres.ts'
+import * as v from 'valibot'
+import {
+  Bestuur,
+  BronVeranderd,
+  CatalogusRichting,
+  IngerichteRichting,
+  Instelling,
+  Locatie,
+  OPTIONELE_VELDEN,
+  Pagina,
+  controleerAanwezigheid,
+  valideer,
+} from './api-schemas.ts'
 import { haalLeerlingenkenmerken, type KenmerkenDataset } from './leerlingenkenmerken.ts'
 
 // Laad .env.local (voorrang) en .env. Node 21+ heeft loadEnvFile ingebouwd — geen dotenv nodig.
@@ -63,11 +76,6 @@ const OUTPUT_DIR = path.resolve(import.meta.dirname, '../public/data')
 
 // --- API-client ------------------------------------------------------------------------
 
-interface Pagina<T> {
-  meta: { total_elements: number; total_pages: number; number: number; last: boolean }
-  content: T[]
-}
-
 function apiKey(): string {
   const key = process.env.ONDERWIJS_API_KEY
   if (!key) {
@@ -79,22 +87,34 @@ function apiKey(): string {
   return key
 }
 
-async function haalPagina<T>(url: string): Promise<Pagina<T>> {
+async function haalPagina(url: string): Promise<v.InferOutput<typeof Pagina>> {
   const pogingen = 3
   let laatsteFout: unknown
   for (let i = 1; i <= pogingen; i++) {
+    let json: unknown
     try {
       const res = await fetch(url, {
         // Auth via header, niet via ?apikey= — anders staat de key in serverlogs en referers.
         headers: { 'x-api-key': apiKey(), accept: 'application/json' },
       })
       if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText} — ${(await res.text()).slice(0, 300)}`)
-      return (await res.json()) as Pagina<T>
+      json = await res.json()
     } catch (err) {
       laatsteFout = err
       console.warn(`  poging ${i}/${pogingen} mislukt: ${err instanceof Error ? err.message : err}`)
       if (i < pogingen) await new Promise((r) => setTimeout(r, i * 2000))
+      continue
     }
+    // Buiten de try: een envelop in een andere vorm is geen tijdelijke fout, opnieuw proberen
+    // geeft hetzelfde antwoord.
+    const envelop = v.safeParse(Pagina, json)
+    if (!envelop.success) {
+      const issue = envelop.issues[0]
+      throw new BronVeranderd(
+        `Onverwachte envelop van ${url}: veld ${v.getDotPath(issue) ?? '(respons zelf)'}: ${issue.message}`,
+      )
+    }
+    return envelop.output
   }
   throw laatsteFout
 }
@@ -103,14 +123,14 @@ async function haalPagina<T>(url: string): Promise<Pagina<T>> {
  * Haalt alle pagina's op. Let op: de paginatieparameter is `page` — `number` wordt stil
  * genegeerd en levert dan eindeloos pagina 1 op (geverifieerd, zie .claude/rules/data-import.md).
  */
-async function haalAlles<T>(label: string, basisUrl: string, params: Record<string, string> = {}): Promise<T[]> {
-  const alles: T[] = []
+async function haalAlles(label: string, basisUrl: string, params: Record<string, string> = {}): Promise<unknown[]> {
+  const alles: unknown[] = []
   for (let p = 1; ; p++) {
     const url = new URL(basisUrl)
     for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v)
     url.searchParams.set('size', '5000')
     url.searchParams.set('page', String(p))
-    const pagina = await haalPagina<T>(url.toString())
+    const pagina = await haalPagina(url.toString())
     alles.push(...pagina.content)
     if (pagina.meta.last || p >= pagina.meta.total_pages) break
   }
@@ -129,7 +149,7 @@ async function haalAlles<T>(label: string, basisUrl: string, params: Record<stri
  * Bewust "Gemeentelijk" en niet "Stedelijk": van de 63 gemeentelijke vestigingen in de provincie
  * liggen er 13 in Brasschaat, Duffel, Kalmthout, Nijlen en Zandhoven. Dat zijn geen steden.
  */
-function mapNet(omschrijving: string | undefined, soortBestuur: SoortBestuur | null): Net {
+function mapNet(omschrijving: string | null | undefined, soortBestuur: SoortBestuur | null): Net {
   switch (omschrijving) {
     case 'Gemeenschapsonderwijs':
       return 'GO!'
@@ -174,7 +194,7 @@ const FINALITEIT: Record<string, Finaliteit> = {
  */
 function verzamelStudierichting(
   catalogus: Map<string, Studierichting>,
-  cat: any,
+  cat: v.InferOutput<typeof CatalogusRichting>,
 ): void {
   const sr = cat.administratievegroep_studierichting
   if (!sr) return
@@ -204,13 +224,13 @@ function verzamelStudierichting(
   })
 }
 
-function normalizeWebsite(raw: string | undefined): string | null {
+function normalizeWebsite(raw: string | null | undefined): string | null {
   const trimmed = raw?.trim()
   if (!trimmed) return null
   return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`
 }
 
-function orNull(raw: string | undefined): string | null {
+function orNull(raw: string | null | undefined): string | null {
   const trimmed = raw?.trim()
   return trimmed ? trimmed : null
 }
@@ -235,6 +255,16 @@ async function bestaandeMeta(): Promise<DatasetMeta | null> {
   } catch {
     return null
   }
+}
+
+/**
+ * Een gele melding bovenaan de run in GitHub Actions, voor wat geen reden is om te stoppen maar
+ * wel gezien moet worden. De run blijft groen en GitHub stuurt er geen mail voor; enkel een rode
+ * run doet dat. Daarom enkel voor de leerlingenkenmerken, waar de terugval een bewuste keuze is.
+ * Buiten Actions doet dit niets: daar staat de waarschuwing al in de gewone uitvoer.
+ */
+function waarschuwInActions(tekst: string): void {
+  if (process.env.GITHUB_ACTIONS === 'true') console.log(`::warning title=Leerlingenkenmerken::${tekst}`)
 }
 
 /**
@@ -309,16 +339,28 @@ async function controleerOmvang(nieuweCampussen: Campus[]): Promise<void> {
 async function bouwDataset() {
   console.log('Ophalen via de API van Onderwijs en Vorming...')
 
-  let [locaties, instellingen, besturen, ingericht, catalogus, kenmerken] = await Promise.all([
-    haalAlles<any>('vestigingsplaatsen (311)', EP.locaties, {
-      filter_instellingslocatie_hoofdstructuur: HOOFDSTRUCTUUR_VOLTIJDS_SO,
-    }),
-    haalAlles<any>('instellingen SO', EP.instellingen, { filter_instelling_niveau: 'SO' }),
-    haalAlles<any>('schoolbesturen', EP.instellingen, { filter_instelling_type: TYPE_BESTUUR }),
-    haalAlles<any>('ingericht aanbod', EP.ingerichtAanbod),
-    haalAlles<any>('richtingencatalogus', EP.catalogus),
-    haalLeerlingenkenmerken(),
-  ])
+  let [ruweLocaties, ruweInstellingen, ruweBesturen, ruwIngericht, ruweCatalogus, kenmerken] =
+    await Promise.all([
+      haalAlles('vestigingsplaatsen (311)', EP.locaties, {
+        filter_instellingslocatie_hoofdstructuur: HOOFDSTRUCTUUR_VOLTIJDS_SO,
+      }),
+      haalAlles('instellingen SO', EP.instellingen, { filter_instelling_niveau: 'SO' }),
+      haalAlles('schoolbesturen', EP.instellingen, { filter_instelling_type: TYPE_BESTUUR }),
+      haalAlles('ingericht aanbod', EP.ingerichtAanbod),
+      haalAlles('richtingencatalogus', EP.catalogus),
+      haalLeerlingenkenmerken(),
+    ])
+
+  // Vóór er iets gemapt wordt: past elk record in het schema, en staat elk optioneel veld er
+  // nog minstens één keer in? Zie scripts/api-schemas.ts.
+  controleerAanwezigheid('vestigingsplaatsen', ruweLocaties, [...OPTIONELE_VELDEN.locaties])
+  controleerAanwezigheid('instellingen', ruweInstellingen, [...OPTIONELE_VELDEN.instellingen])
+  controleerAanwezigheid('richtingencatalogus', ruweCatalogus, [...OPTIONELE_VELDEN.catalogus])
+  const locaties = valideer('vestigingsplaatsen', Locatie, ruweLocaties)
+  const instellingen = valideer('instellingen', Instelling, ruweInstellingen)
+  const besturen = valideer('schoolbesturen', Bestuur, ruweBesturen)
+  const ingericht = valideer('ingericht aanbod', IngerichteRichting, ruwIngericht)
+  const catalogus = valideer('richtingencatalogus', CatalogusRichting, ruweCatalogus)
 
   if (!kenmerken) {
     kenmerken = await kenmerkenUitVorigeDataset()
@@ -327,12 +369,17 @@ async function bouwDataset() {
         `Let op: leerlingenkenmerken niet opgehaald — de cijfers uit de vorige dataset ` +
           `(${kenmerken.schooljaar}) blijven staan. Kijk de reden hierboven na.`,
       )
+      waarschuwInActions(
+        `Niet opgehaald; de cijfers van ${kenmerken.schooljaar} uit de vorige dataset blijven staan.`,
+      )
+    } else {
+      waarschuwInActions('Niet opgehaald en geen vorige cijfers: het blok valt weg op de site.')
     }
   }
 
-  const instellingPerNr = new Map<number, any>(instellingen.map((i) => [i.instelling_nummer, i]))
-  const bestuurPerNr = new Map<number, any>(besturen.map((b) => [b.instelling_nummer, b]))
-  const richtingPerCode = new Map<number, any>(catalogus.map((c) => [c.administratievegroep_code, c]))
+  const instellingPerNr = new Map(instellingen.map((i) => [i.instelling_nummer, i]))
+  const bestuurPerNr = new Map(besturen.map((b) => [b.instelling_nummer, b]))
+  const richtingPerCode = new Map(catalogus.map((c) => [c.administratievegroep_code, c]))
 
   // Sinds 0.12.0 gaat heel Vlaanderen en Brussel mee. Tot dan werd hier op één provincie
   // gefilterd en ging ruim driekwart van de opgehaalde data meteen de vuilnisbak in.
@@ -398,7 +445,8 @@ async function bouwDataset() {
     const heeftCoordinaten = loc.gps_breedtegraad != null && loc.gps_lengtegraad != null
     if (!heeftCoordinaten) zonderCoordinaten++
 
-    const soortBestuur = SOORT_BESTUUR[bestuur?.instelling_soort_bestuur?.code] ?? null
+    const bestuurCode = bestuur?.instelling_soort_bestuur.code
+    const soortBestuur = (bestuurCode ? SOORT_BESTUUR[bestuurCode] : undefined) ?? null
     const vpl = String(loc.instellingslocatie_vestigingsnummer)
     const richtingen = aanbodPerVestiging.get(`${loc.instelling_nummer}-${vpl}`) ?? []
     if (richtingen.length === 0) zonderAanbod++
@@ -433,7 +481,7 @@ async function bouwDataset() {
     // nog steeds dezelfde campus.
     const provincie = PROVINCIES[loc.instellingslocatie_provincie]
     if (!provincie) {
-      throw new Error(
+      throw new BronVeranderd(
         `Onbekende provincie "${loc.instellingslocatie_provincie}" bij instelling ` +
           `${loc.instelling_nummer}. De bron is veranderd — vul PROVINCIES aan in plaats van ` +
           'deze vestiging over te slaan.',
@@ -455,8 +503,8 @@ async function bouwDataset() {
         gemeente: loc.instellingslocatie_gemeente ?? '',
         niscode: String(loc.instellingslocatie_gemeente_nis ?? ''),
         provincie,
-        lat: heeftCoordinaten ? loc.gps_breedtegraad : null,
-        lon: heeftCoordinaten ? loc.gps_lengtegraad : null,
+        lat: heeftCoordinaten ? (loc.gps_breedtegraad ?? null) : null,
+        lon: heeftCoordinaten ? (loc.gps_lengtegraad ?? null) : null,
         scholen: [],
       }
       campussenPerAdres.set(adresKey, campus)
@@ -566,11 +614,19 @@ async function main() {
   // --force slaat de omvangcontrole over. Bewust een expliciete handeling: de controle
   // bestaat net om een ongesuperviseerde run te stoppen.
   const force = process.argv.includes('--force')
+  // --streng schakelt de terugval op de oude dataset uit: elke ophaalfout wordt exitcode 1. De
+  // GitHub Action geeft dit altijd mee. Daar valt een terugval op exitcode 0 niemand op, en
+  // staat er na een paar mislukte kwartalen stil data van een jaar oud online. Lokaal blijft
+  // de terugval handig wanneer de API even hapert.
+  const streng = process.argv.includes('--streng')
 
   let resultaat: Awaited<ReturnType<typeof bouwDataset>>
   try {
     resultaat = await bouwDataset()
   } catch (err) {
+    // De bron heeft een andere vorm: geen terugval, want dan eindigt de run groen en ziet
+    // niemand het. Zie BronVeranderd in scripts/api-schemas.ts.
+    if (err instanceof BronVeranderd || streng) throw err
     // Geen verse data. Ligt er een gecommitte dataset, dan bouwen we daarmee verder: een
     // hikkende API mag geen deploy tegenhouden. De footer toont de ophaaldatum uit meta.json,
     // dus verouderde data blijft zichtbaar voor de bezoeker.

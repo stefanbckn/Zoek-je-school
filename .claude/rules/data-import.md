@@ -106,6 +106,20 @@ veld. `onderwijsvorm` bewaren we apart omdat ouders die termen nog kennen.
   dependency). Wat er niet in zit: formules, datumopmaak, meerdere werkbladen, zip64. Heb je dat
   nodig, neem dan een echte bibliotheek. Niet dit uitbreiden.
 
+## Schema's op de responses
+
+Sinds 2.13.3 gaat elk record door een valibot-schema in `scripts/api-schemas.ts` voor er iets
+gemapt wordt. Wat daarbij vastligt:
+
+- **Een veld erbij gebruiken = het eerst in het schema zetten.** `v.object` laat onbekende
+  sleutels vallen, dus een veld dat niet in het schema staat, is in `fetch-data.ts` gewoon
+  `undefined`. TypeScript zegt dat ook, want de records zijn getypeerd en niet meer `any`.
+- **Verplicht of optioneel meet je op een live respons**, niet op de specificatie en niet op
+  gevoel. Een veld dat soms ontbreekt, is `v.nullish`; zet het dan ook in `OPTIONELE_VELDEN`,
+  anders vangt niets het op wanneer het hernoemd wordt.
+- **Faalt de validatie, dan is de bron veranderd.** Niet het schema losser maken tot het past:
+  eerst een live respons nakijken, dan beslissen.
+
 ## Wanneer draait dit script
 
 **Niet bij elke build.** `public/data/*.json` staat bewust in git en is de primaire bron voor
@@ -113,6 +127,18 @@ veld. `onderwijsvorm` bewaren we apart omdat ouders die termen nog kennen.
 
 Faalt het ophalen tóch, dan valt het script terug op de gecommitte dataset met een luide
 waarschuwing. Ligt er géén dataset, dan faalt het hard.
+
+**Uitzondering: `BronVeranderd`** (schemafout, onbekende provincie). Die valt nooit terug,
+maar stopt met exitcode 1. Een terugval eindigt op exitcode 0, en dan draait de
+kwartaalverversing groen met "ongewijzigd" terwijl de bron van vorm veranderd is. Zo ging het
+tot 2.13.3 ook met de onbekende provincie: de regel hierboven noemde die een harde fout, maar de
+terugval ving hem op.
+
+**In de GitHub Action valt er nooit iets terug.** Die draait `fetch-data -- --streng`, en dan
+wordt elke ophaalfout exitcode 1: een rode run, en dus een mail van GitHub. Lokaal, zonder de
+vlag, blijft de terugval bestaan. De leerlingenkenmerken vallen wél nog terug op de vorige
+cijfers (zie hierboven), maar in Actions zetten ze dan een gele `::warning::` bovenaan de run.
+Geel geeft geen mail; enkel rood doet dat.
 
 **Omvangcontrole:** het script weigert weg te schrijven als het aantal vestigingen meer dan 15%
 kleiner is dan in de gecommitte dataset, en eindigt met exitcode 1. Dat vangnet bestaat omdat

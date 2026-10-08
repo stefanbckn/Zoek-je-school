@@ -8,6 +8,19 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.13.3 — 8 oktober 2026
+
+De laatste van drie onderhoudsversies. Op de site zelf zie je niets veranderen.
+
+**Achter de schermen**
+
+- **De scholendata wordt bij het ophalen nagekeken.** Verandert Onderwijs Vlaanderen de vorm
+  van de gegevens, bijvoorbeeld door een veld te hernoemen, dan stopt de verversing met een
+  foutmelding. Voordien kon er dan stil een lege waarde in de dataset belanden, zoals een
+  school zonder net of een richting zonder graad.
+- **Een mislukte verversing valt nu op.** Lukt het ophalen niet, dan bleef de site tot nu stil
+  op de vorige gegevens staan. Nu krijgen we daar een melding van.
+
 ## 2.13.2 — 8 oktober 2026
 
 Ook nu verandert er niets aan de site zelf. Een handvol dingen die eerder al eens stukgingen,

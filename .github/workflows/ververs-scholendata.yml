@@ -62,7 +62,9 @@ jobs:
           fi
           # De omvangcontrole in het script stopt de run als de dataset onverwacht krimpt.
           # Dat is met opzet: liever een gefaalde run dan een stille commit van halve data.
-          npm run fetch-data ${{ inputs.force && '-- --force' || '' }} 2>&1 | tee /tmp/fetch-log.txt
+          # --streng: een mislukte ophaling maakt de run rood (en dus een mail), in plaats van
+          # stil terug te vallen op de oude dataset. Zie main() in scripts/fetch-data.ts.
+          npm run fetch-data -- --streng ${{ inputs.force && '--force' || '' }} 2>&1 | tee /tmp/fetch-log.txt
 
       - name: Build controleren
         # Verse data mag de site niet breken. Faalt dit, dan komt er geen PR.
