@@ -3,7 +3,7 @@
 [![netlify](https://img.shields.io/netlify/a71213ec-47f4-42c4-bbd5-a252e68f2d2e?label=netlify&logo=netlify&style=flat)](https://app.netlify.com/projects/zoekjeschool/deploys)
 [![build & tests](https://img.shields.io/github/actions/workflow/status/stefanbckn/Zoek-je-school/ci.yml?branch=main&label=build%20%26%20tests&logo=githubactions&style=flat)](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/ci.yml)
 [![links & kleuren](https://img.shields.io/github/actions/workflow/status/stefanbckn/Zoek-je-school/controles.yml?branch=main&label=links%20%26%20kleuren&logo=githubactions&style=flat)](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/controles.yml)
-[![versie](https://img.shields.io/github/v/release/stefanbckn/Zoek-je-school?label=versie&logo=github&color=blue&style=flat)](https://github.com/stefanbckn/Zoek-je-school/releases/latest)
+[![versie](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fstefanbckn%2FZoek-je-school%2Fmain%2Fpackage.json&query=%24.version&label=versie&logo=github&color=blue&style=flat)](https://github.com/stefanbckn/Zoek-je-school/releases/latest)
 [![licentie](https://img.shields.io/github/license/stefanbckn/Zoek-je-school?label=licentie&logo=gnu&color=blue&style=flat)](./LICENSE)
 
 [![node](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fstefanbckn%2FZoek-je-school%2Fmain%2Fnetlify.toml&query=%24.build.environment.NODE_VERSION&label=node&logo=nodedotjs&color=blue&style=flat)](./netlify.toml)
