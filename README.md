@@ -20,7 +20,9 @@ Live op [zoekjeschool.be](https://zoekjeschool.be/).
 Zie [CLAUDE.md](./CLAUDE.md) voor de projectconventies, `.claude/rules/` voor de afspraken per
 gebied, en [docs/onderzoek/](./docs/onderzoek/) voor de bronbeschrijving en de datamodel-keuzes.
 
-Een fout gezien of zin om mee te helpen? Lees [CONTRIBUTING.md](./CONTRIBUTING.md).
+Een fout gezien of zin om mee te helpen? Lees [CONTRIBUTING.md](./CONTRIBUTING.md). Een
+beveiligingsprobleem meld je via [SECURITY.md](./SECURITY.md), een drempel in de toegankelijkheid
+via [ACCESSIBILITY.md](./ACCESSIBILITY.md).
 
 ## Ontwikkelen
 
