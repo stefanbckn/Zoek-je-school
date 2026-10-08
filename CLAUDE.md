@@ -68,7 +68,7 @@ node scripts/linkcheck.mjs    # controleert of alle externe links nog werken; pa
 
 Netlify bouwt elke push op `main` en deployt vanaf daar. Feature branches gaan via een PR.
 
-De workflow `controles` draait de kleurcheck bij elke PR die aan `src/index.css` komt, en de
+De workflow `controles.yml` (in Actions: "Links en kleuren") draait de kleurcheck bij elke PR die aan `src/index.css` komt, en de
 linkcheck per kwartaal. Vindt de linkcheck iets, dan opent hij één issue met het label `links`
 en werkt dat bij in plaats van er elk kwartaal een nieuw te maken. **Vervang een gemelde link
 nooit blind:** een adres dat 200 teruggeeft is niet automatisch de juiste pagina.

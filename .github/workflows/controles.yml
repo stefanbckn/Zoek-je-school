@@ -12,7 +12,7 @@
 # Tot 04/09/2026 draaide kleurcheck nergens automatisch: CLAUDE.md zei enkel dat je hem zelf
 # moest draaien na een kleurwijziging. Dat is precies het soort afspraak dat een keer vergeten
 # wordt.
-name: Controles
+name: Links en kleuren
 
 on:
   schedule:

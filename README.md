@@ -1,8 +1,8 @@
 # Zoek je school
 
 [![netlify](https://img.shields.io/netlify/a71213ec-47f4-42c4-bbd5-a252e68f2d2e?label=netlify&logo=netlify&style=flat)](https://app.netlify.com/projects/zoekjeschool/deploys)
-[![CI](https://img.shields.io/github/actions/workflow/status/stefanbckn/Zoek-je-school/ci.yml?branch=main&label=CI&logo=githubactions&style=flat)](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/ci.yml)
-[![controles](https://img.shields.io/github/actions/workflow/status/stefanbckn/Zoek-je-school/controles.yml?branch=main&label=controles&logo=githubactions&style=flat)](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/controles.yml)
+[![build & tests](https://img.shields.io/github/actions/workflow/status/stefanbckn/Zoek-je-school/ci.yml?branch=main&label=build%20%26%20tests&logo=githubactions&style=flat)](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/ci.yml)
+[![links & kleuren](https://img.shields.io/github/actions/workflow/status/stefanbckn/Zoek-je-school/controles.yml?branch=main&label=links%20%26%20kleuren&logo=githubactions&style=flat)](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/controles.yml)
 [![versie](https://img.shields.io/github/v/release/stefanbckn/Zoek-je-school?label=versie&logo=github&color=blue&style=flat)](https://github.com/stefanbckn/Zoek-je-school/releases/latest)
 [![licentie](https://img.shields.io/github/license/stefanbckn/Zoek-je-school?label=licentie&logo=gnu&color=blue&style=flat)](./LICENSE)
 

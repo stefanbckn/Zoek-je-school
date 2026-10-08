@@ -6,7 +6,7 @@
 #
 # De kleurcheck staat hier niet bij: die draait al in controles.yml, bij elke PR die aan
 # src/index.css komt.
-name: CI
+name: Build en tests
 
 on:
   push:
