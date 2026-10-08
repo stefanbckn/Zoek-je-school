@@ -1,7 +1,7 @@
 name: Fout in de schoolgegevens
 description: Een adres, richting, contactgegeven of school die niet klopt
 title: "Datafout: "
-labels: ["bug"]
+labels: ["data"]
 body:
   - type: markdown
     attributes:
