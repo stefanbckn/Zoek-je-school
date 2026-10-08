@@ -251,6 +251,11 @@ geldig. De werkregels staan in `.claude/rules/data-import.md`.
   terwijl niemand weet dat de bron veranderd is. Daarom een eigen fouttype, `BronVeranderd`, dat
   de terugval overslaat. De onbekende provincie gebruikt het ook: die liep tot 2.13.3 in
   dezelfde val. Nagespeeld met een hernoemd veld: exitcode 1, `public/data` onaangeroerd.
+- **In de kwartaalverversing wordt elke ophaalfout rood** (beslist 08/10/2026 door de
+  gebruiker). De Action draait `fetch-data -- --streng`, zonder terugval, zodat GitHub een mail
+  stuurt. Mislukken enkel de leerlingenkenmerken, dan blijft de run groen met een gele melding
+  bovenaan: daar is de terugval op de vorige cijfers een bewuste keuze. Een echte oranje status
+  bestaat in Actions niet, en een gele melding stuurt geen mail.
 - **Enkel in het buildscript, niet in de browser.** `vestigingen.json` maakt ons eigen script;
   die opnieuw valideren kost bundle en parsetijd voor nul winst.
 

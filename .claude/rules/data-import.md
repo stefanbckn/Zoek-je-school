@@ -134,6 +134,12 @@ kwartaalverversing groen met "ongewijzigd" terwijl de bron van vorm veranderd is
 tot 2.13.3 ook met de onbekende provincie: de regel hierboven noemde die een harde fout, maar de
 terugval ving hem op.
 
+**In de GitHub Action valt er nooit iets terug.** Die draait `fetch-data -- --streng`, en dan
+wordt elke ophaalfout exitcode 1: een rode run, en dus een mail van GitHub. Lokaal, zonder de
+vlag, blijft de terugval bestaan. De leerlingenkenmerken vallen wél nog terug op de vorige
+cijfers (zie hierboven), maar in Actions zetten ze dan een gele `::warning::` bovenaan de run.
+Geel geeft geen mail; enkel rood doet dat.
+
 **Omvangcontrole:** het script weigert weg te schrijven als het aantal vestigingen meer dan 15%
 kleiner is dan in de gecommitte dataset, en eindigt met exitcode 1. Dat vangnet bestaat omdat
 het script ook ongesuperviseerd draait via de GitHub Action. Groei is nooit verdacht, enkel

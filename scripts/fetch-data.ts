@@ -258,6 +258,16 @@ async function bestaandeMeta(): Promise<DatasetMeta | null> {
 }
 
 /**
+ * Een gele melding bovenaan de run in GitHub Actions, voor wat geen reden is om te stoppen maar
+ * wel gezien moet worden. De run blijft groen en GitHub stuurt er geen mail voor; enkel een rode
+ * run doet dat. Daarom enkel voor de leerlingenkenmerken, waar de terugval een bewuste keuze is.
+ * Buiten Actions doet dit niets: daar staat de waarschuwing al in de gewone uitvoer.
+ */
+function waarschuwInActions(tekst: string): void {
+  if (process.env.GITHUB_ACTIONS === 'true') console.log(`::warning title=Leerlingenkenmerken::${tekst}`)
+}
+
+/**
  * De leerlingenkenmerken uit de vórige dataset, zodat een mislukte ophaling ze niet wist.
  *
  * Waarom dit bestaat: op 03/09/2026 kon de GitHub Action het documentenportaal niet bereiken.
@@ -359,6 +369,11 @@ async function bouwDataset() {
         `Let op: leerlingenkenmerken niet opgehaald — de cijfers uit de vorige dataset ` +
           `(${kenmerken.schooljaar}) blijven staan. Kijk de reden hierboven na.`,
       )
+      waarschuwInActions(
+        `Niet opgehaald; de cijfers van ${kenmerken.schooljaar} uit de vorige dataset blijven staan.`,
+      )
+    } else {
+      waarschuwInActions('Niet opgehaald en geen vorige cijfers: het blok valt weg op de site.')
     }
   }
 
@@ -599,6 +614,11 @@ async function main() {
   // --force slaat de omvangcontrole over. Bewust een expliciete handeling: de controle
   // bestaat net om een ongesuperviseerde run te stoppen.
   const force = process.argv.includes('--force')
+  // --streng schakelt de terugval op de oude dataset uit: elke ophaalfout wordt exitcode 1. De
+  // GitHub Action geeft dit altijd mee. Daar valt een terugval op exitcode 0 niemand op, en
+  // staat er na een paar mislukte kwartalen stil data van een jaar oud online. Lokaal blijft
+  // de terugval handig wanneer de API even hapert.
+  const streng = process.argv.includes('--streng')
 
   let resultaat: Awaited<ReturnType<typeof bouwDataset>>
   try {
@@ -606,7 +626,7 @@ async function main() {
   } catch (err) {
     // De bron heeft een andere vorm: geen terugval, want dan eindigt de run groen en ziet
     // niemand het. Zie BronVeranderd in scripts/api-schemas.ts.
-    if (err instanceof BronVeranderd) throw err
+    if (err instanceof BronVeranderd || streng) throw err
     // Geen verse data. Ligt er een gecommitte dataset, dan bouwen we daarmee verder: een
     // hikkende API mag geen deploy tegenhouden. De footer toont de ophaaldatum uit meta.json,
     // dus verouderde data blijft zichtbaar voor de bezoeker.
