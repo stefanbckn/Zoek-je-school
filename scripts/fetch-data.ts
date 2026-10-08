@@ -12,6 +12,18 @@ import type {
   Studierichting,
 } from '../src/types.ts'
 import { adresSleutel } from './adres.ts'
+import * as v from 'valibot'
+import {
+  Bestuur,
+  CatalogusRichting,
+  IngerichteRichting,
+  Instelling,
+  Locatie,
+  OPTIONELE_VELDEN,
+  Pagina,
+  controleerAanwezigheid,
+  valideer,
+} from './api-schemas.ts'
 import { haalLeerlingenkenmerken, type KenmerkenDataset } from './leerlingenkenmerken.ts'
 
 // Laad .env.local (voorrang) en .env. Node 21+ heeft loadEnvFile ingebouwd — geen dotenv nodig.
@@ -63,11 +75,6 @@ const OUTPUT_DIR = path.resolve(import.meta.dirname, '../public/data')
 
 // --- API-client ------------------------------------------------------------------------
 
-interface Pagina<T> {
-  meta: { total_elements: number; total_pages: number; number: number; last: boolean }
-  content: T[]
-}
-
 function apiKey(): string {
   const key = process.env.ONDERWIJS_API_KEY
   if (!key) {
@@ -79,22 +86,34 @@ function apiKey(): string {
   return key
 }
 
-async function haalPagina<T>(url: string): Promise<Pagina<T>> {
+async function haalPagina(url: string): Promise<v.InferOutput<typeof Pagina>> {
   const pogingen = 3
   let laatsteFout: unknown
   for (let i = 1; i <= pogingen; i++) {
+    let json: unknown
     try {
       const res = await fetch(url, {
         // Auth via header, niet via ?apikey= — anders staat de key in serverlogs en referers.
         headers: { 'x-api-key': apiKey(), accept: 'application/json' },
       })
       if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText} — ${(await res.text()).slice(0, 300)}`)
-      return (await res.json()) as Pagina<T>
+      json = await res.json()
     } catch (err) {
       laatsteFout = err
       console.warn(`  poging ${i}/${pogingen} mislukt: ${err instanceof Error ? err.message : err}`)
       if (i < pogingen) await new Promise((r) => setTimeout(r, i * 2000))
+      continue
     }
+    // Buiten de try: een envelop in een andere vorm is geen tijdelijke fout, opnieuw proberen
+    // geeft hetzelfde antwoord.
+    const envelop = v.safeParse(Pagina, json)
+    if (!envelop.success) {
+      const issue = envelop.issues[0]
+      throw new Error(
+        `Onverwachte envelop van ${url}: veld ${v.getDotPath(issue) ?? '(respons zelf)'}: ${issue.message}`,
+      )
+    }
+    return envelop.output
   }
   throw laatsteFout
 }
@@ -103,14 +122,14 @@ async function haalPagina<T>(url: string): Promise<Pagina<T>> {
  * Haalt alle pagina's op. Let op: de paginatieparameter is `page` — `number` wordt stil
  * genegeerd en levert dan eindeloos pagina 1 op (geverifieerd, zie .claude/rules/data-import.md).
  */
-async function haalAlles<T>(label: string, basisUrl: string, params: Record<string, string> = {}): Promise<T[]> {
-  const alles: T[] = []
+async function haalAlles(label: string, basisUrl: string, params: Record<string, string> = {}): Promise<unknown[]> {
+  const alles: unknown[] = []
   for (let p = 1; ; p++) {
     const url = new URL(basisUrl)
     for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v)
     url.searchParams.set('size', '5000')
     url.searchParams.set('page', String(p))
-    const pagina = await haalPagina<T>(url.toString())
+    const pagina = await haalPagina(url.toString())
     alles.push(...pagina.content)
     if (pagina.meta.last || p >= pagina.meta.total_pages) break
   }
@@ -129,7 +148,7 @@ async function haalAlles<T>(label: string, basisUrl: string, params: Record<stri
  * Bewust "Gemeentelijk" en niet "Stedelijk": van de 63 gemeentelijke vestigingen in de provincie
  * liggen er 13 in Brasschaat, Duffel, Kalmthout, Nijlen en Zandhoven. Dat zijn geen steden.
  */
-function mapNet(omschrijving: string | undefined, soortBestuur: SoortBestuur | null): Net {
+function mapNet(omschrijving: string | null | undefined, soortBestuur: SoortBestuur | null): Net {
   switch (omschrijving) {
     case 'Gemeenschapsonderwijs':
       return 'GO!'
@@ -174,7 +193,7 @@ const FINALITEIT: Record<string, Finaliteit> = {
  */
 function verzamelStudierichting(
   catalogus: Map<string, Studierichting>,
-  cat: any,
+  cat: v.InferOutput<typeof CatalogusRichting>,
 ): void {
   const sr = cat.administratievegroep_studierichting
   if (!sr) return
@@ -204,13 +223,13 @@ function verzamelStudierichting(
   })
 }
 
-function normalizeWebsite(raw: string | undefined): string | null {
+function normalizeWebsite(raw: string | null | undefined): string | null {
   const trimmed = raw?.trim()
   if (!trimmed) return null
   return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`
 }
 
-function orNull(raw: string | undefined): string | null {
+function orNull(raw: string | null | undefined): string | null {
   const trimmed = raw?.trim()
   return trimmed ? trimmed : null
 }
@@ -309,16 +328,28 @@ async function controleerOmvang(nieuweCampussen: Campus[]): Promise<void> {
 async function bouwDataset() {
   console.log('Ophalen via de API van Onderwijs en Vorming...')
 
-  let [locaties, instellingen, besturen, ingericht, catalogus, kenmerken] = await Promise.all([
-    haalAlles<any>('vestigingsplaatsen (311)', EP.locaties, {
-      filter_instellingslocatie_hoofdstructuur: HOOFDSTRUCTUUR_VOLTIJDS_SO,
-    }),
-    haalAlles<any>('instellingen SO', EP.instellingen, { filter_instelling_niveau: 'SO' }),
-    haalAlles<any>('schoolbesturen', EP.instellingen, { filter_instelling_type: TYPE_BESTUUR }),
-    haalAlles<any>('ingericht aanbod', EP.ingerichtAanbod),
-    haalAlles<any>('richtingencatalogus', EP.catalogus),
-    haalLeerlingenkenmerken(),
-  ])
+  let [ruweLocaties, ruweInstellingen, ruweBesturen, ruwIngericht, ruweCatalogus, kenmerken] =
+    await Promise.all([
+      haalAlles('vestigingsplaatsen (311)', EP.locaties, {
+        filter_instellingslocatie_hoofdstructuur: HOOFDSTRUCTUUR_VOLTIJDS_SO,
+      }),
+      haalAlles('instellingen SO', EP.instellingen, { filter_instelling_niveau: 'SO' }),
+      haalAlles('schoolbesturen', EP.instellingen, { filter_instelling_type: TYPE_BESTUUR }),
+      haalAlles('ingericht aanbod', EP.ingerichtAanbod),
+      haalAlles('richtingencatalogus', EP.catalogus),
+      haalLeerlingenkenmerken(),
+    ])
+
+  // Vóór er iets gemapt wordt: past elk record in het schema, en staat elk optioneel veld er
+  // nog minstens één keer in? Zie scripts/api-schemas.ts.
+  controleerAanwezigheid('vestigingsplaatsen', ruweLocaties, [...OPTIONELE_VELDEN.locaties])
+  controleerAanwezigheid('instellingen', ruweInstellingen, [...OPTIONELE_VELDEN.instellingen])
+  controleerAanwezigheid('richtingencatalogus', ruweCatalogus, [...OPTIONELE_VELDEN.catalogus])
+  const locaties = valideer('vestigingsplaatsen', Locatie, ruweLocaties)
+  const instellingen = valideer('instellingen', Instelling, ruweInstellingen)
+  const besturen = valideer('schoolbesturen', Bestuur, ruweBesturen)
+  const ingericht = valideer('ingericht aanbod', IngerichteRichting, ruwIngericht)
+  const catalogus = valideer('richtingencatalogus', CatalogusRichting, ruweCatalogus)
 
   if (!kenmerken) {
     kenmerken = await kenmerkenUitVorigeDataset()
@@ -330,9 +361,9 @@ async function bouwDataset() {
     }
   }
 
-  const instellingPerNr = new Map<number, any>(instellingen.map((i) => [i.instelling_nummer, i]))
-  const bestuurPerNr = new Map<number, any>(besturen.map((b) => [b.instelling_nummer, b]))
-  const richtingPerCode = new Map<number, any>(catalogus.map((c) => [c.administratievegroep_code, c]))
+  const instellingPerNr = new Map(instellingen.map((i) => [i.instelling_nummer, i]))
+  const bestuurPerNr = new Map(besturen.map((b) => [b.instelling_nummer, b]))
+  const richtingPerCode = new Map(catalogus.map((c) => [c.administratievegroep_code, c]))
 
   // Sinds 0.12.0 gaat heel Vlaanderen en Brussel mee. Tot dan werd hier op één provincie
   // gefilterd en ging ruim driekwart van de opgehaalde data meteen de vuilnisbak in.
@@ -398,7 +429,8 @@ async function bouwDataset() {
     const heeftCoordinaten = loc.gps_breedtegraad != null && loc.gps_lengtegraad != null
     if (!heeftCoordinaten) zonderCoordinaten++
 
-    const soortBestuur = SOORT_BESTUUR[bestuur?.instelling_soort_bestuur?.code] ?? null
+    const bestuurCode = bestuur?.instelling_soort_bestuur.code
+    const soortBestuur = (bestuurCode ? SOORT_BESTUUR[bestuurCode] : undefined) ?? null
     const vpl = String(loc.instellingslocatie_vestigingsnummer)
     const richtingen = aanbodPerVestiging.get(`${loc.instelling_nummer}-${vpl}`) ?? []
     if (richtingen.length === 0) zonderAanbod++
@@ -455,8 +487,8 @@ async function bouwDataset() {
         gemeente: loc.instellingslocatie_gemeente ?? '',
         niscode: String(loc.instellingslocatie_gemeente_nis ?? ''),
         provincie,
-        lat: heeftCoordinaten ? loc.gps_breedtegraad : null,
-        lon: heeftCoordinaten ? loc.gps_lengtegraad : null,
+        lat: heeftCoordinaten ? (loc.gps_breedtegraad ?? null) : null,
+        lon: heeftCoordinaten ? (loc.gps_lengtegraad ?? null) : null,
         scholen: [],
       }
       campussenPerAdres.set(adresKey, campus)
