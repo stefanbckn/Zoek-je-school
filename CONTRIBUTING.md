@@ -55,6 +55,11 @@ goed hij ook gemaakt is. Beter dat je het nu leest dan nadat je er een avond aan
 
 De volledige achtergrond staat in [CLAUDE.md](./CLAUDE.md).
 
+## Hoe we met elkaar omgaan
+
+Voor iedereen die hier meedoet, geldt de [gedragscode](./CODE_OF_CONDUCT.md). Gedraagt iemand
+zich niet zoals het hoort, meld het dan via [info@zoekjeschool.be](mailto:info@zoekjeschool.be).
+
 ## Licentie
 
 Wie code bijdraagt, doet dat onder dezelfde licentie als de rest van het project, de
