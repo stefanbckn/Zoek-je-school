@@ -8,6 +8,18 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.13.4 — 8 oktober 2026
+
+Op de site zelf verandert niets. Op GitHub is het wel makkelijker geworden om mee te helpen.
+
+**Achter de schermen**
+
+- **Een fout in de schoolgegevens melden gaat via een formulier.** Wie een GitHub-account
+  heeft, vult de school in, wat er niet klopt en wat er zou moeten staan. Zonder account blijft
+  een mailtje naar info@zoekjeschool.be de weg.
+- **Er staat een handleiding voor wie wil meehelpen**, met hoe je een fout meldt, waar de
+  gegevens vandaan komen en welke keuzes bewust vastliggen.
+
 ## 2.13.3 — 8 oktober 2026
 
 De laatste van drie onderhoudsversies. Op de site zelf zie je niets veranderen.

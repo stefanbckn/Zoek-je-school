@@ -1,0 +1,43 @@
+name: Fout in de schoolgegevens
+description: Een adres, richting, contactgegeven of school die niet klopt
+title: "Datafout: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bedankt om dit te melden. De gegevens komen van Onderwijs en Vorming. We kijken na of
+        de fout bij ons zit of al in de brongegevens, en laten je weten wat er gebeurt.
+  - type: input
+    id: school
+    attributes:
+      label: Welke school?
+      description: De naam zoals je hem op de site ziet, en de gemeente.
+      placeholder: "Sint-Voorbeeldinstituut, Gent"
+    validations:
+      required: true
+  - type: dropdown
+    id: soort
+    attributes:
+      label: Wat klopt er niet?
+      options:
+        - Adres of ligging op de kaart
+        - Een richting ontbreekt of staat er te veel
+        - Contactgegevens (telefoon, e-mail, website)
+        - De school bestaat niet meer of ontbreekt helemaal
+        - Iets anders
+    validations:
+      required: true
+  - type: textarea
+    id: fout
+    attributes:
+      label: Wat zie je op de site?
+    validations:
+      required: true
+  - type: textarea
+    id: juist
+    attributes:
+      label: Wat zou er moeten staan?
+      description: Heb je een bron, zoals de website van de school, zet de link er dan bij.
+    validations:
+      required: true
