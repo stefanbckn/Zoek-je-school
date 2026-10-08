@@ -1,7 +1,18 @@
 # Zoek je school
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/a71213ec-47f4-42c4-bbd5-a252e68f2d2e/deploy-status)](https://app.netlify.com/projects/zoekjeschool/deploys)
-[![CI](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/ci.yml/badge.svg)](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/ci.yml)
+[![netlify](https://img.shields.io/netlify/a71213ec-47f4-42c4-bbd5-a252e68f2d2e?label=netlify&logo=netlify&style=flat)](https://app.netlify.com/projects/zoekjeschool/deploys)
+[![CI](https://img.shields.io/github/actions/workflow/status/stefanbckn/Zoek-je-school/ci.yml?branch=main&label=CI&logo=githubactions&style=flat)](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/ci.yml)
+[![controles](https://img.shields.io/github/actions/workflow/status/stefanbckn/Zoek-je-school/controles.yml?branch=main&label=controles&logo=githubactions&style=flat)](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/controles.yml)
+[![versie](https://img.shields.io/github/v/release/stefanbckn/Zoek-je-school?label=versie&logo=github&color=blue&style=flat)](https://github.com/stefanbckn/Zoek-je-school/releases/latest)
+[![licentie](https://img.shields.io/github/license/stefanbckn/Zoek-je-school?label=licentie&logo=gnu&color=blue&style=flat)](./LICENSE)
+
+[![node](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fstefanbckn%2FZoek-je-school%2Fmain%2Fnetlify.toml&query=%24.build.environment.NODE_VERSION&label=node&logo=nodedotjs&color=blue&style=flat)](./netlify.toml)
+[![react](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fstefanbckn%2FZoek-je-school%2Fmain%2Fpackage-lock.json&query=%24.packages%5B%27node_modules%2Freact%27%5D.version&label=react&color=blue&style=flat&logo=react)](https://www.npmjs.com/package/react)
+[![vite](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fstefanbckn%2FZoek-je-school%2Fmain%2Fpackage-lock.json&query=%24.packages%5B%27node_modules%2Fvite%27%5D.version&label=vite&color=blue&style=flat&logo=vite)](https://www.npmjs.com/package/vite)
+[![typescript](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fstefanbckn%2FZoek-je-school%2Fmain%2Fpackage-lock.json&query=%24.packages%5B%27node_modules%2Ftypescript%27%5D.version&label=typescript&color=blue&style=flat&logo=typescript)](https://www.npmjs.com/package/typescript)
+[![tailwind](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fstefanbckn%2FZoek-je-school%2Fmain%2Fpackage-lock.json&query=%24.packages%5B%27node_modules%2Ftailwindcss%27%5D.version&label=tailwind&color=blue&style=flat&logo=tailwindcss)](https://www.npmjs.com/package/tailwindcss)
+[![vitest](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fstefanbckn%2FZoek-je-school%2Fmain%2Fpackage-lock.json&query=%24.packages%5B%27node_modules%2Fvitest%27%5D.version&label=vitest&color=blue&style=flat&logo=vitest)](https://www.npmjs.com/package/vitest)
+[![valibot](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fstefanbckn%2FZoek-je-school%2Fmain%2Fpackage-lock.json&query=%24.packages%5B%27node_modules%2Fvalibot%27%5D.version&label=valibot&color=blue&style=flat)](https://www.npmjs.com/package/valibot)
 
 Zoeker voor middelbare scholen (voltijds gewoon secundair onderwijs) in Vlaanderen en Brussel.
 Live op [zoekjeschool.be](https://zoekjeschool.be/).
