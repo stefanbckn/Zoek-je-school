@@ -1,7 +1,7 @@
 {
   "name": "zoek-je-school",
   "private": true,
-  "version": "2.13.1",
+  "version": "2.13.2",
   "type": "module",
   "scripts": {
     "genereer-gemeentepaginas": "tsx scripts/genereer-gemeentepaginas.ts",

@@ -85,7 +85,7 @@ mét die beperking erbij.
 | 3 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | *Nice to have.* **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
 | 4 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af, en hun API (OKAPI) bevat ze niet (bevestigd door de beheerder, oktober 2026). **Volgende stap: maart/april 2027** opnieuw contact opnemen over de nieuwe Onderwijskiezer-API, die tegen september 2027 komt. Dan ook de CLB per school meevragen. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Tot dan valt er niets te bouwen |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
-| 6 | Kwaliteitsbewaking | Tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** De CI-workflow zelf staat er sinds 2.13.1. Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door, zie hieronder |
+| 6 | Kwaliteitsbewaking | Schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** CI sinds 2.13.1, tests sinds 2.13.2. Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -188,7 +188,8 @@ vergelijkingstabel hoort het voorlopig niet thuis, daar staat het aanbod al per 
 ## Kwaliteitsbewaking: CI, tests en schemavalidatie (besproken 01/09/2026)
 
 Eén thema, want de losse stukken hangen samen: zonder CI draait er niets automatisch, en zonder
-tests bewaakt die CI niets dat de build niet al bewaakt. Stap 1 is uitgebracht in 2.13.1.
+tests bewaakt die CI niets dat de build niet al bewaakt. Stap 1 is uitgebracht in 2.13.1, stap 2
+in 2.13.2.
 
 **De aanleiding.** Op 01/09/2026 draaide er niets automatisch. Sinds 04/09/2026 doet
 `controles.yml` de kleurcheck bij een PR die aan `src/index.css` komt, en per kwartaal de
@@ -206,37 +207,33 @@ Twee dingen die anders liepen dan het plan van 01/09/2026:
 - **De kleurcheck zit er niet in.** Die draait sinds 04/09/2026 al in `controles.yml`, bij elke PR
   die aan `src/index.css` komt. Een rechtstreekse push op `main` die aan de kleuren komt, valt
   daar wel buiten.
-- **Nieuwere oxlint gaf vier waarschuwingen** (`react/set-state-in-effect` op drie bewuste
-  plaatsen, een ongebruikte catch-parameter in `public/thema.js`). Die staan per regel uit, met
-  de reden erbij, zodat de regel voor nieuwe code blijft gelden.
+- **Met `--deny-warnings` faalde oxlint op vier waarschuwingen** (`react/set-state-in-effect` op
+  drie bewuste plaatsen, een ongebruikte catch-parameter in `public/thema.js`). Of die er op
+  01/09/2026 al waren, is niet bekend: die meting liep zonder de vlag, en dan eindigt oxlint ook
+  met waarschuwingen op exitcode 0. Ze staan per regel uit, met de reden erbij, zodat de regel
+  voor nieuwe code blijft gelden.
 
 Alle workflows staan sindsdien op `actions/checkout@v7` en `actions/setup-node@v7`.
 
-⚠️ **Nog te controleren in de Netlify-UI:** staan deploy previews aan? Zo ja, dan bouwt Netlify je
-PR-branches al en is de buildstap in CI deels dubbel. Ze blijft dan nog steeds nuttig als snelle
+**Deploy previews staan aan** (gezien op PR #67, 08/10/2026): Netlify bouwt PR-branches dus al,
+en de buildstap in CI is deels dubbel. Ze blijft dan nog steeds nuttig als snelle
 faalmelding en omdat ze los staat van de `ignore`-regel in `netlify.toml`.
 
-### Stap 2: tests, maar alleen op wat al eens misging
+### Stap 2: tests, maar alleen op wat al eens misging (uitgebracht in 2.13.2)
 
-Er zijn vandaag nul tests: geen vitest, geen testbestand, geen `test`-script. Niet naar
-dekkingsgraad streven, wel de handvol beslissingen vastpinnen die in `.claude/rules/` al een eigen
-waarschuwing hebben. Vijf kandidaten, allemaal pure functies zonder DOM:
+Vitest, met `npm test`, en in CI tussen lint en build. 31 tests in vijf bestanden naast de code
+die ze testen: de netmigratie (`parseNetten`), `volgendeSchooldagOchtend()` en
+`transitousPlannerUrl()`, `orsKaartUrl()`, `campusAanbod()` en `korteNaam()`, de adressleutel,
+en de slugs en afgeleide gemeenten, ook op de echte dataset. Niet naar dekkingsgraad streven:
+een nieuwe test komt er wanneer er iets misgaat dat een test had kunnen vangen.
 
-- **`NET_MIGRATIE`** in `useSearchState.ts`: een oude link met `?net=Officieel gesubsidieerd` moet
-  Provinciaal plus Gemeentelijk opleveren. Breekt dat, dan geeft een gedeelde link een lege
-  pagina, zonder foutmelding.
-- **`volgendeSchooldagOchtend()`** in `ov.ts`: datumlogica rond weekend en zomertijd, plus de
-  lokale-tijd-val waar `toISOString()` er 06:30 van maakt.
-- **`transitousPlannerUrl()`** en **`orsKaartUrl()`**: encodering van namen met een schuine streep,
-  en de omgekeerde `lon,lat`-volgorde.
-- **`campusAanbod()`** in `aanbod.ts`: aanbod per adres samenvoegen zonder duplicaten.
-- De groepeersleutel **`postcode|straat|huisnummer`** in `fetch-data.ts`, met busnummer genegeerd.
-- Sinds 2.12.0: **`controleerSlugs()`** in `genereer-gemeentepaginas.ts` (twee entries met
-  dezelfde slug moeten een fout geven, zie de Brusselkwestie) en de afleiding in
-  **`gemeenten-afgeleid.ts`** (elke niscode met een school precies één keer).
-
-Schatting: een uurtje met vitest, zo'n twintig assertions. Pas hierna bewaakt CI iets dat de
-build niet al bewaakt.
+- **`npm test` draait in `Europe/Brussels`.** De datumlogica rekent in lokale tijd, en op GitHub
+  staat de klok op UTC. Zonder die tijdzone kan de zomertijdtest daar niets vangen.
+- **Drie functies moesten verhuizen om testbaar te zijn**, omdat `fetch-data.ts` en
+  `genereer-gemeentepaginas.ts` bij het importeren meteen draaien: `adresSleutel()` staat nu in
+  `scripts/adres.ts`, `controleerSlugs()` in `steden.ts`, en `parseNetten()` wordt geëxporteerd.
+- **Nagekeken dat ze iets vangen:** de UTC-tijdstempel, de lat/lon-volgorde en de netmigratie
+  teruggezet, en telkens werd de suite rood.
 
 ### Stap 3: schemavalidatie op de API-responses (valibot)
 
@@ -252,10 +249,9 @@ npm: 1.4.2 (nagekeken 01/09/2026).
 
 ### Wat er bewust NIET in zit
 
-- **Geen CI-badge in de README, zolang er geen tests zijn.** Een badge zou dan zeggen "de build
-  slaagt", en dat weet je al: Netlify bouwt elke push op `main`. Bovendien is het publiek
-  beperkt; de repo staat publiek omdat de AGPL en Transitous dat vragen, niet omdat er
-  bijdragers langskomen. Na stap 2 is de badge wel iets waard.
+De CI-badge stond hier tot 2.13.2, met als voorwaarde dat er eerst tests waren. Die zijn er nu,
+dus de badge staat in de README.
+
 - **CodeQL: mag, maar verwacht er weinig van.** Dit is een client-side app zonder database of
   authenticatie; het enige serverpad is de ORS-proxy. Via *default setup* (Settings → Code
   security) kost het bijna niets en is er geen workflowbestand te onderhouden. **Dependabot
