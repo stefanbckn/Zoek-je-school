@@ -19,6 +19,7 @@ Ook nu verandert er niets aan de site zelf. Op GitHub staat beter uitgelegd hoe 
 - **Een uitleg over toegankelijkheid**: wat er nagekeken wordt, wat nog niet goed is en hoe je
   een drempel meldt.
 - **Een sjabloon voor pull requests**, met de controles die moeten slagen.
+- **Een gedragscode**, de Nederlandse vertaling van de Contributor Covenant 2.0.
 
 ## 2.13.4 — 8 oktober 2026
 
