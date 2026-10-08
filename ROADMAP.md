@@ -85,7 +85,7 @@ mét die beperking erbij.
 | 3 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | *Nice to have.* **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
 | 4 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af, en hun API (OKAPI) bevat ze niet (bevestigd door de beheerder, oktober 2026). **Volgende stap: maart/april 2027** opnieuw contact opnemen over de nieuwe Onderwijskiezer-API, die tegen september 2027 komt. Dan ook de CLB per school meevragen. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Tot dan valt er niets te bouwen |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
-| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
+| 6 | Kwaliteitsbewaking | Tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** De CI-workflow zelf staat er sinds 2.13.1. Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -188,7 +188,7 @@ vergelijkingstabel hoort het voorlopig niet thuis, daar staat het aanbod al per 
 ## Kwaliteitsbewaking: CI, tests en schemavalidatie (besproken 01/09/2026)
 
 Eén thema, want de losse stukken hangen samen: zonder CI draait er niets automatisch, en zonder
-tests bewaakt die CI niets dat de build niet al bewaakt. Niet gebouwd, wel doorgemeten.
+tests bewaakt die CI niets dat de build niet al bewaakt. Stap 1 is uitgebracht in 2.13.1.
 
 **De aanleiding.** Op 01/09/2026 draaide er niets automatisch. Sinds 04/09/2026 doet
 `controles.yml` de kleurcheck bij een PR die aan `src/index.css` komt, en per kwartaal de
@@ -197,54 +197,20 @@ pas op Netlify, en enkel op `main`. Sinds 2.7.0 weegt dat zwaarder, want `npm ru
 genereert ook 172 gemeentepagina's en de sitemap. Een fout in dat script merk je nu pas bij de
 deploy.
 
-### Stap 1: een CI-workflow bij elke push en PR
+### Stap 1: een CI-workflow bij elke push en PR (uitgebracht in 2.13.1)
 
-Onderstaande versie is lokaal doorgemeten: `oxlint`, `tsc -b`, `tsc --noEmit -p tsconfig.app.json`
-en `node scripts/kleurcheck.mjs` geven alle vier exitcode 0 op de huidige `main`.
+`.github/workflows/ci.yml` draait `npm ci`, `oxlint --deny-warnings` en `npm run build` op Node 22,
+bij elke push op `main` en elke PR. Waarom elke keuze zo is, staat als commentaar in het bestand.
+Twee dingen die anders liepen dan het plan van 01/09/2026:
 
-```yaml
-name: CI
-on:
-  push:
-    branches: [main]
-  pull_request:
-permissions:
-  contents: read
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '22'
-          cache: npm
-      - run: npm ci
-      - run: npx oxlint --deny-warnings
-      - run: npm run build
-      - run: node scripts/kleurcheck.mjs
-```
+- **De kleurcheck zit er niet in.** Die draait sinds 04/09/2026 al in `controles.yml`, bij elke PR
+  die aan `src/index.css` komt. Een rechtstreekse push op `main` die aan de kleuren komt, valt
+  daar wel buiten.
+- **Nieuwere oxlint gaf vier waarschuwingen** (`react/set-state-in-effect` op drie bewuste
+  plaatsen, een ongebruikte catch-parameter in `public/thema.js`). Die staan per regel uit, met
+  de reden erbij, zodat de regel voor nieuwe code blijft gelden.
 
-Vier dingen die vastliggen, elk omdat een voor de hand liggende variant stilzwijgend fout gaat:
-
-- **Node 22, niet 24.** `netlify.toml` zet `NODE_VERSION = "22"` en `ververs-scholendata.yml`
-  gebruikt 22. Loopt CI op een andere major, dan kan CI groen zijn terwijl de deploy breekt.
-- **Geen losse typecheck-stap.** `npm run build` doet `tsc -b`, en dat dekt zowel
-  `tsconfig.app.json` als `tsconfig.node.json`, dus ook `scripts/`, `netlify/`, `shared/` en
-  `vite.config.ts`. Een stap `tsc --noEmit -p tsconfig.app.json` ervoor dekt alleen `src` en voegt
-  dus niets toe. Als losse `typecheck`-npm-script voor lokale snelle feedback is het wel zinvol;
-  maak er dan `tsc -b --force` van.
-- **`--deny-warnings` bij oxlint.** `react/only-export-components` staat in `.oxlintrc.json` op
-  `warn`; zonder die vlag passeren waarschuwingen stil en is de lintstap half decoratief.
-- **`permissions` en `concurrency`.** Minimale tokenrechten, en achterhaalde runs op dezelfde PR
-  worden geannuleerd.
-
-Kleine noot bij de versies: `actions/checkout` en `actions/setup-node` staan intussen op **v7**
-(nagekeken via de GitHub-API op 01/09/2026), de bestaande workflows op v5. Kies één lijn voor
-alle workflows in plaats van ze uit elkaar te laten lopen.
+Alle workflows staan sindsdien op `actions/checkout@v7` en `actions/setup-node@v7`.
 
 ⚠️ **Nog te controleren in de Netlify-UI:** staan deploy previews aan? Zo ja, dan bouwt Netlify je
 PR-branches al en is de buildstap in CI deels dubbel. Ze blijft dan nog steeds nuttig als snelle

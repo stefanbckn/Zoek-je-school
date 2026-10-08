@@ -8,6 +8,18 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.13.1 — 8 oktober 2026
+
+Aan de site zelf verandert niets. Achter de schermen wordt elke wijziging nu automatisch
+nagekeken voor ze live kan gaan.
+
+**Achter de schermen**
+
+- **Elke push en elke pull request wordt gelint en gebouwd** op GitHub, met dezelfde Node-versie
+  als Netlify. Een fout in een wijziging, ook in de gemeentepagina's, valt zo op vóór de merge in
+  plaats van bij de deploy.
+- **De automatische workflows gebruiken de nieuwste versie** van de standaardacties van GitHub.
+
 ## 2.13.0 — 1 oktober 2026
 
 Kom je via een gemeentepagina in de zoeker terecht, dan staat er nu `ref=gemeente-<naam>` in
