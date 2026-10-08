@@ -8,6 +8,18 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.13.5 — 8 oktober 2026
+
+Ook nu verandert er niets aan de site zelf. Op GitHub staat beter uitgelegd hoe je iets meldt.
+
+**Achter de schermen**
+
+- **Een beveiligingsprobleem meld je privé**, via GitHub of via mail, zodat het niet publiek
+  staat voor het opgelost is.
+- **Een uitleg over toegankelijkheid**: wat er nagekeken wordt, wat nog niet goed is en hoe je
+  een drempel meldt.
+- **Een sjabloon voor pull requests**, met de controles die moeten slagen.
+
 ## 2.13.4 — 8 oktober 2026
 
 Op de site zelf verandert niets. Op GitHub is het wel makkelijker geworden om mee te helpen.
