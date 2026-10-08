@@ -18,6 +18,7 @@ te halen; wat niet geverifieerd is, staat er met zoveel woorden bij.
 | [aanmelden.md](./aanmelden.md) | Je wil aanmeldsystemen tonen of linken |
 | [uitleg-voor-ouders.md](./uitleg-voor-ouders.md) | Je raakt `uitleg/`: de eerste graad, aanmelden en inschrijven, of de tests van Onderwijskiezer |
 | [matrix-studiedomein.md](./matrix-studiedomein.md) | Je werkt aan de matrix, of je zoekt het studiedomein van een richting |
+| [gemeentepaginas.md](./gemeentepaginas.md) | Je raakt `/gemeente/`, `steden.ts` of de sitemap, of je overweegt een link vanaf de zoeker naar die pagina's |
 | [kleur-en-kaart.md](./kleur-en-kaart.md) | Je wijzigt het palet, of je raakt de clustering op de kaart |
 
 Wat er nog moet komen staat in [ROADMAP.md](../../ROADMAP.md), wat een bezoeker gemerkt heeft

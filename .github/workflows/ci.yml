@@ -1,0 +1,38 @@
+# Lint en build bij elke push op main en bij elke pull request.
+#
+# Netlify bouwt enkel main. Zonder deze workflow merk je een fout in een PR pas wanneer de
+# deploy na de merge faalt. Sinds 2.7.0 weegt dat zwaarder: `npm run build` genereert via
+# `prebuild` ook alle gemeentepagina's en de sitemap.
+#
+# De kleurcheck staat hier niet bij: die draait al in controles.yml, bij elke PR die aan
+# src/index.css komt.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          # Zelfde major als NODE_VERSION in netlify.toml. Wijkt die af, dan kan CI groen zijn
+          # terwijl de deploy breekt.
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      # Zonder --deny-warnings passeren waarschuwingen stil en zegt een groene lintstap niets.
+      - run: npx oxlint --deny-warnings
+      # tsc -b dekt zowel tsconfig.app.json als tsconfig.node.json, dus ook scripts/ en netlify/.
+      - run: npm run build

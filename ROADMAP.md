@@ -54,10 +54,19 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **0.9.0** | Uitleg- en helppaneel | Paneel "Hoe werkt deze site?" in de kop met uitleg bij zoeken, filteren, één adres bekijken en vergelijken, plus een blok over wat de site niet toont (deelbaar via `?help=1`) |
 | **0.11.0** | Markers clusteren | Nabije adressen op de kaart samengevoegd tot één bol met het aantal erin, die bij klikken en inzoomen uit elkaar valt · vanaf zoom 16 staan alle markers los |
 | **0.12.0** | Heel Vlaanderen en Brussel | Alle 2145 vestigingen op 1075 adressen in één keer geladen in plaats van enkel provincie Antwerpen · filter op provincie · gemeentefilter met zoekveld, resultaataantallen en enkel gemeenten die nog resultaten hebben |
-| **1.0.0** | De matrix | Alle 572 studierichtingen als raster van studiedomein × finaliteit per graad, in een paneel achter "Alle richtingen" (`?matrix=1`) · teller per richting binnen de gekozen gemeente of straal, ook wanneer die nul is · klikken filtert de lijst op die richting en graad · filter op studiedomein in de filterkolom || **2.2.0** | De eerste graad uitgelegd | 1A, 1B, 2A en 2B op `/uitleg/`, met per leerjaar de uren basisvorming, differentiatie en basisoptie en de bron erbij · steunknop ook onderaan die pagina |
+| **1.0.0** | De matrix | Alle 572 studierichtingen als raster van studiedomein × finaliteit per graad, in een paneel achter "Alle richtingen" (`?matrix=1`) · teller per richting binnen de gekozen gemeente of straal, ook wanneer die nul is · klikken filtert de lijst op die richting en graad · filter op studiedomein in de filterkolom |
+| **2.2.0** | De eerste graad uitgelegd | 1A, 1B, 2A en 2B op `/uitleg/`, met per leerjaar de uren basisvorming, differentiatie en basisoptie en de bron erbij · steunknop ook onderaan die pagina |
 | **2.3.0** | Aanmelden en inschrijven | Nieuwe pagina `/uitleg/inschrijven/` met de procedure voor het 1ste jaar, de twee tests van Onderwijskiezer, voorrang en ordening, en een link naar de officiële data · schakelaar tussen de twee uitlegpagina's · knop in de kop heet nu "Uitleg voor ouders" |
 | **2.4.0** | Mobiel | Sticky resultatenbalk met de filterknop en de lijst/kaart-schakelaar erop · filters als eigen scherm met een teller op de sluitknop · kaart die het scherm vult · vergelijking als stapel per adres in plaats van een tabel · tip over deelgemeenten pas bij het typen · tikdoelen op 44 px · kaart past zich op de resultaten in (#42, #43, #36) |
+| **2.5.0** | Toetsenbord en schermlezer | Suggesties onder de zoekbalk met de pijltjes te kiezen · vensters die de focus bijhouden · een melding wanneer een locatie niet gevonden wordt · mislukte reistijden proberen opnieuw |
 | **2.6.0** | Jullie keuze | Beslisblad in het vergelijkingsvenster naast de gegevens: elf infodagvragen met een notitie per adres, een gewicht en een beste en tweede keuze per onderwerp, en daaruit de eigen volgorde van de ouders · niets bewaard, wel een waarschuwing voor het verloren gaat · afdrukbaar leeg of ingevuld |
+| **2.7.0** | Gemeentepagina's (proef) | Eigen build-time pagina op `/gemeente/<slug>/` voor Mechelen en Brugge, op niscode gegroepeerd, met dieplinks naar de zoeker |
+| **2.8.0** | Kopbalk overal | Gemeente- en uitlegpagina's dragen dezelfde kopbalk als de zoeker, met kruimelpad en themaknop |
+| **2.9.0** | Antwerpen en Brussel | Pagina's voor Antwerpen (per district) en het Brussels gewest (per gemeente), met inhoudsopgave |
+| **2.10.0** | Gent | Pagina voor Gent |
+| **2.11.0** | Alle centrumsteden | Aalst, Genk, Hasselt, Kortrijk, Leuven, Oostende, Roeselare, Sint-Niklaas en Turnhout: alle dertien Vlaamse centrumsteden gedekt |
+| **2.12.0** | Alle gemeenten met een school | 172 gemeentepagina's, de niet-centrumsteden afgeleid uit de dataset · andere opbouw onder 5 scholen · juiste namen voor zes fusiegemeenten · sitemap gegenereerd in plaats van gecommit |
+| **2.13.0** | Herkomst via gemeentepagina | Links van een gemeentepagina naar de zoeker dragen `ref=gemeente-<naam>`, zichtbaar in Simple Analytics |
 
 ## Nog te doen
 
@@ -76,8 +85,7 @@ mét die beperking erbij.
 | 3 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | *Nice to have.* **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
 | 4 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af, en hun API (OKAPI) bevat ze niet (bevestigd door de beheerder, oktober 2026). **Volgende stap: maart/april 2027** opnieuw contact opnemen over de nieuwe Onderwijskiezer-API, die tegen september 2027 komt. Dan ook de CLB per school meevragen. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Tot dan valt er niets te bouwen |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
-| 6 | Kwaliteitsbewaking | CI-workflow bij elke push/PR, tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door. Workflow lokaal doorgemeten, zie hieronder |
-| 7 | Gemeentepagina's voor zoekmachines | Een eigen URL per centrumstad met de scholen, netten en studiedomeinen van die stad | **Proef loopt.** Mechelen en Brugge live sinds 2.7.0, eigen kopbalk sinds 2.8.0, Antwerpen en het Brussels gewest sinds 2.9.0, Gent sinds 2.10.0. De resterende negen centrumsteden (Aalst, Genk, Hasselt, Kortrijk, Leuven, Oostende, Roeselare, Sint-Niklaas, Turnhout) staan sinds 23/09/2026 op branch `v2.11.0-overige-steden`, gebouwd en klopt met `npm run build`, maar nog niet uitgebracht. Daarmee zijn dan alle dertien Vlaamse centrumsteden gedekt. **Geen link vanaf de zoeker**, zie hieronder |
+| 6 | Kwaliteitsbewaking | Tests op de pure functies, schemavalidatie op de API-responses | **Klaar om te bouwen, geen bron nodig.** De CI-workflow zelf staat er sinds 2.13.1. Niet zichtbaar voor een bezoeker, dus los in te schuiven tussen twee features door, zie hieronder |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -103,6 +111,13 @@ anders begraven bleven in secties over versies die al uit zijn.
   gekozen · Vergelijk · Wissen", en de chips pas uitklappen bij een tik op het aantal. Genoteerd
   bij [#35](https://github.com/stefanbckn/Zoek-je-school/issues/35), dat over het plakgedrag in
   Vivaldi op iOS gaat; als die balk toch onder handen genomen wordt, kan dit mee.
+- **Buurgemeenten op een gemeentepagina naar hun eigen pagina laten wijzen.** Sinds 2.12.0 heeft
+  elke gemeente met een school een pagina, maar de lijst "In de buurt" linkt nog altijd naar de
+  zoeker (`buurgemeentenLijst()` in `scripts/gemeentepagina-html.ts`). Naar de eigen pagina
+  linken maakt er een net van ingangen van, zonder dat de zoeker er iets van merkt. Zie
+  [docs/onderzoek/gemeentepaginas.md](./docs/onderzoek/gemeentepaginas.md).
+- **Overzicht op `/gemeente/` met één link in de voet**, enkel als de vindbaarheid tegenvalt. De
+  zoeker zelf linkt nooit naar een gemeentepagina (beslist 21/09/2026, zie hetzelfde bestand).
 - **Naamgenoten in de naamfilter.** Sinds 0.12.0 zoekt de naamfilter in heel Vlaanderen, dus
   dezelfde schoolnaam komt vaker meerdere keren terug. Als dat in de praktijk stoort, is de
   oplossing de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
@@ -173,61 +188,29 @@ vergelijkingstabel hoort het voorlopig niet thuis, daar staat het aanbod al per 
 ## Kwaliteitsbewaking: CI, tests en schemavalidatie (besproken 01/09/2026)
 
 Eén thema, want de losse stukken hangen samen: zonder CI draait er niets automatisch, en zonder
-tests bewaakt die CI niets dat de build niet al bewaakt. Niet gebouwd, wel doorgemeten.
+tests bewaakt die CI niets dat de build niet al bewaakt. Stap 1 is uitgebracht in 2.13.1.
 
-**De aanleiding.** `scripts/kleurcheck.mjs` is vandaag de enige echte controle in het project
-(contrast en kleurafstand, ook gesimuleerd voor kleurenblindheid) en die draait alleen wanneer
-iemand eraan denkt. Netlify draait hem nooit. Precies het soort fout dat hij vangt, ziet er op je
-eigen scherm prima uit.
+**De aanleiding.** Op 01/09/2026 draaide er niets automatisch. Sinds 04/09/2026 doet
+`controles.yml` de kleurcheck bij een PR die aan `src/index.css` komt, en per kwartaal de
+linkcheck. Wat nog altijd ontbreekt, is een controle bij élke push en PR: lint en build draaien
+pas op Netlify, en enkel op `main`. Sinds 2.7.0 weegt dat zwaarder, want `npm run build`
+genereert ook 172 gemeentepagina's en de sitemap. Een fout in dat script merk je nu pas bij de
+deploy.
 
-### Stap 1: een CI-workflow bij elke push en PR
+### Stap 1: een CI-workflow bij elke push en PR (uitgebracht in 2.13.1)
 
-Onderstaande versie is lokaal doorgemeten: `oxlint`, `tsc -b`, `tsc --noEmit -p tsconfig.app.json`
-en `node scripts/kleurcheck.mjs` geven alle vier exitcode 0 op de huidige `main`.
+`.github/workflows/ci.yml` draait `npm ci`, `oxlint --deny-warnings` en `npm run build` op Node 22,
+bij elke push op `main` en elke PR. Waarom elke keuze zo is, staat als commentaar in het bestand.
+Twee dingen die anders liepen dan het plan van 01/09/2026:
 
-```yaml
-name: CI
-on:
-  push:
-    branches: [main]
-  pull_request:
-permissions:
-  contents: read
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '22'
-          cache: npm
-      - run: npm ci
-      - run: npx oxlint --deny-warnings
-      - run: npm run build
-      - run: node scripts/kleurcheck.mjs
-```
+- **De kleurcheck zit er niet in.** Die draait sinds 04/09/2026 al in `controles.yml`, bij elke PR
+  die aan `src/index.css` komt. Een rechtstreekse push op `main` die aan de kleuren komt, valt
+  daar wel buiten.
+- **Nieuwere oxlint gaf vier waarschuwingen** (`react/set-state-in-effect` op drie bewuste
+  plaatsen, een ongebruikte catch-parameter in `public/thema.js`). Die staan per regel uit, met
+  de reden erbij, zodat de regel voor nieuwe code blijft gelden.
 
-Vier dingen die vastliggen, elk omdat een voor de hand liggende variant stilzwijgend fout gaat:
-
-- **Node 22, niet 24.** `netlify.toml` zet `NODE_VERSION = "22"` en `ververs-scholendata.yml`
-  gebruikt 22. Loopt CI op een andere major, dan kan CI groen zijn terwijl de deploy breekt.
-- **Geen losse typecheck-stap.** `npm run build` doet `tsc -b`, en dat dekt zowel
-  `tsconfig.app.json` als `tsconfig.node.json`, dus ook `scripts/`, `netlify/`, `shared/` en
-  `vite.config.ts`. Een stap `tsc --noEmit -p tsconfig.app.json` ervoor dekt alleen `src` en voegt
-  dus niets toe. Als losse `typecheck`-npm-script voor lokale snelle feedback is het wel zinvol;
-  maak er dan `tsc -b --force` van.
-- **`--deny-warnings` bij oxlint.** `react/only-export-components` staat in `.oxlintrc.json` op
-  `warn`; zonder die vlag passeren waarschuwingen stil en is de lintstap half decoratief.
-- **`permissions` en `concurrency`.** Minimale tokenrechten, en achterhaalde runs op dezelfde PR
-  worden geannuleerd.
-
-Kleine noot bij de versies: `actions/checkout` en `actions/setup-node` staan intussen op **v7**
-(nagekeken via de GitHub-API op 01/09/2026), de bestaande data-workflow op v5. Kies één lijn voor
-beide workflows in plaats van ze uit elkaar te laten lopen.
+Alle workflows staan sindsdien op `actions/checkout@v7` en `actions/setup-node@v7`.
 
 ⚠️ **Nog te controleren in de Netlify-UI:** staan deploy previews aan? Zo ja, dan bouwt Netlify je
 PR-branches al en is de buildstap in CI deels dubbel. Ze blijft dan nog steeds nuttig als snelle
@@ -248,6 +231,9 @@ waarschuwing hebben. Vijf kandidaten, allemaal pure functies zonder DOM:
   en de omgekeerde `lon,lat`-volgorde.
 - **`campusAanbod()`** in `aanbod.ts`: aanbod per adres samenvoegen zonder duplicaten.
 - De groepeersleutel **`postcode|straat|huisnummer`** in `fetch-data.ts`, met busnummer genegeerd.
+- Sinds 2.12.0: **`controleerSlugs()`** in `genereer-gemeentepaginas.ts` (twee entries met
+  dezelfde slug moeten een fout geven, zie de Brusselkwestie) en de afleiding in
+  **`gemeenten-afgeleid.ts`** (elke niscode met een school precies één keer).
 
 Schatting: een uurtje met vitest, zo'n twintig assertions. Pas hierna bewaakt CI iets dat de
 build niet al bewaakt.
@@ -276,161 +262,6 @@ npm: 1.4.2 (nagekeken 01/09/2026).
   levert hier meer op**, want het risico zit in dependencies. ⚠️ Niet geverifieerd: default setup
   zet géén workflowbestand in de repo, en de badge-URL verwijst naar een workflowbestand. Wil je
   per se een CodeQL-badge, dan moet je waarschijnlijk de advanced variant nemen.
-
-## Gemeentepagina's voor zoekmachines (proef sinds 2.7.0, 21/09/2026)
-
-**Waarom.** Ouders zoeken niet op "middelbare school Vlaanderen" maar op hun eigen regio:
-"middelbare scholen Mechelen". Tot 2.7.0 kon de site daar niet op scoren. Er waren drie URL's
-(`/`, `/uitleg/` en `/uitleg/inschrijven/`), alle gemeentekeuze zat in de querystring, en de
-canonical in `index.html` wees alles terug naar `/`.
-
-Aanleiding was Bing Webmaster Tools op 20/09/2026: twee vertoningen, op "middelbare school" en
-op "zoek en vind school". Op de brede term is niets te winnen (die is bezet door de scholen zelf
-en door Onderwijs Vlaanderen); op een term met intentie erin staat de site wél vooraan, met de
-`<meta name="description">` letterlijk als antwoordblok bovenaan.
-
-**Wat er in 2.7.0 gebouwd is.** `scripts/genereer-gemeentepaginas.ts` schrijft build-time één
-pagina per stad naar `gemeente/<slug>/index.html`, uit de gecommitte dataset. De uitvoer staat
-niet in git (zie `.gitignore`); `prebuild` en `predev` draaien het script. De stedenlijst staat
-in `scripts/steden.ts`, en `vite.config.ts` leidt daar zijn entry points uit af. Het script
-stopte met een fout zodra een stad niet in `public/sitemap.xml` stond, want dat bestand stond toen
-nog in git en zou anders stil achterlopen. Sinds 2.12.0 genereert het script de sitemap zelf uit
-dezelfde lijst als de pagina's; het bestand staat nu in `.gitignore` en die controle is weg.
-
-**Groeperen gebeurt op `niscode`, niet op de naam in `gemeente`.** Dat veld draagt de plaatsnaam
-van de postcode: Brugge staat er als Assebroek, Brugge, Sint-Andries, Sint-Kruis, Sint-Michiels
-en Zeebrugge. De eerste versie filterde op naam en zette Sint-Andries daardoor als *buurgemeente*
-van Brugge op de pagina. Op niscode klopt het wel, en **daarmee is de Antwerpse districtenkwestie
-ook opgelost**: 11002 bevat Antwerpen plus Berchem, Borgerhout, Borsbeek, Deurne, Ekeren,
-Hoboken, Merksem en Wilrijk. De codes volgen ook de fusies van 01/01/2025. 27 van de 189
-niscodes in de dataset dragen meer dan één plaatsnaam, dus dit raakt veel meer dan Antwerpen
-alleen.
-
-De zoeker filtert wél op plaatsnaam (`?gemeenten=`), dus een dieplink voor Brugge draagt alle
-zes de namen. Het script leidt die lijst uit de data af.
-
-**Welke steden nog.** De dertien Vlaamse centrumsteden; de vijf provinciehoofdsteden zitten daar
-al in (Antwerpen, Gent, Brugge, Hasselt, Leuven), dus het blijven er dertien. Mechelen, Gent,
-Brugge, Antwerpen en het Brussels gewest staan live. De overige negen (Aalst, Genk, Hasselt,
-Kortrijk, Leuven, Oostende, Roeselare, Sint-Niklaas, Turnhout) staan sinds 23/09/2026 op branch
-`v2.11.0-overige-steden`, nog niet uitgebracht. Geteld op 21/09/2026 (Gent op 23/09/2026, de
-negen resterende op 23/09/2026 via `npm run genereer-gemeentepaginas` op die branch),
-**op niscode en enkel adressen met studieaanbod**, dus zoals de pagina's ze tellen:
-
-| Stad | Adressen | Scholen | Studierichtingen | Status |
-| --- | --- | --- | --- | --- |
-| Mechelen | 16 | 19 | 151 | Live sinds 2.7.0 |
-| Gent | 57 | 53 | 229 | Live sinds 2.10.0 |
-| Brugge | 29 | 31 | 204 | Live sinds 2.7.0 |
-| Antwerpen | 106 | 77 | 254 | Live sinds 2.9.0 |
-| Brussels gewest | 49 | 45 | 175 | Live sinds 2.9.0 |
-| Aalst | 17 | 24 | 154 | Branch `v2.11.0-overige-steden` |
-| Genk | 12 | 12 | 146 | Branch `v2.11.0-overige-steden` |
-| Hasselt | 16 | 20 | 177 | Branch `v2.11.0-overige-steden` |
-| Kortrijk | 21 | 25 | 172 | Branch `v2.11.0-overige-steden` |
-| Leuven | 22 | 31 | 159 | Branch `v2.11.0-overige-steden` |
-| Oostende | 13 | 14 | 132 | Branch `v2.11.0-overige-steden` |
-| Roeselare | 14 | 19 | 165 | Branch `v2.11.0-overige-steden` |
-| Sint-Niklaas | 17 | 24 | 134 | Branch `v2.11.0-overige-steden` |
-| Turnhout | 13 | 20 | 142 | Branch `v2.11.0-overige-steden` |
-
-⚠️ Een eerdere telling in dit bestand ging uit van de plaatsnaam en telde ook adressen zonder
-aanbod mee. Die cijfers (Brugge 21 adressen) waren dus te laag én verkeerd afgebakend. Tel
-nieuwe steden met hetzelfde script, niet met de hand.
-
-**Antwerpen en Brussel in 2.9.0 (beslist 22/09/2026 door de gebruiker).** Allebei te groot
-voor één lijst op straatnaam, dus de adressen staan per groep met een inhoudsopgave erboven:
-Antwerpen per district (de plaatsnaam in `gemeente` valt daar samen met het district), Brussel
-per gemeente (op niscode, want Laken is een plaatsnaam van Brussel-stad). Elke groep heeft een
-eigen dieplink naar de zoeker.
-
-Brussel is één pagina voor het hele gewest, geen pagina per gemeente: die zouden te dun zijn.
-Dat past toch in de niscode-aanpak, door `niscode` in `scripts/steden.ts` als prefix te lezen:
-`'21'` dekt alle negentien gemeenten. Twee dingen die alleen daar gelden: de titel zegt
-"Nederlandstalige", omdat de dataset enkel het onderwijs van de Vlaamse Gemeenschap bevat, en de
-pagina noemt de gemeenten zonder school. Op 22/09/2026 waren dat Sint-Gillis,
-Sint-Joost-ten-Node, Sint-Lambrechts-Woluwe en Watermaal-Bosvoorde. Die lijst leidt het script
-af uit `groepen.alle`; komt er een gemeente bij met een andere schrijfwijze, dan stopt het met
-een fout in plaats van een foute zin te schrijven.
-
-**Wanneer doorschalen (herzien 23/09/2026 door de gebruiker).** De wachtperiode van drie
-maanden hierboven is losgelaten: Mechelen en Brugge staan pas sinds 2.7.0 (21/09/2026) live, dus
-lang voor die termijn om was, dook in Bing Webmaster Tools al een vertoning op voor een
-zoekopdracht die specifiek genoeg was om te overtuigen. Op branch `v2.11.0-overige-steden`
-staan de resterende negen centrumsteden daarom al gebouwd, in dezelfde stap in plaats van na een
-verdere wachttijd.
-
-**Past binnen de harde regels.** Build-time gegenereerd uit de bestaande statische JSON, dus geen
-backend en geen live call erbij. Geen hardgecodeerde schoolnaam of richting: het script kent er
-geen enkele, het leest ze. Geen ranglijst: de adressen staan op alfabet van de straatnaam en de
-pagina velt geen oordeel. De leerlingenkenmerken staan er bewust **niet** op: die per stad
-optellen leest als een oordeel over een stad.
-
-**2.8.0 gaf ze dezelfde kopbalk als de zoeker**, met een kruimelpad in plaats van een
-terugweglink. Vanaf die pagina's openen `?matrix=1`, `?help=1` en `?over=1` de zoeker met dat
-venster open.
-
-### Geen link vanaf de zoeker naar deze pagina's (beslist 21/09/2026 door de gebruiker)
-
-Deze pagina's blijven **ingangen, geen onderdeel van de app**. De zoeker krijgt er geen link
-naartoe. Reden: een stadspagina stopt aan de gemeentegrens, en de site zegt zelf dat een
-schoolkeuze dat niet doet. Voor wie al op de zoeker staat, is de stadspagina dus het mindere
-gereedschap: minder precies dan een eigen adres met een straal, en zonder reistijd. Een link
-daarheen stuurt mensen van het betere naar het mindere.
-
-Het publiek verschilt: de stadspagina is er voor wie de site nog niet kent en "middelbare
-scholen Mechelen" intikt. Haar taak is binnenhalen en doorsturen, en dat doen de twee links
-bovenaan al.
-
-**Wat we wél gaan doen, zodra er meer steden zijn.** De buurgemeentenlijst wijst nu volledig
-naar de zoeker. Bestaat een buurgemeente zelf als pagina, laat die regel er dan naartoe wijzen.
-Zo ontstaat een net van ingangen dat zichzelf vindbaar maakt, zonder dat de zoeker rommeliger
-wordt.
-
-**De goedkope achterdeur als vindbaarheid tegenvalt:** een overzichtje op `/gemeente/` met één
-link in de voet. De voet is geen gereedschap, dus daar kost een link niets aan focus. Pas doen
-vanaf een stuk of vijf steden; met twee is zo'n pagina zelf thin content.
-
-**Waaraan je zou merken dat deze beslissing fout is:** als Search Console toont dat mensen op een
-stadspagina landen en weggaan zonder door te klikken naar de zoeker. Dan doet de pagina haar werk
-als ingang niet, en gaat het gesprek over de tekst bovenaan die pagina, niet over integratie.
-
-### Van centrumsteden naar alle gemeenten (nog te bouwen, besproken 23/09/2026)
-
-**Volgorde.** Eerst de resterende centrumsteden afwerken — dat staat sinds 23/09/2026 gebouwd op
-branch `v2.11.0-overige-steden`, nog niet uitgebracht. Pas daarna de stap naar alle Vlaamse
-en Brusselse gemeenten, met dezelfde reden als bij de Google Search-aanleiding hierboven: ook
-een kleine gemeente is een zoekterm ("middelbare school Aalst-net-niet-centrumstad"), en zonder
-eigen pagina wint de site daar niets. De gebruiker bouwt dit zelf, op een eigen versie-branch.
-
-**`steden.ts` dekt de lading dan niet meer.** Een handonderhouden `Stad[]`-entry per gemeente
-schaalt niet naar de ~300 niscodes in de dataset, zoals dat nu wel gaat voor een stuk of dertien
-centrumsteden. Open vraag om vóór de bouw te beslissen: blijft er één lijst, of komt er een
-losse, **uit de dataset afgeleide** volle gemeentenlijst (elke niscode die nog geen eigen
-centrumstad- of gewest-entry heeft) naast een kleinere `steden.ts` voor de uitzonderingen
-(`groepen`, een aangepaste titel zoals bij Brussel)?
-
-**Gemeenten met minder dan 5 scholen krijgen een andere pagina-opbouw.** Vanaf 5 scholen blijft
-het zoals nu: eerst de eigen scholen, dan "In de buurt". Onder de 5 wordt "Scholen in de buurt
-van [gemeente]" de hoofdlijst, met de eigen school(en) er gewoon tussen en de titel mee
-aangepast. Reden: een pagina met twee scholen is thin content; het bredere buurtaanbod is dan
-het nuttigere antwoord op de zoekterm.
-
-**Let op bij Brussel: naam- en slugbotsing.** Er bestaat al een `Stad`-entry "Brussel" (slug
-`brussel`, niscode-prefix `'21'`, het hele gewest). Krijgt straks ook de commune Brussel-stad
-zelf (niscode 21004) een eigen gemeentepagina, dan wil die dezelfde naam "Brussel" en dus
-dezelfde slug dragen — de tweede `writeFileSync` naar `gemeente/brussel/index.html` overschrijft
-dan stil de eerste, zonder foutmelding. Twee dingen die dat voorkomen: de bestaande
-`groepen.namen`-afspraak (`{'21004': 'Brussel-stad'}`) ook als slug voor de eigen
-commune-pagina hergebruiken, én een harde fout in het generatorscript zodra twee entries tot
-dezelfde output-slug leiden. Die harde fout bestaat sinds 2.12.0: `controleerSlugs()` in
-`scripts/genereer-gemeentepaginas.ts`.
-
-**`/gemeente/` blijft een pure ingang, ook op deze schaal.** Zie "Geen link vanaf de zoeker naar
-deze pagina's" hierboven: die beslissing verandert niet zodra het er honderden zijn. Een
-overzichtspagina op `/gemeente/` mag bestaan als vindbaarheid tegenvalt, met een link in de
-voet, maar zoekjeschool.be zelf blijft nergens naar een gemeentepagina linken — enkel andersom:
-wie van een zoekmachine op zo'n pagina landt, vindt daar de weg naar de zoeker.
 
 ## Bewust geschrapt
 

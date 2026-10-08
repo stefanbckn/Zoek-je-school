@@ -10,6 +10,7 @@
     if (t === 'donker') document.documentElement.setAttribute('data-theme', 'dark')
     else if (t === 'licht') document.documentElement.setAttribute('data-theme', 'light')
     // 'systeem' of niets: geen attribuut, prefers-color-scheme beslist.
+  // oxlint-disable-next-line no-unused-vars
   } catch (e) {
     // Geblokkeerde opslag: val terug op het systeemthema.
   }

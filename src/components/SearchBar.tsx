@@ -56,6 +56,8 @@ export function SearchBar({
   const verzoekRef = useRef(0)
 
   useEffect(() => {
+    // Het veld is bewerkbaar en volgt het label pas weer wanneer dat van buitenaf verandert.
+    // oxlint-disable-next-line react/set-state-in-effect
     setInvoer(label ?? '')
   }, [label])
 

@@ -62,6 +62,8 @@ export function DetailPanel({
 
   useEffect(() => {
     if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
+      // De route hangt af van een fetch; leegmaken bij een andere school hoort bij dat effect.
+      // oxlint-disable-next-line react/set-state-in-effect
       setFietsroute(null)
       return
     }
@@ -79,6 +81,8 @@ export function DetailPanel({
   // Transitous vraagt expliciet om licht om te springen met routing-calls.
   useEffect(() => {
     if (!campus || !zoeklocatie || !aankomstmoment || campus.lat === null || campus.lon === null) {
+      // Zelfde reden als bij de fietsroute hierboven.
+      // oxlint-disable-next-line react/set-state-in-effect
       setOvReis(null)
       return
     }
