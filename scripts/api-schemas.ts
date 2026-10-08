@@ -20,6 +20,13 @@
  */
 import * as v from 'valibot'
 
+/**
+ * De bron heeft een andere vorm dan het schema. Een eigen type, omdat `fetch-data.ts` bij een
+ * gewone ophaalfout terugvalt op de gecommitte dataset en met exitcode 0 eindigt. Voor deze fout
+ * mag dat niet: dan draait de kwartaalverversing groen met "ongewijzigd" en merkt niemand iets.
+ */
+export class BronVeranderd extends Error {}
+
 // 2153 records op 08/10/2026, met filter op hoofdstructuur 311.
 export const Locatie = v.object({
   instelling_nummer: v.number(),
@@ -112,7 +119,7 @@ export function valideer<S extends v.GenericSchema>(
     }
   })
   if (aantalFout > 0) {
-    throw new Error(
+    throw new BronVeranderd(
       `${label}: ${aantalFout} van de ${records.length} records passen niet in het schema. ` +
         'De bron is veranderd; pas scripts/api-schemas.ts aan na het nakijken van een live ' +
         `respons, niet op gevoel.\n${fouten.join('\n')}`,
@@ -130,7 +137,7 @@ export function controleerAanwezigheid(label: string, records: unknown[], paden:
   if (records.length === 0) return
   const nergens = paden.filter((pad) => !records.some((r) => leesPad(r, pad) != null))
   if (nergens.length > 0) {
-    throw new Error(
+    throw new BronVeranderd(
       `${label}: ${nergens.join(', ')} ontbreekt in alle ${records.length} records. ` +
         'Waarschijnlijk hernoemd door de bron; kijk een live respons na.',
     )

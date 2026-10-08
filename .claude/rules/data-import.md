@@ -128,6 +128,12 @@ gemapt wordt. Wat daarbij vastligt:
 Faalt het ophalen tóch, dan valt het script terug op de gecommitte dataset met een luide
 waarschuwing. Ligt er géén dataset, dan faalt het hard.
 
+**Uitzondering: `BronVeranderd`** (schemafout, onbekende provincie). Die valt nooit terug,
+maar stopt met exitcode 1. Een terugval eindigt op exitcode 0, en dan draait de
+kwartaalverversing groen met "ongewijzigd" terwijl de bron van vorm veranderd is. Zo ging het
+tot 2.13.3 ook met de onbekende provincie: de regel hierboven noemde die een harde fout, maar de
+terugval ving hem op.
+
 **Omvangcontrole:** het script weigert weg te schrijven als het aantal vestigingen meer dan 15%
 kleiner is dan in de gecommitte dataset, en eindigt met exitcode 1. Dat vangnet bestaat omdat
 het script ook ongesuperviseerd draait via de GitHub Action. Groei is nooit verdacht, enkel

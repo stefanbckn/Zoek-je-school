@@ -15,6 +15,7 @@ import { adresSleutel } from './adres.ts'
 import * as v from 'valibot'
 import {
   Bestuur,
+  BronVeranderd,
   CatalogusRichting,
   IngerichteRichting,
   Instelling,
@@ -109,7 +110,7 @@ async function haalPagina(url: string): Promise<v.InferOutput<typeof Pagina>> {
     const envelop = v.safeParse(Pagina, json)
     if (!envelop.success) {
       const issue = envelop.issues[0]
-      throw new Error(
+      throw new BronVeranderd(
         `Onverwachte envelop van ${url}: veld ${v.getDotPath(issue) ?? '(respons zelf)'}: ${issue.message}`,
       )
     }
@@ -465,7 +466,7 @@ async function bouwDataset() {
     // nog steeds dezelfde campus.
     const provincie = PROVINCIES[loc.instellingslocatie_provincie]
     if (!provincie) {
-      throw new Error(
+      throw new BronVeranderd(
         `Onbekende provincie "${loc.instellingslocatie_provincie}" bij instelling ` +
           `${loc.instelling_nummer}. De bron is veranderd — vul PROVINCIES aan in plaats van ` +
           'deze vestiging over te slaan.',
@@ -603,6 +604,9 @@ async function main() {
   try {
     resultaat = await bouwDataset()
   } catch (err) {
+    // De bron heeft een andere vorm: geen terugval, want dan eindigt de run groen en ziet
+    // niemand het. Zie BronVeranderd in scripts/api-schemas.ts.
+    if (err instanceof BronVeranderd) throw err
     // Geen verse data. Ligt er een gecommitte dataset, dan bouwen we daarmee verder: een
     // hikkende API mag geen deploy tegenhouden. De footer toont de ophaaldatum uit meta.json,
     // dus verouderde data blijft zichtbaar voor de bezoeker.

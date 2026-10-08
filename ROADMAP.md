@@ -246,6 +246,11 @@ geldig. De werkregels staan in `.claude/rules/data-import.md`.
   ontbreken echt.
 - **Bewezen zonder gedragswijziging:** de oude en de nieuwe versie van het script schreven op
   dezelfde dag byte voor byte dezelfde data weg, op het tijdstip in `meta.json` na.
+- **Een schemafout valt niet terug op de oude dataset.** Gewone ophaalfouten doen dat wel, met
+  exitcode 0. Voor een schemafout zou dat een groene kwartaalrun met "ongewijzigd" geven,
+  terwijl niemand weet dat de bron veranderd is. Daarom een eigen fouttype, `BronVeranderd`, dat
+  de terugval overslaat. De onbekende provincie gebruikt het ook: die liep tot 2.13.3 in
+  dezelfde val. Nagespeeld met een hernoemd veld: exitcode 1, `public/data` onaangeroerd.
 - **Enkel in het buildscript, niet in de browser.** `vestigingen.json` maakt ons eigen script;
   die opnieuw valideren kost bundle en parsetijd voor nul winst.
 

@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { Bestuur, Instelling, OPTIONELE_VELDEN, controleerAanwezigheid, valideer } from './api-schemas.ts'
+import {
+  Bestuur,
+  BronVeranderd,
+  Instelling,
+  OPTIONELE_VELDEN,
+  controleerAanwezigheid,
+  valideer,
+} from './api-schemas.ts'
 
 const instelling = {
   instelling_nummer: 1234,
@@ -32,6 +39,13 @@ describe('valideer', () => {
     expect(() => valideer('instellingen', Instelling, [instelling, hernoemd])).toThrow(
       /instellingen: 1 van de 2 records.*\n.*record 1, veld instelling_naam_volledig/,
     )
+  })
+
+  it('gooit een BronVeranderd, zodat fetch-data.ts niet terugvalt op de oude dataset', () => {
+    expect(() => valideer('instellingen', Instelling, [{}])).toThrow(BronVeranderd)
+    expect(() =>
+      controleerAanwezigheid('instellingen', [{}], ['instelling_net.omschrijving']),
+    ).toThrow(BronVeranderd)
   })
 
   it('stopt wanneer een veld van type verandert', () => {
