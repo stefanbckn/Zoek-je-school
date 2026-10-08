@@ -168,3 +168,30 @@ export function anker(naam: string): string {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
 }
+
+/**
+ * Twee gemeenten die tot dezelfde slug herleiden (bv. de commune Brussel-stad tegenover het
+ * Brussels gewest, dat nu al de slug "brussel" draagt) zouden zonder deze controle stilzwijgend
+ * elkaars `gemeente/<slug>/index.html` overschrijven — de laatste in de lijst wint, zonder
+ * foutmelding. Harde fout in plaats daarvan, dezelfde reden als bij `heeftAanbod` en de
+ * onbekende groepsnaam hierboven.
+ */
+export function controleerSlugs(stedenAlles: Stad[]): void {
+  const perSlug = new Map<string, Stad[]>()
+  for (const stad of stedenAlles) {
+    perSlug.set(stad.slug, [...(perSlug.get(stad.slug) ?? []), stad])
+  }
+  const botsingen = [...perSlug.values()].filter((lijst) => lijst.length > 1)
+  if (botsingen.length > 0) {
+    throw new Error(
+      'Twee gemeenten delen dezelfde slug:\n' +
+        botsingen
+          .map(
+            (lijst) =>
+              `  ${lijst[0].slug}: ${lijst.map((s) => `${s.naam} (${s.niscode})`).join(', ')}`,
+          )
+          .join('\n') +
+        '\nGeef één van beide een eigen entry met titel in scripts/steden.ts.',
+    )
+  }
+}

@@ -112,7 +112,7 @@ const NET_MIGRATIE: Record<string, Net[]> = {
   'Officieel gesubsidieerd': ['Provinciaal', 'Gemeentelijk'],
 }
 
-function parseNetten(raw: string | null): Net[] {
+export function parseNetten(raw: string | null): Net[] {
   const netten = new Set<Net>()
   for (const waarde of parseList(raw)) {
     const opvolgers = NET_MIGRATIE[waarde]
