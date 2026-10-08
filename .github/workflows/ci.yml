@@ -1,4 +1,4 @@
-# Lint en build bij elke push op main en bij elke pull request.
+# Lint, tests en build bij elke push op main en bij elke pull request.
 #
 # Netlify bouwt enkel main. Zonder deze workflow merk je een fout in een PR pas wanneer de
 # deploy na de merge faalt. Sinds 2.7.0 weegt dat zwaarder: `npm run build` genereert via
@@ -34,5 +34,7 @@ jobs:
       - run: npm ci
       # Zonder --deny-warnings passeren waarschuwingen stil en zegt een groene lintstap niets.
       - run: npx oxlint --deny-warnings
+      # Draait in Europe/Brussels (zie het npm-script): de datumlogica rekent in lokale tijd.
+      - run: npm test
       # tsc -b dekt zowel tsconfig.app.json als tsconfig.node.json, dus ook scripts/ en netlify/.
       - run: npm run build

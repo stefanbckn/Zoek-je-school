@@ -1,6 +1,7 @@
 # Zoek je school
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a71213ec-47f4-42c4-bbd5-a252e68f2d2e/deploy-status)](https://app.netlify.com/projects/zoekjeschool/deploys)
+[![CI](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/ci.yml/badge.svg)](https://github.com/stefanbckn/Zoek-je-school/actions/workflows/ci.yml)
 
 Zoeker voor middelbare scholen (voltijds gewoon secundair onderwijs) in Vlaanderen en Brussel.
 Live op [zoekjeschool.be](https://zoekjeschool.be/).
@@ -64,6 +65,7 @@ lijst en wat er geverifieerd is.
 
 ```bash
 npm run lint                  # oxlint
+npm test                      # vitest, in Europe/Brussels
 npx tsc --noEmit -p tsconfig.app.json
 node scripts/kleurcheck.mjs   # contrast + kleurenblindheid van het palet
 ```

@@ -8,6 +8,19 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.13.2 — 8 oktober 2026
+
+Ook nu verandert er niets aan de site zelf. Een handvol dingen die eerder al eens stukgingen,
+wordt voortaan bij elke wijziging automatisch nagekeken.
+
+**Achter de schermen**
+
+- **Tests op wat al eens misging.** Bijvoorbeeld: een oude gedeelde link met het net
+  "Officieel gesubsidieerd" moet nog altijd resultaten geven, de OV-reistijd moet op 8u30
+  rekenen ook rond de overgang naar wintertijd, en een schoolnaam met een schuine streep moet
+  de fietsroute heel laten.
+- **De tests draaien bij elke push en pull request**, samen met de controles van 2.13.1.
+
 ## 2.13.1 — 8 oktober 2026
 
 Aan de site zelf verandert niets. Achter de schermen wordt elke wijziging nu automatisch

@@ -59,6 +59,7 @@ te bestaan: **zeg dat expliciet en stel een alternatief voor.** Verzin geen verv
 npm run dev          # dev-server, poort via process.env.PORT, standaard 5173
 npm run build        # tsc -b && vite build — moet slagen na elke afgeronde stap
 npm run lint         # oxlint
+npm test             # vitest; draait ook in CI bij elke push en PR
 npm run fetch-data   # data verversen; vraagt een API-key, hoort NIET bij elke build
 node scripts/kleurcheck.mjs   # contrast + kleurenblindheid; draai dit na elke kleurwijziging
 node scripts/linkcheck.mjs    # controleert of alle externe links nog werken; past niets aan

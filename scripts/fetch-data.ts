@@ -11,6 +11,7 @@ import type {
   SoortBestuur,
   Studierichting,
 } from '../src/types.ts'
+import { adresSleutel } from './adres.ts'
 import { haalLeerlingenkenmerken, type KenmerkenDataset } from './leerlingenkenmerken.ts'
 
 // Laad .env.local (voorrang) en .env. Node 21+ heeft loadEnvFile ingebouwd — geen dotenv nodig.
@@ -442,7 +443,7 @@ async function bouwDataset() {
     const straat = loc.instellingslocatie_straatnaam ?? ''
     const huisnummer = loc.instellingslocatie_huisnummer ?? ''
     const postcode = loc.instellingslocatie_postcode ?? ''
-    const adresKey = `${postcode}|${straat}|${huisnummer}`.toLowerCase()
+    const adresKey = adresSleutel({ postcode, straat, huisnummer })
 
     let campus = campussenPerAdres.get(adresKey)
     if (!campus) {
