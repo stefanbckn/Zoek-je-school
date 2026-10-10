@@ -8,6 +8,20 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.13.6 — 10 oktober 2026
+
+Een onderhoudsversie. Op de site zelf verandert niets.
+
+**Achter de schermen**
+
+- **Dependabot houdt de pakketten in het oog.** GitHub meldt nu wanneer een pakket waar de site
+  op steunt een bekend lek heeft of kwaadaardige code bevat, en stelt bij een lek meteen een
+  oplossing voor. Nieuwe versies zonder beveiligingsreden komen er bewust niet automatisch bij.
+- **Een eerste lek is meteen gedicht**, in `source-map-js`. Dat pakket draait alleen tijdens het
+  bouwen van de site, niet in je browser, dus het risico was klein. Het staat nu op 1.2.2.
+- **De badge in de README kijkt of de site online is**, in plaats van de laatste Netlify-build te
+  tonen, en gebruikt het logo van de site.
+
 ## 2.13.5 — 8 oktober 2026
 
 Ook nu verandert er niets aan de site zelf. Op GitHub staat beter uitgelegd hoe je iets meldt.
