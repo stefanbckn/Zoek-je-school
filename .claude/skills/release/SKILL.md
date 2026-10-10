@@ -1,6 +1,6 @@
 ---
 name: release
-description: De release-, git- en dataverversingswerkwijze van Zoek je school. Gebruik dit bij het uitbrengen van een versie, het aanmaken van een branch, het bumpen van het versienummer, het bijwerken van de changelog, het zetten van een tag, het opzetten van een PR, het draaien van npm run fetch-data, de jaarlijkse of periodieke refresh van de scholendataset, de GitHub Action ververs-scholendata, of wanneer er gevraagd wordt hoe iets live gaat.
+description: De release-, git- en dataverversingswerkwijze van Zoek je school. Gebruik dit bij het uitbrengen van een versie, het aanmaken van een branch, het bumpen van het versienummer, het bijwerken van de changelog, het zetten van een tag, het opzetten van een PR, het draaien van npm run fetch-data, de jaarlijkse of periodieke refresh van de scholendataset, de GitHub Action ververs-scholendata, het mergen of uitbrengen van een Dependabot-PR, of wanneer er gevraagd wordt hoe iets live gaat.
 ---
 
 # Release en git-werkwijze — Zoek je school
@@ -108,6 +108,37 @@ automatisch → tag zetten → GitHub Release aanmaken. Twee dingen die daarbij 
 - **Een push met enkel `.md`-wijzigingen bouwt niet.** De `ignore`-regel in `netlify.toml`
   annuleert de build als er buiten de documentatie niets veranderde. Terecht — er valt dan niets
   te deployen. Komt een échte wijziging ooit niet live, kijk daar dan eerst.
+
+### Dependabot-PR's uitbrengen
+
+Sinds 10/10/2026 staan de Dependabot-alerts, de malware alerts en de gegroepeerde
+security-updates aan; versie-updates bewust niet (zie ROADMAP.md, "Wat er bewust NIET in zit").
+Een Dependabot-PR raakt dus enkel `package-lock.json` en heeft een beveiligingsreden.
+
+**Bump in de PR van Dependabot zelf, niet in een tweede PR achteraf.** Bij 2.13.6 is het
+andersom gegaan: eerst #75 gemerged, daarna een aparte versie-branch enkel voor het nummer en de
+changelog. Dat zijn twee PR's en twee deploys voor één wijziging. De branch van Dependabot staat
+in onze eigen repo, dus je mag er gewoon commits aan toevoegen:
+
+1. Vraag ook hier eerst of het MAJOR, MINOR of PATCH wordt. Een beveiligingsfix in een
+   dependency is meestal PATCH, maar de gebruiker beslist.
+2. `gh pr checkout <nummer>`
+3. `npm version patch --no-git-tag-version`: zet `package.json` én `package-lock.json` omhoog,
+   zonder commit of tag.
+4. Changelog-kop met versie en datum. Schrijf erbij of een bezoeker iets merkt, en hoe groot het
+   risico voor ons was: "high" bij GitHub is de ernst van het lek in het algemeen, niet voor dit
+   project (een pakket dat enkel bij de build draait, raakt de bezoeker niet).
+5. `npm run build` en `npm test`, commit, en pas pushen na akkoord. Daarna merge, tag en
+   Release zoals hierboven.
+6. Na de merge lokaal `git pull` en `npm ci`, anders draait de dev-server nog de oude versie.
+
+Twee dingen om te weten:
+
+- **Dependabot rebaset de PR niet meer** zodra er een commit van iemand anders op staat.
+  `@dependabot rebase` werkt dan niet; een conflict los je zelf op. Voor een PR die dezelfde dag
+  gemerged wordt, maakt dat niets uit.
+- **Liggen er meerdere Dependabot-PR's tegelijk,** merge de eerste zonder bump en bump enkel in
+  de laatste. Eén versie voor allemaal, geen reeks patches op één middag.
 
 ### Samenwerking / git
 
