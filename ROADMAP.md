@@ -271,10 +271,19 @@ dus de badge staat in de README.
 
 - **CodeQL: mag, maar verwacht er weinig van.** Dit is een client-side app zonder database of
   authenticatie; het enige serverpad is de ORS-proxy. Via *default setup* (Settings → Code
-  security) kost het bijna niets en is er geen workflowbestand te onderhouden. **Dependabot
-  levert hier meer op**, want het risico zit in dependencies. ⚠️ Niet geverifieerd: default setup
-  zet géén workflowbestand in de repo, en de badge-URL verwijst naar een workflowbestand. Wil je
-  per se een CodeQL-badge, dan moet je waarschijnlijk de advanced variant nemen.
+  security) kost het bijna niets en is er geen workflowbestand te onderhouden. Dependabot levert
+  hier meer op, want het risico zit in dependencies; zie hieronder. ⚠️ Niet geverifieerd:
+  default setup zet géén workflowbestand in de repo, en de badge-URL verwijst naar een
+  workflowbestand. Wil je per se een CodeQL-badge, dan moet je waarschijnlijk de advanced
+  variant nemen.
+- **Dependabot: alleen de beveiligingskant, geen versie-updates** (aangezet op 10/10/2026,
+  beslist door de gebruiker). Aan staan de alerts, de malware alerts en de security-updates,
+  gegroepeerd per package manager. Dat zijn instellingen in GitHub (`/settings/security_analysis`
+  van de repo), geen bestand in de repo. Er is bewust géén `dependabot.yml`: versie-updates geven
+  een stroom bot-PR's voor dingen die we bij een volgende versie toch zelf optillen, en wie zo'n
+  stroom laat liggen, merget op den duur blind. Raken de pakketten toch ver achterop, dan is een
+  maandelijkse, gegroepeerde `dependabot.yml` de volgende stap. Na het mergen van een
+  Dependabot-PR lokaal `git pull` en `npm ci`, anders draait de dev-server nog de oude versie.
 
 ## Bewust geschrapt
 
