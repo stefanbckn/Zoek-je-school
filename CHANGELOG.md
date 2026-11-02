@@ -8,7 +8,7 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
-## Niet uitgebracht
+## 2.14.0 — 2 november 2026
 
 **Meerdere studierichtingen tegelijk**
 
