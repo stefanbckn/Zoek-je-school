@@ -8,6 +8,18 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.14.2 — 2 november 2026
+
+Een onderhoudsversie. Op de site zelf verandert niets.
+
+**Achter de schermen**
+
+- **Vite staat op 8.3.5**, het pakket waarmee de site gebouwd wordt. Daarmee zijn zes
+  beveiligingsmeldingen van Dependabot dicht, één als "high", vier als "medium" en één als "low"
+  gemarkeerd. Ze gingen allemaal over de ontwikkelserver op de computer van wie aan de site
+  werkt: bestanden die die server te ruim toonde, of een editor die verkeerd geopend werd. Een
+  bezoeker van de site komt nooit bij die server, dus het raakte de site zelf niet.
+
 ## 2.14.1 — 2 november 2026
 
 Een onderhoudsversie. Op de site zelf verandert niets, maar met deze versie komt 2.14.0 pas echt
