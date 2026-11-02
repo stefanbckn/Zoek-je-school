@@ -99,8 +99,8 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
               <li>
                 <strong className="font-medium text-inkt">Studierichting.</strong> Het snelste
                 pad naar een korte lijst. Typ waar je zoon of dochter naartoe wil (Latijn,
-                verzorging, STEM) en je houdt de adressen over waar minstens één richting
-                daarop matcht.
+                sport, verzorging) en kies uit de lijst die verschijnt. Je mag er meerdere
+                aanvinken: je houdt de adressen over waar minstens één ervan te volgen is.
               </li>
               <li>
                 <strong className="font-medium text-inkt">Finaliteit.</strong> Doorstroom,

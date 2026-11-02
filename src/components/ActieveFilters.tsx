@@ -1,11 +1,12 @@
 import type { SearchState } from '../lib/useSearchState'
 import type { FinaliteitKeuze } from '../lib/aanbod'
 import { domeinLabel } from '../lib/domein'
+import { keuzeLabel, keuzeSleutel } from '../lib/richtingkeuze'
 import type { Net, Provincie } from '../types'
 
 interface ActieveFiltersProps {
   state: SearchState
-  /** Studierichtingcode → naam, uit `richtingen.json`. Voor de chip van een klik in de matrix. */
+  /** Studierichtingcode → naam, uit `richtingen.json`. Voor de chips van de gekozen richtingen. */
   richtingNamen: Map<string, string>
   onUpdate: (patch: Partial<SearchState>) => void
   onWisAlles: () => void
@@ -53,17 +54,18 @@ export function ActieveFilters({
     })
   }
 
-  // Aangeklikt in de matrix. De naam staat er voluit, niet de code: "rcode=1271" zegt niemand
-  // iets, ook niet in een gedeelde link. De graad staat erbij omdat dezelfde richting in de
-  // tweede en de derde graad bestaat, en de chip anders twee verschillende filters even noemt.
-  if (state.richtingCode !== null) {
-    const naam = richtingNamen.get(state.richtingCode) ?? state.richtingCode
-    const label = state.richtingGraad ? `${naam} (${state.richtingGraad.toLowerCase()})` : naam
+  // Gekozen in het zoekveld of aangeklikt in de matrix. De naam staat er voluit, niet de code:
+  // "rcode=1271" zegt niemand iets, ook niet in een gedeelde link.
+  for (const keuze of state.richtingKeuzes) {
+    const label = keuzeLabel(keuze, richtingNamen)
     chips.push({
-      sleutel: 'rcode',
+      sleutel: `rcode-${keuzeSleutel(keuze)}`,
       label: `Richting: ${label}`,
       wisLabel: `Richting ${label} wissen`,
-      wis: () => onUpdate({ richtingCode: null, richtingGraad: null }),
+      wis: () =>
+        onUpdate({
+          richtingKeuzes: state.richtingKeuzes.filter((k) => keuzeSleutel(k) !== keuzeSleutel(keuze)),
+        }),
     })
   }
 

@@ -8,6 +8,23 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## Niet uitgebracht
+
+**Meerdere studierichtingen tegelijk**
+
+- **Het veld "Zoek op studierichting" toont nu een lijst.** Typ "sport" en je ziet elke richting
+  met sport in de naam, met de graad erbij en op hoeveel adressen in je gebied ze te volgen is.
+  Vink er één of meer aan, met de muis of met de pijltjes en Enter.
+- **Je kan meerdere richtingen kiezen.** Je ziet dan elk adres waar minstens één ervan te volgen
+  is. Met "Kies alle" bovenaan de lijst neem je alle treffers in één keer mee.
+- **Een richting aanklikken in "Alle richtingen" voegt ze toe** aan wat je al gekozen had, in
+  plaats van de vorige keuze te vervangen.
+- **Elke gekozen richting staat als chip** in de filterkolom en onder de zoekbalk, en is apart
+  weg te klikken.
+- Zoeken negeert hoofdletters en accenten. Het zoekt op een stukje van de naam, dus bij "sport"
+  staat ook "Bestuurder interne transportmiddelen" in de lijst, helemaal onderaan.
+- Gedeelde links van vroeger blijven werken, ook die met een getypte zoekterm erin.
+
 ## 2.13.6 — 10 oktober 2026
 
 Een onderhoudsversie. Op de site zelf verandert niets.
