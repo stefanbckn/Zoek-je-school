@@ -1,9 +1,13 @@
 import { useCallback, useState } from 'react'
 import { FINALITEIT_OPTIONS, type FinaliteitKeuze } from './aanbod'
 import { DOMEIN_RIJEN } from './domein'
-import { MATRIX_GRADEN, type MatrixGraad } from './matrix'
 import { NET_OPTIONS } from './net'
 import { PROVINCIE_OPTIONS } from './provincie'
+import {
+  parseRichtingKeuzes,
+  richtingKeuzesNaarUrl,
+  type RichtingKeuze,
+} from './richtingkeuze'
 import type { Net, Provincie } from '../types'
 
 export interface SearchState {
@@ -21,7 +25,11 @@ export interface SearchState {
   tekst: string
   /** Leeg = alle finaliteiten. */
   finaliteiten: FinaliteitKeuze[]
-  /** Vrije tekst om op de naam van een studierichting te zoeken. Leeg = geen filter. */
+  /**
+   * Vrije tekst om op de naam van een studierichting te zoeken. Leeg = geen filter. Het veld in
+   * de filterkolom schrijft dit sinds 2.14.0 niet meer; het blijft bestaan zodat gedeelde links
+   * met `?richting=` hetzelfde blijven tonen, met een chip om het weg te klikken.
+   */
   richting: string
   /**
    * Codes van studiedomeinen (`Richting.domeinCode`). Leeg = alle domeinen.
@@ -32,20 +40,15 @@ export interface SearchState {
    */
   domeinen: string[]
   /**
-   * Eén exacte studierichting, aangeklikt in de matrix: de code uit
-   * `Richting.studierichtingCode` plus de graad waarin ze aangeklikt is.
+   * De gekozen studierichtingen, uit het zoekveld of aangeklikt in de matrix. Leeg = geen
+   * filter. Een adres blijft staan als het minstens één ervan aanbiedt.
    *
-   * Dit staat naast `richting` en vervangt het niet: dat veld is wat iemand intikt, dit is wat
-   * de matrix aanklikt. Een code matcht altijd exact, ook bij namen als "Grafische technieken
-   * (domein STEM)" waar een tekstzoektocht te veel of te weinig oplevert.
-   *
-   * ⚠️ **De graad hoort erbij.** Dezelfde code bestaat in de tweede én de derde graad
-   * ("Onthaal en recreatie" op 17 respectievelijk 14 adressen). Filteren op de code alleen
-   * gaf 18 resultaten terwijl de aangeklikte cel er 14 beloofde. Laat die twee dus samen
-   * reizen, ook in de URL.
+   * Dit staat naast `richting` en vervangt het niet: `richting` is de vrije tekst van vóór
+   * 2.14.0, die enkel nog uit oude links binnenkomt. Een code matcht altijd exact, ook bij
+   * namen als "Grafische technieken (domein STEM)" waar een tekstzoektocht te veel of te
+   * weinig oplevert. Waarom de graad erbij hoort: zie `RichtingKeuze`.
    */
-  richtingCode: string | null
-  richtingGraad: string | null
+  richtingKeuzes: RichtingKeuze[]
   /**
    * Adressen zonder enig studieaanbod meetonen. Standaard `false`: dat zijn meestal
    * administratief geregistreerde adressen zonder les, en voor wie een school zoekt is dat ruis.
@@ -89,8 +92,7 @@ const DEFAULT_STATE: SearchState = {
   finaliteiten: [],
   richting: '',
   domeinen: [],
-  richtingCode: null,
-  richtingGraad: null,
+  richtingKeuzes: [],
   toonZonderAanbod: false,
   over: false,
   help: false,
@@ -177,14 +179,7 @@ function parseState(search: string): SearchState {
     // Zelfde reden als bij netten: een onbekende domeincode uit een bewerkte URL zou een
     // filter opleveren die nooit matcht.
     domeinen: parseList(params.get('domein')).filter((d) => DOMEIN_RIJEN.includes(d)),
-    // De code wordt hier NIET gevalideerd: de geldige lijst zit in richtingen.json en die is
-    // hier niet beschikbaar. Een onbestaande code geeft 0 resultaten, maar de chip erboven
-    // blijft zichtbaar en wegklikbaar — zie ActieveFilters.
-    richtingCode: params.get('rcode'),
-    // Een onbekende graad valt terug op "geen graadbeperking" in plaats van op 0 resultaten.
-    richtingGraad: MATRIX_GRADEN.includes(params.get('rgraad') as MatrixGraad)
-      ? params.get('rgraad')
-      : null,
+    richtingKeuzes: parseRichtingKeuzes(params.get('rcode'), params.get('rgraad')),
     // Alleen de expliciete '1' zet dit aan. Elke andere waarde (leeg, 'true', onzin uit een
     // bewerkte URL) valt terug op de standaard, net als bij de andere parameters hierboven.
     toonZonderAanbod: params.get('zonderaanbod') === '1',
@@ -207,8 +202,11 @@ function toSearchParams(state: SearchState): URLSearchParams {
   if (state.finaliteiten.length > 0) params.set('finaliteit', state.finaliteiten.join(','))
   if (state.richting) params.set('richting', state.richting)
   if (state.domeinen.length > 0) params.set('domein', state.domeinen.join(','))
-  if (state.richtingCode) params.set('rcode', state.richtingCode)
-  if (state.richtingGraad) params.set('rgraad', state.richtingGraad)
+  const keuzes = richtingKeuzesNaarUrl(state.richtingKeuzes)
+  if (keuzes) {
+    params.set('rcode', keuzes.rcode)
+    params.set('rgraad', keuzes.rgraad)
+  }
   if (state.toonZonderAanbod) params.set('zonderaanbod', '1')
   if (state.over) params.set('over', '1')
   if (state.help) params.set('help', '1')

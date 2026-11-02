@@ -67,6 +67,7 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **2.11.0** | Alle centrumsteden | Aalst, Genk, Hasselt, Kortrijk, Leuven, Oostende, Roeselare, Sint-Niklaas en Turnhout: alle dertien Vlaamse centrumsteden gedekt |
 | **2.12.0** | Alle gemeenten met een school | 172 gemeentepagina's, de niet-centrumsteden afgeleid uit de dataset · andere opbouw onder 5 scholen · juiste namen voor zes fusiegemeenten · sitemap gegenereerd in plaats van gecommit |
 | **2.13.0** | Herkomst via gemeentepagina | Links van een gemeentepagina naar de zoeker dragen `ref=gemeente-<naam>`, zichtbaar in Simple Analytics |
+| **2.14.0** | Meerdere studierichtingen | "Zoek op studierichting" toont een lijst met elke richting die het getypte stukje in de naam heeft, met graad en aantal adressen · meerdere richtingen kiezen, een adres blijft staan als het er minstens één aanbiedt · "Kies alle" · een klik in de matrix voegt toe in plaats van te vervangen · oude links blijven werken |
 
 ## Nog te doen
 
@@ -79,11 +80,12 @@ inhoud: aanmelden stond bewust buiten de rij omdat er geen bron voor is, en staa
 mét die beperking erbij.
 
 **Op 02/11/2026** heeft de gebruiker meerdere studierichtingen kiezen bovenaan gezet, boven
-aanmelden.
+aanmelden. Dat is uitgebracht in 2.14.0; de eerste graad in de matrix kwam eruit voort en staat
+nu bovenaan.
 
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
-| 1 | Meerdere studierichtingen kiezen | "Zoek op studierichting" wordt een zoekveld met suggesties: wie "sport" typt, krijgt alle richtingen met sport in de naam en kan er één of meer aanvinken | **Klaar om te bouwen**, alles zit in onze eigen data. Zie "Meerdere studierichtingen kiezen" hieronder (gevraagd door de gebruiker op 02/11/2026) |
+| 1 | Matrix: eerste graad | De basisopties van de eerste graad als eigen keuze in "Alle richtingen", naast de tweede en de derde graad | *Uitbreiding van de matrix.* **Klaar om te bouwen**, alles zit in onze eigen data. Zie "Matrix: eerste graad" hieronder (gevraagd door de gebruiker op 02/11/2026) |
 | 2 | Aanmelden | Aanmeldsysteem per school tonen en linken | **Geen bron, wel te bouwen.** Er is geen register dat scholen aan een aanmeldsysteem koppelt: dit wordt een klein gecommit bestand per gemeente of regio dat `fetch-data.ts` erbij joint, en géén scraping van de deelnemerslijsten. Toon nooit een datum zonder jaartal erbij, want aanmeldperiodes zijn kort en jaargebonden. Zie [docs/onderzoek/aanmelden.md](./docs/onderzoek/aanmelden.md) |
 | 3 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | *Nice to have.* **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
 | 4 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | *Nice to have.* **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
@@ -125,44 +127,39 @@ anders begraven bleven in secties over versies die al uit zijn.
   dezelfde schoolnaam komt vaker meerdere keren terug. Als dat in de praktijk stoort, is de
   oplossing de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
 
-## Meerdere studierichtingen kiezen (gevraagd 02/11/2026)
+## Matrix: eerste graad (gevraagd 02/11/2026)
 
-**De vraag van de gebruiker.** Het veld "Zoek op studierichting" moet meerdere richtingen tegelijk
-toelaten, en zoeken in de lijst met richtingen: typ je "sport", dan zie je alle richtingen met
-sport in de naam en kies je daaruit.
+**De aanleiding.** Sinds 2.14.0 zoekt het veld "Zoek op studierichting" in de hele catalogus, dus
+ook in de 46 richtingen van de eerste graad: de basisopties zoals "Sport", "Klassieke talen
+(Grieks en Latijn)" en "Stem-wetenschappen", plus 1A en 1B ("A" en "B"). In "Alle richtingen"
+staan ze nergens, want `MATRIX_GRADEN` in `src/lib/matrix.ts` bevat enkel de tweede en de derde
+graad. Een ouder die in het zoekveld een basisoptie vindt, zoekt ze in de matrix tevergeefs.
+Voor een kind in het zesde leerjaar is net de basisoptie de keuze die nu speelt.
 
-**Hoe het vandaag werkt.** Er lopen twee filters op richting naast elkaar, en ze sluiten elkaar
-uit:
+**Waarom geen raster.** De matrix zet domein tegen finaliteit. De eerste graad heeft in de bron
+geen finaliteit, en als domein enkel code `10` ("Eerste graad"), geen inhoudelijk domein (zie
+[docs/onderzoek/matrix-studiedomein.md](./docs/onderzoek/matrix-studiedomein.md)). Een raster
+zou dus een indeling verzinnen die de bron niet geeft.
 
-- Het tekstveld in `FilterPanel.tsx` (`state.richting`) zoekt vrij op een stukje tekst en toont
-  elk adres waar minstens één richting erop past. De ouder ziet niet welke richtingen er
-  meetellen.
-- Een klik in de matrix zet één `richtingCode` met een `richtingGraad` en wist daarbij het
-  tekstveld (commentaar bij `MatrixPanel` in `App.tsx`), omdat beide samen met EN zouden
-  filteren.
+**Vorm.** Een derde keuze "Eerste graad" naast de twee bestaande in de graadschakelaar van
+`MatrixPanel`, met daaronder een gewone lijst. Verder dezelfde afspraken als de rest van de
+matrix: het aantal adressen in het gekozen gebied erbij, een klik voegt de richting toe aan de
+gekozen richtingen, en een richting op 0 blijft gedimd staan.
 
-**Aandachtspunten voor de bouw.**
+**Aandachtspunten.**
 
-- **Suggesties uit de catalogus**, dezelfde lijst als de matrix (`richtingen.json`), nooit een
-  vaste lijst in de code. Toon per suggestie het aantal adressen binnen het gekozen gebied, net
-  als in de matrix, zodat een richting met nul resultaten herkenbaar is voor je ze kiest.
-- **Eén selectiemodel voor tekstveld en matrix.** `richtingCode` wordt een lijst codes, en een
-  klik in de matrix voegt een richting toe in plaats van de vorige te vervangen. Zo verdwijnt
-  ook de botsing hierboven. Wat er met `richtingGraad` gebeurt als er meerdere richtingen gekozen
-  zijn, is een ontwerpvraag: per code een graad bijhouden, of de graad laten vallen.
-- **OF tussen de gekozen richtingen**: een adres komt in de lijst als het minstens één ervan
-  aanbiedt. Dat is wat een ouder bedoelt met "sport of Latijn". Een EN-variant (alles op één
-  adres) is denkbaar, maar pas toevoegen als iemand erom vraagt.
-- **Gekozen richtingen als chips** onder het veld en onder de zoekbalk, elk apart wegklikbaar.
-  Het commentaar bij `richtingNamen` in `App.tsx` spreekt al over `richtingCodes` en chips, maar
-  die state bestaat nog niet: het commentaar loopt voor op de code.
-- **In de URL** als lijst codes, zodat een gedeelde link dezelfde keuze toont. Oude links met de
-  vrije tekst of één `richtingCode` moeten blijven werken.
-- **Toetsenbord en schermlezer** zoals de suggesties onder de zoekbalk sinds 2.5.0: pijltjes,
-  Enter om te kiezen, Escape om te sluiten.
-- **Zoeken op een stukje van de naam, hoofdletterongevoelig.** Of accenten en afkortingen
-  ("STEM", "TSO") ook moeten matchen, nakijken op de echte namen in de catalogus voor je het
-  bouwt.
+- **Combinaties van basisopties** staan als eigen richting in de catalogus ("Economie en
+  organisatie - Sport", "Sport - Stem-technieken"). Of die apart in de lijst horen of onder hun
+  onderdelen gegroepeerd worden, is een ontwerpvraag. Groeperen vraagt het opsplitsen van namen,
+  en die zijn in de bron ingekort ("Econ.-organ. -Kunst-creatie -Stem-tech."): eerst nagaan of
+  dat betrouwbaar kan, niet gokken.
+- **1A en 1B heten in de bron "A" en "B".** In een lijst voor ouders hebben die een leesbaar
+  label nodig, en de uitleg staat al op `/uitleg/`.
+- **Zes richtingen van de eerste graad hebben geen domein**, onder meer de BuSO-jaren en
+  "Yeshiva". Nagaan of die in deze lijst horen.
+- **Richtingen die nergens aangeboden worden, blijven staan** (beslist door de gebruiker op
+  02/11/2026), net als in de rest van de matrix en in het zoekveld: zo zien ouders dat ze in hun
+  gebied niet bestaan.
 
 ## Wat volgt er na deze richting? (nog niet onderzocht)
 

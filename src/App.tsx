@@ -21,6 +21,8 @@ import {
   zevendeLeerjaarCodes,
 } from './lib/aanbod'
 import { haversineKm } from './lib/haversine'
+import { telPerRichting } from './lib/matrix'
+import { richtingInKeuzes, voegKeuzesToe } from './lib/richtingkeuze'
 import { NET_OPTIONS } from './lib/net'
 import { PROVINCIE_OPTIONS } from './lib/provincie'
 import { useSearchState } from './lib/useSearchState'
@@ -110,7 +112,7 @@ function App() {
     state.gemeenten.length +
     state.finaliteiten.length +
     state.domeinen.length +
-    (state.richtingCode ? 1 : 0) +
+    state.richtingKeuzes.length +
     (state.tekst.trim() ? 1 : 0) +
     (state.richting.trim() ? 1 : 0) +
     (state.toonZonderAanbod ? 1 : 0)
@@ -151,7 +153,7 @@ function App() {
       richtingTerm.length > 0 ||
       state.finaliteiten.length > 0 ||
       state.domeinen.length > 0 ||
-      state.richtingCode !== null
+      state.richtingKeuzes.length > 0
 
     const naSchoolFilters = campussen
       .map((c) => ({
@@ -190,11 +192,10 @@ function App() {
               if (state.domeinen.length > 0) {
                 if (r.domeinCode === null || !state.domeinen.includes(r.domeinCode)) return false
               }
-              if (state.richtingCode !== null) {
-                if (r.studierichtingCode !== state.richtingCode) return false
-                // De graad hoort bij de code: dezelfde richting bestaat in de tweede én de
-                // derde graad, en de matrix belooft het aantal van één cel.
-                if (state.richtingGraad !== null && r.graad !== state.richtingGraad) return false
+              // Code én graad: dezelfde richting bestaat in de tweede en de derde graad, en de
+              // matrix belooft het aantal van één cel.
+              if (state.richtingKeuzes.length > 0 && !richtingInKeuzes(r, state.richtingKeuzes)) {
+                return false
               }
               return richtingMatcht(r, richtingTerm)
             }),
@@ -290,8 +291,7 @@ function App() {
     state.finaliteiten,
     state.richting,
     state.domeinen,
-    state.richtingCode,
-    state.richtingGraad,
+    state.richtingKeuzes,
     state.toonZonderAanbod,
   ])
 
@@ -337,14 +337,18 @@ function App() {
   }, [campussen, vergelijking, state.lat, state.lon, state.toonZonderAanbod])
 
   /**
-   * De namen achter `richtingCodes`, voor de chips onder de zoekbalk. Een code die niet in de
-   * catalogus staat (bewerkte URL) valt terug op de code zelf: de chip blijft dan zichtbaar en
-   * wegklikbaar in plaats van een onverklaarbaar lege lijst achter te laten.
+   * De namen achter `richtingKeuzes`, voor de chips onder de zoekbalk en in de filterkolom. Een
+   * code die niet in de catalogus staat (bewerkte URL) valt terug op de code zelf: de chip
+   * blijft dan zichtbaar en wegklikbaar in plaats van een onverklaarbaar lege lijst achter te
+   * laten.
    */
   const richtingNamen = useMemo(
     () => new Map(studierichtingen.map((s) => [s.code, s.naam])),
     [studierichtingen],
   )
+
+  /** Per richting en graad: op hoeveel adressen binnen de plaatsfilters. Zelfde als de matrix. */
+  const richtingTellingen = useMemo(() => telPerRichting(matrixCampussen), [matrixCampussen])
 
   /**
    * De codes van de zevende leerjaren, voor de volgorde binnen de derde graad. Eén keer uit de
@@ -566,8 +570,7 @@ function App() {
               tekst: '',
               richting: '',
               domeinen: [],
-              richtingCode: null,
-              richtingGraad: null,
+              richtingKeuzes: [],
               toonZonderAanbod: false,
             })
           }
@@ -611,7 +614,10 @@ function App() {
               tekst={state.tekst}
               finaliteiten={state.finaliteiten}
               domeinen={state.domeinen}
-              richting={state.richting}
+              studierichtingen={studierichtingen}
+              richtingTellingen={richtingTellingen}
+              richtingNamen={richtingNamen}
+              richtingKeuzes={state.richtingKeuzes}
               toonZonderAanbod={state.toonZonderAanbod}
               verborgenZonderAanbod={verborgenZonderAanbod}
               verborgenLegeScholen={verborgenLegeScholen}
@@ -622,7 +628,7 @@ function App() {
               onFinaliteitenChange={(finaliteiten) => update({ finaliteiten })}
               onDomeinenChange={(domeinen) => update({ domeinen })}
               onMatrixOpen={() => update({ matrix: true })}
-              onRichtingChange={(richting) => update({ richting })}
+              onRichtingKeuzesChange={(richtingKeuzes) => update({ richtingKeuzes })}
               onToonZonderAanbodChange={(toonZonderAanbod) => update({ toonZonderAanbod })}
             />
             </div>
@@ -792,9 +798,10 @@ function App() {
 
       {/* Van de uitleg naar de herkomst is één klik: het ene paneel sluit terwijl het andere
           opengaat, in dezelfde update, anders zou de tussenstand even beide tonen. */}
-      {/* Een richting aanklikken wist de vrije-tekstfilter op richting: die twee zouden anders
-          samen filteren (EN), en dan geeft een klik in de matrix nul resultaten zonder dat
-          zichtbaar is waarom. */}
+      {/* Een richting aanklikken voegt ze toe aan de gekozen richtingen, in plaats van de vorige
+          te vervangen. Het wist wel de vrije tekst van een oude link en de domeinfilter: die
+          filteren samen met de keuze (EN), en dan geeft een klik in de matrix nul resultaten
+          zonder dat zichtbaar is waarom. */}
       <MatrixPanel
         open={state.matrix}
         studierichtingen={studierichtingen}
@@ -804,8 +811,7 @@ function App() {
         onKiesRichting={(code, graad) =>
           update({
             matrix: false,
-            richtingCode: code,
-            richtingGraad: graad,
+            richtingKeuzes: voegKeuzesToe(state.richtingKeuzes, [{ code, graad }]),
             richting: '',
             domeinen: [],
           })
@@ -816,8 +822,7 @@ function App() {
             domeinen: [domeinCode],
             finaliteiten: [finaliteit],
             richting: '',
-            richtingCode: null,
-            richtingGraad: null,
+            richtingKeuzes: [],
           })
         }
       />

@@ -10,7 +10,9 @@ import { useMemo, useState } from 'react'
 import { DOMEIN_RIJEN, domeinLabel } from '../lib/domein'
 import { NET_CHIP, NET_STYLES, NET_UITLEG } from '../lib/net'
 import { PROVINCIE_UITLEG } from '../lib/provincie'
-import type { Net, Provincie } from '../types'
+import type { RichtingKeuze } from '../lib/richtingkeuze'
+import type { Net, Provincie, Studierichting } from '../types'
+import { RichtingKiezer } from './RichtingKiezer'
 
 interface FilterPanelProps {
   netOpties: Net[]
@@ -25,7 +27,12 @@ interface FilterPanelProps {
   finaliteiten: FinaliteitKeuze[]
   /** Aangevinkte studiedomeinen, als code. Leeg = alle. */
   domeinen: string[]
-  richting: string
+  /** De catalogus uit `richtingen.json`, voor de suggesties onder het richtingveld. */
+  studierichtingen: Studierichting[]
+  /** Adressen per `code|graad` binnen de plaatsfilters. */
+  richtingTellingen: Map<string, number>
+  richtingNamen: Map<string, string>
+  richtingKeuzes: RichtingKeuze[]
   toonZonderAanbod: boolean
   /** Hoeveel adressen op dit moment door dit filter wegvallen. 0 = niets te melden. */
   verborgenZonderAanbod: number
@@ -39,7 +46,7 @@ interface FilterPanelProps {
   onDomeinenChange: (domeinen: string[]) => void
   /** Opent de matrix vanuit de filterkolom, waar het domein voor het eerst opduikt. */
   onMatrixOpen: () => void
-  onRichtingChange: (richting: string) => void
+  onRichtingKeuzesChange: (keuzes: RichtingKeuze[]) => void
   onToonZonderAanbodChange: (toon: boolean) => void
 }
 
@@ -61,7 +68,10 @@ export function FilterPanel({
   tekst,
   finaliteiten,
   domeinen,
-  richting,
+  studierichtingen,
+  richtingTellingen,
+  richtingNamen,
+  richtingKeuzes,
   toonZonderAanbod,
   verborgenZonderAanbod,
   verborgenLegeScholen,
@@ -72,7 +82,7 @@ export function FilterPanel({
   onFinaliteitenChange,
   onDomeinenChange,
   onMatrixOpen,
-  onRichtingChange,
+  onRichtingKeuzesChange,
   onToonZonderAanbodChange,
 }: FilterPanelProps) {
   /**
@@ -145,22 +155,13 @@ export function FilterPanel({
         />
       </div>
 
-      <div>
-        <label htmlFor="richting" className="sectiekop mb-2 block">
-          Zoek op studierichting
-        </label>
-        <input
-          id="richting"
-          type="text"
-          value={richting}
-          onChange={(e) => onRichtingChange(e.target.value)}
-          placeholder="bv. Latijn, verzorging, STEM"
-          className="w-full rounded-lg border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
-        />
-        <p className="mt-1 text-xs text-zacht">
-          Toont scholen waar minstens één richting hierop matcht.
-        </p>
-      </div>
+      <RichtingKiezer
+        studierichtingen={studierichtingen}
+        tellingen={richtingTellingen}
+        namen={richtingNamen}
+        keuzes={richtingKeuzes}
+        onKeuzesChange={onRichtingKeuzesChange}
+      />
 
       <div>
         <h2 className="sectiekop mb-2">Net</h2>
