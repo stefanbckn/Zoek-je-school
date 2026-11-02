@@ -8,6 +8,36 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.14.1 — 2 november 2026
+
+Een onderhoudsversie. Op de site zelf verandert niets, maar met deze versie komt 2.14.0 pas echt
+online.
+
+**Achter de schermen**
+
+- **2.14.0 werd niet gebouwd.** Netlify slaat een build over als er enkel documentatie
+  veranderde. Die controle vergelijkt met de vorige gebouwde commit, maar als Netlify zijn
+  buildcache kwijt is, vergelijkt ze de nieuwe commit met zichzelf. Ze vond dan niets, en de
+  merge van 2.14.0 werd geannuleerd. Nu bouwt Netlify altijd wanneer er geen vorige commit is om
+  mee te vergelijken.
+
+## 2.14.0 — 2 november 2026
+
+**Meerdere studierichtingen tegelijk**
+
+- **Het veld "Zoek op studierichting" toont nu een lijst.** Typ "sport" en je ziet elke richting
+  met sport in de naam, met de graad erbij en op hoeveel adressen in je gebied ze te volgen is.
+  Vink er één of meer aan, met de muis of met de pijltjes en Enter.
+- **Je kan meerdere richtingen kiezen.** Je ziet dan elk adres waar minstens één ervan te volgen
+  is. Met "Kies alle" bovenaan de lijst neem je alle treffers in één keer mee.
+- **Een richting aanklikken in "Alle richtingen" voegt ze toe** aan wat je al gekozen had, in
+  plaats van de vorige keuze te vervangen.
+- **Elke gekozen richting staat als chip** in de filterkolom en onder de zoekbalk, en is apart
+  weg te klikken.
+- Zoeken negeert hoofdletters en accenten. Het zoekt op een stukje van de naam, dus bij "sport"
+  staat ook "Bestuurder interne transportmiddelen" in de lijst, helemaal onderaan.
+- Gedeelde links van vroeger blijven werken, ook die met een getypte zoekterm erin.
+
 ## 2.13.6 — 10 oktober 2026
 
 Een onderhoudsversie. Op de site zelf verandert niets.
