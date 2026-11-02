@@ -85,6 +85,7 @@ mét die beperking erbij.
 | 3 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | *Nice to have.* **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
 | 4 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af, en hun API (OKAPI) bevat ze niet (bevestigd door de beheerder, oktober 2026). **Volgende stap: maart/april 2027** opnieuw contact opnemen over de nieuwe Onderwijskiezer-API, die tegen september 2027 komt. Dan ook de CLB per school meevragen. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Tot dan valt er niets te bouwen |
 | 5 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
+| 6 | Meerdere studierichtingen kiezen | "Zoek op studierichting" wordt een zoekveld met suggesties: wie "sport" typt, krijgt alle richtingen met sport in de naam en kan er één of meer aanvinken | **Klaar om te bouwen**, alles zit in onze eigen data. Zie "Meerdere studierichtingen kiezen" hieronder (gevraagd door de gebruiker op 02/11/2026) |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -120,6 +121,45 @@ anders begraven bleven in secties over versies die al uit zijn.
 - **Naamgenoten in de naamfilter.** Sinds 0.12.0 zoekt de naamfilter in heel Vlaanderen, dus
   dezelfde schoolnaam komt vaker meerdere keren terug. Als dat in de praktijk stoort, is de
   oplossing de gemeente in het resultaat prominenter maken, niet de filter aanpassen.
+
+## Meerdere studierichtingen kiezen (gevraagd 02/11/2026)
+
+**De vraag van de gebruiker.** Het veld "Zoek op studierichting" moet meerdere richtingen tegelijk
+toelaten, en zoeken in de lijst met richtingen: typ je "sport", dan zie je alle richtingen met
+sport in de naam en kies je daaruit.
+
+**Hoe het vandaag werkt.** Er lopen twee filters op richting naast elkaar, en ze sluiten elkaar
+uit:
+
+- Het tekstveld in `FilterPanel.tsx` (`state.richting`) zoekt vrij op een stukje tekst en toont
+  elk adres waar minstens één richting erop past. De ouder ziet niet welke richtingen er
+  meetellen.
+- Een klik in de matrix zet één `richtingCode` met een `richtingGraad` en wist daarbij het
+  tekstveld (commentaar bij `MatrixPanel` in `App.tsx`), omdat beide samen met EN zouden
+  filteren.
+
+**Aandachtspunten voor de bouw.**
+
+- **Suggesties uit de catalogus**, dezelfde lijst als de matrix (`richtingen.json`), nooit een
+  vaste lijst in de code. Toon per suggestie het aantal adressen binnen het gekozen gebied, net
+  als in de matrix, zodat een richting met nul resultaten herkenbaar is voor je ze kiest.
+- **Eén selectiemodel voor tekstveld en matrix.** `richtingCode` wordt een lijst codes, en een
+  klik in de matrix voegt een richting toe in plaats van de vorige te vervangen. Zo verdwijnt
+  ook de botsing hierboven. Wat er met `richtingGraad` gebeurt als er meerdere richtingen gekozen
+  zijn, is een ontwerpvraag: per code een graad bijhouden, of de graad laten vallen.
+- **OF tussen de gekozen richtingen**: een adres komt in de lijst als het minstens één ervan
+  aanbiedt. Dat is wat een ouder bedoelt met "sport of Latijn". Een EN-variant (alles op één
+  adres) is denkbaar, maar pas toevoegen als iemand erom vraagt.
+- **Gekozen richtingen als chips** onder het veld en onder de zoekbalk, elk apart wegklikbaar.
+  Het commentaar bij `richtingNamen` in `App.tsx` spreekt al over `richtingCodes` en chips, maar
+  die state bestaat nog niet: het commentaar loopt voor op de code.
+- **In de URL** als lijst codes, zodat een gedeelde link dezelfde keuze toont. Oude links met de
+  vrije tekst of één `richtingCode` moeten blijven werken.
+- **Toetsenbord en schermlezer** zoals de suggesties onder de zoekbalk sinds 2.5.0: pijltjes,
+  Enter om te kiezen, Escape om te sluiten.
+- **Zoeken op een stukje van de naam, hoofdletterongevoelig.** Of accenten en afkortingen
+  ("STEM", "TSO") ook moeten matchen, nakijken op de echte namen in de catalogus voor je het
+  bouwt.
 
 ## Wat volgt er na deze richting? (nog niet onderzocht)
 
