@@ -84,11 +84,12 @@ aanmelden.
 | # | Thema | Inhoud | Status / blocker |
 | --- | --- | --- | --- |
 | 1 | Meerdere studierichtingen kiezen | "Zoek op studierichting" wordt een zoekveld met suggesties: wie "sport" typt, krijgt alle richtingen met sport in de naam en kan er één of meer aanvinken | **Klaar om te bouwen**, alles zit in onze eigen data. Zie "Meerdere studierichtingen kiezen" hieronder (gevraagd door de gebruiker op 02/11/2026) |
-| 2 | Aanmelden | Aanmeldsysteem per school tonen en linken | **Geen bron, wel te bouwen.** Er is geen register dat scholen aan een aanmeldsysteem koppelt: dit wordt een klein gecommit bestand per gemeente of regio dat `fetch-data.ts` erbij joint, en géén scraping van de deelnemerslijsten. Toon nooit een datum zonder jaartal erbij, want aanmeldperiodes zijn kort en jaargebonden. Zie [docs/onderzoek/aanmelden.md](./docs/onderzoek/aanmelden.md) |
-| 3 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | *Nice to have.* **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
-| 4 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | *Nice to have.* **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
-| 5 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af, en hun API (OKAPI) bevat ze niet (bevestigd door de beheerder, oktober 2026). **Volgende stap: maart/april 2027** opnieuw contact opnemen over de nieuwe Onderwijskiezer-API, die tegen september 2027 komt. Dan ook de CLB per school meevragen. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Tot dan valt er niets te bouwen |
-| 6 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
+| 2 | Matrix: eerste graad | De basisopties van de eerste graad als eigen keuze in "Alle richtingen", naast de tweede en de derde graad | *Uitbreiding van de matrix.* **Klaar om te bouwen**, alles zit in onze eigen data. Zie "Matrix: eerste graad" hieronder (gevraagd door de gebruiker op 02/11/2026) |
+| 3 | Aanmelden | Aanmeldsysteem per school tonen en linken | **Geen bron, wel te bouwen.** Er is geen register dat scholen aan een aanmeldsysteem koppelt: dit wordt een klein gecommit bestand per gemeente of regio dat `fetch-data.ts` erbij joint, en géén scraping van de deelnemerslijsten. Toon nooit een datum zonder jaartal erbij, want aanmeldperiodes zijn kort en jaargebonden. Zie [docs/onderzoek/aanmelden.md](./docs/onderzoek/aanmelden.md) |
+| 4 | Wat volgt er na deze richting? | Bij het aanbod van de 2e graad tonen waar die richting op dit adres naartoe loopt in de 3e graad, en zichtbaar maken wanneer ze hier doodloopt | *Nice to have.* **Deels klaar om te bouwen, deels bron nodig.** Wat op dit adres zelf doorloopt is een feit uit onze eigen data en kan meteen. De officiële doorstroommatrix (welke richting waar logisch op volgt, ook buiten dit adres) staat niet in het API-portaal en is nog niet gevonden, zie hieronder |
+| 5 | Dropouts + doorstroom hoger onderwijs | Vroegtijdige schoolverlaters en rechtstreekse doorstroom naar het hoger onderwijs, per school | *Nice to have.* **Bron gevonden, data afgesloten.** Staat per school in ScholenKompas, maar daar is download uitgezet (`allowDataAccess: false`); niet in Dataloep (enkel Vlaams + gemeente) en niet in het API-portaal. Volgende stap is de cijfers opvragen onder het recht op hergebruik, zie [docs/onderzoek/scholenkompas.md](./docs/onderzoek/scholenkompas.md) |
+| 6 | Infodagen | Infomomenten en opendeurdagen per school | *Nice to have.* **Geen bron.** In 0.2.0 al geschrapt en sindsdien niets veranderd: de volledige catalogus van het onderwijsportaal is nagekeken en geen enkel product bevat ze. onderwijskiezer.be heeft ze wel maar valt juridisch af, en hun API (OKAPI) bevat ze niet (bevestigd door de beheerder, oktober 2026). **Volgende stap: maart/april 2027** opnieuw contact opnemen over de nieuwe Onderwijskiezer-API, die tegen september 2027 komt. Dan ook de CLB per school meevragen. Zie [docs/onderzoek/databronnen.md](./docs/onderzoek/databronnen.md). Tot dan valt er niets te bouwen |
+| 7 | Praktisch | Fietsvriendelijkheid route, fietsenstalling, fietsbus, afstand tot halte, warme maaltijden, opvang | Afstand tot halte: **bron gevonden** (`/haltes/indebuurt/{lat,lng}` bij De Lijn, zie [docs/onderzoek/openbaar-vervoer.md](./docs/onderzoek/openbaar-vervoer.md)). Rest nog te onderzoeken |
 
 Uit de parkeerstand gehaald: **reistijd met de bus** stond geparkeerd en is in 0.3.0 uitgebracht
 via Transitous. De Lijn zelf heeft nog steeds geen routeplanner-API — niet opnieuw gaan zoeken.
@@ -163,6 +164,40 @@ uit:
 - **Zoeken op een stukje van de naam, hoofdletterongevoelig.** Of accenten en afkortingen
   ("STEM", "TSO") ook moeten matchen, nakijken op de echte namen in de catalogus voor je het
   bouwt.
+
+## Matrix: eerste graad (gevraagd 02/11/2026)
+
+**De aanleiding.** Sinds 2.14.0 zoekt het veld "Zoek op studierichting" in de hele catalogus, dus
+ook in de 46 richtingen van de eerste graad: de basisopties zoals "Sport", "Klassieke talen
+(Grieks en Latijn)" en "Stem-wetenschappen", plus 1A en 1B ("A" en "B"). In "Alle richtingen"
+staan ze nergens, want `MATRIX_GRADEN` in `src/lib/matrix.ts` bevat enkel de tweede en de derde
+graad. Een ouder die in het zoekveld een basisoptie vindt, zoekt ze in de matrix tevergeefs.
+Voor een kind in het zesde leerjaar is net de basisoptie de keuze die nu speelt.
+
+**Waarom geen raster.** De matrix zet domein tegen finaliteit. De eerste graad heeft in de bron
+geen finaliteit, en als domein enkel code `10` ("Eerste graad"), geen inhoudelijk domein (zie
+[docs/onderzoek/matrix-studiedomein.md](./docs/onderzoek/matrix-studiedomein.md)). Een raster
+zou dus een indeling verzinnen die de bron niet geeft.
+
+**Vorm.** Een derde keuze "Eerste graad" naast de twee bestaande in de graadschakelaar van
+`MatrixPanel`, met daaronder een gewone lijst. Verder dezelfde afspraken als de rest van de
+matrix: het aantal adressen in het gekozen gebied erbij, een klik voegt de richting toe aan de
+gekozen richtingen, en een richting op 0 blijft gedimd staan.
+
+**Aandachtspunten.**
+
+- **Combinaties van basisopties** staan als eigen richting in de catalogus ("Economie en
+  organisatie - Sport", "Sport - Stem-technieken"). Of die apart in de lijst horen of onder hun
+  onderdelen gegroepeerd worden, is een ontwerpvraag. Groeperen vraagt het opsplitsen van namen,
+  en die zijn in de bron ingekort ("Econ.-organ. -Kunst-creatie -Stem-tech."): eerst nagaan of
+  dat betrouwbaar kan, niet gokken.
+- **1A en 1B heten in de bron "A" en "B".** In een lijst voor ouders hebben die een leesbaar
+  label nodig, en de uitleg staat al op `/uitleg/`.
+- **Zes richtingen van de eerste graad hebben geen domein**, onder meer de BuSO-jaren en
+  "Yeshiva". Nagaan of die in deze lijst horen.
+- **Richtingen die nergens aangeboden worden, blijven staan** (beslist door de gebruiker op
+  02/11/2026), net als in de rest van de matrix en in het zoekveld: zo zien ouders dat ze in hun
+  gebied niet bestaan.
 
 ## Wat volgt er na deze richting? (nog niet onderzocht)
 
