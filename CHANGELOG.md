@@ -8,6 +8,19 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.14.1 — 2 november 2026
+
+Een onderhoudsversie. Op de site zelf verandert niets, maar met deze versie komt 2.14.0 pas echt
+online.
+
+**Achter de schermen**
+
+- **2.14.0 werd niet gebouwd.** Netlify slaat een build over als er enkel documentatie
+  veranderde. Die controle vergelijkt met de vorige gebouwde commit, maar als Netlify zijn
+  buildcache kwijt is, vergelijkt ze de nieuwe commit met zichzelf. Ze vond dan niets, en de
+  merge van 2.14.0 werd geannuleerd. Nu bouwt Netlify altijd wanneer er geen vorige commit is om
+  mee te vergelijken.
+
 ## 2.14.0 — 2 november 2026
 
 **Meerdere studierichtingen tegelijk**
