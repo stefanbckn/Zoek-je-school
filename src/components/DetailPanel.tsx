@@ -18,6 +18,7 @@ import {
 import { huisnummerLabel } from '../lib/adres'
 import { datumLabel, KENMERKEN, percentageLabel } from '../lib/leerlingenkenmerken'
 import { KenmerkBalkje } from './KenmerkBalkje'
+import { richtingInKeuzes, type RichtingKeuze } from '../lib/richtingkeuze'
 import { useDialoogFocus } from '../lib/useDialoogFocus'
 
 interface DetailPanelProps {
@@ -32,6 +33,8 @@ interface DetailPanelProps {
   kenmerkenMeta: DatasetMeta['leerlingenkenmerken']
   /** Codes van de zevende leerjaren, zodat die achteraan de derde graad komen. */
   zevendeCodes: Set<string>
+  /** De gekozen studierichtingen uit de filter, om ze in het aanbod te markeren. */
+  richtingKeuzes: RichtingKeuze[]
   onClose: () => void
 }
 
@@ -43,6 +46,7 @@ export function DetailPanel({
   schooljaarAanbod,
   kenmerkenMeta,
   zevendeCodes,
+  richtingKeuzes,
   onClose,
 }: DetailPanelProps) {
   const [fietsroute, setFietsroute] = useState<FietsrouteResultaat | 'laden' | null>(null)
@@ -400,6 +404,14 @@ export function DetailPanel({
             </p>
           )}
 
+          {/* Zegt waarom dit adres in de lijst staat. Zonder markering zocht je in 27 richtingen
+              naar die ene die je in de filter koos. Vet en een vinkje, niet enkel een kleur. */}
+          {aanbod.some((r) => richtingInKeuzes(r, richtingKeuzes)) && (
+            <p className="mt-1 text-xs text-zacht">
+              <span aria-hidden="true">✓</span> Gemarkeerd: wat jullie bij de filters kozen.
+            </p>
+          )}
+
           {aanbod.length === 0 ? (
             <p className="mt-2 text-sm text-zacht italic">
               Geen studieaanbod geregistreerd op dit adres. Kijk op de officiële fiche hieronder.
@@ -412,29 +424,42 @@ export function DetailPanel({
                     {groep.graad}
                   </h4>
                   <ul className="mt-1.5 flex flex-col gap-1">
-                    {groep.richtingen.map((richting) => (
-                      <li
-                        key={`${richting.code}-${richting.naam}`}
-                        className="flex items-start justify-between gap-2 text-sm"
-                      >
-                        <span className="text-inkt">
-                          {richting.naam}
-                          {richting.duaal && (
-                            <span className="ml-1 text-xs text-zacht">(duaal leren)</span>
-                          )}
-                        </span>
-                        {richting.finaliteit !== null && (
-                          <span
-                            className={`shrink-0 ${FINALITEIT_CHIP} ${FINALITEIT_STYLES[richting.finaliteit]}`}
-                          >
-                            <span aria-hidden="true" className="text-[0.62em] leading-none">
-                              {FINALITEIT_TEKEN[richting.finaliteit]}
-                            </span>
-                            {richting.finaliteit}
+                    {groep.richtingen.map((richting) => {
+                      const gekozen = richtingInKeuzes(richting, richtingKeuzes)
+                      return (
+                        <li
+                          key={`${richting.code}-${richting.naam}`}
+                          className={`flex items-start justify-between gap-2 text-sm ${
+                            gekozen ? '-mx-1.5 rounded-md bg-hover px-1.5 py-0.5' : ''
+                          }`}
+                        >
+                          <span className={gekozen ? 'font-semibold text-inkt' : 'text-inkt'}>
+                            {gekozen && (
+                              <>
+                                <span aria-hidden="true" className="mr-1">
+                                  ✓
+                                </span>
+                                <span className="sr-only">Gekozen: </span>
+                              </>
+                            )}
+                            {richting.naam}
+                            {richting.duaal && (
+                              <span className="ml-1 text-xs text-zacht">(duaal leren)</span>
+                            )}
                           </span>
-                        )}
-                      </li>
-                    ))}
+                          {richting.finaliteit !== null && (
+                            <span
+                              className={`shrink-0 ${FINALITEIT_CHIP} ${FINALITEIT_STYLES[richting.finaliteit]}`}
+                            >
+                              <span aria-hidden="true" className="text-[0.62em] leading-none">
+                                {FINALITEIT_TEKEN[richting.finaliteit]}
+                              </span>
+                              {richting.finaliteit}
+                            </span>
+                          )}
+                        </li>
+                      )
+                    })}
                   </ul>
                 </div>
               ))}

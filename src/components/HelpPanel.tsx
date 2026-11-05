@@ -100,7 +100,9 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
                 <strong className="font-medium text-inkt">Studierichting.</strong> Het snelste
                 pad naar een korte lijst. Typ waar je zoon of dochter naartoe wil (Latijn,
                 sport, verzorging) en kies uit de lijst die verschijnt. Je mag er meerdere
-                aanvinken: je houdt de adressen over waar minstens één ervan te volgen is.
+                aanvinken: je houdt de adressen over waar minstens één ervan te volgen is. Op
+                elk kaartje staat welke van jullie keuzes dat adres heeft, en in de fiche zijn
+                ze gemarkeerd.
               </li>
               <li>
                 <strong className="font-medium text-inkt">Finaliteit.</strong> Doorstroom,

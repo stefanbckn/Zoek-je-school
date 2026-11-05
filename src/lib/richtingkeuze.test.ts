@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import {
+  keuzesOpCampus,
   parseRichtingKeuzes,
   richtingInKeuzes,
   richtingKeuzesNaarUrl,
   zoekRichtingen,
 } from './richtingkeuze'
-import type { Richting, Studierichting } from '../types'
+import type { Campus, Richting, SchoolOpCampus, Studierichting } from '../types'
 import richtingenJson from '../../public/data/richtingen.json'
 
 const catalogus = richtingenJson as Studierichting[]
@@ -86,5 +87,26 @@ describe('zoekRichtingen op de echte catalogus', () => {
 
   it('geeft niets bij een lege zoekterm', () => {
     expect(zoekRichtingen(catalogus, '  ', new Map())).toEqual([])
+  })
+})
+
+describe('keuzesOpCampus', () => {
+  const r = (code: string, graad: string) => ({ studierichtingCode: code, graad }) as Richting
+  const campus = (...perSchool: Richting[][]) =>
+    ({ scholen: perSchool.map((richtingen) => ({ richtingen }) as SchoolOpCampus) }) as Campus
+  const sport = { code: '1', graad: 'Derde graad' }
+  const wiskunde = { code: '2', graad: 'Derde graad' }
+
+  it('geeft enkel de keuzes die het adres aanbiedt', () => {
+    expect(keuzesOpCampus(campus([r('1', 'Derde graad')]), [sport, wiskunde])).toEqual([sport])
+  })
+
+  it('telt de scholen op één adres samen, in de volgorde van de keuzes', () => {
+    const c = campus([r('2', 'Derde graad')], [r('1', 'Derde graad')])
+    expect(keuzesOpCampus(c, [sport, wiskunde])).toEqual([sport, wiskunde])
+  })
+
+  it('kijkt naar de graad', () => {
+    expect(keuzesOpCampus(campus([r('1', 'Tweede graad')]), [sport])).toEqual([])
   })
 })

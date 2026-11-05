@@ -68,6 +68,7 @@ Wat er per versie veranderd is, staat in [CHANGELOG.md](./CHANGELOG.md) — niet
 | **2.12.0** | Alle gemeenten met een school | 172 gemeentepagina's, de niet-centrumsteden afgeleid uit de dataset · andere opbouw onder 5 scholen · juiste namen voor zes fusiegemeenten · sitemap gegenereerd in plaats van gecommit |
 | **2.13.0** | Herkomst via gemeentepagina | Links van een gemeentepagina naar de zoeker dragen `ref=gemeente-<naam>`, zichtbaar in Simple Analytics |
 | **2.14.0** | Meerdere studierichtingen | "Zoek op studierichting" toont een lijst met elke richting die het getypte stukje in de naam heeft, met graad en aantal adressen · meerdere richtingen kiezen, een adres blijft staan als het er minstens één aanbiedt · "Kies alle" · een klik in de matrix voegt toe in plaats van te vervangen · oude links blijven werken |
+| **2.15.0** | Van jullie keuze | Op elk kaartje een regel met de gekozen richtingen die dat adres heeft (vanaf twee keuzes) · gekozen richtingen gemarkeerd in het studieaanbod van de fiche · de filter blijft bewust een OF, een EN-filter is niet gebouwd (beslist door de gebruiker op 05/11/2026) |
 
 ## Nog te doen
 

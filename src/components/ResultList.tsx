@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
 import { ResultCard } from './ResultCard'
+import type { RichtingKeuze } from '../lib/richtingkeuze'
 
 /**
  * Aantal kaartjes dat we in één keer tonen. Zonder filters staan er ruim 300 in de lijst; die
@@ -20,6 +21,8 @@ interface ResultListProps {
   vergelijking: string[]
   vergelijkVol: boolean
   onVergelijkToggle: (campus: CampusMetAfstand) => void
+  richtingKeuzes: RichtingKeuze[]
+  richtingNamen: Map<string, string>
 }
 
 export function ResultList({
@@ -28,6 +31,8 @@ export function ResultList({
   vergelijking,
   vergelijkVol,
   onVergelijkToggle,
+  richtingKeuzes,
+  richtingNamen,
 }: ResultListProps) {
   // Terug naar de eerste lading zodra de zoekopdracht verandert. Zonder dit zit je na het
   // aanvinken van één gemeente nog steeds naar 75 items te kijken terwijl er 4 resultaten zijn.
@@ -59,6 +64,8 @@ export function ResultList({
           vergeleken={vergelijking.includes(c.id)}
           vergelijkVol={vergelijkVol}
           onVergelijkToggle={onVergelijkToggle}
+          richtingKeuzes={richtingKeuzes}
+          richtingNamen={richtingNamen}
         />
       ))}
 
