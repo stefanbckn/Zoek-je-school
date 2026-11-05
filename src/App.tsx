@@ -375,6 +375,15 @@ function App() {
 
   const verborgen = verborgenOmschrijving(verborgenZonderAanbod, verborgenLegeScholen)
 
+  /**
+   * Sluiten zet de balk bovenaan: wie diep in de vorige lijst zat, staat anders midden in een
+   * lijst die intussen een andere is. Geldt voor "Klaar" in de kop en de knop in de voet.
+   */
+  function sluitFilters() {
+    setFiltersOpen(false)
+    requestAnimationFrame(() => balkRef.current?.scrollIntoView({ block: 'start' }))
+  }
+
   // Zelfde afspraak als bij de panelen: wat het scherm overneemt, sluit met Escape.
   useEffect(() => {
     if (!filtersOpen) return
@@ -592,13 +601,15 @@ function App() {
                 gewoon naast de lijst en valt er niets te sluiten. */}
             <div className="flex min-h-[var(--h-resultatenbalk)] shrink-0 items-center justify-between gap-2 border-b border-rand px-4 md:hidden">
               <h2 className="text-sm font-semibold text-inkt">Filters</h2>
+              {/* "Klaar" en geen kruisje: een kruisje leest als annuleren, terwijl elk vinkje al
+                  meteen geldt. Omlijnd zoals de knop "Filters" die het paneel opende; gevuld
+                  zou hij wedijveren met "Toon … resultaten" in de voet, die hetzelfde doet. */}
               <button
                 type="button"
-                onClick={() => setFiltersOpen(false)}
-                aria-label="Filters sluiten"
-                className="-mr-2 grid size-11 place-items-center text-zacht hover:text-inkt"
+                onClick={sluitFilters}
+                className="flex min-h-11 items-center rounded-md border border-rand px-3 text-sm"
               >
-                ✕
+                Klaar
               </button>
             </div>
 
@@ -634,16 +645,11 @@ function App() {
             </div>
 
             {/* Het aantal staat op de knop zelf: terwijl je vinkt zie je de lijst eronder niet,
-                dus dit is op een telefoon de enige plaats waar het meebeweegt. Sluiten zet de
-                balk bovenaan: wie diep in de vorige lijst zat, staat anders midden in een lijst
-                die intussen een andere is. */}
+                dus dit is op een telefoon de enige plaats waar het meebeweegt. */}
             <div className="shrink-0 border-t border-rand bg-grond p-3 md:hidden">
               <button
                 type="button"
-                onClick={() => {
-                  setFiltersOpen(false)
-                  requestAnimationFrame(() => balkRef.current?.scrollIntoView({ block: 'start' }))
-                }}
+                onClick={sluitFilters}
                 className="flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-4 text-sm font-medium text-accent-inkt"
               >
                 Toon {zichtbareCampussen.length} resultaten

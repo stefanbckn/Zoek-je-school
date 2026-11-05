@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import {
   aantalHier,
   isGekozen,
@@ -49,6 +49,7 @@ export function RichtingKiezer({
   const [open, setOpen] = useState(false)
   /** Index van de actieve optie; -1 = geen. Optie 0 is "alle kiezen" als die er staat. */
   const [actief, setActief] = useState(-1)
+  const invoerRef = useRef<HTMLInputElement>(null)
 
   const treffers = useMemo(
     () => zoekRichtingen(studierichtingen, invoer, tellingen),
@@ -102,6 +103,7 @@ export function RichtingKiezer({
       </label>
       <div className="relative">
         <input
+          ref={invoerRef}
           id="richting"
           type="text"
           role="combobox"
@@ -125,67 +127,88 @@ export function RichtingKiezer({
           className="w-full rounded-lg border border-rand px-3 py-2 text-base md:text-sm focus:border-accent"
         />
         {open && invoer.trim() !== '' && (
-          <ul
-            id="richting-suggesties"
-            role="listbox"
-            aria-label="Studierichtingen"
-            aria-multiselectable="true"
-            className="absolute z-20 mt-1 w-full rounded-lg border border-rand bg-kaart shadow-lg max-h-72 overflow-auto md:w-80"
-          >
-            {treffers.length === 0 && (
-              <li className="px-3 py-2 text-sm text-zacht">Geen richting met deze naam.</li>
-            )}
-            {metAlles && (
-              <li
-                id="richting-optie-0"
-                role="option"
-                aria-selected={false}
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => kiesOptie(0)}
-                className={`cursor-pointer border-b border-rand px-3 py-2 text-sm font-medium text-accent hover:bg-hover ${actief === 0 ? 'bg-hover' : ''}`}
-              >
-                {`Kies alle ${nogNietGekozen.length} richtingen met "${invoer.trim()}"`}
-              </li>
-            )}
-            {getoond.map((r, i) => {
-              const index = i + (metAlles ? 1 : 0)
-              const gekozen = isGekozen(keuzes, naarKeuze(r))
-              const hier = aantalHier(tellingen, r)
-              return (
+          <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-lg border border-rand bg-kaart shadow-lg md:w-80">
+            <ul
+              id="richting-suggesties"
+              role="listbox"
+              aria-label="Studierichtingen"
+              aria-multiselectable="true"
+              className="max-h-72 overflow-auto"
+            >
+              {treffers.length === 0 && (
+                <li className="px-3 py-2 text-sm text-zacht">Geen richting met deze naam.</li>
+              )}
+              {metAlles && (
                 <li
-                  key={`${r.code}|${r.graad}`}
-                  id={`richting-optie-${index}`}
+                  id="richting-optie-0"
                   role="option"
-                  aria-selected={gekozen}
-                  // preventDefault houdt de focus in het invoerveld, zodat de blur de lijst
-                  // niet sluit vóór de klik aankomt.
+                  aria-selected={false}
                   onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => kiesOptie(index)}
-                  className={`flex cursor-pointer items-start gap-2 px-3 py-2 text-sm hover:bg-hover ${index === actief ? 'bg-hover' : ''}`}
+                  onClick={() => kiesOptie(0)}
+                  className={`cursor-pointer border-b border-rand px-3 py-2 text-sm font-medium text-accent hover:bg-hover ${actief === 0 ? 'bg-hover' : ''}`}
                 >
-                  <span
-                    aria-hidden="true"
-                    className={`mt-0.5 grid size-4 shrink-0 place-items-center rounded-sm border text-[10px] leading-none ${gekozen ? 'border-accent bg-accent text-accent-inkt' : 'border-rand'}`}
-                  >
-                    {gekozen ? '✓' : ''}
-                  </span>
-                  <span className={hier === 0 ? 'text-zacht' : 'text-inkt'}>
-                    {r.naam}
-                    <span className="block text-xs text-zacht">
-                      {[graadKort(r.graad), `${hier} ${hier === 1 ? 'adres' : 'adressen'}`]
-                        .filter(Boolean)
-                        .join(' · ')}
-                    </span>
-                  </span>
+                  {/* Het totaal, ook als er al enkele gekozen zijn: "Kies alle 22" terwijl er 24
+                      treffers zijn, las als een fout in de telling. */}
+                  {`Kies alle ${treffers.length} richtingen met "${invoer.trim()}"`}
                 </li>
-              )
-            })}
-            {treffers.length > getoond.length && (
-              <li className="px-3 py-2 text-xs text-zacht">
-                Nog {treffers.length - getoond.length} richtingen. Typ verder om te verfijnen.
-              </li>
-            )}
-          </ul>
+              )}
+              {getoond.map((r, i) => {
+                const index = i + (metAlles ? 1 : 0)
+                const gekozen = isGekozen(keuzes, naarKeuze(r))
+                const hier = aantalHier(tellingen, r)
+                return (
+                  <li
+                    key={`${r.code}|${r.graad}`}
+                    id={`richting-optie-${index}`}
+                    role="option"
+                    aria-selected={gekozen}
+                    // preventDefault houdt de focus in het invoerveld, zodat de blur de lijst
+                    // niet sluit vóór de klik aankomt.
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => kiesOptie(index)}
+                    className={`flex cursor-pointer items-start gap-2 px-3 py-2 text-sm hover:bg-hover ${index === actief ? 'bg-hover' : ''}`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`mt-0.5 grid size-4 shrink-0 place-items-center rounded-sm border text-[10px] leading-none ${gekozen ? 'border-accent bg-accent text-accent-inkt' : 'border-rand'}`}
+                    >
+                      {gekozen ? '✓' : ''}
+                    </span>
+                    <span className={hier === 0 ? 'text-zacht' : 'text-inkt'}>
+                      {r.naam}
+                      <span className="block text-xs text-zacht">
+                        {[graadKort(r.graad), `${hier} ${hier === 1 ? 'adres' : 'adressen'}`]
+                          .filter(Boolean)
+                          .join(' · ')}
+                      </span>
+                    </span>
+                  </li>
+                )
+              })}
+              {treffers.length > getoond.length && (
+                <li className="px-3 py-2 text-xs text-zacht">
+                  Nog {treffers.length - getoond.length} richtingen. Typ verder om te verfijnen.
+                </li>
+              )}
+            </ul>
+            {/* Op een telefoon vult de lijst het scherm en is er amper plaats om ernaast te
+                tikken. Deze knop sluit ze en laat ook het toetsenbord zakken. Hij staat buiten de
+                listbox, want daarin horen enkel opties. Met een muis klik je gewoon ernaast. */}
+            <div className="border-t border-rand p-2 md:hidden">
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  setOpen(false)
+                  setActief(-1)
+                  invoerRef.current?.blur()
+                }}
+                className="w-full rounded-lg bg-accent px-3 py-2 text-sm font-medium text-accent-inkt"
+              >
+                Klaar
+              </button>
+            </div>
+          </div>
         )}
       </div>
       <p className="mt-1 text-xs text-zacht">

@@ -8,6 +8,20 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.14.3 — 5 november 2026
+
+Kleine herstellingen, vooral voor wie op een telefoon zoekt.
+
+- **Alle adressuggesties zijn weer te zien.** Op een telefoon schoof de balk met het aantal
+  resultaten over het midden van de lijst. Typte je "fruithoflaan", dan zag je Boechout niet
+  en kon je het ook niet aanklikken.
+- **"Kies alle" toont altijd hoeveel richtingen er zijn.** Had je er al twee gekozen, dan stond
+  er "Kies alle 22" terwijl er 24 richtingen met "sport" in de naam zijn.
+- **De lijst met studierichtingen sluit je met "Klaar".** Op een klein scherm vult die lijst het
+  scherm, en was er amper plaats om ernaast te tikken. De knop sluit ook het toetsenbord.
+- **Ook de filters sluit je met "Klaar"**, bovenaan rechts, waar eerst een kruisje stond. Een
+  kruisje deed denken aan annuleren, terwijl elk vinkje meteen meetelt.
+
 ## 2.14.2 — 2 november 2026
 
 Een onderhoudsversie. Op de site zelf verandert niets.

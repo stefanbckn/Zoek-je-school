@@ -165,12 +165,14 @@ export function SearchBar({
             placeholder="Typ je gemeente of adres…"
             className="h-12 w-full rounded-lg border border-rand px-3.5 text-base focus:border-accent md:h-13"
           />
+          {/* z-30 en niet lager: de resultatenbalk eronder is sticky met z-20, en schoof op een
+              telefoon over het midden van deze lijst heen. Het filterpaneel (z-40) blijft erboven. */}
           {open && (
             <ul
               id="locatie-suggesties"
               role="listbox"
               aria-label="Suggesties"
-              className="absolute z-10 mt-1 w-full rounded-lg border border-rand bg-kaart shadow-lg max-h-60 overflow-auto"
+              className="absolute z-30 mt-1 w-full rounded-lg border border-rand bg-kaart shadow-lg max-h-60 overflow-auto"
             >
               {suggesties.map((s, i) => (
                 <li
