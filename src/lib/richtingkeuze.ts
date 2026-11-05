@@ -1,4 +1,4 @@
-import type { Richting, Studierichting } from '../types'
+import type { Campus, Richting, Studierichting } from '../types'
 
 /**
  * Eén gekozen studierichting: de code uit `Richting.studierichtingCode` plus de graad waarin
@@ -56,6 +56,19 @@ export function richtingInKeuzes(richting: Richting, keuzes: RichtingKeuze[]): b
   return keuzes.some(
     (k) =>
       richting.studierichtingCode === k.code && (k.graad === null || richting.graad === k.graad),
+  )
+}
+
+/**
+ * Welke van de gekozen richtingen dit adres aanbiedt, in de volgorde waarin ze gekozen zijn.
+ *
+ * De filter is een OF, dus een adres in de lijst heeft er minstens één. Zonder deze lijst
+ * leest een ouder die "Sport" en "Latijn" koos de resultaten makkelijk als scholen die ze
+ * allebei hebben. Bewust geen EN-filter: een school met enkel sport kan net de juiste zijn.
+ */
+export function keuzesOpCampus(campus: Campus, keuzes: RichtingKeuze[]): RichtingKeuze[] {
+  return keuzes.filter((k) =>
+    campus.scholen.some((s) => s.richtingen.some((r) => richtingInKeuzes(r, [k]))),
   )
 }
 

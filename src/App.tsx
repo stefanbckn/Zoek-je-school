@@ -736,6 +736,8 @@ function App() {
                         ? haalUitVergelijking(campus.id)
                         : setVergelijking((huidig) => toggleVergelijking(huidig, campus.id))
                     }
+                    richtingKeuzes={state.richtingKeuzes}
+                    richtingNamen={richtingNamen}
                   />
                 ) : (
                   <div
@@ -784,6 +786,7 @@ function App() {
         schooljaarAanbod={meta?.schooljaarAanbod ?? null}
         kenmerkenMeta={meta?.leerlingenkenmerken ?? null}
         zevendeCodes={zevendeCodes}
+        richtingKeuzes={state.richtingKeuzes}
         onClose={() => setGeselecteerd(null)}
       />
 

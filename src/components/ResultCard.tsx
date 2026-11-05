@@ -9,6 +9,7 @@ import {
 import { NET_CHIP, NET_STYLES } from '../lib/net'
 import { MAX_VERGELIJK } from '../lib/vergelijking'
 import { huisnummerLabel } from '../lib/adres'
+import { keuzeLabel, keuzesOpCampus, type RichtingKeuze } from '../lib/richtingkeuze'
 
 interface ResultCardProps {
   campus: CampusMetAfstand
@@ -18,6 +19,9 @@ interface ResultCardProps {
   /** Zit de vergelijking vol? Dan kan er niets meer bij, maar wél iets uit. */
   vergelijkVol: boolean
   onVergelijkToggle: (campus: CampusMetAfstand) => void
+  /** De gekozen studierichtingen uit de filter. */
+  richtingKeuzes: RichtingKeuze[]
+  richtingNamen: Map<string, string>
 }
 
 export function ResultCard({
@@ -26,6 +30,8 @@ export function ResultCard({
   vergeleken,
   vergelijkVol,
   onVergelijkToggle,
+  richtingKeuzes,
+  richtingNamen,
 }: ResultCardProps) {
   const enkeleSchool = campus.scholen.length === 1 ? campus.scholen[0] : null
 
@@ -51,6 +57,17 @@ export function ResultCard({
         {aanbod.length} {aanbod.length === 1 ? 'richting' : 'richtingen'}
       </span>
     </div>
+  )
+
+  // Pas vanaf twee keuzes: met één keuze biedt elk adres in de lijst ze aan, en dan zegt de
+  // regel niets. Met twee of meer maakt ze zichtbaar dat de filter een OF is, zonder de
+  // scholen te verbergen die er maar één hebben.
+  const hier = richtingKeuzes.length > 1 ? keuzesOpCampus(campus, richtingKeuzes) : []
+  const keuzeRegel = hier.length > 0 && (
+    <p className="mt-2 text-xs text-zacht">
+      <span className="font-medium text-inkt">Van jullie {richtingKeuzes.length} keuzes:</span>{' '}
+      {hier.map((k) => keuzeLabel(k, richtingNamen)).join(', ')}
+    </p>
   )
 
   const adresRegel = (
@@ -108,6 +125,7 @@ export function ResultCard({
           {adresRegel}
           {afstandRegel}
           {aanbodRegel}
+          {keuzeRegel}
         </button>
         {vergelijkRij}
       </div>
@@ -122,6 +140,7 @@ export function ResultCard({
       {adresRegel}
       {afstandRegel}
       {aanbodRegel}
+      {keuzeRegel}
       <ul className="mt-2 flex flex-col gap-1.5">
         {campus.scholen.map((school) => (
           <li key={school.id}>
