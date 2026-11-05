@@ -8,6 +8,19 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.15.0 — 5 november 2026
+
+**Zien welke van jullie richtingen een school heeft**
+
+- **Op elk kaartje staat welke gekozen richtingen dat adres aanbiedt.** Kies je er twee of
+  meer, dan zie je bijvoorbeeld "Van jullie 2 keuzes: Sportwetenschappen (derde graad),
+  Wetenschappen-Wiskunde (derde graad)". Zo zie je meteen welke scholen ze allebei hebben.
+- **In de fiche zijn de gekozen richtingen gemarkeerd**, met een vinkje, in het vet en op een
+  lichte achtergrond. Je hoeft niet meer door het hele studieaanbod te lezen om te vinden
+  waarom een school in je lijst staat.
+- De lijst blijft elk adres tonen waar minstens één van je keuzes te volgen is. Een school die
+  enkel sport heeft, kan net de juiste zijn als je kind uiteindelijk voor sport kiest.
+
 ## 2.14.3 — 5 november 2026
 
 Kleine herstellingen, vooral voor wie op een telefoon zoekt.
