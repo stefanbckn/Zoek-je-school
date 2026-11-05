@@ -602,11 +602,12 @@ function App() {
             <div className="flex min-h-[var(--h-resultatenbalk)] shrink-0 items-center justify-between gap-2 border-b border-rand px-4 md:hidden">
               <h2 className="text-sm font-semibold text-inkt">Filters</h2>
               {/* "Klaar" en geen kruisje: een kruisje leest als annuleren, terwijl elk vinkje al
-                  meteen geldt. Dezelfde knop staat onder de richtingenlijst. */}
+                  meteen geldt. Omlijnd zoals de knop "Filters" die het paneel opende; gevuld
+                  zou hij wedijveren met "Toon … resultaten" in de voet, die hetzelfde doet. */}
               <button
                 type="button"
                 onClick={sluitFilters}
-                className="-mr-2 flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-accent hover:bg-hover"
+                className="flex min-h-11 items-center rounded-md border border-rand bg-kaart px-3 text-sm text-inkt hover:bg-hover"
               >
                 Klaar
               </button>
