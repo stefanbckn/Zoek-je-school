@@ -607,7 +607,7 @@ function App() {
               <button
                 type="button"
                 onClick={sluitFilters}
-                className="flex min-h-11 items-center rounded-md border border-rand bg-kaart px-3 text-sm text-inkt hover:bg-hover"
+                className="flex min-h-11 items-center rounded-md border border-rand px-3 text-sm"
               >
                 Klaar
               </button>
