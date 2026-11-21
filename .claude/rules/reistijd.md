@@ -31,26 +31,36 @@ HeiGIT niet. Zet er dus nooit een `VITE_`-prefix op en roep ORS nooit rechtstree
 `src/`.
 
 Wat de proxy hardcodeert, en waarom het zo moet blijven: alleen GET, coördinaten binnen een
-bounding box rond België, alleen het fietsprofiel, antwoord met enkel afstand en duur (geen
-geometrie), géén CORS-header, en een dag CDN-cache. Het endpoint is publiek bereikbaar (de site
-is publiek); die beperkingen maken misbruik onaantrekkelijk, niet onmogelijk.
+bounding box rond België, alleen het fietsprofiel, antwoord met afstand, duur en een
+vereenvoudigd traject (sinds 2.16.0, voor het kaartvenster), géén CORS-header, en een dag
+CDN-cache. Het endpoint is publiek bereikbaar (de site is publiek); die beperkingen maken
+misbruik onaantrekkelijk, niet onmogelijk.
 
 Voor de call naar ORS zelf:
 
 - **Gebruik `api.heigit.org`, NIET `api.openrouteservice.org`.** Beide draaien dezelfde backend,
   maar `api.openrouteservice.org` stuurt CORS-headers enkel op de OPTIONS-preflight. Dat is een
   bekend, jarenlang terugkerend probleem, geen toevalstreffer.
-- Endpoint: `POST https://api.heigit.org/openrouteservice/v2/directions/cycling-regular/json`
+- Endpoint: `POST https://api.heigit.org/openrouteservice/v2/directions/cycling-regular/geojson`.
+  **geojson, niet `/json`**: dat laatste geeft het traject als gecodeerde polyline.
 - Auth: header `Authorization: <key>`, de ruwe key, **geen `Bearer`-prefix**.
-- Body: `{"coordinates": [[lon,lat],[lon,lat]]}`. **lon eerst**, omgekeerd van de rest van de app.
-- Respons: `routes[0].summary.distance` (meter) en `.duration` (seconden).
+- Body: `{"coordinates": [[lon,lat],[lon,lat]], "geometry_simplify": true}`. **lon eerst**,
+  omgekeerd van de rest van de app.
+- Respons: `features[0].properties.summary.distance` (meter) en `.duration` (seconden), het
+  traject in `features[0].geometry.coordinates` als `[lon, lat]`. `leesRoute()` in
+  `shared/ors.ts` draait dat om naar `[lat, lon]`.
 - Quota: we zitten op het **Collaborative-plan, 10.000 calls/dag** (het gewone gratis plan
   geeft 2000/dag, 40/minuut). De per-minuutlimiet van Collaborative is niet apart nagekeken.
 - Geen key ingesteld: `berekenFietsroute` geeft stil `null` terug. Geen fetch-poging, geen crash.
 
-`orsKaartUrl()` maakt een dieplink naar `maps.openrouteservice.org`. Dat is géén API-gebruik:
-wie de link volgt doet zelf de call. Het is een **hash-route met een JSON-blok**, geen
-querystring; query-parameters op het pad worden stil genegeerd.
+**Geen dieplink meer naar de kaart van openrouteservice.** Hun nieuwe kaart op
+`routing.heigit.org` neemt geen start- en eindpunt uit een link, en een vervanger bestaat niet
+(issue #83, zie het onderzoek). De fiche toont het traject zelf in `FietsrouteVenster.tsx`.
+Stap niet over op een andere routeplanner met een werkende link: dan rekent de kaart anders dan
+de km en minuten ernaast.
+
+Een antwoord zonder traject (een browsercache van vóór 2.16.0, `max-age` een dag) toont enkel km
+en minuten, zonder knop. `geldigTraject()` in `src/lib/fietsroute.ts` vangt dat op.
 
 ## Openbaar vervoer — Transitous, rechtstreeks vanuit de browser
 

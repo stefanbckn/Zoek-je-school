@@ -44,29 +44,52 @@ De vermelding staat in `Footer.tsx` en nogmaals in `DetailPanel.tsx`, omdat dat 
 modaal venster over de footer ligt. De **link** op het woord "openrouteservice" is uit het
 paneel gehaald en staat enkel in de footer: de vermelding is contractueel, de link erin niet.
 
-## Dieplink naar de kaart van openrouteservice
+## De route op een kaart tonen
 
-Dezelfde goedkope weg als bij Transitous: linken naar `maps.openrouteservice.org` met de route
-al ingevuld. Geen key, geen quota. Wie de link volgt, doet zelf de call. Geïmplementeerd als
-`orsKaartUrl()` in `src/lib/fietsroute.ts`.
+### Tot 2.15.0: een dieplink naar maps.openrouteservice.org
 
-```
-https://maps.openrouteservice.org/#/directions/<vanNaam>/<naarNaam>/data/
-  {"coordinates":"<lon,lat>;<lon,lat>","options":{"profile":"cycling-regular","preference":"recommended"}}
-```
+De fiche linkte naar de kaart van openrouteservice, met de route al ingevuld via een hash-route
+met een JSON-blok (`#/directions/<van>/<naar>/data/{"coordinates":"lon,lat;lon,lat",...}`).
+Geen key, geen quotum: wie de link volgde, deed zelf de call. Live nagespeeld op 28/08/2026.
 
-Live nagespeeld op 28/08/2026 (Antwerpen-Centraal naar Wilrijk, en Antwerpen-Centraal naar
-Onyx): de kaart berekent de rit, zet het profiel op de fiets en toont naam, afstand en tijd in
-de zijbalk. Punten om niet in te lopen:
+### Waarom dat niet meer kan
 
-- **Het is een hash-route met een JSON-blok erin**, geen gewone querystring. Query-parameters op
-  het pad (`?a=…&b=1`, zoals oudere forumposts tonen) worden **stil genegeerd**; geverifieerd,
-  de app laadt dan gewoon de wereldkaart. Encodeer ook de namen: die staan in het pad, en een
-  schoolnaam met een schuine streep zou de route anders in stukken hakken.
-- **`coordinates` is `lon,lat`**, omgekeerd van de rest van deze app, en de punten scheiden met
-  een puntkomma.
-- **`"zoom"` in het optieblok doet niets merkbaars**, en een `/@lon,lat,zoom`-achtervoegsel
-  evenmin. Beide geprobeerd. De kaart opent op straatniveau en zoomt pas na tien tot dertig
-  seconden uit naar de volledige route (één keer wél gezien, één keer niet binnen 40 s). De
-  bezoeker kan zelf op de "volledige route"-knop rechtsboven klikken. Dat is de bekende ruwe
-  kant van deze link; de berekende route zelf klopt wel.
+Op 1/10/2026 zette HeiGIT een nieuwe kaart online op `routing.heigit.org`, gebouwd op
+Masterportal. `maps.openrouteservice.org` en `classic-maps.openrouteservice.org` gingen dicht
+na 2/11/2026; het eerste adres stuurt nu door naar `routing.heigit.org/ors/`, dat de hash-route
+negeert en een lege kaart van Europa toont.
+
+**Een vervangende dieplink bestaat niet.** HeiGIT bevestigt dat op hun forum: start- en
+eindpunt in de URL moet in Masterportal zelf gebouwd worden, en ze verwachten dat niet snel.
+
+- [New Web Client - Shutting down old clients](https://ask.openrouteservice.org/t/new-web-client-shutting-down-old-clients/8072)
+- [Route parameters with the new routing.heigit.org](https://ask.openrouteservice.org/t/route-parameters-with-the-new-routing-heigit-org/8073)
+
+Zelf nagekeken op 21/11/2026 in hun code (mastercode v3.26.0): via `?MENU=` gaan enkel
+instellingen zoals het profiel mee, en ook de deelbare toestand van hun kaart bevat geen punten.
+De instellingen worden wel vrij ruw overgenomen, dus punten "binnensmokkelen" zou misschien
+lukken. Bewust niet gedaan: dat is een achterpoort die bij hun volgende update stil breekt.
+
+### Sinds 2.16.0: hun route op onze eigen kaart
+
+De proxy vraagt nu het **geojson-endpoint** op in plaats van `/json`. Dat geeft het traject als
+gewone lijst van `[lon, lat]`-punten in `features[0].geometry.coordinates`; `/json` geeft het
+als gecodeerde polyline. Afstand en duur staan in `features[0].properties.summary` en zijn bij
+beide endpoints dezelfde. Met `geometry_simplify: true` in de body blijven er voor
+Antwerpen-Centraal naar Wilrijk 150 punten over in plaats van 239, met dezelfde afstand en
+duur. Alles live nagekeken op 21/11/2026.
+
+De fiche toont een knop "Bekijk de fietsroute" die een venster opent met dat traject op een
+Leaflet-kaart (`FietsrouteVenster.tsx`). Het traject komt uit dezelfde call als de km en
+minuten, dus het venster kost geen extra call naar HeiGIT.
+
+Bewust bij HeiGIT gebleven, niet overgestapt op een andere routeplanner met een werkende
+dieplink (bijvoorbeeld die van openstreetmap.org): dan rekent de kaart met een andere planner
+dan de km en minuten in de fiche, en hangt de site van twee diensten af voor één route.
+
+**Het endpoint is daardoor iets meer waard voor misbruik**: met het traject erbij is het een
+fietsplanner voor België op ons quotum. Afgewogen en aanvaard (issue #83); de bounding box
+blijft, en een vereenvoudigd traject houdt het antwoord klein.
+
+Komt een dieplink in de nieuwe kaart van HeiGIT ooit terug, dan kan de link er opnieuw bij. Op
+het forumdraadje hierboven staat een +1 met onze toepassing.
