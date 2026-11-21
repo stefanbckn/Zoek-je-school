@@ -104,7 +104,7 @@ export function FietsrouteVenster({
             boundsOptions={{ padding: [32, 32] }}
             className="absolute inset-0"
           >
-            <VolgtGrootte />
+            <PastRouteIn grenzen={grenzen} />
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-bijdragers'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -135,15 +135,20 @@ export function FietsrouteVenster({
 }
 
 /**
- * Het venster krijgt zijn hoogte pas na het openen en kan draaien op een telefoon. Leaflet
- * merkt dat zelf niet; zonder dit blijven er grijze stroken zonder tegels.
+ * Past de hele route in beeld, ook wanneer het venster van grootte verandert: een telefoon die
+ * draait, of een browservenster dat smaller wordt. Leaflet merkt dat zelf niet; met enkel
+ * `invalidateSize` bleven het midden en de zoom staan en vielen begin en einde buiten beeld.
+ * Nagekeken in de preview door van laptop- naar telefoonbreedte te gaan.
  */
-function VolgtGrootte() {
+function PastRouteIn({ grenzen }: { grenzen: L.LatLngBounds }) {
   const map = useMap()
   useEffect(() => {
-    const waarnemer = new ResizeObserver(() => map.invalidateSize({ animate: false }))
+    const waarnemer = new ResizeObserver(() => {
+      map.invalidateSize({ animate: false })
+      map.fitBounds(grenzen, { padding: [32, 32], animate: false })
+    })
     waarnemer.observe(map.getContainer())
     return () => waarnemer.disconnect()
-  }, [map])
+  }, [map, grenzen])
   return null
 }
