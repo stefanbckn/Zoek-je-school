@@ -9,27 +9,13 @@ import 'leaflet.markercluster/dist/MarkerCluster.css'
 // TypeScript. `types` in tsconfig.app.json staat op `["vite/client"]`, dus @types-pakketten
 // komen niet vanzelf mee, en zonder deze regel kent `L` het type `MarkerCluster` niet.
 import 'leaflet.markercluster'
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
-import markerIcon from 'leaflet/dist/images/marker-icon.png'
-import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import type { CampusMetAfstand, SchoolOpCampus } from '../types'
 import { huisnummerLabel } from '../lib/adres'
 import { LOS_VANAF_ZOOM, clusterIcon } from '../lib/clusterbol'
-
-// Vite bundelt de marker-afbeeldingen niet automatisch mee onder hun verwachte pad;
-// dit is de gedocumenteerde workaround voor react-leaflet + Vite.
-const defaultIcon = L.icon({
-  iconUrl: markerIcon,
-  iconRetinaUrl: markerIcon2x,
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-})
+import { schoolIcoon } from '../lib/kaarticoon'
 
 /**
  * Waar de kaart staat vóór `FitBounds` de resultaten inpast, en bij nul resultaten. Het midden
@@ -170,7 +156,7 @@ export function MapView({ campussen, onSelect }: MapViewProps) {
         showCoverageOnHover={false}
       >
         {metLocatie.map((c) => (
-          <Marker key={c.id} position={[c.lat, c.lon]} icon={defaultIcon}>
+          <Marker key={c.id} position={[c.lat, c.lon]} icon={schoolIcoon}>
             <Popup>
               <div className="text-sm">
                 <p className="text-zacht">

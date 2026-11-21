@@ -11,7 +11,7 @@ import { haalFietsroute, parsePunt } from '../../shared/ors.js'
  *  - alleen GET
  *  - coördinaten moeten binnen de bounding box rond België vallen
  *  - alleen het fietsprofiel, hardcoded (geen vrije profielkeuze door de aanroeper)
- *  - antwoord bevat enkel afstand + duur, geen route-geometrie
+ *  - antwoord bevat afstand, duur en een vereenvoudigd traject voor de kaart in de fiche
  *  - geen CORS-header, dus andere websites kunnen het niet vanuit de browser aanroepen
  *  - resultaten worden een dag gecachet op de CDN, wat ORS-quota spaart
  */

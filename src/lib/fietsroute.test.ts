@@ -1,23 +1,41 @@
-import { describe, expect, it } from 'vitest'
-import { orsKaartUrl } from './fietsroute'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { berekenFietsroute } from './fietsroute'
 
-describe('orsKaartUrl', () => {
-  const url = orsKaartUrl(
-    { lat: 51.2172, lon: 4.4211 },
-    { lat: 51.1784, lon: 4.3925 },
-    { van: 'Thuis', naar: 'Sint-Jan/Campus Noord' },
-  )
-  const [, pad] = url.split('#/directions/')
-  const delen = pad.split('/')
+function antwoord(body: unknown) {
+  vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(body), { status: 200 })))
+}
 
-  it('houdt een schoolnaam met een schuine streep in één padstuk', () => {
-    expect(delen).toHaveLength(4)
-    expect(decodeURIComponent(delen[1])).toBe('Sint-Jan/Campus Noord')
+// Elke test een ander punt: berekenFietsroute cachet per route-paar.
+let n = 0
+const punten = () => {
+  n += 1
+  return [
+    { lat: 51.2 + n / 1000, lon: 4.42 },
+    { lat: 51.17, lon: 4.39 },
+  ] as const
+}
+
+afterEach(() => vi.unstubAllGlobals())
+
+describe('berekenFietsroute', () => {
+  it('geeft het traject door', async () => {
+    antwoord({ afstandKm: 7, duurMin: 25, traject: [[51.2, 4.4], [51.17, 4.39]] })
+    const r = await berekenFietsroute(...punten())
+    expect(r).toEqual({
+      status: 'ok',
+      route: { afstandKm: 7, duurMin: 25, traject: [[51.2, 4.4], [51.17, 4.39]] },
+    })
   })
 
-  it('zet de coördinaten als lon,lat, omgekeerd van de rest van de app', () => {
-    const data = JSON.parse(decodeURIComponent(delen[3]))
-    expect(data.coordinates).toBe('4.4211,51.2172;4.3925,51.1784')
-    expect(data.options.profile).toBe('cycling-regular')
+  it('houdt afstand en duur bij een oud antwoord zonder traject', async () => {
+    antwoord({ afstandKm: 7, duurMin: 25 })
+    const r = await berekenFietsroute(...punten())
+    expect(r).toEqual({ status: 'ok', route: { afstandKm: 7, duurMin: 25, traject: [] } })
+  })
+
+  it('laat een kapot traject vallen', async () => {
+    antwoord({ afstandKm: 7, duurMin: 25, traject: [[51.2, 'x'], [51.17, 4.39]] })
+    const r = await berekenFietsroute(...punten())
+    expect(r.status === 'ok' && r.route.traject).toEqual([])
   })
 })

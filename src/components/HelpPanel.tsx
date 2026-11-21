@@ -169,8 +169,9 @@ export function HelpPanel({ open, onClose, onOverOpen }: HelpPanelProps) {
             <p className="mt-2 text-zacht">
               Klik door voor contactgegevens, het volledige aanbod, en onder "Hoe geraak je er?"
               de fietstijd en de reistijd met bus of trein, berekend voor aankomst om 8u30 op de
-              eerstvolgende weekdag. De links ernaast brengen je naar de echte routeplanner, waar
-              je zelf een ander uur kan kiezen.
+              eerstvolgende weekdag. Met "Bekijk de fietsroute" zie je de route op een kaart. De
+              link bij bus of trein brengt je naar de echte routeplanner, waar je zelf een ander
+              uur kan kiezen.
             </p>
           </section>
 

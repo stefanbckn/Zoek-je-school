@@ -8,6 +8,19 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.16.0 — 21 november 2026
+
+**De fietsroute weer op een kaart**
+
+- **"Bekijk de fietsroute" opent een kaart met de route, hier op de site.** Op een laptop of
+  tablet in een groot venster, op een telefoon over het hele scherm. Je ziet langs waar je kind
+  zou fietsen, met een bolletje bij je adres en een speldje bij de school.
+- Dat was nodig omdat de link niet meer werkte. Hij ging naar de kaart van openrouteservice, en
+  die is vervangen door een nieuwe kaart die geen route meer uit een link overneemt. Je kwam op
+  een lege kaart van Europa terecht.
+- De route komt nog altijd van openrouteservice, dezelfde als de km en minuten in de fiche. Een
+  stap-voor-stapbeschrijving zoals op hun oude kaart zit er niet bij.
+
 ## 2.15.0 — 5 november 2026
 
 **Zien welke van jullie richtingen een school heeft**

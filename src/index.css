@@ -304,6 +304,28 @@ body {
   --c-cluster-inkt: #ffffff;
 }
 
+/* De fietsroute in het venster "Bekijk de fietsroute". Zelfde vaste kleur als de clusterbollen
+   en om dezelfde reden: de tegels blijven ook in donkere modus licht. CSS wint van de
+   `stroke`-attributen die Leaflet zelf op het pad zet. */
+.fietsroute-rand {
+  stroke: #ffffff;
+  stroke-opacity: 0.9;
+  stroke-width: 9px;
+}
+
+.fietsroute-lijn {
+  stroke: var(--c-cluster);
+  stroke-opacity: 1;
+  stroke-width: 5px;
+}
+
+.fietsroute-start {
+  stroke: #ffffff;
+  stroke-width: 3px;
+  fill: var(--c-cluster);
+  fill-opacity: 1;
+}
+
 /* De klasse staat naast `.leaflet-marker-icon`, die `display: block` zet en even specifiek is.
    Welke van de twee wint, hangt dan af van de volgorde waarin de stijlbladen gebundeld raken;
    doorgemeten in de browser stond het cijfer daardoor linksboven in plaats van gecentreerd.

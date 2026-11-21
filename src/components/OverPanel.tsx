@@ -146,7 +146,7 @@ export function OverPanel({ open, meta, onClose }: OverPanelProps) {
               >
                 Transitous
               </a>
-              , de fietsafstand van{' '}
+              , de fietsafstand en de fietsroute van{' '}
               <a
                 href="https://openrouteservice.org/"
                 target="_blank"

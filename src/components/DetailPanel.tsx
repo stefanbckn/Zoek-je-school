@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { CampusMetAfstand, DatasetMeta, SchoolOpCampus } from '../types'
 import {
   campusAanbod,
@@ -8,7 +8,7 @@ import {
   FINALITEIT_TEKEN,
 } from '../lib/aanbod'
 import { NET_CHIP, NET_STYLES } from '../lib/net'
-import { berekenFietsroute, orsKaartUrl, type FietsrouteResultaat } from '../lib/fietsroute'
+import { berekenFietsroute, type FietsrouteResultaat } from '../lib/fietsroute'
 import {
   berekenOvReis,
   transitousPlannerUrl,
@@ -18,6 +18,7 @@ import {
 import { huisnummerLabel } from '../lib/adres'
 import { datumLabel, KENMERKEN, percentageLabel } from '../lib/leerlingenkenmerken'
 import { KenmerkBalkje } from './KenmerkBalkje'
+import { FietsrouteVenster } from './FietsrouteVenster'
 import { richtingInKeuzes, type RichtingKeuze } from '../lib/richtingkeuze'
 import { useDialoogFocus } from '../lib/useDialoogFocus'
 
@@ -51,6 +52,8 @@ export function DetailPanel({
 }: DetailPanelProps) {
   const [fietsroute, setFietsroute] = useState<FietsrouteResultaat | 'laden' | null>(null)
   const [ovReis, setOvReis] = useState<OvReisResultaat | 'laden' | null>(null)
+  const [fietskaartOpen, setFietskaartOpen] = useState(false)
+  const sluitFietskaart = useCallback(() => setFietskaartOpen(false), [])
 
   // Eén keer vastleggen, zodat de API-call en de dieplink naar de planner over exact hetzelfde
   // moment gaan. Zou de link z'n eigen moment berekenen, dan kan die net over de grens van 8u30
@@ -65,6 +68,10 @@ export function DetailPanel({
   const vensterRef = useDialoogFocus<HTMLDivElement>(Boolean(campus && school))
 
   useEffect(() => {
+    // Een open kaartvenster hoort bij de vorige school; bij een andere school of een ander adres
+    // gaat het dicht.
+    // oxlint-disable-next-line react/set-state-in-effect
+    setFietskaartOpen(false)
     if (!campus || !zoeklocatie || campus.lat === null || campus.lon === null) {
       // De route hangt af van een fetch; leegmaken bij een andere school hoort bij dat effect.
       // oxlint-disable-next-line react/set-state-in-effect
@@ -133,9 +140,6 @@ export function DetailPanel({
       : null
   const plannerUrl = routePunten && aankomstmoment
     ? transitousPlannerUrl(routePunten.van, routePunten.naar, routePunten.namen, aankomstmoment)
-    : null
-  const fietskaartUrl = routePunten
-    ? orsKaartUrl(routePunten.van, routePunten.naar, routePunten.namen)
     : null
 
   return (
@@ -279,19 +283,27 @@ export function DetailPanel({
               </dd>
               {/* De footer draagt dezelfde attributie, maar dit paneel ligt er als modaal
                   venster overheen. Vermeld het dus ook hier, naast het resultaat zelf. */}
-              {/* Zelfde idee als bij het openbaar vervoer: rechtstreeks naar de kaart met déze
-                  route erop, in plaats van naar de homepage van openrouteservice — die staat al
-                  in de footer. Een hyperlink is geen API-gebruik, dus dit kost geen quota. */}
-              {fietskaartUrl && (
+              {/* De kaart van openrouteservice neemt sinds de overstap naar routing.heigit.org
+                  geen route meer uit een link (issue #83). We tonen hun route dus zelf, in een
+                  venster. Een knop en geen link: er gaat niets naar een andere pagina. Een
+                  antwoord zonder traject (nog in de browsercache van vóór 2.16.0) toont enkel
+                  de km en minuten. */}
+              {fietsroute.route.traject.length >= 2 && (
                 <dd className="text-xs">
-                  <a
-                    href={fietskaartUrl}
-                    target="_blank"
-                    rel="noreferrer"
+                  <button
+                    type="button"
+                    onClick={() => setFietskaartOpen(true)}
                     className="underline text-inkt"
                   >
-                    Bekijk de fietsroute op de kaart ↗
-                  </a>
+                    Bekijk de fietsroute
+                  </button>
+                  <FietsrouteVenster
+                    open={fietskaartOpen}
+                    onClose={sluitFietskaart}
+                    route={fietsroute.route}
+                    schoolNaam={school.naam}
+                    vertrekLabel={zoeklocatieLabel}
+                  />
                 </dd>
               )}
               {/* De vermelding zelf is contractueel verplicht (HeiGIT-voorwaarden), de link
