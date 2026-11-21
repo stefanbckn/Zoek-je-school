@@ -8,7 +8,7 @@ import {
   FINALITEIT_TEKEN,
 } from '../lib/aanbod'
 import { NET_CHIP, NET_STYLES } from '../lib/net'
-import { berekenFietsroute, orsKaartUrl, type FietsrouteResultaat } from '../lib/fietsroute'
+import { berekenFietsroute, type FietsrouteResultaat } from '../lib/fietsroute'
 import {
   berekenOvReis,
   transitousPlannerUrl,
@@ -133,9 +133,6 @@ export function DetailPanel({
       : null
   const plannerUrl = routePunten && aankomstmoment
     ? transitousPlannerUrl(routePunten.van, routePunten.naar, routePunten.namen, aankomstmoment)
-    : null
-  const fietskaartUrl = routePunten
-    ? orsKaartUrl(routePunten.van, routePunten.naar, routePunten.namen)
     : null
 
   return (
@@ -279,21 +276,6 @@ export function DetailPanel({
               </dd>
               {/* De footer draagt dezelfde attributie, maar dit paneel ligt er als modaal
                   venster overheen. Vermeld het dus ook hier, naast het resultaat zelf. */}
-              {/* Zelfde idee als bij het openbaar vervoer: rechtstreeks naar de kaart met déze
-                  route erop, in plaats van naar de homepage van openrouteservice — die staat al
-                  in de footer. Een hyperlink is geen API-gebruik, dus dit kost geen quota. */}
-              {fietskaartUrl && (
-                <dd className="text-xs">
-                  <a
-                    href={fietskaartUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline text-inkt"
-                  >
-                    Bekijk de fietsroute op de kaart ↗
-                  </a>
-                </dd>
-              )}
               {/* De vermelding zelf is contractueel verplicht (HeiGIT-voorwaarden), de link
                   erin niet. Zie .claude/rules/reistijd.md. */}
               <dd className="text-zacht text-xs">

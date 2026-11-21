@@ -7,7 +7,12 @@
  * lokaal en in productie exact dezelfde validatie en aanroep gelden.
  */
 
-const ORS_URL = 'https://api.heigit.org/openrouteservice/v2/directions/cycling-regular/json'
+/**
+ * Het geojson-endpoint, niet `/json`: dat geeft het traject als gecodeerde polyline, dit als
+ * gewone lijst van [lon, lat]-punten. Afstand en duur zijn bij allebei dezelfde. Live
+ * nagekeken op 21/11/2026.
+ */
+const ORS_URL = 'https://api.heigit.org/openrouteservice/v2/directions/cycling-regular/geojson'
 
 /**
  * Ruime bounding box rond België. Het endpoint staat publiek open, dus zonder deze check zou
@@ -23,6 +28,8 @@ export interface Punt {
 export interface Fietsroute {
   afstandKm: number
   duurMin: number
+  /** Het traject als [lat, lon]-punten, in de volgorde van Leaflet en de rest van de app. */
+  traject: [number, number][]
 }
 
 /** Parseert "lat,lon" en weigert alles buiten de bounding box of niet-numeriek. */
@@ -39,8 +46,13 @@ export function parsePunt(raw: string | null): Punt | null {
 }
 
 /**
- * Vraagt één fietsroute op. Geeft bewust alleen afstand en duur terug — niet de volledige
- * geometrie — zodat het endpoint weinig waard is voor wie het zou willen misbruiken.
+ * Vraagt één fietsroute op, met het traject erbij voor de kaart in de fiche.
+ *
+ * Het traject maakt het endpoint wat waardevoller voor wie het zou willen misbruiken: het wordt
+ * zo een fietsplanner voor België. Sinds 2.16.0 bewust aanvaard, omdat de dieplink naar de kaart
+ * van HeiGIT niet meer werkt en de route anders nergens te zien is. De bounding box blijft, en
+ * `geometry_simplify` houdt het antwoord klein (Antwerpen-Centraal naar Wilrijk: 150 punten in
+ * plaats van 239, zelfde afstand en duur).
  */
 export async function haalFietsroute(van: Punt, naar: Punt, apiKey: string): Promise<Fietsroute> {
   const res = await fetch(ORS_URL, {
@@ -51,17 +63,47 @@ export async function haalFietsroute(van: Punt, naar: Punt, apiKey: string): Pro
         [van.lon, van.lat],
         [naar.lon, naar.lat],
       ],
+      geometry_simplify: true,
     }),
   })
   if (!res.ok) {
     throw new Error(`ORS gaf HTTP ${res.status}`)
   }
-  const data = (await res.json()) as {
-    routes?: { summary?: { distance: number; duration: number } }[]
-  }
-  const summary = data.routes?.[0]?.summary
-  if (!summary) {
+  return leesRoute(await res.json())
+}
+
+/** Afgerond op 5 decimalen, ongeveer een meter: preciezer zie je op de kaart niet. */
+const rond = (n: number) => Math.round(n * 1e5) / 1e5
+
+/**
+ * Haalt afstand, duur en traject uit het geojson-antwoord van ORS. Apart van de fetch, zodat
+ * het te testen is zonder key.
+ */
+export function leesRoute(data: unknown): Fietsroute {
+  const feature = (
+    data as {
+      features?: {
+        geometry?: { coordinates?: unknown }
+        properties?: { summary?: { distance?: unknown; duration?: unknown } }
+      }[]
+    }
+  )?.features?.[0]
+  const summary = feature?.properties?.summary
+  const coordinaten = feature?.geometry?.coordinates
+  if (
+    !summary ||
+    typeof summary.distance !== 'number' ||
+    typeof summary.duration !== 'number' ||
+    !Array.isArray(coordinaten)
+  ) {
     throw new Error('ORS gaf geen route terug')
   }
-  return { afstandKm: summary.distance / 1000, duurMin: summary.duration / 60 }
+  // ORS geeft [lon, lat] (en soms een hoogte als derde getal); omdraaien naar [lat, lon].
+  const traject = coordinaten
+    .filter(
+      (p): p is number[] =>
+        Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]),
+    )
+    .map((p): [number, number] => [rond(p[1]), rond(p[0])])
+  return { afstandKm: summary.distance / 1000, duurMin: summary.duration / 60, traject }
 }

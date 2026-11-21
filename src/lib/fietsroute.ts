@@ -7,6 +7,8 @@ const PROXY_URL = `${import.meta.env.BASE_URL}api/fietsroute`
 export interface Fietsroute {
   afstandKm: number
   duurMin: number
+  /** Het traject als [lat, lon]-punten, voor de kaart in het venster "Bekijk de fietsroute". */
+  traject: [number, number][]
 }
 
 export type FietsrouteResultaat =
@@ -36,7 +38,7 @@ export async function berekenFietsroute(
       const route = (await res.json()) as Fietsroute
       resultaat =
         Number.isFinite(route.afstandKm) && Number.isFinite(route.duurMin)
-          ? { status: 'ok', route }
+          ? { status: 'ok', route: { ...route, traject: geldigTraject(route.traject) } }
           : { status: 'onbeschikbaar' }
     } else if (res.status === 503 || res.status === 404) {
       // 503 = server heeft geen key ingesteld; 404 = functie draait niet (bv. plain `npm run dev`
@@ -65,30 +67,14 @@ export async function berekenFietsroute(
 }
 
 /**
- * Dieplink naar de kaart van openrouteservice (`maps.openrouteservice.org`), met déze fietsroute
- * al ingevuld. Zelfde redenering als bij de OV-planner: een hyperlink is geen API-gebruik, dus
- * hier komt geen key aan te pas en telt dit niet mee voor onze quota.
- *
- * De vorm is een hash-route met een JSON-blok erin, live nagespeeld op 28/08/2026 (Antwerpen-
- * Centraal → Wilrijk): de kaart berekent de rit, zet het profiel op de fiets en neemt de namen
- * over in de invoervelden. **Let op: `coordinates` is lon,lat — omgekeerd van de rest van deze
- * app.** Punten scheiden met `;`, en niet gokken op extra opties: `zoom` in dat blok heeft geen
- * merkbaar effect, de kaart zoomt zelf naar de route (dat duurt een seconde of tien).
+ * Het traject, of een lege lijst als het ontbreekt. Een antwoord van vóór 2.16.0 kan nog een dag
+ * in de browsercache zitten (`max-age` van een dag) en heeft enkel afstand en duur. Die blijven
+ * dan gewoon zichtbaar; enkel de link naar de kaart valt weg.
  */
-export function orsKaartUrl(
-  van: { lat: number; lon: number },
-  naar: { lat: number; lon: number },
-  namen: { van: string; naar: string },
-): string {
-  const data = {
-    coordinates: `${van.lon},${van.lat};${naar.lon},${naar.lat}`,
-    options: { profile: 'cycling-regular', preference: 'recommended' },
-  }
-  // Ook de namen encoderen: ze zitten in het pad, en een schoolnaam met een schuine streep
-  // erin zou de route anders in stukken hakken.
-  return (
-    'https://maps.openrouteservice.org/#/directions/' +
-    `${encodeURIComponent(namen.van)}/${encodeURIComponent(namen.naar)}/data/` +
-    encodeURIComponent(JSON.stringify(data))
+function geldigTraject(traject: unknown): [number, number][] {
+  if (!Array.isArray(traject) || traject.length < 2) return []
+  const geldig = traject.every(
+    (p) => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]),
   )
+  return geldig ? (traject as [number, number][]) : []
 }
