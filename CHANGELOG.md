@@ -8,7 +8,7 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
-## Niet uitgebracht
+## 2.16.0 — 21 november 2026
 
 **De fietsroute weer op een kaart**
 
