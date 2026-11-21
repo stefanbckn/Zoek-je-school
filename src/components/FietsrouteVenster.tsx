@@ -110,14 +110,16 @@ export function FietsrouteVenster({
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {/* Twee lijnen op elkaar: een brede witte rand onder de gekleurde lijn houdt de
-                route zichtbaar boven drukke of donkere tegels. */}
-            <Polyline positions={route.traject} pathOptions={{ className: 'fietsroute-rand' }} />
-            <Polyline positions={route.traject} pathOptions={{ className: 'fietsroute-lijn' }} />
-            <CircleMarker
-              center={start}
-              radius={7}
-              pathOptions={{ className: 'fietsroute-start' }}
-            />
+                route zichtbaar boven drukke of donkere tegels.
+
+                ⚠️ `className` als eigen prop, NIET in `pathOptions`. Leaflet leest de klasse
+                enkel bij het aanmaken van het pad; react-leaflet geeft `pathOptions` pas daarna
+                door via `setStyle`, dat klassen negeert. In dev viel dat niet op, omdat React
+                daar alles twee keer mount en Leaflet de klasse bij de tweede keer wel oppikte.
+                In 2.16.0 stond de lijn daardoor live in de standaardkleur van Leaflet. */}
+            <Polyline positions={route.traject} className="fietsroute-rand" />
+            <Polyline positions={route.traject} className="fietsroute-lijn" />
+            <CircleMarker center={start} radius={7} className="fietsroute-start" />
             <Marker position={einde} icon={schoolIcoon} />
           </MapContainer>
         </div>
