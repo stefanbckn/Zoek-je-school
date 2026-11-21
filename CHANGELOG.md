@@ -8,6 +8,12 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.16.1 — 21 november 2026
+
+- **De fietsroute is beter te zien op de kaart.** In 2.16.0 stond de lijn er dun en lichtblauw
+  op, en viel ze weinig op tussen de straten. Nu is ze dikker, in dezelfde kleur als de balk
+  bovenaan en met een witte rand, en heeft je vertrekpunt een duidelijk bolletje.
+
 ## 2.16.0 — 21 november 2026
 
 **De fietsroute weer op een kaart**
