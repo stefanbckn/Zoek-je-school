@@ -8,6 +8,12 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.16.2 — 22 november 2026
+
+- **Geen lijntjes meer over de kaart op je gsm.** Op een telefoon liep er een fijne lichte lijn
+  dwars over de kaart, telkens waar twee stukken kaart elkaar raken. Dat was zo op de grote
+  kaart en in het venster met de fietsroute, in Safari en in Chrome.
+
 ## 2.16.1 — 21 november 2026
 
 - **De fietsroute is beter te zien op de kaart.** In 2.16.0 stond de lijn er dun en lichtblauw
