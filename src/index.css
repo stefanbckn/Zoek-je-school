@@ -272,16 +272,25 @@ body {
   --h-resultatenbalk: 3.5rem;
 }
 
-/* Leaflet 1.9.4 zet in leaflet.css `mix-blend-mode: plus-lighter` op elke tegel, tegen naden
-   in Chrome (Chromium-bug 600120). Bij ons doet die truc het omgekeerde: op een gsm liep er een
-   lichte lijn over elke horizontale tegelgrens, gezien in Vivaldi en Safari (issue #86).
-   Gemeten in Chrome op gsm-formaat (dpr 3): afwijking op de grens 41 tot 46 met plus-lighter,
-   1 tot 2 met normal, en 1 tot 3 is ruis. Een kaartvak op een hele pixel hielp niet. Weghalen
-   brengt de lijnen terug; geldt voor de hoofdkaart en het venster met de fietsroute.
-   De extra `.leaflet-tile-pane` maakt de selector specifieker dan die van Leaflet. Even
-   specifiek zou de volgorde in de bundel laten beslissen, zoals bij `.cluster-bol` hieronder. */
+/* Lijntjes tussen de kaarttegels op een gsm (issue #86). Twee oorzaken, twee regels.
+
+   1. Leaflet 1.9.4 zet in leaflet.css `mix-blend-mode: plus-lighter` op elke tegel, tegen naden
+      in Chrome (Chromium-bug 600120). Bij ons tekende dat net een lichte lijn over elke
+      horizontale tegelgrens. Gemeten in Chrome op gsm-formaat (dpr 3): afwijking op de grens
+      41 tot 46 met plus-lighter, 1 tot 2 met normal; 1 tot 3 is ruis.
+   2. Met `normal` alleen bleef er op een iPhone (Vivaldi, dus WebKit) een donkere lijn, gemeten
+      in screenshots van de deploy-preview: -8 tot -9. Vermoedelijk sluiten de tegels daar niet
+      helemaal aan en zie je door de kier de grijze achtergrond van de kaart. Daarom overlappen
+      de tegels een halve pixel; dat dekt de kier en vergroot elke tegel minder dan een volle.
+
+   Plus-lighter moet weg zolang ze overlappen: anders telt het overlappende randje dubbel en
+   wordt de lijn weer licht. Een kaartvak op een hele pixel hielp niet.
+   De extra `.leaflet-tile-pane` maakt de selector specifieker dan die van Leaflet, en
+   `!important` is nodig omdat Leaflet de maat inline op elke tegel zet. */
 .leaflet-container .leaflet-tile-pane img.leaflet-tile {
   mix-blend-mode: normal;
+  width: 256.5px !important;
+  height: 256.5px !important;
 }
 
 /* De kaart van Leaflet heeft in donkere modus een felwitte tegellaag. Iets dempen zodat
