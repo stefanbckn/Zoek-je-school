@@ -94,6 +94,10 @@ dan hetzelfde.**
   zeggen, en bouw er geen filter of teller op.
 - **Vanaf zoom 16 staan de markers los** (`disableClusteringAtZoom`). Meerdere scholen op één
   adres zijn al één marker met een popup eronder.
+- ⚠️ **De tegels staan op `mix-blend-mode: normal`, niet op de `plus-lighter` uit `leaflet.css`.**
+  Die truc van Leaflet tekende op een gsm een lichte lijn over elke horizontale tegelgrens, op
+  beide kaarten (issue #86). Weghalen brengt de lijnen terug. De selector in `src/index.css` is
+  bewust specifieker dan die van Leaflet.
 - **`MarkerCluster.Default.css` wordt bewust NIET geïmporteerd**, alleen `MarkerCluster.css`
   voor de positionering en de uitklap-animatie. Die standaardstijl brengt een eigen
   groen/geel/rood-schaal mee die naast ons palet valt en suggereert dat een groot cluster erger
