@@ -144,16 +144,18 @@ export function MatrixPanel({
         <p className="mt-2 max-w-3xl text-sm text-zacht">
           {graad === 'Eerste graad' ? (
             <>
-              In de eerste graad zijn er nog geen studiedomeinen of finaliteiten. Je kiest tussen 1A
-              en 1B, en in het tweede jaar voor een basisoptie.{' '}
+              In de eerste graad kies je tussen 1A en 1B. In het tweede jaar komt daar een
+              basisoptie bij. Studiedomeinen en finaliteiten volgen pas vanaf de tweede graad.{' '}
               <a href="/uitleg/" className="text-accent underline underline-offset-2">
-                Hoe de eerste graad werkt
+                Lees hoe de eerste graad werkt
               </a>
               .
             </>
           ) : (
             'Zo is het secundair onderwijs ingedeeld: acht studiedomeinen, elk met drie finaliteiten.'
-          )}{' '}
+          )}
+        </p>
+        <p className="mt-2 max-w-3xl text-sm text-zacht">
           Klik op een richting om te zien welke adressen ze aanbieden. Het getal erachter is het
           aantal adressen {gebiedLabel ?? 'in Vlaanderen en Brussel'}; staat er nul, dan bestaat de
           richting wel maar niet daar.
