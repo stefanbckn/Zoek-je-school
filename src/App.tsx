@@ -815,6 +815,7 @@ function App() {
         open={state.matrix}
         studierichtingen={studierichtingen}
         campussen={matrixCampussen}
+        alleCampussen={campussen}
         gebiedLabel={gebiedLabel}
         onClose={() => update({ matrix: false })}
         onKiesRichting={(code, graad) =>
