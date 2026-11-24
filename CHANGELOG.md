@@ -8,6 +8,18 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.16.6 — 24 november 2026
+
+Aan de site zelf verandert niets.
+
+**Achter de schermen**
+
+- **Elf onderdelen bijgewerkt naar hun nieuwste versie**, de eerste ronde uit het
+  onderhoudsrapport van 2.16.5: React, Vite, Tailwind, Vitest en zeven hulpmiddelen voor de
+  bouw en de controles. Telkens een kleine stap binnen dezelfde hoofdversie.
+- Nog niet mee: TypeScript 7 en de overstap van Node 22. Die vragen meer werk en krijgen elk een
+  eigen versie.
+
 ## 2.16.5 — 24 november 2026
 
 Aan de site zelf verandert niets.
