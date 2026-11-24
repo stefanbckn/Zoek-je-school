@@ -66,6 +66,8 @@ npm run fetch-data   # data verversen; vraagt een API-key, hoort NIET bij elke b
 node scripts/kleurcheck.mjs   # contrast + kleurenblindheid; draai dit na elke kleurwijziging
 node scripts/linkcheck.mjs    # controleert of alle externe links nog werken; past niets aan
                               # exitcode 2 = bevindingen, 1 = script stukgelopen
+node scripts/onderhoud.mjs    # verouderde pakketten, lekken, einddatum Node, versies Actions
+                              # na npm ci; zelfde exitcodes als de linkcheck
 ```
 
 Netlify bouwt elke push op `main` en deployt vanaf daar. Feature branches gaan via een PR.
@@ -80,7 +82,13 @@ planner van Transitous. Faalt hij, dan opent of werkt hij één issue bij met he
 `rooktest`, en slaagt hij weer, dan sluit hij het. Hij draait bewust live en niet bij elke PR:
 de fouten die hij vangt (CSP, keys in Netlify, de function, dieplinks bij anderen) bestaan
 enkel daar. **Laat de blokkade van Simple Analytics in `e2e/zoeker.e2e.ts` staan**, anders telt
-elke run als bezoek. **Vervang een gemelde link
+elke run als bezoek.
+
+De workflow `onderhoud.yml` ("Onderhoudsrapport") draait de eerste van elke maand
+`scripts/onderhoud.mjs` en houdt één issue met het label `onderhoud` bij: de body is telkens de
+stand van nu. Hij vult de Dependabot-alerts aan, die los van elke build komen zodra GitHub een
+nieuw lek kent. Updates uit dat rapport zijn een PATCH, tenzij er iets wezenlijks verandert aan
+hoe de site werkt. **Vervang een gemelde link
 nooit blind:** een adres dat 200 teruggeeft is niet automatisch de juiste pagina.
 
 ## Valkuilen van deze machine
