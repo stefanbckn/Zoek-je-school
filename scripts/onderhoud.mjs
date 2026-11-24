@@ -15,7 +15,11 @@
  *
  * Wat het nakijkt:
  *   - npm audit over alle dependencies, ook de devDependencies (die draaien bij de build)
- *   - open Dependabot-alerts, als de token ze mag lezen
+ *
+ * De open Dependabot-alerts zelf staan er bewust niet in. De GITHUB_TOKEN van een workflow mag
+ * ze niet lezen (HTTP 403, vastgesteld op 24/11/2026), GitHub mailt ze al zelf, en npm audit
+ * gebruikt dezelfde advisorydatabank. Een eigen token alleen hiervoor is een geheim dat
+ * verloopt en het rapport dan stil laat stoppen.
  *   - verouderde pakketten, gesplitst in "kan zo mee" (patch/minor) en "vraagt werk" (major)
  *   - de Node-versie uit netlify.toml: dezelfde in elke workflow, en hoe ver van de einddatum
  *   - de GitHub Actions in .github/workflows: draait er een oudere major dan de nieuwste?
@@ -32,7 +36,6 @@ import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
 
 const WORTEL = join(dirname(fileURLToPath(import.meta.url)), '..')
-const REPO = 'stefanbckn/Zoek-je-school'
 
 /** Zoveel dagen voor de einddatum van Node begint het rapport te waarschuwen. */
 const NODE_WAARSCHUWING_DAGEN = 183
@@ -93,32 +96,7 @@ let bevindingen = 0
   secties.push(['Bekende lekken (npm audit)', regels])
 }
 
-// --- 2. Dependabot-alerts -------------------------------------------------------------------
-
-{
-  const regels = []
-  const antwoord = await githubApi(`repos/${REPO}/dependabot/alerts?state=open&per_page=100`)
-  if (antwoord.ok) {
-    const alerts = await antwoord.json()
-    if (alerts.length === 0) {
-      regels.push('Geen open alerts.')
-    } else {
-      bevindingen += alerts.length
-      for (const a of alerts) {
-        regels.push(`- [#${a.number}](${a.html_url}) ${a.dependency.package.name}: ${a.security_advisory.summary} (${a.security_advisory.severity})`)
-      }
-    }
-  } else {
-    // Geen bevinding: wat npm audit hierboven vindt, komt uit dezelfde advisorydatabank van
-    // GitHub. Dit is enkel de lijst zoals GitHub ze zelf bijhoudt.
-    regels.push(
-      `Niet te lezen met deze token (HTTP ${antwoord.status}). De lijst staat op [GitHub](https://github.com/${REPO}/security/dependabot); npm audit hierboven gebruikt dezelfde databank.`,
-    )
-  }
-  secties.push(['Dependabot-alerts', regels])
-}
-
-// --- 3. Verouderde pakketten ----------------------------------------------------------------
+// --- 2. Verouderde pakketten ----------------------------------------------------------------
 
 {
   const verouderd = await npmJson(['outdated', '--json'])
@@ -162,7 +140,7 @@ let bevindingen = 0
   secties.push(['Verouderde pakketten (npm outdated)', regels])
 }
 
-// --- 4. Node ----------------------------------------------------------------------------------
+// --- 3. Node ----------------------------------------------------------------------------------
 
 const workflowMap = join(WORTEL, '.github', 'workflows')
 const workflows = await Promise.all(
@@ -214,7 +192,7 @@ const workflows = await Promise.all(
   secties.push(['Node', regels])
 }
 
-// --- 5. GitHub Actions ------------------------------------------------------------------------
+// --- 4. GitHub Actions ------------------------------------------------------------------------
 
 {
   const gebruik = new Map() // actie -> Set van versies
