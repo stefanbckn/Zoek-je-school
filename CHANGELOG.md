@@ -8,6 +8,31 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.17.0 — 24 november 2026
+
+**De eerste graad staat nu ook in "Alle richtingen".** Naast de tweede en de derde graad is er
+een derde knop, "Eerste graad". Daar staat geen raster, want in de eerste graad bestaan er nog
+geen studiedomeinen of finaliteiten. Je ziet een lijst per leerjaar:
+
+- **Eerste leerjaar**: 1A en 1B. Basisopties zijn er pas vanaf het tweede jaar; wat een school
+  met de vrije uren van het eerste jaar doet, staat op haar eigen website.
+- **Tweede leerjaar A**: de basisopties, zoals Klassieke talen, Sport of Stem-wetenschappen.
+- **Tweede leerjaar B**: de basisopties en de combinaties van twee of drie opties, die enkel in
+  2B bestaan.
+
+Bij elke optie staat op hoeveel adressen in je gebied ze in dat leerjaar bestaat. Een optie die
+er niet is, blijft gedimd op 0 staan. Een klik voegt de optie toe aan je gekozen richtingen,
+net als in de rest van de matrix.
+
+Wat je moet weten:
+
+- **Een klik zoekt op de optie in 2A en 2B samen.** Sport staat in beide lijsten, met elk een
+  eigen getal. Klik je op Sport in 2B, dan krijg je ook de scholen die Sport enkel in 2A hebben.
+- **De namen van de combinaties zijn ingekort**, zoals "Econ.-org. -Maatsch.-welzijn
+  -Stem-tech.". Zo staan ze in de officiële lijst, en we schrijven ze niet zelf voluit.
+- De Franstalige jaren van het buitengewoon onderwijs staan er niet bij: die horen niet bij het
+  gewoon secundair onderwijs waar deze site over gaat.
+
 ## 2.16.8 — 24 november 2026
 
 Aan de site zelf verandert niets.
