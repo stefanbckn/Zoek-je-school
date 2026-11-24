@@ -152,7 +152,14 @@ export function MatrixPanel({
               .
             </>
           ) : (
-            'Zo is het secundair onderwijs ingedeeld: acht studiedomeinen, elk met drie finaliteiten.'
+            <>
+              Na de eerste graad kies je een studierichting. Elke richting heeft één plaats in dit
+              raster: het studiedomein bepaalt de rij, de finaliteit de kolom.{' '}
+              <a href="/uitleg/" className="text-accent underline underline-offset-2">
+                Lees wat domein en finaliteit betekenen
+              </a>
+              .
+            </>
           )}
         </p>
         <p className="mt-2 max-w-3xl text-sm text-zacht">
