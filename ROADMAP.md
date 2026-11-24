@@ -240,7 +240,7 @@ deploy.
 
 ### Stap 1: een CI-workflow bij elke push en PR (uitgebracht in 2.13.1)
 
-`.github/workflows/ci.yml` draait `npm ci`, `oxlint --deny-warnings` en `npm run build` op Node 22,
+`.github/workflows/ci.yml` draait `npm ci`, `oxlint --deny-warnings` en `npm run build` op de Node-versie uit `netlify.toml`,
 bij elke push op `main` en elke PR. Waarom elke keuze zo is, staat als commentaar in het bestand.
 Twee dingen die anders liepen dan het plan van 01/09/2026:
 

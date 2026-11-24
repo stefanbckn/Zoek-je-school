@@ -28,7 +28,12 @@
 
 [build.environment]
   # Vite 8 vereist Node ^20.19.0 || >=22.12.0 (geverifieerd via node_modules/vite/package.json).
-  NODE_VERSION = "22"
+  # Sinds 2.16.7 Node 26 (LTS, beveiligingsupdates tot 30/04/2029). De fietsroute-function
+  # draait volgens de Netlify-docs op dezelfde versie als de build, zolang AWS Lambda die als
+  # runtime aanbiedt (nodejs26.x staat in hun lijst); anders valt ze terug op Node 24.
+  # Wijzig je dit, pas dan ook node-version in elke workflow en @types/node aan. Het
+  # onderhoudsrapport (scripts/onderhoud.mjs) meldt het als ze uit elkaar lopen.
+  NODE_VERSION = "26"
 
   # SECRETS_SCAN_OMIT_KEYS is bewust WEG: de ORS-key zit sinds de proxy niet meer in de
   # bundle, dus secret scanning mag onverkort z'n werk doen. Slaat het toch aan op
