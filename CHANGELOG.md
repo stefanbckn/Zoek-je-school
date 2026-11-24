@@ -8,6 +8,22 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.16.4 — 24 november 2026
+
+Aan de site zelf verandert niets.
+
+**Achter de schermen**
+
+- **Elke week een proefrit op de echte site.** Een test zoekt op een adres, opent een school,
+  wacht op de reistijd met de fiets en met bus of trein, bekijkt de fietsroute op de kaart en
+  volgt de link naar de planner van Transitous. Werkt een van die stappen niet meer, dan krijgen
+  wij een melding, ook als het aan een andere dienst ligt. Zo was de link naar de lege kaart
+  van openrouteservice, die 2.16.0 moest vervangen, veel sneller opgevallen.
+- **Die proefrit telt niet mee als bezoek.** De test laat het script van Simple Analytics niet
+  laden, dus er vertrekt niets naar de bezoekersteller.
+- Wat hij niet ziet: of iets er goed uitziet. Een lijn in de verkeerde kleur, zoals in 2.16.1,
+  valt er niet mee op.
+
 ## 2.16.3 — 24 november 2026
 
 - **De bezoekersteller ziet minder van je link.** Simple Analytics, het programma dat

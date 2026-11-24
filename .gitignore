@@ -32,6 +32,10 @@ dist-ssr
 /gemeente/
 /public/sitemap.xml
 
+# Uitvoer van de rooktest (npm run rooktest): screenshots en traces van een mislukte run.
+/test-results/
+/playwright-report/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

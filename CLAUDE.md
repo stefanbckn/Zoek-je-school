@@ -60,6 +60,8 @@ npm run dev          # dev-server, poort via process.env.PORT, standaard 5173
 npm run build        # tsc -b && vite build — moet slagen na elke afgeronde stap
 npm run lint         # oxlint
 npm test             # vitest; draait ook in CI bij elke push en PR
+npm run rooktest     # Playwright tegen de LIVE site; Simple Analytics wordt in de test geblokkeerd
+                     # ROOKTEST_URL=<deploy preview> om een preview te testen
 npm run fetch-data   # data verversen; vraagt een API-key, hoort NIET bij elke build
 node scripts/kleurcheck.mjs   # contrast + kleurenblindheid; draai dit na elke kleurwijziging
 node scripts/linkcheck.mjs    # controleert of alle externe links nog werken; past niets aan
@@ -70,7 +72,15 @@ Netlify bouwt elke push op `main` en deployt vanaf daar. Feature branches gaan v
 
 De workflow `controles.yml` (in Actions: "Links en kleuren") draait de kleurcheck bij elke PR die aan `src/index.css` komt, en de
 linkcheck per kwartaal. Vindt de linkcheck iets, dan opent hij één issue met het label `links`
-en werkt dat bij in plaats van er elk kwartaal een nieuw te maken. **Vervang een gemelde link
+en werkt dat bij in plaats van er elk kwartaal een nieuw te maken.
+
+De workflow `rooktest.yml` (in Actions: "Rooktest live site") loopt elke maandag één keer door
+zoekjeschool.be: zoeken, de fiche, fiets en OV, de getekende fietsroute en de dieplink naar de
+planner van Transitous. Faalt hij, dan opent of werkt hij één issue bij met het label
+`rooktest`, en slaagt hij weer, dan sluit hij het. Hij draait bewust live en niet bij elke PR:
+de fouten die hij vangt (CSP, keys in Netlify, de function, dieplinks bij anderen) bestaan
+enkel daar. **Laat de blokkade van Simple Analytics in `e2e/zoeker.e2e.ts` staan**, anders telt
+elke run als bezoek. **Vervang een gemelde link
 nooit blind:** een adres dat 200 teruggeeft is niet automatisch de juiste pagina.
 
 ## Valkuilen van deze machine
