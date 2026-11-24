@@ -1,7 +1,7 @@
 {
   "name": "zoek-je-school",
   "private": true,
-  "version": "2.16.7",
+  "version": "2.16.8",
   "type": "module",
   "scripts": {
     "genereer-gemeentepaginas": "tsx scripts/genereer-gemeentepaginas.ts",
@@ -34,7 +34,7 @@
     "oxlint": "^1.95.0",
     "tailwindcss": "^4.3.5",
     "tsx": "^4.23.15",
-    "typescript": "~6.0.2",
+    "typescript": "^7.0.2",
     "valibot": "^1.5.0",
     "vite": "^8.3.8",
     "vitest": "^5.1.1"

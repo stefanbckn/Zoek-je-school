@@ -8,6 +8,17 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.16.8 — 24 november 2026
+
+Aan de site zelf verandert niets.
+
+**Achter de schermen**
+
+- **TypeScript 7.** Het programma dat de code nakijkt op fouten voor ze live gaat, is
+  herschreven en draait nu een kleine drie keer zo snel: ongeveer 0,65 seconden in plaats van
+  1,9 bij elke build. Het keurt dezelfde code goed en af als voorheen.
+- Daarmee staat alles uit het onderhoudsrapport van deze maand op de nieuwste versie.
+
 ## 2.16.7 — 24 november 2026
 
 Aan de site zelf verandert niets.
