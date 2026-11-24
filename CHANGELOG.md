@@ -8,6 +8,13 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.16.3 — 24 november 2026
+
+- **De bezoekersteller ziet minder van je link.** Simple Analytics, het programma dat
+  bezoekers telt, keek sinds kort ook naar de namen van de filters in het adres van de pagina,
+  zoals `gemeenten` of `richting`. Wat je invulde ging nooit mee, enkel de naam van de filter.
+  Wij gebruikten dat niet, dus het staat weer uit (#78).
+
 ## 2.16.2 — 22 november 2026
 
 - **Geen lijntjes meer over de kaart op je gsm.** Op een telefoon liep er een fijne lichte lijn
