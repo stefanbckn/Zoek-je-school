@@ -29,7 +29,7 @@ jobs:
         with:
           # Zelfde major als NODE_VERSION in netlify.toml. Wijkt die af, dan kan CI groen zijn
           # terwijl de deploy breekt.
-          node-version: '22'
+          node-version: '26'
           cache: npm
       - run: npm ci
       # Zonder --deny-warnings passeren waarschuwingen stil en zegt een groene lintstap niets.

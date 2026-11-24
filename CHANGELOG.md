@@ -8,6 +8,18 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.16.7 — 24 november 2026
+
+Aan de site zelf verandert niets.
+
+**Achter de schermen**
+
+- **De site draait nu op Node 26.** Dat is de software die de site bouwt en die de fietsroute
+  berekent. Node 22, waar we op draaiden, krijgt vanaf 30 april 2027 geen beveiligingsupdates
+  meer; Node 26 krijgt ze tot 30 april 2029. Het onderhoudsrapport van 2.16.5 had het gemeld.
+- Alle automatische controles op GitHub draaien mee op Node 26, zodat ze nakijken wat er ook
+  echt live staat.
+
 ## 2.16.6 — 24 november 2026
 
 Aan de site zelf verandert niets.
