@@ -16,7 +16,10 @@ Regering. Twee assen:
 - **Studiedomein:** acht inhoudelijke domeinen, plus domeinoverschrijdend. Dat hadden we niet.
 
 De eerste graad staat buiten de matrix, en zevende leerjaren hebben wel een domein maar geen
-finaliteit.
+finaliteit. Sinds 2.17.0 toont het matrixpaneel de eerste graad toch, als lijst per leerjaar
+in plaats van een raster. Het leerjaar (1A, 1B, 2A, 2B) staat niet in de catalogus maar wel
+vooraan in de naam van elke aangeboden rij ("2e leerjaar B Sport"); nagekeken op 24/11/2026
+over alle 4954 rijen. Zie `bouwEersteGraad` in `src/lib/matrix.ts`.
 
 ## De bron: `administratievegroep_domein`
 

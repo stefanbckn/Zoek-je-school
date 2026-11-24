@@ -7,7 +7,16 @@ import {
   type FinaliteitKeuze,
 } from '../lib/aanbod'
 import { DOMEIN_OVERSCHRIJDEND, domeinLabel } from '../lib/domein'
-import { MATRIX_GRADEN, bouwMatrix, telPerRichting, type MatrixGraad, type MatrixRichting } from '../lib/matrix'
+import {
+  MATRIX_GRADEN,
+  bouwEersteGraad,
+  bouwMatrix,
+  telEersteGraad,
+  telPerRichting,
+  type EersteGraadLeerjaar,
+  type MatrixGraad,
+  type MatrixRichting,
+} from '../lib/matrix'
 import type { Campus, Studierichting } from '../types'
 import { useDialoogFocus } from '../lib/useDialoogFocus'
 
@@ -20,6 +29,11 @@ interface MatrixPanelProps {
    * berekening van `matrixCampussen` in App.tsx voor waarom die eruit moeten blijven.
    */
   campussen: Campus[]
+  /**
+   * Alle adressen, zonder enige filter. Enkel voor de eerste graad: daaruit volgt bij welk
+   * leerjaar een optie hoort, zodat ze in haar blok blijft staan als ze in jouw buurt op 0 valt.
+   */
+  alleCampussen: Campus[]
   /** Beschrijft waar er geteld wordt ("in Gent", "binnen 10 km"), of null bij heel Vlaanderen. */
   gebiedLabel: string | null
   onClose: () => void
@@ -48,12 +62,15 @@ export function MatrixPanel({
   open,
   studierichtingen,
   campussen,
+  alleCampussen,
   gebiedLabel,
   onClose,
   onKiesRichting,
   onKiesCel,
 }: MatrixPanelProps) {
-  const [graad, setGraad] = useState<MatrixGraad>('Tweede graad')
+  // Open op de eerste graad: wie deze site gebruikt, heeft meestal een kind in het zesde
+  // leerjaar, en voor hen is de basisoptie de keuze die nu speelt.
+  const [graad, setGraad] = useState<MatrixGraad>('Eerste graad')
   const vensterRef = useDialoogFocus<HTMLDivElement>(open)
 
   useEffect(() => {
@@ -67,16 +84,33 @@ export function MatrixPanel({
 
   // Enkel rekenen als het paneel open staat: dit loopt over alle richtingen van alle adressen.
   const rijen = useMemo(() => {
-    if (!open) return []
+    if (!open || graad === 'Eerste graad') return []
     return bouwMatrix(studierichtingen, graad, telPerRichting(campussen))
   }, [open, studierichtingen, campussen, graad])
 
+  // Over alle adressen, los van de filters: verandert enkel als de dataset verandert.
+  const leerjaarVanRichting = useMemo(() => {
+    if (!open || graad !== 'Eerste graad') return null
+    return telEersteGraad(alleCampussen)
+  }, [open, graad, alleCampussen])
+
+  const eersteGraad = useMemo(() => {
+    if (!leerjaarVanRichting) return null
+    return bouwEersteGraad(studierichtingen, leerjaarVanRichting, telEersteGraad(campussen))
+  }, [leerjaarVanRichting, studierichtingen, campussen])
+
   if (!open) return null
 
-  const aantalRichtingen = rijen.reduce(
-    (n, rij) => n + rij.cellen.reduce((m, c) => m + c.richtingen.length, 0) + rij.zevendeLeerjaren.length,
-    0,
-  )
+  // Een optie die in 2A én 2B bestaat, telt hier één keer: dit getal gaat over keuzes, niet
+  // over regels in de lijst.
+  const aantalRichtingen = eersteGraad
+    ? new Set(eersteGraad.blokken.flatMap((b) => b.richtingen.map((r) => r.code))).size +
+      eersteGraad.zonderLeerjaar.length
+    : rijen.reduce(
+        (n, rij) =>
+          n + rij.cellen.reduce((m, c) => m + c.richtingen.length, 0) + rij.zevendeLeerjaren.length,
+        0,
+      )
 
   return (
     <div
@@ -108,7 +142,27 @@ export function MatrixPanel({
         </div>
 
         <p className="mt-2 max-w-3xl text-sm text-zacht">
-          Zo is het secundair onderwijs ingedeeld: acht studiedomeinen, elk met drie finaliteiten.
+          {graad === 'Eerste graad' ? (
+            <>
+              In de eerste graad kies je tussen 1A en 1B. In het tweede jaar komt daar een
+              basisoptie bij. Studiedomeinen en finaliteiten volgen pas vanaf de tweede graad.{' '}
+              <a href="/uitleg/" className="text-accent underline underline-offset-2">
+                Lees hoe de eerste graad werkt
+              </a>
+              .
+            </>
+          ) : (
+            <>
+              Na de eerste graad kies je een studierichting. Elke richting heeft één plaats in dit
+              raster: het studiedomein bepaalt de rij, de finaliteit de kolom.{' '}
+              <a href="/uitleg/" className="text-accent underline underline-offset-2">
+                Lees wat domein en finaliteit betekenen
+              </a>
+              .
+            </>
+          )}
+        </p>
+        <p className="mt-2 max-w-3xl text-sm text-zacht">
           Klik op een richting om te zien welke adressen ze aanbieden. Het getal erachter is het
           aantal adressen {gebiedLabel ?? 'in Vlaanderen en Brussel'}; staat er nul, dan bestaat de
           richting wel maar niet daar.
@@ -132,13 +186,46 @@ export function MatrixPanel({
               </button>
             ))}
           </div>
-          <p className="text-xs text-zacht">{aantalRichtingen} richtingen in deze graad</p>
+          <p className="text-xs text-zacht">
+            {aantalRichtingen} {graad === 'Eerste graad' ? 'keuzes' : 'richtingen'} in deze graad
+          </p>
         </div>
+
+        {eersteGraad && (
+          <div className="mt-5 space-y-3">
+            {eersteGraad.blokken.map((blok) =>
+              blok.leerjaar === '1B' ? null : (
+                <LeerjaarBlok
+                  key={blok.leerjaar}
+                  leerjaar={blok.leerjaar}
+                  // 1A en 1B samen in één blok: elk heeft precies één regel, en het is één keuze.
+                  richtingen={
+                    blok.leerjaar === '1A'
+                      ? [
+                          ...blok.richtingen,
+                          ...(eersteGraad.blokken.find((b) => b.leerjaar === '1B')?.richtingen ?? []),
+                        ]
+                      : blok.richtingen
+                  }
+                  onKies={onKiesRichting}
+                />
+              ),
+            )}
+            {eersteGraad.zonderLeerjaar.length > 0 && (
+              <p className="max-w-3xl text-xs text-zacht">
+                Nergens aangeboden, en daardoor bij geen leerjaar in te delen:{' '}
+                {eersteGraad.zonderLeerjaar.map((r) => r.naam).join(', ')}.
+              </p>
+            )}
+          </div>
+        )}
 
         {/* De kolomkoppen staan enkel op breed scherm boven het raster: daaronder staat elke
             finaliteit als eigen kopje in de cel zelf, want drie kolommen naast elkaar op een
             telefoon maakt elke kolom smaller dan een richtingnaam. */}
-        <div className="mt-5 hidden grid-cols-[10rem_repeat(3,minmax(0,1fr))] gap-3 md:grid">
+        <div
+          className={`mt-5 hidden grid-cols-[10rem_repeat(3,minmax(0,1fr))] gap-3 ${eersteGraad ? '' : 'md:grid'}`}
+        >
           <div />
           {FINALITEIT_OPTIONS.map((f) => (
             <h3 key={f} className="text-sm font-semibold text-inkt">
@@ -228,6 +315,8 @@ export function MatrixPanel({
         </div>
 
         <p className="mt-5 max-w-3xl text-xs text-zacht">
+          {eersteGraad &&
+            'Het leerjaar staat in de officiële naam van elke aangeboden optie. Een klik zoekt op de optie zelf, in 2A en 2B samen. '}
           De indeling komt uit de officiële catalogus van Onderwijs en Vorming, net als het
           aanbod per school. Wat hier niet staat, is welke richting van de derde graad op welke
           van de tweede volgt: die doorstroom staat in geen enkele bron die wij kunnen ophalen,
@@ -250,13 +339,20 @@ export function MatrixPanel({
 function RichtingKnop({
   richting,
   graad,
+  leerjaar,
   onKies,
 }: {
   richting: MatrixRichting
   graad: MatrixGraad
+  /**
+   * Enkel bij 2A en 2B. Het getal telt dan dat ene leerjaar, maar een klik zoekt op de optie
+   * in 2A en 2B samen; het aria-label belooft dus niet dat er precies zoveel adressen komen.
+   */
+  leerjaar?: string
   onKies: (code: string, graad: MatrixGraad) => void
 }) {
   const hier = richting.aantalHier
+  const adressen = `${hier} ${hier === 1 ? 'adres' : 'adressen'}`
   return (
     <li>
       <button
@@ -264,9 +360,13 @@ function RichtingKnop({
         onClick={() => onKies(richting.code, graad)}
         disabled={hier === 0}
         aria-label={
-          hier === 0
-            ? `${richting.naam}: hier geen enkel adres`
-            : `${richting.naam}: ${hier} ${hier === 1 ? 'adres' : 'adressen'} tonen`
+          leerjaar
+            ? hier === 0
+              ? `${richting.naam} in ${leerjaar}: hier geen enkel adres`
+              : `${richting.naam} in ${leerjaar}: ${adressen}. Kiezen`
+            : hier === 0
+              ? `${richting.naam}: hier geen enkel adres`
+              : `${richting.naam}: ${adressen} tonen`
         }
         className={`flex w-full items-baseline justify-between gap-2 rounded-md px-2 py-1 text-left text-sm ${
           hier === 0
@@ -290,5 +390,55 @@ function RichtingKnop({
         </span>
       </button>
     </li>
+  )
+}
+
+const LEERJAAR_KOP: Record<EersteGraadLeerjaar, string> = {
+  '1A': 'Eerste leerjaar',
+  '1B': 'Eerste leerjaar',
+  '2A': 'Tweede leerjaar A: basisopties',
+  '2B': 'Tweede leerjaar B: basisopties',
+}
+
+const LEERJAAR_UITLEG: Record<EersteGraadLeerjaar, string> = {
+  '1A':
+    'Basisopties zijn er pas vanaf het tweede jaar. Wat een school met de differentiatie-uren van het eerste jaar doet, staat op haar eigen website.',
+  '1B': '',
+  '2A': 'Eén basisoptie van 5 uur per week.',
+  '2B': 'Tot 10 uur basisoptie per week; een school mag er tot drie combineren. De ingekorte namen komen zo uit de officiële lijst.',
+}
+
+/** Eén leerjaar van de eerste graad: kop, één zin uitleg, en de opties in twee kolommen. */
+function LeerjaarBlok({
+  leerjaar,
+  richtingen,
+  onKies,
+}: {
+  leerjaar: EersteGraadLeerjaar
+  richtingen: MatrixRichting[]
+  onKies: (code: string, graad: MatrixGraad) => void
+}) {
+  return (
+    <section className="rounded-lg border border-rand p-3">
+      <h3 className="text-sm font-semibold text-inkt">
+        {LEERJAAR_KOP[leerjaar]}
+        {leerjaar !== '1A' && (
+          <span className="ml-1.5 font-normal text-zacht">· {richtingen.length}</span>
+        )}
+      </h3>
+      <p className="mt-0.5 mb-2 max-w-3xl text-xs text-zacht">{LEERJAAR_UITLEG[leerjaar]}</p>
+      <ul className="space-y-0.5 md:columns-2 md:gap-4">
+        {richtingen.map((r) => (
+          <RichtingKnop
+            key={r.code}
+            // In de bron heten ze "A" en "B"; een ouder kent ze als 1A en 1B.
+            richting={r.naam.length === 1 ? { ...r, naam: `1${r.naam}` } : r}
+            graad="Eerste graad"
+            leerjaar={leerjaar === '1A' ? undefined : leerjaar}
+            onKies={onKies}
+          />
+        ))}
+      </ul>
+    </section>
   )
 }
