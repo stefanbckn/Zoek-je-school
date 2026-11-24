@@ -1,0 +1,98 @@
+# Maandelijks onderhoudsrapport: verouderde pakketten, bekende lekken, de einddatum van Node en
+# de versies van de GitHub Actions. Wat het nakijkt en waarom, staat in scripts/onderhoud.mjs.
+#
+# Naast de Dependabot-alerts, niet in de plaats ervan. Die alerts komen er los van elke build
+# en elke run: GitHub vergelijkt package-lock.json met zijn advisorydatabank zodra er een nieuw
+# lek bekend raakt, en stuurt dan een mail. Dit rapport vult aan wat die alerts niet zien.
+#
+# Faalt er niets maar zijn er bevindingen, dan opent of werkt het één issue bij met het label
+# `onderhoud`; is alles bij, dan sluit het dat issue. Zelfde werkwijze als de linkcheck.
+name: Onderhoudsrapport
+
+on:
+  schedule:
+    # De eerste van de maand om 06:15 UTC, na de kwartaalworkflows van 03:00 en 05:00.
+    - cron: '15 6 1 * *'
+  workflow_dispatch:
+  # Bij een PR die aan het rapport zelf komt: draaien en het resultaat in de samenvatting van de
+  # run zetten, zonder issue. Zo is een wijziging aan het script na te kijken voor de merge.
+  pull_request:
+    paths:
+      - 'scripts/onderhoud.mjs'
+      - '.github/workflows/onderhoud.yml'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: onderhoud-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rapport:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+      # npm audit en npm outdated lezen node_modules en package-lock.json.
+      - run: npm ci
+
+      - name: Rapport opstellen
+        id: rapport
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Exitcode 2 betekent bevindingen, en dat is een geldige uitkomst. Alles behalve 0 en 2
+          # is een stukgelopen script en moet de run rood maken.
+          set +e
+          node scripts/onderhoud.mjs > /tmp/rapport.md
+          code=$?
+          set -e
+          cat /tmp/rapport.md >> "$GITHUB_STEP_SUMMARY"
+          if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then
+            echo "::error::onderhoud.mjs stopte met exitcode $code. Dat is een fout in het script zelf."
+            exit "$code"
+          fi
+          echo "bevindingen=$([ "$code" -eq 2 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Issue openen of bijwerken
+        if: steps.rapport.outputs.bevindingen == 'true' && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh label create onderhoud --color 1d76db --description "Maandelijks onderhoudsrapport" --force
+          echo >> /tmp/rapport.md
+          echo "Run: [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> /tmp/rapport.md
+
+          # Eén lopend issue. De body is altijd de stand van nu, zodat je niet door oude
+          # reacties hoeft te scrollen; de reactie zorgt voor een melding en houdt bij wanneer
+          # er een nieuw rapport kwam.
+          BESTAAND=$(gh issue list --label onderhoud --state open --limit 1 --json number --jq '.[0].number // empty')
+          if [ -n "$BESTAAND" ]; then
+            gh issue edit "$BESTAAND" --body-file /tmp/rapport.md
+            gh issue comment "$BESTAAND" --body "Nieuw rapport, de beschrijving hierboven is bijgewerkt."
+            echo "Issue #$BESTAAND bijgewerkt."
+          else
+            gh issue create \
+              --title "Onderhoud: pakketten, Node en Actions om na te kijken" \
+              --label onderhoud \
+              --body-file /tmp/rapport.md
+          fi
+
+      - name: Issue sluiten als alles bij is
+        if: steps.rapport.outputs.bevindingen == 'false' && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          for n in $(gh issue list --label onderhoud --state open --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "Alles is bij. Automatisch gesloten door het onderhoudsrapport."
+          done

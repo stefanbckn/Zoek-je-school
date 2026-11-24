@@ -322,7 +322,9 @@ dus de badge staat in de README.
   gegroepeerd per package manager. Dat zijn instellingen in GitHub (`/settings/security_analysis`
   van de repo), geen bestand in de repo. Er is bewust géén `dependabot.yml`: versie-updates geven
   een stroom bot-PR's voor dingen die we bij een volgende versie toch zelf optillen, en wie zo'n
-  stroom laat liggen, merget op den duur blind. Raken de pakketten toch ver achterop, dan is een
+  stroom laat liggen, merget op den duur blind. Sinds 2.16.5 houdt een maandelijks
+  onderhoudsrapport (`onderhoud.yml`) bij hoe ver de pakketten, Node en de Actions achterop
+  raken, als één issue in plaats van een reeks PR's. Raken ze toch ver achterop, dan is een
   maandelijkse, gegroepeerde `dependabot.yml` de volgende stap. Na het mergen van een
   Dependabot-PR lokaal `git pull` en `npm ci`, anders draait de dev-server nog de oude versie.
 

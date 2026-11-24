@@ -8,6 +8,19 @@ Elke uitgebrachte versie draagt op `main` de tag `v<versie>`.
 
 ---
 
+## 2.16.5 — 24 november 2026
+
+Aan de site zelf verandert niets.
+
+**Achter de schermen**
+
+- **Elke maand een onderhoudsrapport.** Op de eerste van de maand kijkt een controle na welke
+  onderdelen onder de site een nieuwere versie hebben, of er bekende lekken in zitten, hoe lang
+  de versie van Node nog beveiligingsupdates krijgt en of de automatische controles op GitHub
+  nog bij zijn. Wat er te doen is, komt in één melding die we zelf bijhouden.
+- Het eerste rapport vindt al iets: Node 22, waar de site op draait, krijgt vanaf 30 april 2027
+  geen beveiligingsupdates meer. Die overstap staat nu op de lijst.
+
 ## 2.16.4 — 24 november 2026
 
 Aan de site zelf verandert niets.
