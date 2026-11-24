@@ -72,9 +72,18 @@ function gedeeldeScripts(): Plugin {
         // Standaard slaat Simple Analytics die over, en dat respecteert het signaal dat mensen
         // bewust aanzetten. Vereist de CSP-regels naar *.simpleanalyticscdn.com in netlify.toml;
         // zonder die regels wordt het script stil geblokkeerd.
+        // data-ignore-metrics="querykeys": sinds v12 stuurt het script standaard de namen van
+        // de queryparameters mee (bij ons lat, q, richting, gemeenten ...). Dat dient om betaald
+        // van organisch verkeer te onderscheiden; wij voeren geen advertenties en hebben er dus
+        // niets aan. Waarden van ref en UTM blijven wel geteld, de herkomst van 2.13.0 werkt dus
+        // nog. Zie https://docs.simpleanalytics.com/script/v12 en issue #78.
         {
           tag: 'script',
-          attrs: { async: true, src: 'https://scripts.simpleanalyticscdn.com/latest.js' },
+          attrs: {
+            async: true,
+            src: 'https://scripts.simpleanalyticscdn.com/latest.js',
+            'data-ignore-metrics': 'querykeys',
+          },
           injectTo: 'body',
         },
       ],
