@@ -52,8 +52,10 @@ jobs:
           # Exitcode 2 betekent bevindingen, en dat is een geldige uitkomst. Alles behalve 0 en 2
           # is een stukgelopen script en moet de run rood maken.
           set +e
-          node scripts/onderhoud.mjs > /tmp/rapport.md
-          code=$?
+          # tee: het rapport ook in de log, want de samenvatting van een run is enkel zichtbaar
+          # voor wie aangemeld is, en gh run view --log toont ze niet.
+          node scripts/onderhoud.mjs | tee /tmp/rapport.md
+          code=${PIPESTATUS[0]}
           set -e
           cat /tmp/rapport.md >> "$GITHUB_STEP_SUMMARY"
           if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then
