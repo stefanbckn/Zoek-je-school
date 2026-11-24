@@ -1,0 +1,116 @@
+# Rooktest op de live site: één keer per week door zoekjeschool.be zoals een ouder dat doet.
+#
+# Waarom live en niet bij elke PR op een lokale build: de fouten die dit moet vangen, bestaan
+# enkel op de echte site. Een CSP-regel die iets blokkeert, een key die in Netlify ontbreekt, de
+# function voor de fietsroute, of een dienst als Transitous die zijn planner ombouwt en onze
+# dieplink stil op een lege pagina laat uitkomen. Dat laatste is met de kaart van HeiGIT gebeurd
+# (issue #83), en geen enkele controle zag het.
+#
+# Wat de test doet en niet doet, staat in e2e/zoeker.e2e.ts. Het belangrijkste: elk verzoek naar
+# Simple Analytics wordt in de browser afgebroken, dus een run telt nooit mee als bezoek.
+#
+# Faalt hij, dan opent hij één issue met het label `rooktest` en werkt dat bij in plaats van
+# elke week een nieuw te maken; slaagt hij weer, dan sluit hij het. Zelfde werkwijze als de
+# linkcheck in controles.yml.
+name: Rooktest live site
+
+on:
+  schedule:
+    # Maandag 06:30 UTC. Los van de kwartaalworkflows (03:00 en 05:00 op de eerste van de maand),
+    # zodat de logs niet door elkaar lopen.
+    - cron: '30 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Andere site testen, bv. een deploy preview (leeg = zoekjeschool.be)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: rooktest
+  cancel-in-progress: false
+
+jobs:
+  rooktest:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      # Enkel Chromium, met de systeembibliotheken die het op een kale runner nodig heeft.
+      - run: npx playwright install --with-deps chromium
+
+      - name: Rooktest
+        id: test
+        env:
+          ROOKTEST_URL: ${{ inputs.url }}
+        run: |
+          # Een lege ROOKTEST_URL telt in playwright.config.ts niet als "niet gezet", dus
+          # enkel doorgeven als er iets ingevuld is.
+          if [ -z "$ROOKTEST_URL" ]; then unset ROOKTEST_URL; fi
+          npm run rooktest 2>&1 | tee /tmp/rooktest.log
+
+      - name: Screenshots en trace bewaren
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: rooktest-resultaten
+          path: test-results/
+          retention-days: 30
+
+      - name: Issue openen of bijwerken
+        # Enkel op de echte site. Een mislukte run op een deploy preview hoort in die PR, niet in
+        # een issue over de live site.
+        if: failure() && steps.test.outcome == 'failure' && inputs.url == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh label create rooktest --color d93f0b --description "Automatische rooktest op de live site" --force
+
+          {
+            echo "De wekelijkse rooktest op zoekjeschool.be faalde, ook na een tweede poging."
+            echo
+            echo "Kijk eerst welke stap misliep: is het onze site (CSP, function, key) of een"
+            echo "dienst die we gebruiken (geolocatie, openrouteservice, Transitous)? Een andere"
+            echo "opmaak bij Transitous kan de test ook doen falen terwijl de link nog werkt."
+            echo
+            echo '```'
+            grep -E '›|Error:|Expected|Received|passed|failed' /tmp/rooktest.log | head -40 || true
+            echo '```'
+            echo
+            echo "Screenshots en trace: artefact \`rooktest-resultaten\` bij"
+            echo "[run ${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+            echo "Een trace open je met \`npx playwright show-trace trace.zip\`."
+          } > /tmp/issue.md
+
+          BESTAAND=$(gh issue list --label rooktest --state open --limit 1 --json number --jq '.[0].number // empty')
+          if [ -n "$BESTAAND" ]; then
+            gh issue comment "$BESTAAND" --body-file /tmp/issue.md
+            echo "Issue #$BESTAAND bijgewerkt."
+          else
+            gh issue create \
+              --title "Rooktest: de live site doet iets niet meer" \
+              --label rooktest \
+              --body-file /tmp/issue.md
+          fi
+
+      - name: Issue sluiten als alles weer werkt
+        if: success() && inputs.url == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          for n in $(gh issue list --label rooktest --state open --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "De rooktest slaagt weer. Automatisch gesloten."
+          done
