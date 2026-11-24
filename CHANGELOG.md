@@ -20,6 +20,9 @@ geen studiedomeinen of finaliteiten. Je ziet een lijst per leerjaar:
 - **Tweede leerjaar B**: de basisopties en de combinaties van twee of drie opties, die enkel in
   2B bestaan.
 
+De matrix opent voortaan op de eerste graad: voor een kind in het zesde leerjaar is dat de
+keuze die nu speelt. De tweede en de derde graad staan één klik verder.
+
 Bij elke optie staat op hoeveel adressen in je gebied ze in dat leerjaar bestaat. Een optie die
 er niet is, blijft gedimd op 0 staan. Een klik voegt de optie toe aan je gekozen richtingen,
 net als in de rest van de matrix.

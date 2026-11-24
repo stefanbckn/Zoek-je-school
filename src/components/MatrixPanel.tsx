@@ -68,7 +68,9 @@ export function MatrixPanel({
   onKiesRichting,
   onKiesCel,
 }: MatrixPanelProps) {
-  const [graad, setGraad] = useState<MatrixGraad>('Tweede graad')
+  // Open op de eerste graad: wie deze site gebruikt, heeft meestal een kind in het zesde
+  // leerjaar, en voor hen is de basisoptie de keuze die nu speelt.
+  const [graad, setGraad] = useState<MatrixGraad>('Eerste graad')
   const vensterRef = useDialoogFocus<HTMLDivElement>(open)
 
   useEffect(() => {
